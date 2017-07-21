@@ -1,0 +1,24 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 10, 2017, 2:53:02 PM
+    Author     : CHUYEN
+*/
+
+.bootstrap-select.btn-group .dropdown-menu li {
+    margin-bottom: 10px
+}
+.modal {
+    overflow-y: scroll;
+}
+span.badge-star{
+    background: red; 
+    font-size: 10px;
+    cursor: pointer;
+}
+.view_detail_contact_modal, .divide_one_contact_modal, .transfer_one_contact_modal, .edit_contact_modal{
+    z-index: 999999999;
+}

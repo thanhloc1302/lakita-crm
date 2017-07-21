@@ -1,0 +1,1 @@
+ <?php $this->load->view('common/content/tbl_contact'); ?>

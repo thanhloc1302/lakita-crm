@@ -1,0 +1,62 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 10, 2017, 2:49:13 PM
+    Author     : CHUYEN
+*/
+
+table{
+    &.list_contact{
+        table-layout: fixed;
+        thead {
+            tr {
+                th{
+                    word-wrap: break-word;
+                    &.tbl_address{
+                        width: 20%;
+                    }
+                    &.tbl_selection, &.tbl_contacts_id, &.tbl_course_id{
+                        width: 36px;
+
+                    }
+                    &.tbl_contact_id{
+                        width: 39px;
+                    }
+                    &.action{
+                        width: 105px;
+                    }
+                    &.tbl_phone{
+                        width: 67px;
+                    }
+                    &.tbl_contacts_address{
+                            width: 18%;
+                    }
+                    &.tbl_course_name_course{
+                        width: 18%;
+                    }
+                }
+            }
+        }
+        tbody{
+            tr{
+                td{
+                    word-wrap: break-word;
+                    &.tbl_contact_id, &.tbl_course_code, &.tbl_price_purchase{
+                        text-align: center;
+                    }
+                    &>a{
+                        width: 129px;
+                    }
+                    &.tbl_selection{
+                        cursor: pointer;
+                    }
+                    
+                }
+
+            }
+        }
+    }
+}
