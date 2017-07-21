@@ -33,6 +33,9 @@
 
 
 </form>
+<!-- Bắt sự kiện thêm 1 dòng -->
+<?php $this->load->view('base/add_item/index'); ?>
+
 <!-- Bắt sự kiện xóa 1 dòng và xóa nhiều dòng -->
 <?php $this->load->view('base/delete_item/index'); ?>
 

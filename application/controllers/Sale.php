@@ -22,7 +22,7 @@ class Sale extends MY_Controller {
          * contact ở trang chủ là contact chưa gọi lần nào và contact là của riêng TVTS, sắp xếp theo ngày nhận contact
          *
          */
-        $conditional['where'] = array('call_status_id' => '0', 'sale_staff_id' => $this->user_id);
+        $conditional['where'] = array('call_status_id' => '0', 'sale_staff_id' => $this->user_id, 'is_hide' => '0');
         $conditional['order'] = array('date_handover' => 'DESC');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
 
@@ -64,7 +64,8 @@ class Sale extends MY_Controller {
         $conditional['where'] = array(
             'date_recall >' => '0',
             'date_recall <' => strtotime('tomorrow'),
-            'sale_staff_id' => $this->user_id);
+            'sale_staff_id' => $this->user_id,
+             'is_hide' => '0');
         $conditional['where_not_in'] = array(
             'call_status_id' => $this->_get_stop_care_call_stt(),
             'ordering_status_id' => $this->_get_stop_care_order_stt());
@@ -96,6 +97,7 @@ class Sale extends MY_Controller {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
         $conditional['where']['sale_staff_id'] = $this->user_id;
+        $conditional['where']['is_hide'] = '0';
         $conditional['where']['(`call_status_id` = ' . _KHONG_NGHE_MAY_ . ' OR `ordering_status_id` in (' . _BAN_GOI_LAI_SAU_ . ' , ' . _CHAM_SOC_SAU_MOT_THOI_GIAN_ . ',' . _LAT_NUA_GOI_LAI_ . '))'] = 'NO-VALUE';
         $conditional['order'] = array('date_last_calling' => 'DESC');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
@@ -147,7 +149,7 @@ class Sale extends MY_Controller {
     function view_all_contact($offset = 0) {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
-        $conditional['where'] = array('sale_staff_id' => $this->user_id);
+        $conditional['where'] = array('sale_staff_id' => $this->user_id, 'is_hide' => '0');
         $conditional['order'] = array('date_last_calling' => 'DESC');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         $data['pagination'] = $this->_create_pagination_link('sale/view_all_contact', $data_pagination['total_row']);

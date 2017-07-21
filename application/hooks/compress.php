@@ -2,7 +2,7 @@
 
 $CI = & get_instance();
 $buffer = $CI->output->get_output();
-if (base_url() == 'http://chuyenpn.com/CRM-FTP/' || base_url() == strtolower('http://localhost/CRM-FTP/')) {
+if (base_url() == 'http://chuyenpn.com/CRM2/' || base_url() == strtolower('http://localhost/CRM2/')) {
     $search = array(
         '/\n/',	
         '/\>[^\S ]+/s', //strip whitespaces after tags, except space

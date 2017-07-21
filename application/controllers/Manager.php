@@ -21,7 +21,8 @@ class Manager extends MY_Controller {
          * contact ở trang chủ là contact chưa được phân cho TVTS nào và chua gọi lần nào
          *
          */
-        $conditional['where'] = array('call_status_id' => '0', 'sale_staff_id' => '0');
+        
+        $conditional['where'] = array('call_status_id' => '0', 'sale_staff_id' => '0', 'is_hide' => '0');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         /*
          * Lấy danh sách contacts
@@ -67,7 +68,7 @@ class Manager extends MY_Controller {
          * lấy tất cả contact nên $conditional là mảng rỗng
          *
          */
-        $conditional = [];
+        $conditional['where'] = array('is_hide' => '0');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
 
         /*
@@ -491,7 +492,8 @@ class Manager extends MY_Controller {
         $this->_check_contact_can_be_delete($post['contact_id']);
         foreach ($post['contact_id'] as $value) {
             $where = array('id' => $value);
-            $this->contacts_model->delete($where);
+            $data= array('is_hide' => 1);
+            $this->contacts_model->update($where, $data);
         }
         $msg = 'Xóa thành công các contact vừa chọn!';
         show_error_and_redirect($msg);
@@ -502,7 +504,8 @@ class Manager extends MY_Controller {
         if (!empty($post['contact_id'])) {
             $this->_check_contact_can_be_delete(array($post['contact_id']));
             $where = array('id' => $post['contact_id']);
-            $this->contacts_model->delete($where);
+            $data= array('is_hide' => 1);
+            $this->contacts_model->update($where, $data);
             echo '1';
         }
     }

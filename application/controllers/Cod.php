@@ -12,7 +12,7 @@ class Cod extends MY_Controller {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
         $conditional['where'] = array('ordering_status_id' => _DONG_Y_MUA_, 'cod_status_id' => '0',
-            'date_expect_receive_cod <' => strtotime('tomorrow'), 'payment_method_rgt' => '1');
+            'date_expect_receive_cod <' => strtotime('tomorrow'), 'payment_method_rgt' => '1', 'is_hide' => '0');
         $conditional['order'] = array('date_confirm' => 'DESC');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         $data['pagination'] = $this->_create_pagination_link('cod/index', $data_pagination['total_row']);
@@ -38,7 +38,7 @@ class Cod extends MY_Controller {
     function pending($offset = 0) {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
-        $conditional['where'] = array('cod_status_id' => _DANG_GIAO_HANG_);
+        $conditional['where'] = array('cod_status_id' => _DANG_GIAO_HANG_, 'is_hide' => '0');
         $conditional['order'] = array('code_cross_check' => 'ASC');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         $data['pagination'] = $this->_create_pagination_link('cod/pending', $data_pagination['total_row']);
@@ -67,7 +67,7 @@ class Cod extends MY_Controller {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
         $conditional['where'] = array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
-            'payment_method_rgt >' => '1');
+            'payment_method_rgt >' => '1', 'is_hide' => '0');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         $data['pagination'] = $this->_create_pagination_link('cod/transfer', $data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
@@ -239,7 +239,7 @@ class Cod extends MY_Controller {
     function view_all_contact($offset = 0) {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
-        $conditional['where'] = array('ordering_status_id' => _DONG_Y_MUA_);
+        $conditional['where'] = array('ordering_status_id' => _DONG_Y_MUA_, 'is_hide' => '0');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         $data['pagination'] = $this->_create_pagination_link('cod/view_all_contact', $data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];

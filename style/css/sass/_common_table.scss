@@ -57,7 +57,7 @@ table{
         }
         &.duplicate{
             background-color: #b54848 !important;
-            color: #fff;
+            color: #fff !important;
         }
         &.duplicate_bill{
             background-color: #b37f36 !important;
@@ -69,7 +69,11 @@ table{
         }
         &.bgred{
             background-color: rgba(255, 0, 0, 0.8) !important;
-            color: #fff;
+            color: #fff !important;
+        }
+        &.is_hide{
+            color:red;
+            text-decoration: line-through;
         }
         &.inactive{
             background-color: rgba(86, 83, 83, 0.18) !important;

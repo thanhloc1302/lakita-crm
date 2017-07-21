@@ -87,7 +87,14 @@ class MY_Table extends MY_Controller {
      * Filter
      */
     public $list_filter = '';
+    
+    /*
+     * add item
+     */
 
+    public $list_add = array();
+    
+    
     public function __construct() {
         parent::__construct();
         $this->limit = $this->per_page;
@@ -183,6 +190,9 @@ class MY_Table extends MY_Controller {
         $this->begin_paging = ($total_row == 0) ? 0 : $this->offset + 1;
         $this->end_paging = (($this->offset + $this->limit) < $total_row) ? ($this->offset + $this->limit) : $total_row;
         $this->total_paging = $total_row;
+    }
+     function show_add_item() {
+        $this->load->view('base/add_item/ajax_content');
     }
 
     function show_edit_item() {

@@ -63,20 +63,52 @@ class Marketing extends MY_Table {
         $this->set_list_view($list_item);
         $this->set_model('contacts_model');
     }
+    /*
+     * override lại hàm show_table của lớp cha
+     */
 
-    //put your code here
+    protected function show_table() {
+        parent::show_table();
+        /*
+         * Nếu có điều kiện đặc biệt thì thêm vào $row class css đặc biệt khi hiển thị
+         * ví dụ: giá khóa học lớn hơn 4 triệu thì báo đỏ
+         */
+        foreach ($this->data['rows'] as &$value) {
+            $class = '';
+            if ($value['is_hide'] == 1) {
+                $class .= ' is_hide';
+            }
+            if ($value['duplicate_id'] > 0) {
+                $class .= ' duplicate';
+            }
+            if ($class != '') {
+                $value['warning_class'] = $class;
+            }
+        }
+        unset($value);
+    }
+
     function index($offset = 0) {
+        $conditional = array();
+         $conditional['where']['date_rgt >'] = strtotime(date('d-m-Y'));
+        $this->set_conditional($conditional);
+        $this->set_offset($offset);
+        $this->show_table();
+        //echoQuery();
+        $data = $this->data;
+        $data['list_title'] = 'Danh sách contact ngày hôm nay';
+        $data['content'] = 'marketing/index';
+        $this->load->view(_MAIN_LAYOUT_, $data);
+    }
+     function view_all($offset = 0) {
         $conditional = array();
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
         //echoQuery();
         $data = $this->data;
-        $data['slide_menu'] = 'cod/check_L8/slide-menu';
-        $data['top_nav'] = 'cod/common/top-nav';
-        $data['list_title'] = 'Kết quả đối soát cước';
-        $data['edit_title'] = 'Sửa thông tin dòng đối soát cước';
-        $data['content'] = 'base/index';
+        $data['list_title'] = 'Danh sách toàn bộ contact';
+        $data['content'] = 'marketing/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 

@@ -47,6 +47,9 @@
                 if ($value['weight_envelope'] > 50) {
                     echo ' bgred';
                 }
+                if($value['is_hide'] == 1) {
+                    echo ' is_hide';
+                }
                 ?>">
                         <?php
                         $data['value'] = $value;

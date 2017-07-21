@@ -171,8 +171,8 @@ class Check_L8 extends MY_Table {
         $data = $this->data;
         $data['slide_menu'] = 'cod/check_L8/slide-menu';
         $data['top_nav'] = 'cod/common/top-nav';
-        $data['list_title'] = 'Kết quả đối soát cước';
-        $data['edit_title'] = 'Sửa thông tin dòng đối soát cước';
+        $data['list_title'] = 'Kết quả đối soát L8';
+        $data['edit_title'] = 'Sửa thông tin dòng đối soát L8';
         $data['content'] = 'cod/check_L8/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
@@ -209,8 +209,8 @@ class Check_L8 extends MY_Table {
         $data = $this->data;
         $data['slide_menu'] = 'cod/check_L8/slide-menu';
         $data['top_nav'] = 'cod/common/top-nav';
-        $data['list_title'] = 'Kết quả đối soát cước';
-        $data['edit_title'] = 'Sửa thông tin dòng đối soát cước';
+        $data['list_title'] = 'Kết quả đối soát L8';
+        $data['edit_title'] = 'Sửa thông tin dòng đối soát L8';
         $data['content'] = 'cod/check_L8/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
@@ -246,8 +246,8 @@ class Check_L8 extends MY_Table {
         $data = $this->data;
         $data['slide_menu'] = 'cod/check_L8/slide-menu';
         $data['top_nav'] = 'cod/common/top-nav';
-        $data['list_title'] = 'Kết quả đối soát cước';
-        $data['edit_title'] = 'Sửa thông tin dòng đối soát cước';
+        $data['list_title'] = 'Kết quả đối soát L8';
+        $data['edit_title'] = 'Sửa thông tin dòng đối soát L8';
         $data['content'] = 'cod/check_L8/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }

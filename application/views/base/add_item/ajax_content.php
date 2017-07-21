@@ -1,25 +1,22 @@
-<form method="post" action="<?php echo base_url() . $this->controller_path . '/action_edit_item/' . $row['id']; ?>" class="form_submit">
+<form method="post" action="<?php echo base_url() . $this->controller_path . '/action_add_item'; ?>" class="form_submit">
     <div class="row" style="margin-right: 5px; margin-left: 5px;">
         <div class="col-md-6">
             <table class="table table-striped table-bordered table-hover table-1 table-view-1 heavyTable">                
                 <?php
-                foreach ($this->list_edit['left_table'] as $key => $value) {
+                foreach ($this->list_add['left_table'] as $key => $value) {
                     $data['key'] = $key;
                     if (!isset($value['type'])) {
-                        $this->load->view('base/edit_item/content/edit_text', $data);
+                        $this->load->view('base/add_item/content/add_text', $data);
                     } else {
                         switch ($value['type']) {
                             case 'textarea' :
-                                $this->load->view('base/edit_item/content/textarea', $data);
-                                break;
-                            case 'disable' :
-                                $this->load->view('base/edit_item/content/edit_disable', $data);
+                                $this->load->view('base/add_item/content/textarea', $data);
                                 break;
                             case 'datetime' :
-                                $this->load->view('base/edit_item/content/edit_datetime', $data);
+                                $this->load->view('base/add_item/content/add_datetime', $data);
                                 break;
                             case 'custom' :
-                                $this->load->view($this->view_path . '/edit_item/' . $key, $data);
+                                $this->load->view($this->view_path . '/add_item/' . $key, $data);
                                 break;
                         }
                     }
@@ -30,23 +27,20 @@
         <div class="col-md-6">
             <table class="table table-striped table-bordered table-hover table-2 table-view-2">
                 <?php
-                foreach ($this->list_edit['right_table'] as $key => $value) {
+                foreach ($this->list_add['right_table'] as $key => $value) {
                     $data['key'] = $key;
                     if (!isset($value['type'])) {
-                        $this->load->view('base/edit_item/content/edit_text', $data);
+                        $this->load->view('base/add_item/content/edit_text', $data);
                     } else {
                         switch ($value['type']) {
-                            case 'textarea' :
-                                $this->load->view('base/edit_item/content/textarea', $data);
-                                break;
-                            case 'disable' :
-                                $this->load->view('base/edit_item/content/edit_disable', $data);
+                             case 'textarea' :
+                                $this->load->view('base/add_item/content/textarea', $data);
                                 break;
                             case 'datetime' :
-                                $this->load->view('base/edit_item/content/edit_datetime', $data);
+                                $this->load->view('base/add_item/content/edit_datetime', $data);
                                 break;
                             case 'custom' :
-                                $this->load->view($this->view_path . '/edit_item/' . $key, $data);
+                                $this->load->view($this->view_path . '/add_item/' . $key, $data);
                                 break;
                         }
                     }

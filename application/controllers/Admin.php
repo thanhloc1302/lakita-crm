@@ -56,7 +56,8 @@ class Admin extends MY_Controller {
         $post = $this->input->post();
         if (!empty($post['contact_id'])) {
             $where = array('id' => $post['contact_id']);
-            $this->contacts_model->delete($where);
+            $data= array('is_hide' => 1);
+            $this->contacts_model->update($where, $data);
             echo '1';
         }
     }
@@ -67,7 +68,7 @@ class Admin extends MY_Controller {
             $where = array('id' => $post['contact_id']);
             $data = array('call_status_id' => 0, 'ordering_status_id' => 0,
                 'sale_staff_id' => 0, 'cod_status_id' => 0, 'date_handover' => 0,
-                'date_confirm' => 0, 'date_print_cod' => 0, 'date_receive_cod' => 0, 'date_receive_lakita' => 0);
+                'date_confirm' => 0, 'date_print_cod' => 0, 'date_receive_cod' => 0, 'date_receive_lakita' => 0, 'is_hide' => 0);
             $this->contacts_model->update($where, $data);
             echo '1';
         }
