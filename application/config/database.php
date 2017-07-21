@@ -73,7 +73,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 $active_group = 'default';
 $query_builder = TRUE;
-if (base_url() == 'http://chuyenpn.com/CRM-FTP/' || strtolower(base_url()) == strtolower('http://localhost/CRM-FTP/')) {
+if (base_url() == 'http://chuyenpn.com/CRM2/' || strtolower(base_url()) == strtolower('http://localhost/CRM2/')) {
     $db['default'] = array(
         'dsn' => '',
         'hostname' => 'localhost',

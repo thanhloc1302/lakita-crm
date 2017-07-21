@@ -32,6 +32,17 @@ $(function () {
         } else {
             $(this).parent().parent().removeClass('checked');
         }
+         /*
+         * Hiển thị số lượng dòng đã check
+         */
+        var numberOfChecked = $('input:checkbox:checked').length;
+        var totalCheckboxes = $('input:checkbox').length;
+        $(this).notify('Đã chọn: ' + numberOfChecked + '/'+ totalCheckboxes, {
+            position: "right middle",
+            className: 'success',
+            showDuration: 200,
+            autoHideDelay: 1000
+        });
     });
     /*===================================== trờ về trang trước ========================================*/
     $("input[name='back_location']").val(document.referrer);
