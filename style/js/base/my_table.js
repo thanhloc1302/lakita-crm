@@ -1,17 +1,5 @@
 $(function () {
-    /*
-     * Chọn dòng khi click vào ô chọn (không cần click vào ô vuông nhỏ)
-     */
-    $('.tbl_selection').click(function () {
-        var my_input = $(this).find('input');
-        if (my_input.is(":checked")) {
-            my_input.prop('checked', false);
-            my_input.parent().parent().removeClass('checked');
-        } else {
-            my_input.prop('checked', true);
-            my_input.parent().parent().addClass('checked');
-        }
-    });
+   
 
     /*
      * Real order

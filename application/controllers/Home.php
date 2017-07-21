@@ -22,26 +22,27 @@ class Home extends CI_Controller {
         if (isset($user_id)) {
             $role_id = $this->session->userdata('role_id');
             switch ($role_id) {
-                case 1: {
-                        redirect(base_url('tu-van-tuyen-sinh/trang-chu.html'));
-                        break;
-                    }
-                case 2: {
-                        redirect(base_url('cod/trang-chu.html'));
-                        break;
-                    }
-                case 3: {
-                        redirect(base_url('quan-ly/trang-chu.html'));
-                        break;
-                    }
-                case 4: {
-                        redirect(base_url('admin'));
-                        break;
-                    }
-                default : {
-                        echo 'Có lỗi xảy ra!';
-                        die;
-                    }
+                case 1:
+                    redirect(base_url('tu-van-tuyen-sinh/trang-chu.html'));
+                    break;
+
+                case 2:
+                    redirect(base_url('cod/trang-chu.html'));
+                    break;
+
+                case 3:
+                    redirect(base_url('quan-ly/trang-chu.html'));
+                    break;
+
+                case 4:
+                    redirect(base_url('admin'));
+                    break;
+                case 5:
+                    redirect(base_url('marketing'));
+                    break;
+                default :
+                    echo 'Có lỗi xảy ra!';
+                    die;
             }
         } else {
             $this->load->view('home/login');
@@ -65,26 +66,30 @@ class Home extends CI_Controller {
                 $this->session->set_userdata('role_id', $result[0]['role_id']);
                 $this->session->set_userdata('image_staff', $result[0]['image']);
                 switch ($result[0]['role_id']) {
-                    case 1: {
-                            redirect(base_url('tu-van-tuyen-sinh/trang-chu.html'));
-                            break;
-                        }
-                    case 2: {
-                            redirect(base_url('cod/trang-chu.html'));
-                            break;
-                        }
-                    case 3: {
-                            redirect(base_url('quan-ly/trang-chu.html'));
-                            break;
-                        }
-                    case 4: {
-                            redirect(base_url('admin'));
-                            break;
-                        }
-                    default : {
-                            echo 'Có lỗi xảy ra!';
-                            die;
-                        }
+                    case 1:
+                        redirect(base_url('tu-van-tuyen-sinh/trang-chu.html'));
+                        break;
+
+                    case 2:
+                        redirect(base_url('cod/trang-chu.html'));
+                        break;
+
+                    case 3:
+                        redirect(base_url('quan-ly/trang-chu.html'));
+                        break;
+
+                    case 4:
+                        redirect(base_url('admin'));
+                        break;
+
+                    case 5:
+
+                        redirect(base_url('marketing'));
+                        break;
+
+                    default :
+                        echo 'Có lỗi xảy ra!';
+                        die;
                 }
             } else {
                 echo '<script> alert("Username hoặc mật khẩu không đúng!");</script>';
@@ -104,8 +109,8 @@ class Home extends CI_Controller {
     function test_rest() {
         $this->load->library('rest');
         $config = array('server' => 'http://chuyenpn.com:8089/CRM_GIT/',
-                'api_key'			=> '12345678',
-                'api_name'		=> 'lakita-key'
+            'api_key' => '12345678',
+            'api_name' => 'lakita-key'
                 //'http_user' 		=> 'username',
                 //'http_pass' 		=> 'password',
                 //'http_auth' 		=> 'basic',
@@ -115,9 +120,8 @@ class Home extends CI_Controller {
 
         $this->rest->initialize($config);
         $tweets = $this->rest->get('contact_api/contacts');
-        
+
         print_arr($tweets);
-        
     }
 
 }
