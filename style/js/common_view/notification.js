@@ -25,7 +25,8 @@
                         event.preventDefault(); 
                         window.open('http://crm2.lakita.vn/quan-ly/trang-chu.html', '_blank');
                     };
-                    if ($("#my-controller").val() === 'manager' && $("#my-action").val() === 'index') {
+                    if (($("#my-controller").val() === 'manager' && $("#my-action").val() === 'index')
+                            || $("#my-controller").val() === 'marketing' && $("#my-action").val() === 'index') {
                         setTimeout(function () {
                             location.reload();
                         }, 4000);

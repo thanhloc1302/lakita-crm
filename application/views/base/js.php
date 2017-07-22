@@ -1,6 +1,5 @@
 <?php
-
-/* 
+/*
  * Copyright (C) 2017 Phạm Ngọc Chuyển <chuyenpn at lakita.vn>
  *
  */

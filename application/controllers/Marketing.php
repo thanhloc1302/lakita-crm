@@ -50,7 +50,6 @@ class Marketing extends MY_Table {
                 'name_display' => 'Giá tiền mua',
                 'order' => '1'
             ),
-            
             'date_rgt' => array(
                 'type' => 'datetime',
                 'name_display' => 'Ngày đăng ký',
@@ -58,11 +57,16 @@ class Marketing extends MY_Table {
             ),
             'matrix' => array(
                 'name_display' => 'Ma trận',
+            ),
+            'duplicate_id' => array(
+                'name_display' => 'Contact trùng', 
+                'display' => 'none'
             )
         );
         $this->set_list_view($list_item);
         $this->set_model('contacts_model');
     }
+
     /*
      * override lại hàm show_table của lớp cha
      */
@@ -89,8 +93,18 @@ class Marketing extends MY_Table {
     }
 
     function index($offset = 0) {
+         $this->list_filter = array(
+            'left_filter' => array(
+               'duplicate_id' => array(
+                    'type' => 'binary',
+                )
+            ),
+            'right_filter' => array(
+                
+            )
+        );
         $conditional = array();
-         $conditional['where']['date_rgt >'] = strtotime(date('d-m-Y'));
+        $conditional['where']['date_rgt >'] = strtotime(date('d-m-Y'));
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
@@ -100,7 +114,20 @@ class Marketing extends MY_Table {
         $data['content'] = 'marketing/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
-     function view_all($offset = 0) {
+
+    function view_all($offset = 0) {
+          $this->list_filter = array(
+            'left_filter' => array(
+                'date_rgt' => array(
+                    'type' => 'datetime',
+                )
+            ),
+            'right_filter' => array(
+                'duplicate_id' => array(
+                    'type' => 'binary',
+                )
+            )
+        );
         $conditional = array();
         $this->set_conditional($conditional);
         $this->set_offset($offset);

@@ -20,17 +20,15 @@
                     Danh sách toàn bộ contact
                 </a>
             </li>
-            <li><a href="<?php echo base_url('MANAGERS/channel');?>"><i class="fa fa-edit"></i> Quản lý kênh <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                    <li><a class="divide_contact">Phân riêng contact cho một TVTS</a></li>
-                    <li><a href="#" class="divide_contact_even">Phân đều contact cho các TVTS</a></li>
-                    <li><a class="cancel_multi_contact">Hủy phân nháp các contact đã chọn</a></li>
-                    <li><a href="<?php echo base_url('quan-ly/contact-dang-phan-nhap.html'); ?>">Các contact đang phân nháp (chưa hủy nháp)</a></li>
-                    <li><a id="delete_contact">Xóa các contact đã chọn </a></li>
-                </ul>
+            <li>
+                <a href="<?php echo base_url('MANAGERS/channel'); ?>">
+                    <i class="fa fa-facebook-square" aria-hidden="true"></i> Quản lý kênh <span class="fa fa-chevron-down"></span>
+                </a>
             </li>
             <li>
-                <a href="<?php echo base_url('quan-ly/tim-kiem-contact.html'); ?>"><i class="fa fa-search"></i> Tìm kiếm contact </a>
+                <a href="<?php echo base_url('MANAGERS/landingpage'); ?>">
+                    <i class="fa fa-file" aria-hidden="true"></i> Quản lý landing page <span class="fa fa-chevron-down"></span>
+                </a>
             </li>
             <li>
                 <a href="<?php echo base_url('quan-ly/them-contact.html'); ?>"><i class="fa fa fa-user">+</i> Thêm mới contact </a>

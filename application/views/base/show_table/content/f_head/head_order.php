@@ -1,6 +1,6 @@
 <?php $order_name = "order_{$key}";
 ?>
-<th class="<?php echo $order_name . ' tbl_' . $this->controller . '_' . $key; ?>" id="<?php echo 'f_th_' . $key; ?>">
+<th class="<?php echo $order_name . ' f_tbl_' . $this->controller . '_' . $key; ?>" id="<?php echo 'f_th_' . $key; ?>">
     <input type="text" class="<?php echo $order_name; ?> hidden" name="<?php echo $order_name; ?>"
            value="<?php echo (filter_has_var(INPUT_GET, $order_name)) ? 
                    ((filter_input(INPUT_GET, $order_name) != '') ? filter_input(INPUT_GET, $order_name) : '0') : '0'; ?>" />

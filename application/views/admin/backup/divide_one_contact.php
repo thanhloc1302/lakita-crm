@@ -1,14 +1,5 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-    $(function () {
-        $("#datepicker").datepicker(
-                {
-                    dateFormat: "dd-mm-yy"
-                }
-        );
-    });
-</script>
 <div class="container margintop45 marginbottom35">
     <div class="col-md-8 col-md-offset-1">
         <h3 class="text-center"> Bàn giao contact cho nhân viên sale</h3>

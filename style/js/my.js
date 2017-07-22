@@ -1,5 +1,11 @@
 $(function () {
 
+    $(".datepicker").datepicker(
+            {
+                dateFormat: "dd-mm-yy"
+            }
+    );
+
     /*
      * Sửa lại link phân trang nếu có các thao tác lọc, tìm kiếm, sắp xếp
      */
@@ -32,12 +38,12 @@ $(function () {
         } else {
             $(this).parent().parent().removeClass('checked');
         }
-         /*
+        /*
          * Hiển thị số lượng dòng đã check
          */
         var numberOfChecked = $('input:checkbox:checked').length;
         var totalCheckboxes = $('input:checkbox').length;
-        $(this).notify('Đã chọn: ' + numberOfChecked + '/'+ totalCheckboxes, {
+        $(this).notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
             position: "right middle",
             className: 'success',
             showDuration: 200,
@@ -127,7 +133,7 @@ $(function () {
             }
         });
     });
-    
+
     /*
      * Sửa lại value của thẻ input curr_url
      */

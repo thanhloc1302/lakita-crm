@@ -12,12 +12,3 @@
     
 </div>
 <?php $this->load->view('manager/modal/divide_one_contact'); ?>
-
-    <input type="submit" class="btn btn-success btn-export-excel-for-viettel" value="Xuất file excel để gửi cho Viettel" />
-    <script>
-     $(".btn-export-excel-for-viettel").click(function (e) {
-        e.preventDefault();
-        $("#action_contact").attr("action", baseURL + "manager/export_for_send_provider");
-        $("#action_contact").submit();
-    });
-    </script>

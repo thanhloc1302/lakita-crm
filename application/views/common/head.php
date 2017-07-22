@@ -15,11 +15,6 @@
         <link href="<?php echo base_url(); ?>style/css/style.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="<?php echo base_url(); ?>style/jquery-ui-1.12.1.custom/jquery-ui.min.css">
         <script src="<?php echo base_url(); ?>style/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-        <script>
-            $(function () {
-                $(".datepicker").datepicker({dateFormat: "dd-mm-yy"});
-            });
-        </script>
         <link rel="stylesheet" href="<?php echo base_url(); ?>style/css/common/bootstrap-select.min.css">
         <script src="<?php echo base_url(); ?>style/js/common/bootstrap-select.min.js"></script>
     </head>

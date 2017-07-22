@@ -1,16 +1,6 @@
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-    $(function () {
-        window.moveTo(0, 0);
-        window.resizeTo(screen.width, screen.height);
-        $("#datepicker").datepicker(
-                {
-                    dateFormat: "dd-mm-yy"
-                }
-        );
-    });
-</script>
+
 <div class="container margintop45 marginbottom35 paddingright20">
     <div class="row">
         <h3 class="text-center"> Xem chi tiết </h3>
