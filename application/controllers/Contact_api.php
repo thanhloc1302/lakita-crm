@@ -96,7 +96,8 @@ class Contact_api extends REST_Controller {
         $input = array();
         $input['where'] = array(
             'phone' => $phone,
-            'course_code' => $course_code
+            'course_code' => $course_code,
+            'is_hide' => '0'
         );
         $input['order'] = array('id', 'ASC');
         $rs = $this->contacts_model->load_all($input);

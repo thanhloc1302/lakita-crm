@@ -10,5 +10,8 @@
     <?php $this->load->view('sale/modal/transfer_multi_contact'); ?> <br/>
     <a href="form.html" class="transfer_contact btn btn-success"> Chuyển nhượng các contact đã chọn </a>
 </form>
+<div class="view_duplicate">
+    
+</div>
 <?php $this->load->view('sale/modal/transfer_one_contact'); ?>
 <?php $this->load->view('sale/modal/show_script'); ?>

@@ -5,10 +5,15 @@
                 <?php
                 foreach ($this->list_add['left_table'] as $key => $value) {
                     $data['key'] = $key;
+
                     if (!isset($value['type'])) {
                         $this->load->view('base/add_item/content/add_text', $data);
                     } else {
                         switch ($value['type']) {
+                            case 'array' :
+                                $data['arr'] = $value['value'];
+                                $this->load->view($this->view_path .'/add_item/'. $key, $data);
+                                break;
                             case 'textarea' :
                                 $this->load->view('base/add_item/content/textarea', $data);
                                 break;
@@ -30,10 +35,14 @@
                 foreach ($this->list_add['right_table'] as $key => $value) {
                     $data['key'] = $key;
                     if (!isset($value['type'])) {
-                        $this->load->view('base/add_item/content/edit_text', $data);
+                        $this->load->view('base/add_item/content/add_text', $data);
                     } else {
                         switch ($value['type']) {
-                             case 'textarea' :
+                            case 'array' :
+                                $data['arr'] = $value['value'];
+                                $this->load->view($this->view_path .'/add_item/'. $key, $data);
+                                break;
+                            case 'textarea' :
                                 $this->load->view('base/add_item/content/textarea', $data);
                                 break;
                             case 'datetime' :

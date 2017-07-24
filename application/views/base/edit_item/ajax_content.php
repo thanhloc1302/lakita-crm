@@ -9,6 +9,10 @@
                         $this->load->view('base/edit_item/content/edit_text', $data);
                     } else {
                         switch ($value['type']) {
+                             case 'array' :
+                                $data['arr'] = $value['value'];
+                                $this->load->view($this->view_path .'/edit_item/'. $key, $data);
+                                break;
                             case 'textarea' :
                                 $this->load->view('base/edit_item/content/textarea', $data);
                                 break;
@@ -36,6 +40,10 @@
                         $this->load->view('base/edit_item/content/edit_text', $data);
                     } else {
                         switch ($value['type']) {
+                             case 'array' :
+                                $data['arr'] = $value['value'];
+                                $this->load->view($this->view_path .'/edit_item/'. $key, $data);
+                                break;
                             case 'textarea' :
                                 $this->load->view('base/edit_item/content/textarea', $data);
                                 break;

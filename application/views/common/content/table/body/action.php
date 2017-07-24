@@ -1,5 +1,9 @@
 <?php if ($controller == 'sale') { ?>
     <td class="center action">
+        <?php if ($value['duplicate_id'] != 0) { ?>
+            <a href="#" class="view_duplicate btn btn-duplicate" 
+               duplicate_id="<?php echo $value['duplicate_id']; ?>"> Xem </a>
+           <?php } ?>
         <a href="<?php echo base_url(); ?>sale/edit_contact/<?php echo $value['id'] ?>"
            class="edit_contact btn btn-success" contact_id="<?php echo $value['id'] ?>"> Chăm sóc</a>
         <a href="#" contact_id="<?php echo $value['id']; ?>"

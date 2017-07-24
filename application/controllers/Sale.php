@@ -51,7 +51,7 @@ class Sale extends MY_Controller {
 
         $data['load_js'] = array(
             'common_view_detail_contact', 'common_real_filter_contact', 'common_edit_contact',
-            's_check_edit_contact', 's_transfer_contact', 's_show_script'
+            's_check_edit_contact', 's_transfer_contact', 's_show_script', 'm_view_duplicate'
         );
 
         $data['content'] = 'sale/index';
@@ -168,7 +168,7 @@ class Sale extends MY_Controller {
 
         $data['load_js'] = array(
             'common_view_detail_contact', 'common_real_filter_contact', 'common_edit_contact',
-            's_check_edit_contact', 's_transfer_contact', 's_show_script'
+            's_check_edit_contact', 's_transfer_contact', 's_show_script', 'm_view_duplicate'
         );
 
         $data['content'] = 'sale/view_all_contact';
@@ -373,16 +373,16 @@ class Sale extends MY_Controller {
             show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
         }
 
-        foreach ($list as $value) {
-            $input = array();
-            $input['where'] = array('id' => $value);
-            $rows = $this->contacts_model->load_all($input);
-            if ($rows[0]['duplicate_id'] > 0) {
-                $msg = 'Contact "' . $rows[0]['name'] . '" có id = ' . $rows[0]['id'] . ' bị trùng. '
-                        . 'Vì vậy không thể chuyển nhượng contact đó được! Vui lòng thực hiện lại';
-                show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
-            }
-        }
+//        foreach ($list as $value) {
+//            $input = array();
+//            $input['where'] = array('id' => $value);
+//            $rows = $this->contacts_model->load_all($input);
+//            if ($rows[0]['duplicate_id'] > 0) {
+//                $msg = 'Contact "' . $rows[0]['name'] . '" có id = ' . $rows[0]['id'] . ' bị trùng. '
+//                        . 'Vì vậy không thể chuyển nhượng contact đó được! Vui lòng thực hiện lại';
+//                show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
+//            }
+//        }
         foreach ($list as $value) {
             $input = array();
             $input['where'] = array('id' => $value);
