@@ -9,9 +9,9 @@
                         $this->load->view('base/edit_item/content/edit_text', $data);
                     } else {
                         switch ($value['type']) {
-                             case 'array' :
+                            case 'array' :
                                 $data['arr'] = $value['value'];
-                                $this->load->view($this->view_path .'/edit_item/'. $key, $data);
+                                $this->load->view($this->view_path . '/edit_item/' . $key, $data);
                                 break;
                             case 'textarea' :
                                 $this->load->view('base/edit_item/content/textarea', $data);
@@ -24,6 +24,9 @@
                                 break;
                             case 'custom' :
                                 $this->load->view($this->view_path . '/edit_item/' . $key, $data);
+                                break;
+                            case 'password' :
+                                $this->load->view('base/edit_item/content/password', $data);
                                 break;
                         }
                     }
@@ -40,9 +43,9 @@
                         $this->load->view('base/edit_item/content/edit_text', $data);
                     } else {
                         switch ($value['type']) {
-                             case 'array' :
+                            case 'array' :
                                 $data['arr'] = $value['value'];
-                                $this->load->view($this->view_path .'/edit_item/'. $key, $data);
+                                $this->load->view($this->view_path . '/edit_item/' . $key, $data);
                                 break;
                             case 'textarea' :
                                 $this->load->view('base/edit_item/content/textarea', $data);
@@ -55,6 +58,9 @@
                                 break;
                             case 'custom' :
                                 $this->load->view($this->view_path . '/edit_item/' . $key, $data);
+                                break;
+                            case 'password' :
+                                $this->load->view('base/edit_item/content/password', $data);
                                 break;
                         }
                     }

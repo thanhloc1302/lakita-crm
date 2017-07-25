@@ -7,6 +7,7 @@
             echo 'value = "' . date('d-m-Y', $row[$key]) . '"';
         }
         ?>
-               /><a href = "#" class = "reset_datepicker btn btn-primary"> Reset</a>
+               />
+        <a href = "#" class = "reset_datepicker btn btn-primary"> Reset</a>
     </td>
-<tr>
+</tr>

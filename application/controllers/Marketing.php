@@ -55,8 +55,8 @@ class Marketing extends MY_Table {
                 'name_display' => 'Ngày đăng ký',
                 'order' => '1'
             ),
-            'matrix' => array(
-                'name_display' => 'Ma trận',
+              'channel_id' => array(
+                'name_display' => 'Kênh',
             ),
             'duplicate_id' => array(
                 'name_display' => 'Contact trùng', 

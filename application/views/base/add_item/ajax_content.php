@@ -23,6 +23,9 @@
                             case 'custom' :
                                 $this->load->view($this->view_path . '/add_item/' . $key, $data);
                                 break;
+                            case 'password' :
+                                $this->load->view('base/add_item/content/password', $data);
+                                break;
                         }
                     }
                 }
@@ -50,6 +53,9 @@
                                 break;
                             case 'custom' :
                                 $this->load->view($this->view_path . '/add_item/' . $key, $data);
+                                break;
+                            case 'password' :
+                                $this->load->view('base/add_item/content/password', $data);
                                 break;
                         }
                     }

@@ -5,4 +5,4 @@
     <td>
         <input type="text" name="edit_<?php echo $key;?>" class="form-control" value="<?php echo $row[$key];?>" />
     </td>
-<tr>
+</tr>

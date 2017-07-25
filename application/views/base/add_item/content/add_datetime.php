@@ -4,4 +4,4 @@
         <input type="text" class="form-control datepicker date_recall" name="add_<?php echo $key; ?>" />
         <a href = "#" class = "reset_datepicker btn btn-primary"> Reset</a>
     </td>
-<tr>
+</tr>

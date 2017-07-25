@@ -7,5 +7,5 @@
             <textarea class="form-control" rows="5" name="edit_<?php echo $key; ?>"> <?php echo $row[$key];?></textarea>
         </div>
     </td>
-<tr>
+</tr>
 

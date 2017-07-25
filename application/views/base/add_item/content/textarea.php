@@ -7,5 +7,5 @@
             <textarea class="form-control" rows="5" name="add_<?php echo $key; ?>"> </textarea>
         </div>
     </td>
-<tr>
+</tr>
 

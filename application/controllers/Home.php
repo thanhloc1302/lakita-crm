@@ -40,6 +40,9 @@ class Home extends CI_Controller {
                 case 5:
                     redirect(base_url('marketing'));
                     break;
+                case 6:
+                    redirect(base_url('marketer'));
+                    break;
                 default :
                     echo 'Có lỗi xảy ra!';
                     die;
@@ -83,10 +86,11 @@ class Home extends CI_Controller {
                         break;
 
                     case 5:
-
                         redirect(base_url('marketing'));
                         break;
-
+                    case 6:
+                        redirect(base_url('marketer'));
+                        break;
                     default :
                         echo 'Có lỗi xảy ra!';
                         die;
