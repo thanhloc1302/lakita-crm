@@ -11,8 +11,9 @@
  *
  * @author Phạm Ngọc Chuyển <chuyenpn at lakita.vn>
  */
-class Marketer extends MY_Table{
-     public function __construct() {
+class Marketer extends MY_Table {
+
+    public function __construct() {
         parent::__construct();
         $this->init();
     }
@@ -58,7 +59,7 @@ class Marketer extends MY_Table{
                 'name_display' => 'Kênh',
             ),
             'duplicate_id' => array(
-                'name_display' => 'Contact trùng', 
+                'name_display' => 'Contact trùng',
                 'display' => 'none'
             )
         );
@@ -90,16 +91,24 @@ class Marketer extends MY_Table{
         }
         unset($value);
     }
+    
+    function delete_item() {
+        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
+    }
+
+    function delete_multi_item() {
+        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
+    }
+
 
     function index($offset = 0) {
-         $this->list_filter = array(
+        $this->list_filter = array(
             'left_filter' => array(
-               'duplicate_id' => array(
+                'duplicate_id' => array(
                     'type' => 'binary',
                 )
             ),
             'right_filter' => array(
-                
             )
         );
         $conditional = array();
@@ -114,4 +123,30 @@ class Marketer extends MY_Table{
         $data['content'] = 'marketing/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
+
+    function view_all($offset = 0) {
+        $this->list_filter = array(
+            'left_filter' => array(
+                'date_rgt' => array(
+                    'type' => 'datetime',
+                )
+            ),
+            'right_filter' => array(
+                'duplicate_id' => array(
+                    'type' => 'binary',
+                )
+            )
+        );
+        $conditional = array();
+        $conditional['where']['marketer_id'] = $this->user_id;
+        $this->set_conditional($conditional);
+        $this->set_offset($offset);
+        $this->show_table();
+        //echoQuery();
+        $data = $this->data;
+        $data['list_title'] = 'Danh sách toàn bộ contact';
+        $data['content'] = 'marketing/index';
+        $this->load->view(_MAIN_LAYOUT_, $data);
+    }
+
 }

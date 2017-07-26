@@ -11,7 +11,7 @@
  *
  * @author CHUYENPN
  */
-class Marketer extends MY_Table {
+class Marketers extends MY_Table {
 
     public function __construct() {
         parent::__construct();
@@ -19,8 +19,8 @@ class Marketer extends MY_Table {
     }
 
     public function init() {
-        $this->controller_path = 'MANAGERS/marketer';
-        $this->view_path = 'MANAGERS/marketer';
+        $this->controller_path = 'MANAGERS/'.$this->controller;
+        $this->view_path = 'MANAGERS/'.$this->controller;
         $this->sub_folder = 'MANAGERS';
         $list_view = array(
             'id' => array(
@@ -96,7 +96,7 @@ class Marketer extends MY_Table {
         $data = $this->data;
         $data['slide_menu'] = 'marketing/common/slide-menu';
         $data['top_nav'] = 'marketing/common/top-nav';
-        $data['list_title'] = 'Danh sách các Marketer';
+        $data['list_title'] = 'Danh sách các Marketers';
         $data['edit_title'] = 'Sửa thông tin Marketer';
         $data['content'] = 'base/index';
         $this->load->view(_MAIN_LAYOUT_, $data);

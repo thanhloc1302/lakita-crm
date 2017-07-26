@@ -90,3 +90,54 @@ function h_find_name_display($column_name, $list_view) {
     }
     return $name;
 }
+
+function get_total_campaign_info($rows){
+    $total_C3 = 0;
+    $price_sum = 0;
+    foreach ($rows as $value) {
+        $total_C3 += $value['total_C3'];
+        $price_sum += $value['price'];
+    }
+    
+}
+
+function get_fb_request($url)
+{
+  $options = array(
+    CURLOPT_URL            => $url,
+    CURLOPT_RETURNTRANSFER => TRUE,
+    CURLOPT_HEADER         => FALSE,
+    CURLOPT_FOLLOWLOCATION => TRUE,
+    CURLOPT_ENCODING       => '',
+    CURLOPT_USERAGENT      => 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.87 Safari/537.36',
+    CURLOPT_AUTOREFERER    => TRUE,
+    CURLOPT_CONNECTTIMEOUT => 150,
+    CURLOPT_TIMEOUT        => 150,
+    CURLOPT_MAXREDIRS      => 5,
+    CURLOPT_SSL_VERIFYHOST => 2,
+    CURLOPT_SSL_VERIFYPEER => 0
+  );
+  $ch = curl_init();
+  curl_setopt_array($ch, $options);
+  $response = curl_exec($ch);
+  $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+  curl_close($ch);
+  unset($options);
+  return $http_code === 200 ? json_decode($response) : FALSE;
+}
+
+function h_caculate_channel_cost($channel_cost){
+    $costArr = array(
+        'total_C1' => 0,
+        'total_C2' => 0,
+        'total_C3' => 0,
+        'spend' => 0,
+    );
+    foreach ($channel_cost as $value){
+        $costArr['total_C1'] += $value['total_C1'];
+        $costArr['total_C2'] += $value['total_C2'];
+        $costArr['total_C3'] += $value['total_C3'];
+        $costArr['spend'] += $value['spend'];
+    }
+    return $costArr;
+}

@@ -64,7 +64,7 @@ class Contact_api extends REST_Controller {
 
                 //đếm số lần đăng ký khóa học
                 $input_count = array();
-                $input_count['where'] = array('phone' => $param['phone'], 'course_code !=' => $param['course_code']);
+                $input_count['where'] = array('phone' => $param['phone'], 'course_code !=' => $param['course_code'], 'is_hide' => '0');
                 $contacts = $this->contacts_model->load_all($input_count);
                 if (!empty($contacts)) {
                     $param['star'] = $contacts[0]['star'] + 1;

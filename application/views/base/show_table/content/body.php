@@ -11,15 +11,15 @@ foreach ($rows as $row) {
                 continue;
             }
             if (!isset($column_type['type'])) {
-                echo "<td> {$row[$columm_name]} </td>";
+                echo "<td class='tbl_".$columm_name."'> {$row[$columm_name]} </td>";
             } else {
                 switch ($column_type['type']) {
                     case 'currency': {
-                            echo '<td>' . number_format($row[$columm_name], 0, ",", ".") . '</td>';
+                            echo '<td class="tbl_'.$columm_name.'">' . number_format($row[$columm_name], 0, ",", ".") . '</td>';
                             break;
                         }
                     case 'datetime': {
-                            echo '<td>' . date('H:i:s d/m/Y', $row[$columm_name]) . '</td>';
+                            echo '<td class="tbl_'.$columm_name.'">' . date('H:i:s d/m/Y', $row[$columm_name]) . '</td>';
                             break;
                         }
                     case 'custom' : {

@@ -23,7 +23,7 @@ class MY_Controller extends CI_Controller {
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
-        //echo date('H:i:s d/m/Y', 1500224400  );die;
+       // echo date('H:i:s d/m/Y', 1500915600    );die;
         //echo strtotime('18-01-2017'); die;
         // echo strtotime(date("d-m-Y"));die;
         //echo $this->input->ip_address();die;

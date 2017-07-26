@@ -91,6 +91,16 @@ class Marketing extends MY_Table {
         }
         unset($value);
     }
+    
+    
+    function delete_item() {
+        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
+    }
+
+    function delete_multi_item() {
+        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
+    }
+
 
     function index($offset = 0) {
          $this->list_filter = array(

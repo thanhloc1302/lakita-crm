@@ -21,13 +21,13 @@
             ?>
         </h3>
         <ul class="nav side-menu">
-            <li><a href="<?php echo base_url('marketing/view_all'); ?>"><i class="fa fa-bars"></i> 
+            <li><a href="<?php echo base_url('marketer/view_all'); ?>"><i class="fa fa-bars"></i> 
                     Danh sách toàn bộ contact
                 </a>
             </li>
             <li>
-                <a href="<?php echo base_url('MANAGERS/channel'); ?>">
-                    <i class="fa fa-facebook-square" aria-hidden="true"></i> Quản lý kênh <span class="fa fa-chevron-down"></span>
+                <a href="<?php echo base_url('MANAGERS/campaign'); ?>">
+                   <i class="fa fa-calendar" aria-hidden="true"></i> Quản lý campaign <span class="fa fa-chevron-down"></span>
                 </a>
             </li>
             <li>

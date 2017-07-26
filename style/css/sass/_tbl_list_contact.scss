@@ -40,6 +40,12 @@ table{
                     &.tbl_landingpage_code{
                         width: 20%;
                     }
+                    &.tbl_campaign_C2pC1, &.tbl_campaign_C3pC2{
+                        background-color: #296880;
+                    }
+                    &.tbl_campaign_pricepC1, &.tbl_campaign_pricepC2, &.tbl_campaign_pricepC3{
+                        background-color: #262085;
+                    }
                 }
             }
         }
@@ -56,10 +62,18 @@ table{
                     &.tbl_selection{
                         cursor: pointer;
                     }
-
+                    &.tbl_C2pC1, &.tbl_C3pC2 {
+                        background-color: #296880;
+                        color:#fff;
+                    }
+                    &.tbl_pricepC1, &.tbl_pricepC2, &.tbl_pricepC3{
+                        background-color: #262085;
+                        color:#fff;
+                    }
                 }
 
             }
         }
     }
 }
+

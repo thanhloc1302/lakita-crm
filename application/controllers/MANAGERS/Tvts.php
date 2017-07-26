@@ -52,6 +52,15 @@ class Tvts extends MY_Table {
         $this->set_list_view($list_view);
         $this->set_model('staffs_model');
     }
+    
+    function delete_item() {
+        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
+    }
+
+    function delete_multi_item() {
+        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
+    }
+
 
     public function index($offset = 0) {
         $conditional = array('where' => array('role_id' => '1'));

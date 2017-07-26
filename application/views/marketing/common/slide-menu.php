@@ -36,7 +36,7 @@
                 </a>
             </li>
             <li>
-                <a href="<?php echo base_url('MANAGERS/marketer'); ?>">
+                <a href="<?php echo base_url('MANAGERS/marketers'); ?>">
                     <i class="fa fa-user" aria-hidden="true"></i> Quản lý Marketer </a>
             </li>
             <li>
