@@ -16,6 +16,7 @@ class Channel extends MY_Table {
     public function __construct() {
         parent::__construct();
         $this->init();
+        $this->load->model('channel_cost_model');
     }
 
     public function init() {
@@ -45,7 +46,7 @@ class Channel extends MY_Table {
                 'name_display' => 'Mô tả',
                 'display' => 'none'
             ),
-             'spend' => array(
+            'spend' => array(
                 'type' => 'currency',
                 'name_display' => 'Đã tiêu',
             ),
@@ -110,44 +111,40 @@ class Channel extends MY_Table {
          * Nếu có điều kiện đặc biệt thì thêm vào $row class css đặc biệt khi hiển thị
          * ví dụ: giá khóa học lớn hơn 4 triệu thì báo đỏ
          */
-        $this->load->model('channel_cost_model');
+
+        $date_form = '';
+        $date_end = '';
+        if (!isset($get['date_from']) && !isset($get['date_end'])) {
+            $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
+            $date_end = strtotime(date('d-m-Y', strtotime("-1 days")));
+        } else {
+            $date_form = strtotime($get['date_from']);
+            $date_end = strtotime($get['date_end']);
+        }
+
+
         foreach ($this->data['rows'] as &$value) {
-            /*
-             * Lấy số C3
-             */
-            $input = array();
-            $input['where'] = array('channel_id' => $value['id']);
-            $total_C3 = $this->contacts_model->load_all($input);
-            $value['total_C3'] = count($total_C3);
 
             /*
-             * Lấy số tiền tiêu
+             * Lấy số C3 & số tiền tiêu
              */
-            $date_form = '';
-            $date_end = '';
-            if (!isset($get['date_from']) && !isset($get['date_end'])) {
-                $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
-                $date_end = strtotime(date('d-m-Y', strtotime("-1 days")));
-            } else {
-                $date_form = strtotime($get['date_from']);
-                $date_end = strtotime($get['date_end']);
-            }
+
             $input = array();
             $input['where'] = array('channel_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
             $channel_cost = $this->channel_cost_model->load_all($input);
-            //print_r($channel_cost);
-           // echoQuery();
             $channel_cost = h_caculate_channel_cost($channel_cost);
             if (!empty($channel_cost)) {
                 $value['total_C1'] = $channel_cost['total_C1'];
                 $value['total_C2'] = $channel_cost['total_C2'];
+                $value['total_C3'] = $channel_cost['total_C3'];
                 $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
-                $value['C3pC2'] = ($value['total_C2'] > 0) ? $value['total_C3'] / $value['total_C2'] :'#N/A';
+                $value['C3pC2'] = ($value['total_C2'] > 0) ? $value['total_C3'] / $value['total_C2'] : '#N/A';
                 $value['spend'] = $channel_cost['spend'];
                 $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) . ' đ' : '#N/A';
                 $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) . ' đ' : '#N/A';
                 $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) . ' đ' : '#N/A';
             } else {
+                $value['total_C3'] = '#NA';
                 $value['total_C1'] = '#NA';
                 $value['total_C2'] = '#NA';
                 $value['C2pC1'] = '#NA';

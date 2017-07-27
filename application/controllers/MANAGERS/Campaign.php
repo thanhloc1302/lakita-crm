@@ -16,6 +16,7 @@ class Campaign extends MY_Table {
     public function __construct() {
         parent::__construct();
         $this->init();
+        $this->load->model('campaign_cost_model');
     }
 
     public function init() {
@@ -83,7 +84,7 @@ class Campaign extends MY_Table {
             'active' => array(
                 'type' => 'custom',
                 'name_display' => 'Hoạt động',
-            ),
+            )
         );
         $this->set_list_view($list_item);
         $this->set_model('campaign_model');
@@ -97,28 +98,20 @@ class Campaign extends MY_Table {
          * Nếu có điều kiện đặc biệt thì thêm vào $row class css đặc biệt khi hiển thị
          * ví dụ: giá khóa học lớn hơn 4 triệu thì báo đỏ
          */
-        $this->load->model('campaign_cost_model');
+        $date_form = '';
+        $date_end = '';
+        if (!isset($get['date_from']) && !isset($get['date_end'])) {
+            $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
+            $date_end = strtotime(date('d-m-Y', strtotime("-1 days")));
+        } else {
+            $date_form = strtotime($get['date_from']);
+            $date_end = strtotime($get['date_end']);
+        }
         foreach ($this->data['rows'] as &$value) {
             /*
-             * Lấy số C3
+             * Lấy số C3 & số tiền tiêu
              */
-            $input = array();
-            $input['where'] = array('campaign_id' => $value['id']);
-            $total_C3 = $this->contacts_model->load_all($input);
-            $value['total_C3'] = count($total_C3);
 
-            /*
-             * Lấy số tiền tiêu
-             */
-            $date_form = '';
-            $date_end = '';
-            if (!isset($get['date_from']) && !isset($get['date_end'])) {
-                $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
-                $date_end = strtotime(date('d-m-Y', strtotime("-1 days")));
-            } else {
-                $date_form = strtotime($get['date_from']);
-                $date_end = strtotime($get['date_end']);
-            }
             $input = array();
             $input['where'] = array('campaign_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
             $channel_cost = $this->campaign_cost_model->load_all($input);
@@ -126,16 +119,17 @@ class Campaign extends MY_Table {
             if (!empty($channel_cost)) {
                 $value['total_C1'] = $channel_cost['total_C1'];
                 $value['total_C2'] = $channel_cost['total_C2'];
+                $value['total_C3'] = $channel_cost['total_C3'];
                 $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
-                $value['C3pC2'] = ($value['total_C2'] >0) ? round( $value['total_C3'] / $value['total_C2'] *100).'%' :'#N/A';
+                $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
                 $value['spend'] = $channel_cost['spend'];
                 $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) . ' đ' : '#N/A';
                 $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) . ' đ' : '#N/A';
                 $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) . ' đ' : '#N/A';
-            }
-            else{
-                 $value['total_C1'] = '#NA';
+            } else {
+                $value['total_C1'] = '#NA';
                 $value['total_C2'] = '#NA';
+                $value['total_C3'] = '#NA';
                 $value['C2pC1'] = '#NA';
                 $value['C3pC2'] = '#NA';
                 $value['spend'] = '#NA';
@@ -193,12 +187,20 @@ class Campaign extends MY_Table {
         /*
          * type mặc định là text nên nếu là text sẽ không cần khai báo
          */
+        $this->load->model('channel_model');
+        $input = array();
+        $input['where'] = array('active' => 1);
+        $channels = $this->channel_model->load_all($input);
         $this->list_add = array(
             'left_table' => array(
                 'name' => array(
                 ),
+                'channel_id' => array(
+                    'type' => 'array',
+                    'value' => $channels,
+                ),
                 'campaign_id_facebook' => array(
-                )
+                ),
             ),
             'right_table' => array(
                 'desc' => array(
@@ -216,7 +218,7 @@ class Campaign extends MY_Table {
             if ($this->{$this->model}->check_exists(array('name' => $post['add_name']))) {
                 redirect_and_die('Tên chiến dịch đã tồn tại!');
             }
-            $paramArr = array('name', 'campaign_id_facebook', 'desc', 'active');
+            $paramArr = array('name', 'channel_id', 'campaign_id_facebook', 'desc', 'active');
             foreach ($paramArr as $value) {
                 if (isset($post['add_' . $value])) {
                     $param[$value] = $post['add_' . $value];
@@ -237,9 +239,17 @@ class Campaign extends MY_Table {
         /*
          * type mặc định là text nên nếu là text sẽ không cần khai báo
          */
+        $this->load->model('channel_model');
+        $input = array();
+        $input['where'] = array('active' => 1);
+        $channels = $this->channel_model->load_all($input);
         $this->list_edit = array(
             'left_table' => array(
                 'name' => array(
+                ),
+                'channel_id' => array(
+                    'type' => 'array',
+                    'value' => $channels,
                 ),
                 'campaign_id_facebook' => array(
                 )
@@ -258,7 +268,7 @@ class Campaign extends MY_Table {
         $post = $this->input->post();
         if (!empty($post)) {
             $input['where'] = array('id' => $id);
-            $paramArr = array('name', 'campaign_id_facebook', 'desc', 'active');
+            $paramArr = array('name', 'channel_id', 'campaign_id_facebook', 'desc', 'active');
             foreach ($paramArr as $value) {
                 if (isset($post['edit_' . $value])) {
                     $param[$value] = $post['edit_' . $value];

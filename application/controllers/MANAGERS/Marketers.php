@@ -16,11 +16,13 @@ class Marketers extends MY_Table {
     public function __construct() {
         parent::__construct();
         $this->init();
+        $this->load->model('campaign_cost_model');
+        $this->load->model('campaign_model');
     }
 
     public function init() {
-        $this->controller_path = 'MANAGERS/'.$this->controller;
-        $this->view_path = 'MANAGERS/'.$this->controller;
+        $this->controller_path = 'MANAGERS/' . $this->controller;
+        $this->view_path = 'MANAGERS/' . $this->controller;
         $this->sub_folder = 'MANAGERS';
         $list_view = array(
             'id' => array(
@@ -29,7 +31,8 @@ class Marketers extends MY_Table {
             ),
             'username' => array(
                 'name_display' => 'Username',
-                'order' => '1'
+                'order' => '1',
+                'display' => 'none'
             ),
             'name' => array(
                 'name_display' => 'Họ tên',
@@ -37,16 +40,13 @@ class Marketers extends MY_Table {
             ),
             'email' => array(
                 'name_display' => 'Email',
-                'order' => '1'
+                'order' => '1',
+                'display' => 'none'
             ),
             'phone' => array(
                 'name_display' => 'Số điện thoại',
-                'order' => '1'
-            ),
-            'active' => array(
-                'type' => 'custom',
-                'name_display' => 'Hoạt động',
-                'order' => '1'
+                'order' => '1',
+                'display' => 'none'
             ),
             'password' => array(
                 'name_display' => 'Mật khẩu',
@@ -55,7 +55,23 @@ class Marketers extends MY_Table {
             're_password' => array(
                 'name_display' => 'Nhập lại mật khẩu',
                 'display' => 'none'
-            )
+            ),
+            'total_C3' => array(
+                'name_display' => 'Số C3',
+            ),
+            'spend' => array(
+                'type' => 'currency',
+                'name_display' => 'Tổng số tiền tiêu',
+            ),
+            'pricepC3' => array(
+                'type' => 'currency',
+                'name_display' => 'Giá C3',
+            ),
+            'active' => array(
+                'type' => 'custom',
+                'name_display' => 'Hoạt động',
+                'order' => '1'
+            ),
         );
         $this->set_list_view($list_view);
         $this->set_model('staffs_model');
@@ -63,19 +79,54 @@ class Marketers extends MY_Table {
 
     protected function show_table() {
         parent::show_table();
-        /*
-         * Nếu có điều kiện đặc biệt thì thêm vào $row class css đặc biệt khi hiển thị
-         * ví dụ: giá khóa học lớn hơn 4 triệu thì báo đỏ
-         */
+        $get = $this->input->get();
+        $date_form = '';
+        $date_end = '';
+        if (!isset($get['date_from']) && !isset($get['date_end'])) {
+            $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
+            $date_end = strtotime(date('d-m-Y', strtotime("-1 days")));
+        } else {
+            $date_form = strtotime($get['date_from']);
+            $date_end = strtotime($get['date_end']);
+        }
         foreach ($this->data['rows'] as &$value) {
             if ($value['active'] == 0) {
                 $value['warning_class'] = 'inactive';
             }
+            /*
+             * Lấy số C3
+             */
+            $input = array();
+            $input['where'] = array('marketer_id' => $value['id'], 'date_rgt >=' => $date_form, 'date_rgt <=' => $date_end);
+            $total_C3 = $this->contacts_model->load_all($input);
+            $value['total_C3'] = count($total_C3);
+            /*
+             * Lấy budget (tạm tính theo kênh facebook)
+             * 1. Lấy các campaign (fb) của từng marketer
+             * 2. Tính tổng budget
+             */
+            $value['spend'] = 0;
+            $input = array();
+            $input['where'] = array('marketer_id' => $value['id']);
+            $campaigns = $this->campaign_model->load_all($input);
+            if (!empty($campaigns)) {
+                foreach ($campaigns as $value2) {
+                    $input = array();
+                    $input['select'] = 'spend';
+                    $input['where'] = array('campaign_id' => $value2['id'], 'time >=' => $date_form, 'time <=' => $date_end);
+                    $campaigncost = $this->campaign_cost_model->load_all($input);
+                    $value['spend'] += h_caculate_campaign_spend($campaigncost);
+                }
+                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) . ' đ' : '0';
+            } else {
+                $value['spend'] = '0';
+                $value['pricepC3'] = '0';
+            }
         }
         unset($value);
     }
-    
-     /*
+
+    /*
      * Ghi đè hàm xóa lớp cha
      */
 
@@ -87,8 +138,19 @@ class Marketers extends MY_Table {
         show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
     }
 
-
     public function index($offset = 0) {
+        $this->list_filter = array(
+            'left_filter' => array(
+                'date' => array(
+                    'type' => 'custom',
+                ),
+            ),
+            'right_filter' => array(
+                'active' => array(
+                    'type' => 'binary',
+                ),
+            )
+        );
         $conditional = array('where' => array('role_id' => '6'));
         $this->set_conditional($conditional);
         $this->set_offset($offset);

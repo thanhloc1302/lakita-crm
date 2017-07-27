@@ -141,3 +141,11 @@ function h_caculate_channel_cost($channel_cost){
     }
     return $costArr;
 }
+
+function  h_caculate_campaign_spend($campaigns){
+    $spend = 0;
+    foreach ($campaigns as $value){
+        $spend += $value['spend'];
+    }
+    return $spend;
+}
