@@ -27,45 +27,21 @@
             </li>
             <li>
                 <a href="<?php echo base_url('MANAGERS/campaign'); ?>">
-                   <i class="fa fa-calendar" aria-hidden="true"></i> Quản lý campaign <span class="fa fa-chevron-down"></span>
+                    <i class="fa fa-calendar" aria-hidden="true"></i> Quản lý campaign <span class="fa fa-chevron-down"></span>
                 </a>
             </li>
             <li>
-                <a href="<?php echo base_url('MANAGERS/landingpage'); ?>">
-                    <i class="fa fa-file" aria-hidden="true"></i> Quản lý landing page <span class="fa fa-chevron-down"></span>
+                <a href="<?php echo base_url('MANAGERS/adset'); ?>">
+                    <i class="fa fa-cogs" aria-hidden="true"></i> Quản lý Adset </a>
+            </li>
+            <li>
+                <a href="<?php echo base_url('MANAGERS/ad'); ?>">
+                    <i class="fa fa-cog" aria-hidden="true"></i> Quản lý Ad </a>
+            </li>
+            <li>
+                <a href="<?php echo base_url('MANAGERS/link'); ?>">
+                    <i class="fa fa-link" aria-hidden="true"></i> Quản lý link <span class="fa fa-chevron-down"></span>
                 </a>
-            </li>
-            <li>
-                <a href="<?php echo base_url('MANAGERS/marketer'); ?>">
-                    <i class="fa fa-user" aria-hidden="true"></i> Quản lý Marketer </a>
-            </li>
-            <li>
-                <a><i class="fa fa-line-chart"></i> Các loại báo cáo <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                    <li>
-                        <a href="<?php echo base_url('quan-ly/xem-bao-cao-tu-van-tuyen-sinh.html'); ?>">
-                            Xem báo cáo TVTS 
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo base_url('quan-ly/xem-bao-cao-doanh-thu.html'); ?>">
-                            Xem báo cáo doanh thu 
-                        </a>
-                    </li>
-                    <li>
-                        <a href="<?php echo base_url('quan-ly/bao-cao-tong-hop.html'); ?>">
-                            Xem báo cáo tổng hợp 
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li><a><i class="fa fa-cog"></i>Cài đặt <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                    <li><a href="<?php echo base_url('config/sale'); ?>">Cài đặt TVTS</a></li>
-                    <li><a href="<?php echo base_url('config/course'); ?>">Cài đặt Khóa học</a></li>
-                    <li><a href="fixed_sidebar.html">Cài đặt lọc contact</a></li>
-                    <li><a href="fixed_footer.html">Fixed Footer</a></li>
-                </ul>
             </li>
         </ul>
     </div>

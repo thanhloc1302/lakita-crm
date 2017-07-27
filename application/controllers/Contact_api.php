@@ -42,17 +42,17 @@ class Contact_api extends REST_Controller {
             $param['payment_method_rgt'] = isset($input['payment_method_rgt']) ? $input['payment_method_rgt'] : 1;
             if (isset($input['cod_status_id'])) {
                 $param['cod_status_id'] = $input['cod_status_id'];
-                if($input['cod_status_id'] == '3'){
+                if ($input['cod_status_id'] == '3') {
                     $param['date_receive_lakita'] = time();
                 }
             }
-             if (isset($input['call_status_id'])) {
+            if (isset($input['call_status_id'])) {
                 $param['call_status_id'] = $input['call_status_id'];
             }
-             if (isset($input['ordering_status_id'])) {
+            if (isset($input['ordering_status_id'])) {
                 $param['ordering_status_id'] = $input['ordering_status_id'];
             }
-          
+
             $param['date_rgt'] = time();
             $param['last_activity'] = time();
             if (isset($input['contact_cc'])) {
