@@ -140,7 +140,7 @@ class Cron extends CI_Controller {
         $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
         $today_fb_format = date('Y-m-d', strtotime($day));
         /*
-         * Lấy danh sách tất cả campain đang hoạt động
+         * Lấy danh sách tất cả adset đang hoạt động
          */
         $this->load->model('adset_model');
         $input = array();
@@ -152,31 +152,31 @@ class Cron extends CI_Controller {
              */
             $exist_input = array();
             $exist_input['where'] = array('adset_id' => $value['id'], 'time' => $today);
-            $exist = $this->campaign_cost_model->load_all($exist_input);
+            $exist = $this->adset_cost_model->load_all($exist_input);
             if (empty($exist)) {
-                $url = 'https://graph.facebook.com/v2.9/' . $value['campaign_id_facebook'] .
+                $url = 'https://graph.facebook.com/v2.9/' . $value['adset_id_facebook'] .
                         '/insights?fields=spend,reach,clicks&level=account'
                         . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
                 $spend = get_fb_request($url);
                 $param['time'] = $today;
-                $param['campaign_id'] = $value['id'];
+                $param['adset_id'] = $value['id'];
                 $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
                 $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
                 $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
 
                 /*
-                 * Lấy tổng số C3 ngày hôm nay của campain có id = $value['id']
+                 * Lấy tổng số C3 ngày hôm nay của adset có id = $value['id']
                  */
                 $today_begin = $today; // 00:00:00 $today
                 $yesterday_US = $today_begin - 3600 * 10;
                 $today_US = $today_begin + 3600 * 14;
                 $total_c3 = array();
                 $total_c3['where'] = array(
-                    'campaign_id' => $value['id'],
+                    'adset_id' => $value['id'],
                     'date_rgt >=' => $yesterday_US,
                     'date_rgt <=' => $today_US);
                 $param['total_C3'] = count($this->contacts_model->load_all($total_c3));
-                $this->campaign_cost_model->insert($param);
+                $this->adset_cost_model->insert($param);
             }
         }
     }
@@ -189,50 +189,47 @@ class Cron extends CI_Controller {
         if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs') {
             die('token sai!');
         }
-        $this->load->model('channel_cost_model');
+        $this->load->model('ad_cost_model');
         $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
         $today_fb_format = date('Y-m-d', strtotime($day));
         /*
-         * Lấy danh sách tất cả campain đang hoạt động
+         * Lấy danh sách tất cả ad đang hoạt động
          */
-        $this->load->model('channel_model');
+        $this->load->model('ad_model');
         $input = array();
         $input['where'] = array('active' => 1);
-        $channels = $this->channel_model->load_all($input);
-        foreach ($channels as $value) {
-            //Kênh facebook
-            if ($value['id'] == 2) {
-                /*
-                 * Kiểm tra xem đã tồn tại giá ngày hôm nay chưa (nếu có rồi thì bỏ qua)
-                 */
-                $exist_input = array();
-                $exist_input['where'] = array('channel_id' => $value['id'], 'time' => $today);
-                $exist = $this->channel_cost_model->load_all($exist_input);
-                if (empty($exist)) {
-                    $url = 'https://graph.facebook.com/v2.9/act_512062118812690/' .
-                            'insights?fields=spend,reach,clicks&level=account'
-                            . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
-                    $spend = get_fb_request($url);
-                    $param['time'] = $today;
-                    $param['channel_id'] = $value['id'];
-                    $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
-                    $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
-                    $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
+        $adsets = $this->ad_model->load_all($input);
+        foreach ($adsets as $value) {
+            /*
+             * Kiểm tra xem đã tồn tại giá ngày hôm nay chưa (nếu có rồi thì bỏ qua)
+             */
+            $exist_input = array();
+            $exist_input['where'] = array('ad_id' => $value['id'], 'time' => $today);
+            $exist = $this->ad_cost_model->load_all($exist_input);
+            if (empty($exist)) {
+                $url = 'https://graph.facebook.com/v2.9/' . $value['ad_id_facebook'] .
+                        '/insights?fields=spend,reach,clicks&level=account'
+                        . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
+                $spend = get_fb_request($url);
+                $param['time'] = $today;
+                $param['ad_id'] = $value['id'];
+                $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
+                $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
+                $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
 
-                    /*
-                     * Lấy tổng số C3 ngày hôm nay của campain có id = $value['id']
-                     */
-                    $today_begin = $today; // 00:00:00 $today
-                    $yesterday_US = $today_begin - 3600 * 10;
-                    $today_US = $today_begin + 3600 * 14;
-                    $total_c3 = array();
-                    $total_c3['where'] = array(
-                        'channel_id' => $value['id'],
-                        'date_rgt >=' => $yesterday_US,
-                        'date_rgt <=' => $today_US);
-                    $param['total_C3'] = count($this->contacts_model->load_all($total_c3));
-                    $this->channel_cost_model->insert($param);
-                }
+                /*
+                 * Lấy tổng số C3 ngày hôm nay của ad có id = $value['id']
+                 */
+                $today_begin = $today; // 00:00:00 $today
+                $yesterday_US = $today_begin - 3600 * 10;
+                $today_US = $today_begin + 3600 * 14;
+                $total_c3 = array();
+                $total_c3['where'] = array(
+                    'ad_id' => $value['id'],
+                    'date_rgt >=' => $yesterday_US,
+                    'date_rgt <=' => $today_US);
+                $param['total_C3'] = count($this->contacts_model->load_all($total_c3));
+                $this->ad_cost_model->insert($param);
             }
         }
     }
