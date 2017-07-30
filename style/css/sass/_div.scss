@@ -57,5 +57,30 @@ div{
         background-image: none;
         text-transform: uppercase;
     }
-    
+    &.menu{
+        width: 200px;
+        background: #000;
+        color: #fff;
+        position:absolute;
+        z-index: 999999;
+        display: none;
+        box-shadow: 0 0 10px #713C3C;
+        ul{
+            list-style: none;
+            padding: 0;
+            margin:0;
+            li{
+                padding: 10%;
+                background-color: #1f4c7a;
+                color: #fff;
+                &:hover{
+                    background-color: #F7BA4B;
+                    color: #444343;
+                }
+            }
+            a{
+                text-decoration: none;
+            }
+        }
+    }
 }

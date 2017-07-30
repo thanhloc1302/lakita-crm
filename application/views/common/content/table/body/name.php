@@ -1,4 +1,4 @@
-<td class="center">
+<td class="center tbl_name">
     <?php echo $value['name']; ?> 
     <?php if($value['star'] > 1) {?>
    <sup> <span class="badge badge-star" 

@@ -95,7 +95,7 @@ class MY_Controller extends CI_Controller {
          * Gán trường cần hiện của bảng contact
          */
 
-        $this->table = 'selection contact_id name phone address course_code price_purchase ';
+        $this->table = 'selection name phone address course_code price_purchase ';
     }
 
     private function _check_permission() {

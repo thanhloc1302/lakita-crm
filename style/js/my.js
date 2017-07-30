@@ -138,6 +138,138 @@ $(function () {
      * Sửa lại value của thẻ input curr_url
      */
     $("#curr_url").val(location.href);
+
+    /*
+     * Hiển thị menu chuột phải
+     */
+    $("tr.custom_right_menu").on(
+            {
+                contextmenu: function (e) {
+                    e.preventDefault();
+                    /*
+                     * Lấy các thuộc tính của contact
+                     */
+                    var contact_id = ($(this).attr('contact_id'));
+                    var contact_name = $(this).attr('contact_name');
+                    var duplicate_id = $(this).attr("duplicate_id");
+
+                    /*
+                     * Nếu contact trùng thì ẩn tính năng bàn giao contact
+                     */
+                    if (duplicate_id > 0) {
+                        $("a.view_duplicate").removeClass("hidden");
+                        $("a.view_duplicate").attr("duplicate_id", duplicate_id);
+                        $(".divide_one_contact_achor").addClass('hidden');
+                    }
+                    /*
+                     * Nếu contact không trùng thì ẩn tính năng xem contact trùng
+                     */
+                    else {
+                        $(".divide_one_contact_achor").removeClass('hidden');
+                        $(".divide_one_contact_achor").attr('contact_id', contact_id);
+                        $(".divide_one_contact_achor").attr('contact_name', contact_name);
+                        $("a.view_duplicate").addClass("hidden");
+                    }
+                    $(".action_view_detail_contact").attr('contact_id', contact_id);
+                    var menu = $(".menu");
+                    menu.hide();
+                    var pageX = e.pageX;
+                    var pageY = e.pageY;
+                    menu.css({top: pageY, left: pageX});
+                    var mwidth = menu.width();
+                    var mheight = menu.height();
+                    var screenWidth = $(window).width();
+                    var screenHeight = $(window).height();
+                    var scrTop = $(window).scrollTop();
+                    /*
+                     * Nếu "tọa độ trái chuột" + "chiều dài menu" > "chiều dài trình duyệt" 
+                     * thì hiển thị sang bên phải tọa độ click
+                     */
+                    if (pageX + mwidth > screenWidth) {
+                        menu.css({left: pageX - mwidth});
+                    }
+                    /*
+                     * Nếu "tọa độ top chuột" + "chiều cao menu" > "chiều cao trình duyệt" + "chiều dài cuộn chuột"
+                     * thì hiển thị lên trên tọa độ click
+                     */
+                    if (pageY + mheight > screenHeight + scrTop) {
+                        menu.css({top: pageY - mheight});
+                    }
+                    menu.show();
+                    /*
+                     * Nếu dòng đó đang không chọn (đã click trái) thì bỏ chọn và bỏ check những dòng đã chọn
+                     */
+                    var is_checked_input = $(this).find('input[type="checkbox"]');
+                    if (!is_checked_input[0].checked) {
+                        $(".checked").removeClass("checked");
+                        uncheck_checked();
+                    } else {
+                        unselect_not_checked();
+                    }
+                    $(this).addClass('checked'); /*.find('[name="contact_id[]"]').prop('checked', true); */
+                },
+                click: function () {
+                    if ($(this).hasClass('checked')) {
+                        $(this).removeClass('checked');
+                    } else {
+                        $(this).addClass('checked');
+                    }
+                    var input_checkbox = $(this).find('[name="contact_id[]"]');
+                    if (input_checkbox.is(":checked")) {
+                        input_checkbox.prop('checked', false);
+                    } else {
+                        input_checkbox.prop('checked', true);
+                    }
+                    unselect_not_checked();
+                }
+            });
+    $("html").on("click", function (e) {
+        $(".menu").hide();
+        /*
+         * Nếu click ra ngoài bảng thì bỏ chọn các contact
+         */
+        if (e.target.className.indexOf("form-inline") !== -1 || e.target.className.indexOf("number_paging") !== -1)
+        {
+            $("input[type='checkbox']").prop('checked', false);
+            $('.checked').removeClass('checked');
+        }
+
+    });
 });
+
+
+function unselect_not_checked() {
+    $('input[type="checkbox"]').each(
+            function () {
+                if (!$(this).is(":checked")) {
+                    $(this).parent().parent().removeClass('checked');
+                }
+            });
+}
+
+function unselect_checked() {
+    $('input[type="checkbox"]').each(
+            function () {
+                if ($(this).is(":checked")) {
+                    $(this).parent().parent().removeClass('checked');
+                }
+            });
+}
+function uncheck_checked() {
+    $('input[type="checkbox"]').each(
+            function () {
+                if ($(this).is(":checked")) {
+                    $(this).prop("checked", false);
+                }
+            });
+}
+function uncheck_not_checked() {
+    $('input[type="checkbox"]').each(
+            function () {
+                if (!$(this).is(":checked")) {
+                    $(this).prop("checked", false);
+                }
+            });
+}
 
 

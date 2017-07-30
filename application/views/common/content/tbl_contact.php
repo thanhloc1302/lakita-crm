@@ -47,10 +47,14 @@
                 if ($value['weight_envelope'] > 50) {
                     echo ' bgred';
                 }
-                if($value['is_hide'] == 1) {
+                if ($value['is_hide'] == 1) {
                     echo ' is_hide';
                 }
-                ?>">
+                echo " custom_right_menu";
+                ?>" 
+                    contact_id="<?php echo $value['id']; ?>" 
+                    duplicate_id="<?php echo $value['duplicate_id']; ?>" 
+                    contact_name="<?php echo $value['name']; ?>">
                         <?php
                         $data['value'] = $value;
                         foreach ($table as $value2) {

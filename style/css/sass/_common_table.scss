@@ -51,10 +51,7 @@ table{
         }
     }
     tr{
-        &.checked{
-            background-color: #2C944A !important;
-            color: #fff;
-        }
+       
         &.duplicate{
             background-color: #b54848 !important;
             color: #fff !important;
@@ -77,6 +74,10 @@ table{
         }
         &.inactive{
             background-color: rgba(86, 83, 83, 0.18) !important;
+        }
+         &.checked{
+            background-color: #2C944A !important;
+            color: #fff;
         }
     }
 }

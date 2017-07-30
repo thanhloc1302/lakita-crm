@@ -46,6 +46,14 @@ table{
                     &.tbl_campaign_pricepC1, &.tbl_campaign_pricepC2, &.tbl_campaign_pricepC3{
                         background-color: #262085;
                     }
+                    height: 50px;
+                    &:nth-child(2){
+                        border-top-left-radius: 10px;
+                    }
+                    &:last-child{
+                        border-top-right-radius: 10px;
+                    }
+
                 }
             }
         }
@@ -70,6 +78,10 @@ table{
                         background-color: #262085;
                         color:#fff;
                     }
+
+                    &.tbl_name{
+                        padding-left: 15px;
+                    }
                 }
 
             }
@@ -77,3 +89,16 @@ table{
     }
 }
 
+/*
+tr menu chuột phải
+*/
+.custom_right_menu{
+    cursor: pointer;
+}
+
+/*
+các ô selection
+*/
+.tbl_selection{
+   // display: none;
+}

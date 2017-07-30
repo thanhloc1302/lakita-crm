@@ -11,7 +11,6 @@ class Manager extends MY_Controller {
         parent::__construct();
     }
 
-    // <editor-fold defaultstate="collapsed" desc="action index">
     function index($offset = 0) {
 
         $data = $this->get_all_require_data();
@@ -42,7 +41,7 @@ class Manager extends MY_Controller {
         /*
          * Các trường cần hiện của bảng contact (đã có default)
          */
-        $this->table .= 'date_rgt matrix action';
+        $this->table .= 'date_rgt matrix';
         $data['table'] = explode(' ', $this->table);
 
         /*
@@ -58,7 +57,6 @@ class Manager extends MY_Controller {
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
-    // </editor-fold>
     // <editor-fold defaultstate="collapsed" desc="view_all_contact">
     function view_all_contact($offset = 0) {
         $data = $this->get_all_require_data();
