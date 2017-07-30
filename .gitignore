@@ -24,7 +24,7 @@ application/logs/*
 #codeigniter 3
 
 ### NetBeans ###
-nbproject/private/
+nbproject/
 build/
 nbbuild/
 dist/
