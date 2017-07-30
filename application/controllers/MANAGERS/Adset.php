@@ -195,7 +195,7 @@ class Adset extends MY_Table {
             'left_table' => array(
                 'name' => array(
                 ),
-                'channel_id' => array(
+                'adset_id' => array(
                     'type' => 'array',
                     'value' => $channels,
                 ),
