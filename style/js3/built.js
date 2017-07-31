@@ -469,7 +469,6 @@ $(function () {
     });
 });
 $(function () {
-
     $(".datepicker").datepicker(
             {
                 dateFormat: "dd-mm-yy"
@@ -477,7 +476,7 @@ $(function () {
     );
 
     /*
-     * Sửa lại link phân trang nếu có các thao tác lọc, tìm kiếm, sắp xếp
+     * Sửa lại link phân trang nếu có các thao tác lọc, tìm kiếm, sắp xếp hihi
      */
     if (location.search !== "") {
         $(".pagination a").each(
@@ -679,20 +678,23 @@ $(function () {
                     $(this).addClass('checked'); /*.find('[name="contact_id[]"]').prop('checked', true); */
                 },
                 click: function () {
-                    if ($(this).hasClass('checked')) {
-                        $(this).removeClass('checked');
-                    } else {
-                        $(this).addClass('checked');
-                    }
-                    var input_checkbox = $(this).find('[name="contact_id[]"]');
-                    if (input_checkbox.is(":checked")) {
-                        input_checkbox.prop('checked', false);
-                    } else {
-                        input_checkbox.prop('checked', true);
-                    }
-                    unselect_not_checked();
+
                 }
             });
+    $("td.tbl_name, td.tbl_phone, td.tbl_address").on("click", function () {
+        if ($(this).parent().hasClass('checked')) {
+            $(this).parent().removeClass('checked');
+        } else {
+            $(this).parent().addClass('checked');
+        }
+        var input_checkbox = $(this).parent().find('[name="contact_id[]"]');
+        if (input_checkbox.is(":checked")) {
+            input_checkbox.prop('checked', false);
+        } else {
+            input_checkbox.prop('checked', true);
+        }
+        unselect_not_checked();
+    });
     $("html").on("click", function (e) {
         $(".menu").hide();
         /*

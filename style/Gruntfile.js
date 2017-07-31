@@ -41,6 +41,16 @@ module.exports = function (grunt) {
                     'js3/built.min.js': ['js3/built.js']
                 }
             }
+        },
+        watch: {
+            css: {
+                files: ['css/style.scss', 'css/*/*.scss'],
+                tasks: ['sass']
+            },
+            scripts: {
+                files: 'js2/*/*.js',
+                tasks: ['concat', 'uglify']
+            }
         }
 
     });
@@ -49,7 +59,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     // Default task(s).
-    grunt.registerTask('default', ['sass', 'concat', 'uglify']);
+    grunt.registerTask('default', ['sass', 'concat', 'uglify', 'watch']);
     grunt.registerTask('concat1', ['concat']);
 };
