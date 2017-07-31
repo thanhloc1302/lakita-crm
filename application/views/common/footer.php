@@ -5,13 +5,13 @@
                 <li> Xem contact bị trùng </li> 
             </a>
             <a href="#" class="divide_one_contact_achor" contact_id="" contact_name="">
-                <li> Bàn giao contact </li> 
+                <li> Phân contact này cho TVTS </li> 
             </a>
             <a href="#" class="action_view_detail_contact" contact_id="0"> 
                 <li> Chi tiết contact </li> 
             </a>
-            <a href="#" class="divide_contact"> 
-                <li>Phân riêng contact cho một TVTS</li> 
+            <a href="#" class="divide_contact divide_multi_contact"> 
+                <li>Phân các contact đã chọn cho TVTS</li> 
             </a> 
         <?php } ?>
     </ul>
@@ -27,7 +27,7 @@
 <script src="<?php echo base_url(); ?>vendors/build/js/custom.min.js" type="text/javascript"></script>
 <!--<script src="<?php echo base_url(); ?>style/js/common_view/view_contact_star.min.js" type="text/javascript"></script>-->
 <script src="<?php echo base_url(); ?>style/js/common/notify.min.js" type="text/javascript"></script>
-<script src="<?php echo base_url(); ?>style/js3/built.min.js" type="text/javascript"></script>
+<script src="<?php echo base_url(); ?>style/js3/built.js" type="text/javascript"></script>
 <?php
 //if (isset($load_js) && is_array($load_js)) {
 //    foreach ($load_js as $value) {

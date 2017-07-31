@@ -1,5 +1,5 @@
 $(function () {
-   
+
 
     /*
      * Real order
@@ -54,44 +54,46 @@ $(document).on('scroll', function () {
     /*
      * Khi cuộn chuột quá vị trí của phần thead thì thead ẩn đi và phần thead-fixed hiện lên
      */
-    if ($("body").scrollTop() > ($(".table-head-pos").offset().top)) {
-        $(".fixed-table").css({
-            "display": "block"
+    if ($(".table-head-pos").length) {
+        if ($("body").scrollTop() > ($(".table-head-pos").offset().top)) {
+            $(".fixed-table").css({
+                "display": "block"
+            });
+        } else {
+            $(".fixed-table").css({
+                "display": "none"
+            });
+        }
+        /*
+         * Điều chỉnh lại kích cỡ của các th phần thead
+         */
+        $('[id^="th_"]').each(function () {
+            var myID = $(this).attr("id");
+            var mywidth = $(this).width();
+            var myheight = $(this).height();
+            $("#f_" + myID).width(mywidth);
+            $("#f_" + myID).height(myheight);
         });
-    } else {
-        $(".fixed-table").css({
-            "display": "none"
+        /*
+         * Điều chỉnh lại kích cỡ của các td phần tbody (các ô search)
+         */
+        $('[id^="td_"]').each(function () {
+            var myID = $(this).attr("id");
+            var mywidth = $(this).width();
+            var myheight = $(this).height();
+            $("#f_" + myID).width(mywidth);
+            $("#f_" + myID).height(myheight);
         });
-    }
-    /*
-     * Điều chỉnh lại kích cỡ của các th phần thead
-     */
-    $('[id^="th_"]').each(function () {
-        var myID = $(this).attr("id");
-        var mywidth = $(this).width();
-        var myheight = $(this).height();
-        $("#f_" + myID).width(mywidth);
-        $("#f_" + myID).height(myheight);
-    });
-    /*
-     * Điều chỉnh lại kích cỡ của các td phần tbody (các ô search)
-     */
-    $('[id^="td_"]').each(function () {
-        var myID = $(this).attr("id");
-        var mywidth = $(this).width();
-        var myheight = $(this).height();
-        $("#f_" + myID).width(mywidth);
-        $("#f_" + myID).height(myheight);
-    });
-    /*
-     * Căn chỉnh phần search cho khớp xuống dưới phần head 
-     * (vì cùng là position fixed nên top mặc định bằn 0 => bị đè vị trí lên nhau)
-     */
-    $("tbody.fixed-table").css("top", $("thead.fixed-table").height());
+        /*
+         * Căn chỉnh phần search cho khớp xuống dưới phần head 
+         * (vì cùng là position fixed nên top mặc định bằn 0 => bị đè vị trí lên nhau)
+         */
+        $("tbody.fixed-table").css("top", $("thead.fixed-table").height());
 
-    /*
-     * Căn chỉnh lại cho thẳng hàng
-     */
-    var offsetLeft = $(".table-head-pos").offset().left - 1;
-    $(".fixed-table").css("left", offsetLeft + "px");
+        /*
+         * Căn chỉnh lại cho thẳng hàng
+         */
+        var offsetLeft = $(".table-head-pos").offset().left - 1;
+        $(".fixed-table").css("left", offsetLeft + "px");
+    }
 });

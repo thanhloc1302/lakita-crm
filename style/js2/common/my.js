@@ -6,7 +6,7 @@ $(function () {
     );
 
     /*
-     * Sửa lại link phân trang nếu có các thao tác lọc, tìm kiếm, sắp xếp hihi
+     * Sửa lại link phân trang nếu có các thao tác lọc, tìm kiếm, sắp xếp
      */
     if (location.search !== "") {
         $(".pagination a").each(
@@ -170,6 +170,24 @@ $(function () {
                         $("a.view_duplicate").addClass("hidden");
                     }
                     $(".action_view_detail_contact").attr('contact_id', contact_id);
+
+                    /*
+                     * Nếu chọn nhiều contact thì ẩn menu xem chi tiết contact 
+                     * và phân 1 contact
+                     */
+
+                    var numberOfChecked = $('input:checkbox:checked').length;
+                    if (numberOfChecked > 1) {
+                        $(".action_view_detail_contact").addClass("hidden");
+                        $(".divide_one_contact_achor").addClass('hidden');
+                        $(".divide_multi_contact").removeClass('hidden');
+                        $("a.view_duplicate").addClass("hidden");
+                    } else {
+                        $(".action_view_detail_contact").removeClass("hidden");
+                        $(".divide_one_contact_achor").removeClass('hidden');
+                        $(".divide_multi_contact").addClass('hidden');
+                    }
+
                     var menu = $(".menu");
                     menu.hide();
                     var pageX = e.pageX;
@@ -224,6 +242,7 @@ $(function () {
             input_checkbox.prop('checked', true);
         }
         unselect_not_checked();
+        show_number_selected_row();
     });
     $("html").on("click", function (e) {
         $(".menu").hide();
@@ -234,11 +253,34 @@ $(function () {
         {
             $("input[type='checkbox']").prop('checked', false);
             $('.checked').removeClass('checked');
+
         }
 
     });
+    $(document).on('keydown', function (e) {
+        if ((e.metaKey || e.ctrlKey || e.shiftKey) && (String.fromCharCode(e.which).toLowerCase() === 'a')) {
+            $("input[type='checkbox']").prop('checked', true);
+            $('.custom_right_menu').addClass('checked');
+            show_number_selected_row();
+        }
+        if ((e.metaKey || e.ctrlKey || e.shiftKey) && (String.fromCharCode(e.which).toLowerCase() === 'x')) {
+            $("input[type='checkbox']").prop('checked', false);
+            $('.checked').removeClass('checked');
+        }
+    });
 });
 
+
+function show_number_selected_row() {
+    var numberOfChecked = $('input:checkbox:checked').length;
+    var totalCheckboxes = $('input:checkbox').length;
+    $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
+        position: "left middle",
+        className: 'success',
+        showDuration: 200,
+        autoHideDelay: 1000
+    });
+}
 
 function unselect_not_checked() {
     $('input[type="checkbox"]').each(

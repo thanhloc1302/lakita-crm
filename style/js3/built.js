@@ -147,7 +147,7 @@ $(document).ready(function () {
         }
     });
 });$(function () {
-   
+
 
     /*
      * Real order
@@ -202,46 +202,48 @@ $(document).on('scroll', function () {
     /*
      * Khi cuộn chuột quá vị trí của phần thead thì thead ẩn đi và phần thead-fixed hiện lên
      */
-    if ($("body").scrollTop() > ($(".table-head-pos").offset().top)) {
-        $(".fixed-table").css({
-            "display": "block"
+    if ($(".table-head-pos").length) {
+        if ($("body").scrollTop() > ($(".table-head-pos").offset().top)) {
+            $(".fixed-table").css({
+                "display": "block"
+            });
+        } else {
+            $(".fixed-table").css({
+                "display": "none"
+            });
+        }
+        /*
+         * Điều chỉnh lại kích cỡ của các th phần thead
+         */
+        $('[id^="th_"]').each(function () {
+            var myID = $(this).attr("id");
+            var mywidth = $(this).width();
+            var myheight = $(this).height();
+            $("#f_" + myID).width(mywidth);
+            $("#f_" + myID).height(myheight);
         });
-    } else {
-        $(".fixed-table").css({
-            "display": "none"
+        /*
+         * Điều chỉnh lại kích cỡ của các td phần tbody (các ô search)
+         */
+        $('[id^="td_"]').each(function () {
+            var myID = $(this).attr("id");
+            var mywidth = $(this).width();
+            var myheight = $(this).height();
+            $("#f_" + myID).width(mywidth);
+            $("#f_" + myID).height(myheight);
         });
-    }
-    /*
-     * Điều chỉnh lại kích cỡ của các th phần thead
-     */
-    $('[id^="th_"]').each(function () {
-        var myID = $(this).attr("id");
-        var mywidth = $(this).width();
-        var myheight = $(this).height();
-        $("#f_" + myID).width(mywidth);
-        $("#f_" + myID).height(myheight);
-    });
-    /*
-     * Điều chỉnh lại kích cỡ của các td phần tbody (các ô search)
-     */
-    $('[id^="td_"]').each(function () {
-        var myID = $(this).attr("id");
-        var mywidth = $(this).width();
-        var myheight = $(this).height();
-        $("#f_" + myID).width(mywidth);
-        $("#f_" + myID).height(myheight);
-    });
-    /*
-     * Căn chỉnh phần search cho khớp xuống dưới phần head 
-     * (vì cùng là position fixed nên top mặc định bằn 0 => bị đè vị trí lên nhau)
-     */
-    $("tbody.fixed-table").css("top", $("thead.fixed-table").height());
+        /*
+         * Căn chỉnh phần search cho khớp xuống dưới phần head 
+         * (vì cùng là position fixed nên top mặc định bằn 0 => bị đè vị trí lên nhau)
+         */
+        $("tbody.fixed-table").css("top", $("thead.fixed-table").height());
 
-    /*
-     * Căn chỉnh lại cho thẳng hàng
-     */
-    var offsetLeft = $(".table-head-pos").offset().left - 1;
-    $(".fixed-table").css("left", offsetLeft + "px");
+        /*
+         * Căn chỉnh lại cho thẳng hàng
+         */
+        var offsetLeft = $(".table-head-pos").offset().left - 1;
+        $(".fixed-table").css("left", offsetLeft + "px");
+    }
 });$(function () {
     $(".btn-modal_edit-multi-contact").click(function (e) {
         e.preventDefault();
@@ -476,7 +478,7 @@ $(function () {
     );
 
     /*
-     * Sửa lại link phân trang nếu có các thao tác lọc, tìm kiếm, sắp xếp hihi
+     * Sửa lại link phân trang nếu có các thao tác lọc, tìm kiếm, sắp xếp
      */
     if (location.search !== "") {
         $(".pagination a").each(
@@ -640,6 +642,24 @@ $(function () {
                         $("a.view_duplicate").addClass("hidden");
                     }
                     $(".action_view_detail_contact").attr('contact_id', contact_id);
+
+                    /*
+                     * Nếu chọn nhiều contact thì ẩn menu xem chi tiết contact 
+                     * và phân 1 contact
+                     */
+
+                    var numberOfChecked = $('input:checkbox:checked').length;
+                    if (numberOfChecked > 1) {
+                        $(".action_view_detail_contact").addClass("hidden");
+                        $(".divide_one_contact_achor").addClass('hidden');
+                        $(".divide_multi_contact").removeClass('hidden');
+                        $("a.view_duplicate").addClass("hidden");
+                    } else {
+                        $(".action_view_detail_contact").removeClass("hidden");
+                        $(".divide_one_contact_achor").removeClass('hidden');
+                        $(".divide_multi_contact").addClass('hidden');
+                    }
+
                     var menu = $(".menu");
                     menu.hide();
                     var pageX = e.pageX;
@@ -694,6 +714,7 @@ $(function () {
             input_checkbox.prop('checked', true);
         }
         unselect_not_checked();
+        show_number_selected_row();
     });
     $("html").on("click", function (e) {
         $(".menu").hide();
@@ -704,11 +725,34 @@ $(function () {
         {
             $("input[type='checkbox']").prop('checked', false);
             $('.checked').removeClass('checked');
+
         }
 
     });
+    $(document).on('keydown', function (e) {
+        if ((e.metaKey || e.ctrlKey || e.shiftKey) && (String.fromCharCode(e.which).toLowerCase() === 'a')) {
+            $("input[type='checkbox']").prop('checked', true);
+            $('.custom_right_menu').addClass('checked');
+            show_number_selected_row();
+        }
+        if ((e.metaKey || e.ctrlKey || e.shiftKey) && (String.fromCharCode(e.which).toLowerCase() === 'x')) {
+            $("input[type='checkbox']").prop('checked', false);
+            $('.checked').removeClass('checked');
+        }
+    });
 });
 
+
+function show_number_selected_row() {
+    var numberOfChecked = $('input:checkbox:checked').length;
+    var totalCheckboxes = $('input:checkbox').length;
+    $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
+        position: "left middle",
+        className: 'success',
+        showDuration: 200,
+        autoHideDelay: 1000
+    });
+}
 
 function unselect_not_checked() {
     $('input[type="checkbox"]').each(
@@ -951,33 +995,35 @@ $(function () {
         }
     });
 });$(document).on('scroll', function () {
-    if ($("body").scrollTop() > ($(".table-head-pos").offset().top)
-            ) {
-        $(".fixed-table").css({
-            "display": "block"
+    if ($(".table-head-pos").length) {
+        if ($("body").scrollTop() > ($(".table-head-pos").offset().top)
+                ) {
+            $(".fixed-table").css({
+                "display": "block"
+            });
+        } else {
+            $(".fixed-table").css({
+                "display": "none"
+            });
+        }
+        $('[class^="staff_"]').each(function () {
+            var myClass = $(this).attr("class");
+            var mywidth = $(this).width();
+            var myheight = $(this).height();
+            $(".f_" + myClass).width(mywidth);
+            $(".f_" + myClass).height(myheight);
         });
-    } else {
-        $(".fixed-table").css({
-            "display": "none"
-        });
+        var offsetLeft = $(".table-head-pos").offset().left + 2;
+        $("table thead.fixed-table").css("left", offsetLeft + "px");
     }
-    $('[class^="staff_"]').each(function () {
-        var myClass = $(this).attr("class");
-        var mywidth = $(this).width();
-        var myheight = $(this).height();
-        $(".f_" + myClass).width(mywidth);
-        $(".f_" + myClass).height(myheight);
-    });
-    var offsetLeft = $(".table-head-pos").offset().left + 2;
-    $("table thead.fixed-table").css("left", offsetLeft + "px");
-}).ready(function(){
-     $("input.reset_form").click(function (e) {
+}).ready(function () {
+    $("input.reset_form").click(function (e) {
         e.preventDefault();
         $('option[value=0]').attr('selected', 'selected');
         $('option[value="empty"]').attr('selected', 'selected');
         $(".datepicker").val('');
         $("input[type='text']").val('');
-       // $("#action_contact option:selected").prop("selected", false);
+        // $("#action_contact option:selected").prop("selected", false);
         $('.selectpicker').selectpicker('deselectAll');
     });
 });
