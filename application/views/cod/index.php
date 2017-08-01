@@ -5,8 +5,6 @@
 </div>
 <form action="<?php echo base_url(); ?>common/action_edit_multi_cod_contact" method="POST" id="action_contact" class="form-inline"> 
     <?php $this->load->view('common/content/filter'); ?>
-    <a href="form.html" class="btn btn-success select_provider"> Chăm sóc các contact đã chọn </a> <br/>
     <?php $this->load->view('common/content/tbl_contact'); ?>
     <?php $this->load->view('cod/modal/edit_multi_contact'); ?> <br/>
-    <a href="form.html" class="btn btn-success select_provider"> Chăm sóc các contact đã chọn </a>
 </form>

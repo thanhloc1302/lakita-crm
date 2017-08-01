@@ -405,8 +405,8 @@ class Common extends MY_Controller {
             $post = $this->input->post();
             // print_arr($post);
             $param = array();
-            $post_arr = array('address', 'payment_method_rgt', 'provider_id', 'cod_status_id', 'code_cross_check', 
-                'note_cod','weight_envelope', 'cod_fee', 'fee_resend');
+            $post_arr = array('address', 'payment_method_rgt', 'provider_id', 'cod_status_id', 'code_cross_check',
+                'note_cod', 'weight_envelope', 'cod_fee', 'fee_resend');
             foreach ($post_arr as $value) {
                 if (isset($post[$value])) {
                     $param[$value] = $post[$value];
@@ -718,8 +718,9 @@ class Common extends MY_Controller {
         if ($last_id != $rows[0]['id']) {
             echo '1';
             $this->session->set_tempdata('last_id', $rows[0]['id'], 3600 * 24);
-        } else
+        } else {
             echo '0';
+        }
     }
 
     function find_course_name() {
@@ -728,8 +729,25 @@ class Common extends MY_Controller {
         $input['where'] = array('course_code' => $post['course_code']);
         $this->load->model('courses_model');
         $courses = $this->courses_model->load_all($input);
-        if (!empty($courses))
+        if (!empty($courses)) {
             echo $courses[0]['name_course'];
+        }
+    }
+
+    function send_phone_to_mobile() {
+        $post = $this->input->post();
+        $where = array('user_id' => $this->user_id);
+        $data = array('phone' => $post['contact_phone'], 'name' => $post['contact_name']);
+        $this->load->model('get_mobile_phone_model');
+        $this->get_mobile_phone_model->update($where, $data);
+    }
+
+    function get_phone_to_mobile() {
+        $this->load->model('get_mobile_phone_model');
+        $input = array();
+        $input['where'] = array('user_id' => $this->user_id);
+        $rs = $this->get_mobile_phone_model->load_all($input);
+        echo json_encode($rs[0]);
     }
 
     // </editor-fold>

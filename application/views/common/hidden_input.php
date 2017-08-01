@@ -5,7 +5,7 @@
 <input type="hidden" value="<?php echo base_url();?>" id="base_url" />
 
 <!-- Controller -->
-<input type="hidden" value="<?php echo $controller;?>" id="input_controller" />
+<input type="hidden" value="<?php echo $this->controller;?>" id="input_controller" />
 
 <!-- Method -->
-<input type="hidden" value="<?php echo $method;?>" id="input_method" />
+<input type="hidden" value="<?php echo  $this->method;?>" id="input_method" />

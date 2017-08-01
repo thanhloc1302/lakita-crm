@@ -151,9 +151,9 @@ $(function () {
                     var contact_id = $(this).attr('contact_id');
                     var contact_name = $(this).attr('contact_name');
                     var duplicate_id = $(this).attr("duplicate_id");
-
+                    var contact_phone = $(this).attr("contact_phone");
                     var controller = $("#input_controller").val();
-                    right_context_menu_display(controller, contact_id, contact_name, duplicate_id);
+                    right_context_menu_display(controller, contact_id, contact_name, duplicate_id, contact_phone);
 
                     var menu = $(".menu");
                     menu.hide();
@@ -239,13 +239,19 @@ $(function () {
     });
     $(document).on('keydown', function (e) {
         if ((e.metaKey || e.ctrlKey || e.shiftKey) && (String.fromCharCode(e.which).toLowerCase() === 'a')) {
+            e.preventDefault();
             $("input[type='checkbox']").prop('checked', true);
             $('.custom_right_menu').addClass('checked');
             show_number_selected_row();
         }
-        if ((e.metaKey || e.ctrlKey || e.shiftKey) && (String.fromCharCode(e.which).toLowerCase() === 'x')) {
+        if (((e.metaKey || e.ctrlKey || e.shiftKey) && (String.fromCharCode(e.which).toLowerCase() === 'x'))
+                || e.which === 27) {
             $("input[type='checkbox']").prop('checked', false);
             $('.checked').removeClass('checked');
+        }
+        if ((e.metaKey || e.ctrlKey || e.shiftKey) && (String.fromCharCode(e.which).toLowerCase() === 's')) {
+            e.preventDefault();
+            $(".btn-edit-contact").click();
         }
     });
 });
@@ -296,32 +302,30 @@ function uncheck_not_checked() {
             });
 }
 
-function right_context_menu_display(controller, contact_id, contact_name, duplicate_id) {
+function right_context_menu_display(controller, contact_id, contact_name, duplicate_id, contact_phone) {
     $(".action_view_detail_contact").attr('contact_id', contact_id);
     $("a.view_duplicate").attr("duplicate_id", duplicate_id);
+    $("a.send_to_mobile").attr("contact_name", contact_name).attr("contact_phone", contact_phone);
     /*
      * Nếu chọn nhiều contact thì ẩn menu xem chi tiết contact 
      * và phân 1 contact
      */
     var numberOfChecked = $('input:checkbox:checked').length;
     if (numberOfChecked > 1) {
-        $(".action_view_detail_contact").addClass("hidden");
-        $(".divide_one_contact_achor").addClass('hidden');
-        $(".divide_multi_contact").removeClass('hidden');
-        $("a.view_duplicate").addClass("hidden");
-        $(".edit_contact").addClass("hidden");
-        $(".transfer_one_contact").addClass("hidden");
-        $(".send_to_mobile").addClass("hidden");
-        $(".transfer_contact").removeClass("hidden");
+        $("a.view_duplicate, .action_view_detail_contact, .divide_one_contact_achor, "
+                + ".edit_contact, .transfer_one_contact, .send_to_mobile").addClass("hidden");
+        $(".divide_multi_contact,.transfer_contact, "
+                + ".select_provider, .btn-export-excel, .btn-export-excel-for-viettel, .export_to_string").removeClass('hidden');
     } else {
-        $(".action_view_detail_contact").removeClass("hidden");
-        $(".divide_one_contact_achor").removeClass('hidden');
-        $(".divide_multi_contact").addClass('hidden');
-        $("a.view_duplicate").removeClass("hidden");
-        $(".edit_contact").removeClass("hidden");
-        $(".transfer_one_contact").removeClass("hidden");
-        $(".send_to_mobile").removeClass("hidden");
-        $(".transfer_contact").addClass("hidden");
+        $(".action_view_detail_contact, .divide_one_contact_achor, a.view_duplicate, "
+                + ".edit_contact, .transfer_one_contact, .send_to_mobile").removeClass("hidden");
+        $(".divide_multi_contact, .transfer_contact, "
+                + ".select_provider, .btn-export-excel, .btn-export-excel-for-viettel, .export_to_string").addClass('hidden');
+        if (duplicate_id > 0) {
+            $("a.view_duplicate").removeClass("hidden");
+        } else {
+            $("a.view_duplicate").addClass("hidden");
+        }
     }
 
     if (controller === 'manager') {
@@ -330,19 +334,18 @@ function right_context_menu_display(controller, contact_id, contact_name, duplic
         /*
          * Nếu contact trùng thì ẩn tính năng bàn giao contact
          */
-        if (duplicate_id > 0) {
-            $("a.view_duplicate").removeClass("hidden");
-
-            $(".divide_one_contact_achor").addClass('hidden');
+        if (numberOfChecked < 1) {
+            if (duplicate_id > 0) {
+                $(".divide_one_contact_achor").addClass('hidden');
+            }
+            /*
+             * Nếu contact không trùng thì ẩn tính năng xem contact trùng
+             */
+            else {
+                $(".divide_one_contact_achor").removeClass('hidden');
+            }
         }
-        /*
-         * Nếu contact không trùng thì ẩn tính năng xem contact trùng
-         */
-        else {
-            $(".divide_one_contact_achor").removeClass('hidden');
-            $("a.view_duplicate").addClass("hidden");
-        }
-    } else if (controller === 'sale') {
+    } else if (controller === 'sale' || controller === 'cod') {
         $(".edit_contact").attr('contact_id', contact_id);
         $(".transfer_one_contact").attr('contact_id', contact_id);
         $(".transfer_one_contact").attr('contact_name', contact_name);

@@ -61,6 +61,7 @@ table{
             tr{
                 td{
                     word-wrap: break-word;
+                    height: 75px;
                     &.tbl_contact_id, &.tbl_course_code, &.tbl_price_purchase{
                         text-align: center;
                     }
@@ -100,5 +101,5 @@ tr menu chuột phải
 các ô selection
 */
 .tbl_selection{
-   // display: none;
+    // display: none;
 }

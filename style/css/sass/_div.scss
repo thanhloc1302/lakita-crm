@@ -58,7 +58,7 @@ div{
         text-transform: uppercase;
     }
     &.menu{
-        width: 200px;
+        width: 330px;
         background: #000;
         color: #fff;
         position:absolute;
@@ -70,12 +70,15 @@ div{
             padding: 0;
             margin:0;
             li{
-                padding: 10%;
+                padding: 7%;
                 background-color: #1f4c7a;
                 color: #fff;
                 &:hover{
                     background-color: #F7BA4B;
                     color: #444343;
+                }
+                i{
+                     font-size: 20px;
                 }
             }
             a{

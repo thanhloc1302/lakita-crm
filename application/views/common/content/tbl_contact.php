@@ -54,7 +54,8 @@
                 ?>" 
                     contact_id="<?php echo $value['id']; ?>" 
                     duplicate_id="<?php echo $value['duplicate_id']; ?>" 
-                    contact_name="<?php echo $value['name']; ?>">
+                    contact_name="<?php echo $value['name']; ?>"
+                    contact_phone="<?php echo $value['phone'];?>">
                         <?php
                         $data['value'] = $value;
                         foreach ($table as $value2) {

@@ -20,7 +20,7 @@ class Cod extends MY_Controller {
         $data['total_contact'] = $data_pagination['total_row'];
         $data['left_col'] = array('sale');
         //  $data['right_col'] = array('date_confirm');
-        $this->table .= 'sale date_confirm date_expect_receive_cod note_cod action';
+        $this->table .= 'sale date_confirm date_expect_receive_cod note_cod';
         $data['table'] = explode(' ', $this->table); //array('selection', 'contact_id');
 
         /*
@@ -47,7 +47,7 @@ class Cod extends MY_Controller {
         // echo $this->db->last_query();
         $data['left_col'] = array('date_confirm', 'provider', 'payment_method_rgt');
         $data['right_col'] = array('date_print_cod', 'date_receive_lakita');
-        $this->table .= 'date_print_cod provider code_cross_check action';
+        $this->table .= 'date_print_cod provider code_cross_check';
         $data['table'] = explode(' ', $this->table);
 
         /*
@@ -75,7 +75,7 @@ class Cod extends MY_Controller {
         // echo $this->db->last_query();
         $data['left_col'] = array('date_confirm');
         $data['right_col'] = array('cod_status');
-        $this->table .= 'date_confirm cod_status action';
+        $this->table .= 'date_confirm cod_status';
         $data['table'] = explode(' ', $this->table);
 
         /*
@@ -206,7 +206,7 @@ class Cod extends MY_Controller {
         $objPHPExcel = new PHPExcel();
         $objPHPExcel = PHPExcel_IOFactory::createReader('Excel2007');
         $this->load->config('my_config');
-        $template_file_print = $this->config->item('template_file_print');
+        $template_file_print = $this->config->item('template_file_print'); 
         $objPHPExcel = $objPHPExcel->load($template_file_print); // Empty Sheet
         $objPHPExcel->setActiveSheetIndex(0);
         $rowCount = 3;
@@ -247,7 +247,7 @@ class Cod extends MY_Controller {
         $data['total_contact'] = $data_pagination['total_row'];
         $data['left_col'] = array('sale', 'date_confirm', 'provider', 'payment_method_rgt', 'date_print_cod', 'warning');
         $data['right_col'] = array('date_receive_cod', 'date_receive_lakita', 'cod_status');
-        $this->table .= 'date_print_cod provider code_cross_check cod_status action';
+        $this->table .= 'date_print_cod provider code_cross_check cod_status';
         $data['table'] = explode(' ', $this->table);
 
         /*
