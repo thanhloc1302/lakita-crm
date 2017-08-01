@@ -7,4 +7,6 @@ RewriteCond %{QUERY_STRING} (^|&)fb_comment_id=
 RewriteRule ^(.*)$ $1? [L]
 RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
 RewriteRule ^ http%{ENV:protossl}://%1%{REQUEST_URI} [L,R=301]
+SetEnv CI_ENV development
+
 

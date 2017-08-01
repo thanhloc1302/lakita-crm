@@ -503,29 +503,29 @@ $(function () {
     /*
      * Khi check vào 1 item nào đó sẽ đánh dấu item đó (hiện màu xanh)
      */
-    $(document).on('change', 'input[type="checkbox"]', function () {
-        if (this.checked) {
-            $(this).parent().parent().addClass('checked');
-        } else {
-            $(this).parent().parent().removeClass('checked');
-        }
-        /*
-         * Hiển thị số lượng dòng đã check
-         */
-        var numberOfChecked = $('input:checkbox:checked').length;
-        var totalCheckboxes = $('input:checkbox').length;
-        $(this).notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
-            position: "right middle",
-            className: 'success',
-            showDuration: 200,
-            autoHideDelay: 1000
-        });
-    });
+//    $(document).on('change', 'input[type="checkbox"]', function () {
+//        if (this.checked) {
+//            $(this).parent().parent().addClass('checked');
+//        } else {
+//            $(this).parent().parent().removeClass('checked');
+//        }
+//        /*
+//         * Hiển thị số lượng dòng đã check
+//         */
+//        var numberOfChecked = $('input:checkbox:checked').length;
+//        var totalCheckboxes = $('input:checkbox').length;
+//        $(this).notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
+//            position: "right middle",
+//            className: 'success',
+//            showDuration: 200,
+//            autoHideDelay: 1000
+//        });
+//    });
     /*===================================== trờ về trang trước ========================================*/
-    $("input[name='back_location']").val(document.referrer);
-    $(".back_location").click(function () {
-        location.href = document.referrer;
-    });
+//    $("input[name='back_location']").val(document.referrer);
+//    $(".back_location").click(function () {
+//        location.href = document.referrer;
+//    });
 
 
     /*======================= reset datepicker ========================================================*/
@@ -545,25 +545,25 @@ $(function () {
     }
 
     /*=============================chọn tất cả  ===========================================*/
-    var checked = true;
-    $(".check_all").css("cursor", "pointer").click(function () {
-        checked = !checked;
-        if (checked) {
-            $(".list_contact input[type='checkbox']").each(
-                    function () {
-                        $(this).prop("checked", false);
-                        $(this).parent().parent().removeClass('checked');
-                    }
-            );
-        } else {
-            $(".list_contact input[type='checkbox']").each(
-                    function () {
-                        $(this).prop("checked", true);
-                        $(this).parent().parent().addClass('checked');
-                    }
-            );
-        }
-    });
+//    var checked = true;
+//    $(".check_all").css("cursor", "pointer").click(function () {
+//        checked = !checked;
+//        if (checked) {
+//            $(".list_contact input[type='checkbox']").each(
+//                    function () {
+//                        $(this).prop("checked", false);
+//                        $(this).parent().parent().removeClass('checked');
+//                    }
+//            );
+//        } else {
+//            $(".list_contact input[type='checkbox']").each(
+//                    function () {
+//                        $(this).prop("checked", true);
+//                        $(this).parent().parent().addClass('checked');
+//                    }
+//            );
+//        }
+//    });
 
     /*
      * Thêm hiệu ứng khi ấn vào dropdown bootstrap
@@ -620,45 +620,12 @@ $(function () {
                     /*
                      * Lấy các thuộc tính của contact
                      */
-                    var contact_id = ($(this).attr('contact_id'));
+                    var contact_id = $(this).attr('contact_id');
                     var contact_name = $(this).attr('contact_name');
                     var duplicate_id = $(this).attr("duplicate_id");
 
-                    /*
-                     * Nếu contact trùng thì ẩn tính năng bàn giao contact
-                     */
-                    if (duplicate_id > 0) {
-                        $("a.view_duplicate").removeClass("hidden");
-                        $("a.view_duplicate").attr("duplicate_id", duplicate_id);
-                        $(".divide_one_contact_achor").addClass('hidden');
-                    }
-                    /*
-                     * Nếu contact không trùng thì ẩn tính năng xem contact trùng
-                     */
-                    else {
-                        $(".divide_one_contact_achor").removeClass('hidden');
-                        $(".divide_one_contact_achor").attr('contact_id', contact_id);
-                        $(".divide_one_contact_achor").attr('contact_name', contact_name);
-                        $("a.view_duplicate").addClass("hidden");
-                    }
-                    $(".action_view_detail_contact").attr('contact_id', contact_id);
-
-                    /*
-                     * Nếu chọn nhiều contact thì ẩn menu xem chi tiết contact 
-                     * và phân 1 contact
-                     */
-
-                    var numberOfChecked = $('input:checkbox:checked').length;
-                    if (numberOfChecked > 1) {
-                        $(".action_view_detail_contact").addClass("hidden");
-                        $(".divide_one_contact_achor").addClass('hidden');
-                        $(".divide_multi_contact").removeClass('hidden');
-                        $("a.view_duplicate").addClass("hidden");
-                    } else {
-                        $(".action_view_detail_contact").removeClass("hidden");
-                        $(".divide_one_contact_achor").removeClass('hidden');
-                        $(".divide_multi_contact").addClass('hidden');
-                    }
+                    var controller = $("#input_controller").val();
+                    right_context_menu_display(controller, contact_id, contact_name, duplicate_id);
 
                     var menu = $(".menu");
                     menu.hide();
@@ -699,8 +666,18 @@ $(function () {
                 },
                 click: function () {
 
+                },
+                dblclick: function (e) {
+                    var contact_id = $(this).attr('contact_id');
+                    $(".edit_contact").attr('contact_id', contact_id);
+                    e.preventDefault();
+                    $("a.edit_contact").click();
                 }
             });
+
+    /*
+     * High light vào các dòng khi click trái để chọn 
+     */
     $("td.tbl_name, td.tbl_phone, td.tbl_address").on("click", function () {
         if ($(this).parent().hasClass('checked')) {
             $(this).parent().removeClass('checked');
@@ -716,6 +693,9 @@ $(function () {
         unselect_not_checked();
         show_number_selected_row();
     });
+
+
+
     $("html").on("click", function (e) {
         $(".menu").hide();
         /*
@@ -786,6 +766,59 @@ function uncheck_not_checked() {
                     $(this).prop("checked", false);
                 }
             });
+}
+
+function right_context_menu_display(controller, contact_id, contact_name, duplicate_id) {
+    $(".action_view_detail_contact").attr('contact_id', contact_id);
+    $("a.view_duplicate").attr("duplicate_id", duplicate_id);
+    /*
+     * Nếu chọn nhiều contact thì ẩn menu xem chi tiết contact 
+     * và phân 1 contact
+     */
+    var numberOfChecked = $('input:checkbox:checked').length;
+    if (numberOfChecked > 1) {
+        $(".action_view_detail_contact").addClass("hidden");
+        $(".divide_one_contact_achor").addClass('hidden');
+        $(".divide_multi_contact").removeClass('hidden');
+        $("a.view_duplicate").addClass("hidden");
+        $(".edit_contact").addClass("hidden");
+        $(".transfer_one_contact").addClass("hidden");
+        $(".send_to_mobile").addClass("hidden");
+        $(".transfer_contact").removeClass("hidden");
+    } else {
+        $(".action_view_detail_contact").removeClass("hidden");
+        $(".divide_one_contact_achor").removeClass('hidden');
+        $(".divide_multi_contact").addClass('hidden');
+        $("a.view_duplicate").removeClass("hidden");
+        $(".edit_contact").removeClass("hidden");
+        $(".transfer_one_contact").removeClass("hidden");
+        $(".send_to_mobile").removeClass("hidden");
+        $(".transfer_contact").addClass("hidden");
+    }
+
+    if (controller === 'manager') {
+        $(".divide_one_contact_achor").attr('contact_id', contact_id);
+        $(".divide_one_contact_achor").attr('contact_name', contact_name);
+        /*
+         * Nếu contact trùng thì ẩn tính năng bàn giao contact
+         */
+        if (duplicate_id > 0) {
+            $("a.view_duplicate").removeClass("hidden");
+
+            $(".divide_one_contact_achor").addClass('hidden');
+        }
+        /*
+         * Nếu contact không trùng thì ẩn tính năng xem contact trùng
+         */
+        else {
+            $(".divide_one_contact_achor").removeClass('hidden');
+            $("a.view_duplicate").addClass("hidden");
+        }
+    } else if (controller === 'sale') {
+        $(".edit_contact").attr('contact_id', contact_id);
+        $(".transfer_one_contact").attr('contact_id', contact_id);
+        $(".transfer_one_contact").attr('contact_name', contact_name);
+    }
 }
 
 
@@ -1170,3 +1203,5 @@ $(function () {
         $(".transfer_one_contact_modal").modal("show");
     }
 });
+
+//# sourceMappingURL=built.js.map

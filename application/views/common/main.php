@@ -4,7 +4,8 @@
         <div class="main_container">
             <?php $this->load->view('common/left_col'); ?>
 
-            <?php if (isset($top_nav)) {
+            <?php
+            if (isset($top_nav)) {
                 $this->load->view($top_nav);
             }
             ?>
@@ -29,9 +30,8 @@
             <?php $this->load->view('common/content/notification'); ?>
         </div>
     </div>
+    <?php $this->load->view('common/hidden_input'); ?>
+    <?php $this->load->view('common/right_context_menu'); ?>
     <?php $this->load->view('common/footer'); ?>
-    
-<!-- Base URL -->
-<input type="hidden" value="<?php echo base_url();?>" id="base_url" />
 </body>
 </html> 

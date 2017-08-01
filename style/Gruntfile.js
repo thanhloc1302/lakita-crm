@@ -11,7 +11,7 @@ module.exports = function (grunt) {
             dist: {// Target 
                 options: {// Target options 
                     style: 'compressed',
-                    sourcemap: 'none'
+                    sourcemap: 'auto'
                 },
                 files: {// Dictionary of files 
                     'css/style.css': 'css/style.scss'
@@ -22,7 +22,8 @@ module.exports = function (grunt) {
 
         concat: {
             options: {
-                separator: ''
+                separator: '',
+                sourceMap: true
             },
             dist: {
                 src: ['js2/*/*.js'],
@@ -34,7 +35,8 @@ module.exports = function (grunt) {
             options: {
                 compress: {
                     drop_console: true // <-
-                }
+                },
+                sourceMap: true
             },
             my_target: {
                 files: {
@@ -49,7 +51,7 @@ module.exports = function (grunt) {
             },
             scripts: {
                 files: 'js2/*/*.js',
-                tasks: ['concat', 'uglify']
+                tasks: ['concat']
             }
         }
 

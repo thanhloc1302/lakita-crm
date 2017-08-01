@@ -123,6 +123,7 @@ class Manager extends MY_Controller {
         $post = $this->input->post();
         $input = array();
         $input['where'] = array('duplicate_id' => $post['duplicate_id']);
+        $input['limit'] = array('10', '0');
         $duplicate_contacts = $this->contacts_model->load_all($input);
         $data['rows'] = $duplicate_contacts;
         $input3 = array();

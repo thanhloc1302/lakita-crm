@@ -42,7 +42,7 @@ class Sale extends MY_Controller {
         /*
          * Các trường cần hiện của bảng contact (đã có default)
          */
-        $this->table .= 'date_rgt date_handover action';
+        $this->table .= 'date_rgt date_handover';
         $data['table'] = explode(' ', $this->table);
 
         /*
@@ -78,7 +78,7 @@ class Sale extends MY_Controller {
         $data['left_col'] = array('tu_van', 'course_code', 'date_rgt');
         $data['right_col'] = array('date_last_calling');
 
-        $this->table .= 'date_rgt date_last_calling date_recall action';
+        $this->table .= 'date_rgt date_last_calling date_recall';
         $data['table'] = explode(' ', $this->table);
 
         /*
@@ -108,7 +108,7 @@ class Sale extends MY_Controller {
         $data['left_col'] = array('tu_van', 'course_code', 'date_handover');
         $data['right_col'] = array('ordering_status', 'date_last_calling');
 
-        $this->table .= 'date_rgt date_last_calling date_recall action';
+        $this->table .= 'date_rgt date_last_calling date_recall';
         $data['table'] = explode(' ', $this->table);
         $data['content'] = 'sale/can_save';
 
@@ -159,7 +159,7 @@ class Sale extends MY_Controller {
         $data['left_col'] = array('tu_van', 'course_code', 'date_rgt', 'date_handover');
         $data['right_col'] = array('date_last_calling', 'call_status', 'ordering_status', 'cod_status');
 
-        $this->table .= 'date_rgt date_last_calling call_stt ordering_stt action';
+        $this->table .= 'date_rgt date_last_calling call_stt ordering_stt';
         $data['table'] = explode(' ', $this->table);
 
         /*

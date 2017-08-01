@@ -77,7 +77,7 @@ $db['default'] = array(
     'dsn' => '',
     'hostname' => 'localhost',
     'username' => 'root',
-    'password' => '',
+    'password' => 'FVd552HbmiBnIsEZBm4l',
     'database' => 'lakita_crm',
     'dbdriver' => 'mysqli',
     'dbprefix' => 'tbl_',
@@ -94,3 +94,4 @@ $db['default'] = array(
     'failover' => array(),
     'save_queries' => TRUE
 );
+
