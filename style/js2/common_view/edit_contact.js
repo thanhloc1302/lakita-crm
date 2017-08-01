@@ -21,12 +21,13 @@ $(function () {
         });
     });
     $('.edit_contact_modal').on('shown.bs.modal', function () {
-         if ($(".table-1").height() > $(".table-2").height())
+        if ($(".table-1").height() > $(".table-2").height())
         {
             $(".table-2").height($(".table-1").height());
         } else
         {
             $(".table-1").height($(".table-2").height());
         }
+        var clipboard = new Clipboard('.btn-copy');
     });
 });

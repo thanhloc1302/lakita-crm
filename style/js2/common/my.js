@@ -206,7 +206,7 @@ $(function () {
     /*
      * High light vào các dòng khi click trái để chọn 
      */
-    $("td.tbl_name, td.tbl_phone, td.tbl_address").on("click", function () {
+    $("td.tbl_name, td.tbl_address").on("click", function () {
         if ($(this).parent().hasClass('checked')) {
             $(this).parent().removeClass('checked');
         } else {

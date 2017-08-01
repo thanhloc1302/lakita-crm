@@ -413,13 +413,14 @@ $(function () {
         });
     });
     $('.edit_contact_modal').on('shown.bs.modal', function () {
-         if ($(".table-1").height() > $(".table-2").height())
+        if ($(".table-1").height() > $(".table-2").height())
         {
             $(".table-2").height($(".table-1").height());
         } else
         {
             $(".table-1").height($(".table-2").height());
         }
+        var clipboard = new Clipboard('.btn-copy');
     });
 });$(function () {
     setTimeout(function () {
@@ -498,6 +499,16 @@ $(function () {
     });
 });
 $(function () {
+    var clipboard = new Clipboard('.btn-copy');
+    clipboard.on('success', function () {
+        $.notify("Copy thành công vào clipboard", {
+            position: "top left",
+            className: 'success',
+            showDuration: 200,
+            autoHideDelay: 2000
+        });
+    });
+});$(function () {
     $(".datepicker").datepicker(
             {
                 dateFormat: "dd-mm-yy"
@@ -705,7 +716,7 @@ $(function () {
     /*
      * High light vào các dòng khi click trái để chọn 
      */
-    $("td.tbl_name, td.tbl_phone, td.tbl_address").on("click", function () {
+    $("td.tbl_name, td.tbl_address").on("click", function () {
         if ($(this).parent().hasClass('checked')) {
             $(this).parent().removeClass('checked');
         } else {
