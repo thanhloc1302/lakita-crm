@@ -6,30 +6,19 @@
 ?>
 <form action="#" method="GET" id="action_contact" class="form-inline">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8 col-md-offset-2">
             <table class="table table-striped table-bordered table-hover">
-            </table>
-        </div>
-        <div class="col-md-6">
-            <table class="table table-striped table-bordered table-hover">
-                <tr>
-                    <td class="text-right"> Ngày nhận contact từ: </td>
+                 <tr>
+                    <td class="text-right"> Ngày nhận contact : </td>
                     <td>
-                        <input type="text" class="form-control datepicker" name="filter_date_handover_from"
-                        <?php if (isset($_GET['filter_date_handover_from'])) { ?>
-                                   value="<?php echo $_GET['filter_date_handover_from']; ?>"
-                               <?php } ?> />
+                         <input type="text" class="form-control daterangepicker" name="filter_date_date_handover" style="position: static"
+                        <?php if (filter_has_var(INPUT_GET, 'filter_date_date_handover')) { ?>
+                                   value="<?php echo filter_input(INPUT_GET, 'filter_date_date_handover'); ?>"
+                               <?php } ?> 
+                               />
                     </td>
                 </tr>
-                <tr>
-                    <td class="text-right"> đến: </td>
-                    <td>
-                        <input type="text" class="form-control datepicker" name="filter_date_handover_end"
-                        <?php if (isset($_GET['filter_date_handover_end'])) { ?>
-                                   value="<?php echo $_GET['filter_date_handover_end']; ?>"
-                               <?php } ?> />
-                    </td>
-                </tr>
+             
                 <tr>
                     <td class="text-right">
                         <input type="submit" class="btn btn-success filter_contact" value="Lọc" />

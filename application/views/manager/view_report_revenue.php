@@ -1,45 +1,28 @@
 <form action="#" method="GET" id="action_contact" class="form-inline">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-8 col-md-offset-2">
             <table class="table table-striped table-bordered table-hover filter-tbl-1">
                 <tr>
-                    <td class="text-right"> Ngày phát thành công từ: </td>
+                    <td class="text-right"> Ngày phát thành công: </td>
                     <td>  
-                        <input type="text" class="form-control datepicker" name="filter_date_deliver_success_from" 
-                        <?php if (isset($_GET['filter_date_deliver_success_from'])) { ?>
-                                   value="<?php echo $_GET['filter_date_deliver_success_from']; ?>"
-                               <?php } ?> /> 
+
+                        <input type="text" class="form-control daterangepicker" name="filter_date_deliver_success" style="position: static"
+                        <?php if (filter_has_var(INPUT_GET, 'filter_date_deliver_success')) { ?>
+                                   value="<?php echo filter_input(INPUT_GET, 'filter_date_deliver_success'); ?>"
+                               <?php } ?> 
+                               />
+
                     </td>
                 </tr>
                 <tr>
-                    <td class="text-right"> đến: </td>
+                    <td class="text-right"> Ngày nhận tiền: </td>
                     <td>  
-                        <input type="text" class="form-control datepicker" name="filter_date_deliver_success_end" 
-                        <?php if (isset($_GET['filter_date_deliver_success_end'])) { ?>
-                                   value="<?php echo $_GET['filter_date_deliver_success_end']; ?>"
-                               <?php } ?> /> 
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="col-md-6">
-            <table class="table table-striped table-bordered table-hover filter-tbl-2">
-                <tr>
-                    <td class="text-right"> Ngày nhận tiền từ: </td>
-                    <td>  
-                        <input type="text" class="form-control datepicker" name="filter_date_report_from" 
-                        <?php if (isset($_GET['filter_date_report_from'])) { ?>
-                                   value="<?php echo $_GET['filter_date_report_from']; ?>"
-                               <?php } ?> /> 
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-right"> đến: </td>
-                    <td>  
-                        <input type="text" class="form-control datepicker" name="filter_date_report_end" 
-                        <?php if (isset($_GET['filter_date_report_end'])) { ?>
-                                   value="<?php echo $_GET['filter_date_report_end']; ?>"
-                               <?php } ?> /> 
+                        <input type="text" class="form-control daterangepicker" name="filter_date_report" style="position: static"
+                        <?php if (filter_has_var(INPUT_GET, 'filter_date_report')) { ?>
+                                   value="<?php echo filter_input(INPUT_GET, 'filter_date_report'); ?>"
+                               <?php } ?> 
+                               />
+
                     </td>
                 </tr>
                 <tr>

@@ -1,18 +1,10 @@
-<tr class="filter_date_receive_lakita_from">
-    <td class="text-right"> Ngày nhận tiền lakita từ: </td>
+<tr class="filter_date_date_receive_lakita">
+    <td class="text-right">  Ngày nhận tiền Lakita: </td>
     <td>
-        <input type="text" class="form-control datepicker" name="filter_date_receive_lakita_from"
-        <?php if (isset($_GET['filter_date_receive_lakita_from'])) { ?>
-                   value="<?php echo $_GET['filter_date_receive_lakita_from']; ?>"
-               <?php } ?> />
-    </td>
-</tr>
-<tr class="filter_date_receive_lakita_end">
-    <td class="text-right"> đến: </td>
-    <td>
-        <input type="text" class="form-control datepicker" name="filter_date_receive_lakita_end"
-               <?php if (isset($_GET['filter_date_receive_lakita_end'])) { ?>
-                   value="<?php echo $_GET['filter_date_receive_lakita_end']; ?>"
-               <?php } ?> />
+ <input type="text" class="form-control daterangepicker" name="filter_date_date_receive_lakita" style="position: static"
+        <?php if (filter_has_var(INPUT_GET, 'filter_date_date_receive_lakita')) { ?>
+                   value="<?php echo filter_input(INPUT_GET, 'filter_date_date_receive_lakita') ;?>"
+               <?php }?>
+               />
     </td>
 </tr>

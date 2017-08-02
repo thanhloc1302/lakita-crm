@@ -4,11 +4,11 @@ $(function () {
     /*
      * Real order
      */
-    $('th[class^="order_"]').click(function () {
+    $('th[class^="order_new_"]').click(function () {
         var myclass = $(this).attr("class");
         myclass = myclass.split(/ /);
         myclass = myclass[0];
-        $('input[class^="order_"]').not("input." + myclass).attr('value', '0');
+        $('input[class^="order_new_"]').not("input." + myclass).attr('value', '0');
         if ($("input." + myclass).val() === '0')
         {
             $("input." + myclass).attr('value', 'ASC').promise().done(

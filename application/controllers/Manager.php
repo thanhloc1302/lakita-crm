@@ -12,7 +12,6 @@ class Manager extends MY_Controller {
     }
 
     function index($offset = 0) {
-
         $data = $this->get_all_require_data();
         $get = $this->input->get();
         /*
@@ -20,7 +19,7 @@ class Manager extends MY_Controller {
          * contact ở trang chủ là contact chưa được phân cho TVTS nào và chua gọi lần nào
          *
          */
-        
+
         $conditional['where'] = array('call_status_id' => '0', 'sale_staff_id' => '0', 'is_hide' => '0');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         /*
@@ -35,8 +34,8 @@ class Manager extends MY_Controller {
         /*
          * Filter ở cột trái và cột phải
          */
-        $data['left_col'] = array('tu_van', 'duplicate', 'course_code');
-        $data['right_col'] = array('date_rgt');
+        $data['left_col'] = array('tu_van', 'duplicate', 'date_rgt');
+        $data['right_col'] = array('course_code');
 
         /*
          * Các trường cần hiện của bảng contact (đã có default)
@@ -68,7 +67,6 @@ class Manager extends MY_Controller {
          */
         $conditional['where'] = array('is_hide' => '0');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
-
         /*
          * Lấy link phân trang và danh sách contacts
          */
@@ -491,7 +489,7 @@ class Manager extends MY_Controller {
         $this->_check_contact_can_be_delete($post['contact_id']);
         foreach ($post['contact_id'] as $value) {
             $where = array('id' => $value);
-            $data= array('is_hide' => 1);
+            $data = array('is_hide' => 1);
             $this->contacts_model->update($where, $data);
         }
         $msg = 'Xóa thành công các contact vừa chọn!';
@@ -503,7 +501,7 @@ class Manager extends MY_Controller {
         if (!empty($post['contact_id'])) {
             $this->_check_contact_can_be_delete(array($post['contact_id']));
             $where = array('id' => $post['contact_id']);
-            $data= array('is_hide' => 1);
+            $data = array('is_hide' => 1);
             $this->contacts_model->update($where, $data);
             echo '1';
         }
@@ -552,7 +550,6 @@ class Manager extends MY_Controller {
         $input = array();
         $input['where'] = array('role_id' => 1);
         $staffs = $this->staffs_model->load_all($input);
-
 
         $conditionArr = array(
             'CHUA_GOI' => array(
@@ -639,8 +636,8 @@ class Manager extends MY_Controller {
             $data[$key] = $value['sum'];
         }
         $data['staffs'] = $staffs;
-        $data['left_col'] = array('course_code');
-        $data['right_col'] = array('date_handover');
+        $data['left_col'] = array('date_handover');
+        $data['right_col'] = array('course_code');
         $data['load_js'] = array('m_view_report');
         $data['content'] = 'manager/view_report';
         $this->load->view(_MAIN_LAYOUT_, $data);
@@ -658,6 +655,25 @@ class Manager extends MY_Controller {
         $L7 = 0;
         $L8 = 0;
         $L7L8 = 0;
+        /*
+         * Lấy ngày nhận tiền và ngày phát thành công
+         */
+        if (isset($get['filter_date_report']) && $get['filter_date_report'] != '') {
+            $dateArr = explode('-', $get['filter_date_report']);
+            $date_report_from = trim($dateArr[0]);
+            $date_report_from = strtotime(str_replace("/", "-", $date_report_from));
+            $date_report_end = trim($dateArr[1]);
+            $date_report_end = strtotime(str_replace("/", "-", $date_report_end)) + 3600 * 24;
+        }
+
+        if (isset($get['filter_date_deliver_success']) && $get['filter_date_deliver_success'] != '') {
+            $dateArr = explode('-', $get['filter_date_deliver_success']);
+            $date_deliver_success_from = trim($dateArr[0]);
+            $date_deliver_success_from = strtotime(str_replace("/", "-", $date_deliver_success_from));
+            $date_deliver_success_end = trim($dateArr[1]);
+            $date_deliver_success_end = strtotime(str_replace("/", "-", $date_deliver_success_end)) + 3600 * 24;
+        }
+
         foreach ($courses as $key => $value) {
             $conditional = array();
             $conditional['select'] = 'course_code, cod_status_id, price_purchase';
@@ -666,12 +682,11 @@ class Manager extends MY_Controller {
             }
             $conditional['where']['course_code'] = $value['course_code'];
             $conditional['where']['cod_status_id'] = _DA_THU_COD_;
-            if (isset($get['filter_date_report_from']) && $get['filter_date_report_from'] != '') {
-                $conditional['where']['date_receive_cod >='] = strtotime($get['filter_date_report_from']);
+            if (isset($get['filter_date_report']) && $get['filter_date_report'] != '') {
+                $conditional['where']['date_receive_cod >='] = $date_report_from;
+                $conditional['where']['date_receive_cod <='] = $date_report_end;
             }
-            if (isset($get['filter_date_report_end']) && $get['filter_date_report_end'] != '') {
-                $conditional['where']['date_receive_cod <='] = strtotime($get['filter_date_report_end']) + 3600 * 24;
-            }
+
             $_L7 = $this->contacts_model->load_all($conditional);
             $courses[$key]['L7'] = sum_L8($_L7);
             $L7 += $courses[$key]['L7'];
@@ -683,21 +698,19 @@ class Manager extends MY_Controller {
             }
             $conditional['where']['course_code'] = $value['course_code'];
             $conditional['where']['cod_status_id'] = _DA_THU_LAKITA_;
-            if (isset($get['filter_date_report_from']) && $get['filter_date_report_from'] != '') {
-                $conditional['where']['date_receive_lakita >='] = strtotime($get['filter_date_report_from']);
+            if (isset($get['filter_date_report']) && $get['filter_date_report'] != '') {
+                $conditional['where']['date_receive_lakita >='] = $date_report_from;
+                $conditional['where']['date_receive_lakita <='] = $date_report_end;
             }
-            if (isset($get['filter_date_report_end']) && $get['filter_date_report_end'] != '') {
-                $conditional['where']['date_receive_lakita <='] = strtotime($get['filter_date_report_end']) + 3600 * 24;
-            }
+
             /*
              * Xem theo ngày phát thành công
              */
-            if (isset($get['filter_date_deliver_success_from']) && $get['filter_date_deliver_success_from'] != '') {
-                $conditional['where']['date_deliver_success >='] = strtotime($get['filter_date_deliver_success_from']);
+            if (isset($get['filter_date_deliver_success']) && $get['filter_date_deliver_success'] != '') {
+                $conditional['where']['date_deliver_success >='] = $date_deliver_success_from;
+                $conditional['where']['date_deliver_success <='] = $date_deliver_success_end;
             }
-            if (isset($get['filter_date_deliver_success_end']) && $get['filter_date_deliver_success_end'] != '') {
-                $conditional['where']['date_deliver_success <='] = strtotime($get['filter_date_deliver_success_end']) + 3600 * 24;
-            }
+
             $_L8 = $this->contacts_model->load_all($conditional);
             $courses[$key]['L8'] = sum_L8($_L8);
             $L8 += $courses[$key]['L8'];
@@ -1143,7 +1156,7 @@ class Manager extends MY_Controller {
         $this->load->model('ordering_status_model');
         $this->load->model('cod_status_model');
         $this->load->model('notes_model');
-         $this->load->model('staffs_model');
+        $this->load->model('staffs_model');
         $this->load->library('PHPExcel');
         $objPHPExcel = new PHPExcel();
         $objPHPExcel->setActiveSheetIndex(0);
@@ -1224,7 +1237,7 @@ class Manager extends MY_Controller {
             $objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, $this->ordering_status_model->find_ordering_status_desc($contact['ordering_status_id']));
             $objPHPExcel->getActiveSheet()->SetCellValue('H' . $rowCount, $this->cod_status_model->find_cod_status_desc($contact['cod_status_id']));
             $objPHPExcel->getActiveSheet()->SetCellValue('I' . $rowCount, $contact['matrix']);
-             $objPHPExcel->getActiveSheet()->SetCellValue('J' . $rowCount, $all_note);
+            $objPHPExcel->getActiveSheet()->SetCellValue('J' . $rowCount, $all_note);
             $objPHPExcel->getActiveSheet()->getRowDimension($rowCount)->setRowHeight(35);
             $BStyle = array(
                 'borders' => array(

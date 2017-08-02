@@ -23,8 +23,8 @@ class MY_Controller extends CI_Controller {
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
-        //echo date('H:i:s d/m/Y', 1500915600);die;
-      //  echo strtotime('01-07-2016'); die;
+        //   echo date('H:i:s d/m/Y', 1500915600);die;
+        //  echo strtotime('01-07-2016'); die;
         // echo strtotime(date("d-m-Y"));die;
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
@@ -372,7 +372,7 @@ class MY_Controller extends CI_Controller {
      */
 
     protected function _get_query_condition_arr($get) {
-        // print_r($get);
+
         $input_get = array();
         $this->load->model('setting_filter_sort_model');
         $setting_filter_sort = $this->setting_filter_sort_model->load_all();
@@ -408,7 +408,7 @@ class MY_Controller extends CI_Controller {
                 }
             }
         }
-         /*
+        /*
          * Các trường hợp đặc biệt
          * 1. Báo đỏ, báo vàng sau khi giao đơn cho đơn vị giao hàng
          * lớn hơn 3, 5 ngày mà vẫn chưa thu đc tiền
@@ -425,6 +425,22 @@ class MY_Controller extends CI_Controller {
                         . 'FLOOR((' . time() . ' - `date_print_cod`) / (60 * 60 * 24)) >= 3 '
                         . 'AND `cod_status_id` = 1)';
                 $input_get['where'][$query] = 'NO-VALUE';
+            }
+        }
+
+        /*
+         * Filter date
+         */
+        foreach ($get as $key => $value) {
+            if (strpos($key, "filter_date_") !== FALSE && $value != '') {
+                $dateArr = explode('-', $value);
+                $date_from = trim($dateArr[0]);
+                $date_from = strtotime(str_replace("/", "-", $date_from));
+                $date_end = trim($dateArr[1]);
+                $date_end = strtotime(str_replace("/", "-", $date_end)) + 3600 * 24;
+                $column_name = substr($key, strlen("filter_date_"));
+                $input_get['where'][$column_name . '>='] = $date_from;
+                $input_get['where'][$column_name . '<='] = $date_end;
             }
         }
         return array(

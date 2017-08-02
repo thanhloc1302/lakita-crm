@@ -382,8 +382,6 @@ class Common extends MY_Controller {
 
     function action_edit_multi_cod_contact() {
         $post = $this->input->post();
-        print_arr(json_decode($post['e1']));
-        print_arr($post);
         if (!isset($post['contact_id']) || empty($post['contact_id'])) {
             show_error_and_redirect('Bạn cần chọn contact!', '', FALSE);
         }

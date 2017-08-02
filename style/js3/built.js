@@ -152,11 +152,11 @@ $(document).ready(function () {
     /*
      * Real order
      */
-    $('th[class^="order_"]').click(function () {
+    $('th[class^="order_new_"]').click(function () {
         var myclass = $(this).attr("class");
         myclass = myclass.split(/ /);
         myclass = myclass[0];
-        $('input[class^="order_"]').not("input." + myclass).attr('value', '0');
+        $('input[class^="order_new_"]').not("input." + myclass).attr('value', '0');
         if ($("input." + myclass).val() === '0')
         {
             $("input." + myclass).attr('value', 'ASC').promise().done(
@@ -509,23 +509,45 @@ $(function () {
         });
     });
 });$(function () {
-    $(".datepicker").datepicker(
-            {
-                dateFormat: "dd-mm-yy"
-            }
-    );
-
+//    $(".datepicker").datepicker(
+//            {
+//                dateFormat: "dd-mm-yy"
+//            }
+//    );
+    
+    /*
+     * 
+     * @type Date Tham khảo http://www.daterangepicker.com/#usage
+     */
+    var d = new Date();
+    var currDate = d.getDate() + '-' + (d.getMonth()+1) + '-' + d.getFullYear();
+    var pastDate = d.getDate() + '-' + d.getMonth()  + '-' + d.getFullYear();
     $(".daterangepicker").daterangepicker({
+        "autoApply": true,
+        autoUpdateInput: false,
         locale: {
-            format: 'DD-MM-YYYY'
+            format: 'DD/MM/YYYY',
+            cancelLabel: 'Clear'
         },
-           ranges: {
-           'Today': [moment(), moment()],
-           'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-           'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-           'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        ranges: {
+            'Hôm nay': [moment(), moment()],
+            'Hôm qua': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            '7 ngày vừa qua': [moment().subtract(6, 'days'), moment()],
+            '30 ngày vừa qua': [moment().subtract(29, 'days'), moment()],
+            'Tuần này' : [moment().startOf('isoWeek'), moment().endOf('isoWeek')],
+            'Tuần trước' : [moment().subtract(1, 'weeks').startOf('isoWeek'), moment().subtract(1, 'weeks').endOf('isoWeek')],
+            'Tháng này': [moment().startOf('month'), moment().endOf('month')],
+            'Tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+        },
+        "alwaysShowCalendars": true,
+        "startDate": pastDate,
+        "endDate": currDate
+    }).on({
+        'apply.daterangepicker': function (ev, picker) {
+            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        },
+        'cancel.daterangepicker': function (ev, picker) {
+            $(this).val('');
         }
     });
 
@@ -1126,54 +1148,56 @@ var _CHUA_CHAM_SOC_ = 0;
 var _TU_CHOI_MUA_ = 3;
 var _DONG_Y_MUA_ = 4;
 $(document).on('click', '.btn-edit-contact', function (e) {
-    e.preventDefault();
-    var error = false;
-    var call_status_id = $("select[name='call_status_id']").val();
-    console.log('call_status_id= ' + call_status_id);
-    var ordering_status_id = $("select[name='ordering_status_id']").val();
-    console.log('ordering_status_id= ' + ordering_status_id);
-    var date_recall = $(".date_recall").val();
-    var course_code = $('select.select_course_code').val();
-    var price_purchase = $('[name="price_purchase"]').val();
-    if ($("select.edit_payment_method_rgt").val() == 0) {
-        alert("Bạn cần cập nhật hình thức thanh toán!");
-        error = true;
-        return false;
-    }
-    if (call_status_id == 0) {
-        alert("Bạn cần cập nhật trạng thái gọi!");
-        error = true;
-        return false;
-    }
-    if (check_rule_call_stt(call_status_id, ordering_status_id) == false) {
-        alert("Trạng thái gọi và trạng thái đơn hàng không logic!");
-        error = true;
-        return false;
-    }
-    if (date_recall != '') {
-        if (now_greater_than_input_date(date_recall)) {
-            alert("Ngày gọi lại không thể là một ngày trước ngày hôm nay!");
+    if ($("#input_controller").val() === 'sale') {
+        e.preventDefault();
+        var error = false;
+        var call_status_id = $("select[name='call_status_id']").val();
+        console.log('call_status_id= ' + call_status_id);
+        var ordering_status_id = $("select[name='ordering_status_id']").val();
+        console.log('ordering_status_id= ' + ordering_status_id);
+        var date_recall = $(".date_recall").val();
+        var course_code = $('select.select_course_code').val();
+        var price_purchase = $('[name="price_purchase"]').val();
+        if ($("select.edit_payment_method_rgt").val() == 0) {
+            alert("Bạn cần cập nhật hình thức thanh toán!");
             error = true;
             return false;
         }
-        if (check_rule_call_stt_and_date_recall(call_status_id, ordering_status_id, date_recall)) {
-            alert("Nếu contact không liên lạc được hoặc không thể chăm sóc được nữa thì không thể có ngày gọi lại lớn hơn ngày hiện tại!");
+        if (call_status_id == 0) {
+            alert("Bạn cần cập nhật trạng thái gọi!");
             error = true;
             return false;
         }
-    }
-    if (course_code == '0') {
-        alert("Vui lòng chọn mã khóa học!");
-        error = true;
-        return false;
-    }
-    if (price_purchase == '') {
-        alert("Vui lòng chọn giá tiền mua!");
-        error = true;
-        return false;
-    }
-    if (!error) {
-        $(".form_submit").submit();
+        if (check_rule_call_stt(call_status_id, ordering_status_id) == false) {
+            alert("Trạng thái gọi và trạng thái đơn hàng không logic!");
+            error = true;
+            return false;
+        }
+        if (date_recall != '') {
+            if (now_greater_than_input_date(date_recall)) {
+                alert("Ngày gọi lại không thể là một ngày trước ngày hôm nay!");
+                error = true;
+                return false;
+            }
+            if (check_rule_call_stt_and_date_recall(call_status_id, ordering_status_id, date_recall)) {
+                alert("Nếu contact không liên lạc được hoặc không thể chăm sóc được nữa thì không thể có ngày gọi lại lớn hơn ngày hiện tại!");
+                error = true;
+                return false;
+            }
+        }
+        if (course_code == '0') {
+            alert("Vui lòng chọn mã khóa học!");
+            error = true;
+            return false;
+        }
+        if (price_purchase == '') {
+            alert("Vui lòng chọn giá tiền mua!");
+            error = true;
+            return false;
+        }
+        if (!error) {
+            $(".form_submit").submit();
+        }
     }
 });
 

@@ -254,8 +254,8 @@ class MY_Table extends MY_Controller {
                 /*
                  * sắp xếp
                  */
-                if (strpos($key, "order_") !== FALSE && $value != '0' && $value != '') { //nếu tồn tại biến get order
-                    $column_name = substr($key, strlen("order_"));
+                if (strpos($key, "order_new_") !== FALSE && $value != '0' && $value != '') { //nếu tồn tại biến get order
+                    $column_name = substr($key, strlen("order_new_"));
                     $input_get['order'][$column_name] = $value;
                     $has_user_order = 1;
                 }

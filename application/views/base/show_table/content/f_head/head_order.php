@@ -1,4 +1,4 @@
-<?php $order_name = "order_{$key}";
+<?php $order_name = "order_new_{$key}";
 ?>
 <th class="<?php echo $order_name . ' f_tbl_' . $this->controller . '_' . $key; ?>" id="<?php echo 'f_th_' . $key; ?>">
     <input type="text" class="<?php echo $order_name; ?> hidden" name="<?php echo $order_name; ?>"

@@ -36,8 +36,8 @@ class Sale extends MY_Controller {
         /*
          * Filter ở cột trái và cột phải
          */
-        $data['left_col'] = array('tu_van', 'course_code');
-        $data['right_col'] = array('date_rgt');
+        $data['left_col'] = array('tu_van','date_rgt');
+        $data['right_col'] = array( 'course_code');
 
         /*
          * Các trường cần hiện của bảng contact (đã có default)
@@ -75,8 +75,8 @@ class Sale extends MY_Controller {
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
 
-        $data['left_col'] = array('tu_van', 'course_code', 'date_rgt');
-        $data['right_col'] = array('date_last_calling');
+        $data['left_col'] = array('tu_van',  'date_rgt', 'date_last_calling');
+        $data['right_col'] = array('course_code');
 
         $this->table .= 'date_rgt date_last_calling date_recall';
         $data['table'] = explode(' ', $this->table);
@@ -124,8 +124,8 @@ class Sale extends MY_Controller {
         unset($value);
         $data['contacts'] = $contacts;
         $data['total_contact'] = $data_pagination['total_row'];
-        $data['left_col'] = array('tu_van', 'course_code', 'date_handover');
-        $data['right_col'] = array('ordering_status', 'date_last_calling');
+        $data['left_col'] = array('tu_van', 'date_handover', 'date_last_calling');
+        $data['right_col'] = array('ordering_status', 'course_code');
 
         $this->table = 'selection name phone last_note course_code price_purchase date_rgt date_last_calling date_recall';
         $data['table'] = explode(' ', $this->table);
@@ -175,8 +175,8 @@ class Sale extends MY_Controller {
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
 
-        $data['left_col'] = array('tu_van', 'course_code', 'date_rgt', 'date_handover');
-        $data['right_col'] = array('date_last_calling', 'call_status', 'ordering_status', 'cod_status');
+        $data['left_col'] = array('tu_van', 'course_code', 'date_rgt', 'date_handover', 'date_last_calling');
+        $data['right_col'] = array('call_status', 'ordering_status', 'cod_status');
 
         $this->table .= 'date_rgt date_last_calling call_stt ordering_stt';
         $data['table'] = explode(' ', $this->table);

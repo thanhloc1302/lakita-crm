@@ -1,8 +1,9 @@
 <?php $this->load->view('common/head'); ?>
 <body class="nav-sm">
+     <?php $this->load->view('common/hidden_input'); ?>
     <?php
     if ($this->agent->is_mobile()) {
-        $this->load->view('common/hidden_input'); 
+        $this->load->view('common/hidden_input');
         $this->load->view('common/mobile');
     } else {
         ?>
@@ -33,13 +34,12 @@
                     <div class="clearfix"></div>
                 </footer>
 
-        <?php $this->load->view('common/content/notification'); ?>
+                <?php $this->load->view('common/content/notification'); ?>
             </div>
         </div>
-        <?php $this->load->view('common/hidden_input'); ?>
         <?php $this->load->view('common/right_context_menu'); ?>
-    <?php $this->load->view('common/footer'); ?>
-<?php } ?>
+        <?php $this->load->view('common/footer'); ?>
+    <?php } ?>
 </body>
 </html> 
 

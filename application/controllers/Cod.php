@@ -45,8 +45,8 @@ class Cod extends MY_Controller {
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
         // echo $this->db->last_query();
-        $data['left_col'] = array('date_confirm', 'provider', 'payment_method_rgt');
-        $data['right_col'] = array('date_print_cod', 'date_receive_lakita');
+        $data['left_col'] = array('date_confirm', 'date_print_cod', 'date_receive_lakita');
+        $data['right_col'] = array('provider', 'payment_method_rgt');
         $this->table .= 'date_print_cod provider code_cross_check';
         $data['table'] = explode(' ', $this->table);
 
@@ -61,7 +61,6 @@ class Cod extends MY_Controller {
         $data['content'] = 'cod/pending';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
-
 
     function transfer($offset = 0) {
         $data = $this->_get_all_require_data();
@@ -206,7 +205,7 @@ class Cod extends MY_Controller {
         $objPHPExcel = new PHPExcel();
         $objPHPExcel = PHPExcel_IOFactory::createReader('Excel2007');
         $this->load->config('my_config');
-        $template_file_print = $this->config->item('template_file_print'); 
+        $template_file_print = $this->config->item('template_file_print');
         $objPHPExcel = $objPHPExcel->load($template_file_print); // Empty Sheet
         $objPHPExcel->setActiveSheetIndex(0);
         $rowCount = 3;
@@ -235,7 +234,6 @@ class Cod extends MY_Controller {
         /* ====================xuất file excel (end)============================== */
     }
 
-  
     function view_all_contact($offset = 0) {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
@@ -245,8 +243,8 @@ class Cod extends MY_Controller {
         $data['contacts'] = $data_pagination['data'];
         //print_arr($data['contacts']);
         $data['total_contact'] = $data_pagination['total_row'];
-        $data['left_col'] = array('sale', 'date_confirm', 'provider', 'payment_method_rgt', 'date_print_cod', 'warning');
-        $data['right_col'] = array('date_receive_cod', 'date_receive_lakita', 'cod_status');
+        $data['left_col'] = array('sale', 'date_print_cod', 'date_confirm', 'date_receive_cod', 'date_receive_lakita',);
+        $data['right_col'] = array('provider', 'warning', 'payment_method_rgt', 'cod_status');
         $this->table .= 'date_print_cod provider code_cross_check cod_status';
         $data['table'] = explode(' ', $this->table);
 
