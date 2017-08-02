@@ -14,7 +14,11 @@
         <link href="<?php echo base_url(); ?>style/build/css/custom.min.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>style/css/style.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="<?php echo base_url(); ?>style/jquery-ui-1.12.1.custom/jquery-ui.min.css">
+
         <script src="<?php echo base_url(); ?>style/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+        <script src="<?php echo base_url(); ?>style/js/common/moment.min.js"></script>
+        <script src="<?php echo base_url(); ?>style/js/common/daterangepicker.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>style/js/common/daterangepicker.min.css" />
         <link rel="stylesheet" href="<?php echo base_url(); ?>style/css/common/bootstrap-select.min.css">
         <script src="<?php echo base_url(); ?>style/js/common/bootstrap-select.min.js"></script>
     </head>

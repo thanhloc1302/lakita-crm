@@ -65,7 +65,7 @@ class Sale extends MY_Controller {
             'date_recall >' => '0',
             'date_recall <' => strtotime('tomorrow'),
             'sale_staff_id' => $this->user_id,
-             'is_hide' => '0');
+            'is_hide' => '0');
         $conditional['where_not_in'] = array(
             'call_status_id' => $this->_get_stop_care_call_stt(),
             'ordering_status_id' => $this->_get_stop_care_order_stt());
@@ -103,12 +103,31 @@ class Sale extends MY_Controller {
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         $data['pagination'] = $this->_create_pagination_link('sale/can_save', $data_pagination['total_row']);
 
-        $data['contacts'] = $data_pagination['data'];
+        //$data['contacts'] 
+        $contacts = $data_pagination['data'];
+        $this->load->model('notes_model');
+        foreach ($contacts as &$value) {
+            $input = array();
+            $input['where'] = array('contact_code' => $value['phone'] . '_' . $value['course_code']);
+            $input['order'] = array('id' => 'DESC');
+            $last_note = $this->notes_model->load_all($input);
+            $notes = '';
+            if (!empty($last_note)) {
+                foreach ($last_note as $value2){
+                    $notes.= '<p>' . date('d/m/Y', $value2['time']) . ' ==> '. $value2['content'] . '</p>';
+                }
+                $value['last_note'] = $notes;
+            } else {
+                $value['last_note'] = $notes;
+            }
+        }
+        unset($value);
+        $data['contacts'] = $contacts;
         $data['total_contact'] = $data_pagination['total_row'];
         $data['left_col'] = array('tu_van', 'course_code', 'date_handover');
         $data['right_col'] = array('ordering_status', 'date_last_calling');
 
-        $this->table .= 'date_rgt date_last_calling date_recall';
+        $this->table = 'selection name phone last_note course_code price_purchase date_rgt date_last_calling date_recall';
         $data['table'] = explode(' ', $this->table);
         $data['content'] = 'sale/can_save';
 
