@@ -4,7 +4,7 @@
 <div class="number_paging">
     <?php echo 'Hiển thị ' . $this->begin_paging . ' - ' . $this->end_paging . ' của ' . $this->total_paging . ' contacts'; ?>
 </div>
-<table class="table table-bordered table-striped list_contact">
+<table class="table table-bordered table-striped list_contact list_contact_2">
     <thead>
         <tr>
             <?php

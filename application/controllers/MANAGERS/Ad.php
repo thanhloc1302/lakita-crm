@@ -11,17 +11,17 @@
  *
  * @author Phạm Ngọc Chuyển <chuyenpn at lakita.vn>
  */
-class Adset extends MY_Table {
+class Ad extends MY_Table {
 
     public function __construct() {
         parent::__construct();
         $this->init();
-        $this->load->model('adset_cost_model');
+        $this->load->model('ad_cost_model');
     }
 
     public function init() {
-        $this->controller_path = 'MANAGERS/adset';
-        $this->view_path = 'MANAGERS/adset';
+        $this->controller_path = 'MANAGERS/ad';
+        $this->view_path = 'MANAGERS/ad';
         $this->sub_folder = 'MANAGERS';
         /*
          * Liệt kê các trường trong bảng
@@ -35,11 +35,11 @@ class Adset extends MY_Table {
                 'display' => 'none'
             ),
             'name' => array(
-                'name_display' => 'Tên adset',
+                'name_display' => 'Tên ad',
                 'order' => '1'
             ),
-            'adset_id_facebook' => array(
-                'name_display' => 'Adset ID Facebook',
+            'ad_id_facebook' => array(
+                'name_display' => 'Ad ID Facebook',
                 'display' => 'none'
             ),
             'desc' => array(
@@ -87,8 +87,8 @@ class Adset extends MY_Table {
             )
         );
         $this->set_list_view($list_item);
-        $this->set_model('adset_model');
-        $this->load->model('adset_model');
+        $this->set_model('ad_model');
+        $this->load->model('ad_model');
     }
 
     protected function show_table() {
@@ -113,16 +113,16 @@ class Adset extends MY_Table {
              */
 
             $input = array();
-            $input['where'] = array('adset_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
-            $adset_cost = $this->adset_cost_model->load_all($input);
-            $adset_cost = h_caculate_channel_cost($adset_cost);
-            if (!empty($adset_cost)) {
-                $value['total_C1'] = $adset_cost['total_C1'];
-                $value['total_C2'] = $adset_cost['total_C2'];
-                $value['total_C3'] = $adset_cost['total_C3'];
+            $input['where'] = array('ad_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
+            $ad_cost = $this->ad_cost_model->load_all($input);
+            $ad_cost = h_caculate_channel_cost($ad_cost);
+            if (!empty($ad_cost)) {
+                $value['total_C1'] = $ad_cost['total_C1'];
+                $value['total_C2'] = $ad_cost['total_C2'];
+                $value['total_C3'] = $ad_cost['total_C3'];
                 $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
                 $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
-                $value['spend'] = $adset_cost['spend'];
+                $value['spend'] = $ad_cost['spend'];
                 $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) . ' đ' : '#N/A';
                 $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) . ' đ' : '#N/A';
                 $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) . ' đ' : '#N/A';
@@ -173,8 +173,8 @@ class Adset extends MY_Table {
         $data = $this->data;
         $data['slide_menu'] = 'marketer/common/slide-menu';
         $data['top_nav'] = 'marketer/common/top-nav';
-        $data['list_title'] = 'Danh sách các adset (tính theo giờ Mỹ)';
-        $data['edit_title'] = 'Sửa thông tin adset';
+        $data['list_title'] = 'Danh sách các ads (tính theo giờ Mỹ)';
+        $data['edit_title'] = 'Sửa thông tin ads';
         $data['content'] = 'base/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
@@ -187,19 +187,19 @@ class Adset extends MY_Table {
         /*
          * type mặc định là text nên nếu là text sẽ không cần khai báo
          */
-        $this->load->model('campaign_model');
+        $this->load->model('adset_model');
         $input = array();
         $input['where'] = array('active' => 1);
-        $campaigns = $this->campaign_model->load_all($input);
+        $adsets = $this->adset_model->load_all($input);
         $this->list_add = array(
             'left_table' => array(
                 'name' => array(
                 ),
-                'campaign_id' => array(
+                'adset_id' => array(
                     'type' => 'array',
-                    'value' => $campaigns,
+                    'value' => $adsets,
                 ),
-                'adset_id_facebook' => array(
+                'ad_id_facebook' => array(
                 ),
             ),
             'right_table' => array(
@@ -216,9 +216,9 @@ class Adset extends MY_Table {
         $post = $this->input->post();
         if (!empty($post)) {
             if ($this->{$this->model}->check_exists(array('name' => $post['add_name']))) {
-                redirect_and_die('Tên adset đã tồn tại!');
+                redirect_and_die('Tên ad đã tồn tại!');
             }
-            $paramArr = array('name', 'campaign_id', 'adset_id_facebook', 'desc', 'active');
+            $paramArr = array('name', 'adset_id', 'ad_id_facebook', 'desc', 'active');
             foreach ($paramArr as $value) {
                 if (isset($post['add_' . $value])) {
                     $param[$value] = $post['add_' . $value];
@@ -226,7 +226,7 @@ class Adset extends MY_Table {
             }
             $param['time'] = time();
             $this->{$this->model}->insert($param);
-            show_error_and_redirect('Thêm adset thành công!');
+            show_error_and_redirect('Thêm ads thành công!');
         }
     }
 
@@ -238,7 +238,7 @@ class Adset extends MY_Table {
         /*
          * type mặc định là text nên nếu là text sẽ không cần khai báo
          */
-        $this->load->model('campaign_model');
+        $this->load->model('adset_model');
         $input = array();
         $input['where'] = array('active' => 1);
         $campaigns = $this->campaign_model->load_all($input);
@@ -246,11 +246,11 @@ class Adset extends MY_Table {
             'left_table' => array(
                 'name' => array(
                 ),
-                'campaign_id' => array(
+                'adset_id' => array(
                     'type' => 'array',
-                    'value' => $campaigns,
+                    'value' => $adsets,
                 ),
-                'adset_id_facebook' => array(
+                'ad_id_facebook' => array(
                 ),
             ),
             'right_table' => array(
@@ -267,7 +267,7 @@ class Adset extends MY_Table {
         $post = $this->input->post();
         if (!empty($post)) {
             $input['where'] = array('id' => $id);
-            $paramArr = array('name', 'campaign_id', 'adset_id_facebook', 'desc', 'active');
+            $paramArr = array('name', 'adset_id', 'ad_id_facebook', 'desc', 'active');
             foreach ($paramArr as $value) {
                 if (isset($post['edit_' . $value])) {
                     $param[$value] = $post['edit_' . $value];
@@ -275,7 +275,7 @@ class Adset extends MY_Table {
             }
             $this->{$this->model}->update($input['where'], $param);
         }
-        show_error_and_redirect('Sửa adset thành công!');
+        show_error_and_redirect('Sửa ads thành công!');
     }
 
 }

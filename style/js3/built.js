@@ -509,15 +509,15 @@ $(function () {
         });
     });
 });$(function () {
-//    $(".datepicker").datepicker(
-//            {
-//                dateFormat: "dd-mm-yy"
-//            }
-//    );
+    $(".datepicker").datepicker(
+            {
+                dateFormat: "dd-mm-yy"
+            }
+    );
     
     /*
      * 
-     * @type Date Tham khảo http://www.daterangepicker.com/#usage
+     * Tham khảo http://www.daterangepicker.com/#usage
      */
     var d = new Date();
     var currDate = d.getDate() + '-' + (d.getMonth()+1) + '-' + d.getFullYear();
@@ -577,24 +577,24 @@ $(function () {
     /*
      * Khi check vào 1 item nào đó sẽ đánh dấu item đó (hiện màu xanh)
      */
-//    $(document).on('change', 'input[type="checkbox"]', function () {
-//        if (this.checked) {
-//            $(this).parent().parent().addClass('checked');
-//        } else {
-//            $(this).parent().parent().removeClass('checked');
-//        }
-//        /*
-//         * Hiển thị số lượng dòng đã check
-//         */
-//        var numberOfChecked = $('input:checkbox:checked').length;
-//        var totalCheckboxes = $('input:checkbox').length;
-//        $(this).notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
-//            position: "right middle",
-//            className: 'success',
-//            showDuration: 200,
-//            autoHideDelay: 1000
-//        });
-//    });
+    $(document).on('change', 'input[type="checkbox"]', function () {
+        if (this.checked) {
+            $(this).parent().parent().addClass('checked');
+        } else {
+            $(this).parent().parent().removeClass('checked');
+        }
+        /*
+         * Hiển thị số lượng dòng đã check
+         */
+        var numberOfChecked = $('input:checkbox:checked').length;
+        var totalCheckboxes = $('input:checkbox').length;
+        $(this).notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
+            position: "right middle",
+            className: 'success',
+            showDuration: 200,
+            autoHideDelay: 1000
+        });
+    });
     /*===================================== trờ về trang trước ========================================*/
 //    $("input[name='back_location']").val(document.referrer);
 //    $(".back_location").click(function () {
@@ -619,25 +619,25 @@ $(function () {
     }
 
     /*=============================chọn tất cả  ===========================================*/
-//    var checked = true;
-//    $(".check_all").css("cursor", "pointer").click(function () {
-//        checked = !checked;
-//        if (checked) {
-//            $(".list_contact input[type='checkbox']").each(
-//                    function () {
-//                        $(this).prop("checked", false);
-//                        $(this).parent().parent().removeClass('checked');
-//                    }
-//            );
-//        } else {
-//            $(".list_contact input[type='checkbox']").each(
-//                    function () {
-//                        $(this).prop("checked", true);
-//                        $(this).parent().parent().addClass('checked');
-//                    }
-//            );
-//        }
-//    });
+    var checked = true;
+    $(".check_all").css("cursor", "pointer").click(function () {
+        checked = !checked;
+        if (checked) {
+            $(".list_contact input[type='checkbox']").each(
+                    function () {
+                        $(this).prop("checked", false);
+                        $(this).parent().parent().removeClass('checked');
+                    }
+            );
+        } else {
+            $(".list_contact input[type='checkbox']").each(
+                    function () {
+                        $(this).prop("checked", true);
+                        $(this).parent().parent().addClass('checked');
+                    }
+            );
+        }
+    });
 
     /*
      * Thêm hiệu ứng khi ấn vào dropdown bootstrap
@@ -794,6 +794,7 @@ $(function () {
                 || e.which === 27) {
             $("input[type='checkbox']").prop('checked', false);
             $('.checked').removeClass('checked');
+            $(".menu").hide();
         }
         if ((e.metaKey || e.ctrlKey || e.shiftKey) && (String.fromCharCode(e.which).toLowerCase() === 's')) {
             e.preventDefault();

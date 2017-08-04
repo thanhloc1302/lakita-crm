@@ -58,14 +58,14 @@ class Cron extends CI_Controller {
                 /*
                  * Lấy tổng số C3 ngày hôm nay của campain có id = $value['id']
                  */
-                $today_begin = $today; // 00:00:00 $today
-                $yesterday_US = $today_begin - 3600 * 10;
-                $today_US = $today_begin + 3600 * 14;
+
+                $today_VN = $today + 3600 * 14;
+                $today_VN_end = $today + 3600 * 38;
                 $total_c3 = array();
                 $total_c3['where'] = array(
                     'campaign_id' => $value['id'],
-                    'date_rgt >=' => $yesterday_US,
-                    'date_rgt <=' => $today_US);
+                    'date_rgt >=' => $today_VN,
+                    'date_rgt <=' => $today_VN_end);
                 $param['total_C3'] = count($this->contacts_model->load_all($total_c3));
                 $this->campaign_cost_model->insert($param);
             }
@@ -113,14 +113,13 @@ class Cron extends CI_Controller {
                     /*
                      * Lấy tổng số C3 ngày hôm nay của campain có id = $value['id']
                      */
-                    $today_begin = $today; // 00:00:00 $today
-                    $yesterday_US = $today_begin - 3600 * 10;
-                    $today_US = $today_begin + 3600 * 14;
+                    $today_VN = $today + 3600 * 14;
+                    $today_VN_end = $today + 3600 * 38;
                     $total_c3 = array();
                     $total_c3['where'] = array(
-                        'channel_id' => $value['id'],
-                        'date_rgt >=' => $yesterday_US,
-                        'date_rgt <=' => $today_US);
+                        'campaign_id' => $value['id'],
+                        'date_rgt >=' => $today_VN,
+                        'date_rgt <=' => $today_VN_end);
                     $param['total_C3'] = count($this->contacts_model->load_all($total_c3));
                     $this->channel_cost_model->insert($param);
                 }
@@ -167,14 +166,13 @@ class Cron extends CI_Controller {
                 /*
                  * Lấy tổng số C3 ngày hôm nay của adset có id = $value['id']
                  */
-                $today_begin = $today; // 00:00:00 $today
-                $yesterday_US = $today_begin - 3600 * 10;
-                $today_US = $today_begin + 3600 * 14;
+                $today_VN = $today + 3600 * 14;
+                $today_VN_end = $today + 3600 * 38;
                 $total_c3 = array();
                 $total_c3['where'] = array(
-                    'adset_id' => $value['id'],
-                    'date_rgt >=' => $yesterday_US,
-                    'date_rgt <=' => $today_US);
+                    'campaign_id' => $value['id'],
+                    'date_rgt >=' => $today_VN,
+                    'date_rgt <=' => $today_VN_end);
                 $param['total_C3'] = count($this->contacts_model->load_all($total_c3));
                 $this->adset_cost_model->insert($param);
             }
@@ -220,14 +218,13 @@ class Cron extends CI_Controller {
                 /*
                  * Lấy tổng số C3 ngày hôm nay của ad có id = $value['id']
                  */
-                $today_begin = $today; // 00:00:00 $today
-                $yesterday_US = $today_begin - 3600 * 10;
-                $today_US = $today_begin + 3600 * 14;
+                $today_VN = $today + 3600 * 14;
+                $today_VN_end = $today + 3600 * 38;
                 $total_c3 = array();
                 $total_c3['where'] = array(
-                    'ad_id' => $value['id'],
-                    'date_rgt >=' => $yesterday_US,
-                    'date_rgt <=' => $today_US);
+                    'campaign_id' => $value['id'],
+                    'date_rgt >=' => $today_VN,
+                    'date_rgt <=' => $today_VN_end);
                 $param['total_C3'] = count($this->contacts_model->load_all($total_c3));
                 $this->ad_cost_model->insert($param);
             }
@@ -245,6 +242,20 @@ class Cron extends CI_Controller {
         for ($i = 1; $i <= 30; $i++) {
             $day = "-" . $i . " days";
             $this->update_channel_cost($day);
+        }
+    }
+
+    function test_cost_adset() {
+        for ($i = 1; $i <= 30; $i++) {
+            $day = "-" . $i . " days";
+            $this->update_adset_cost($day);
+        }
+    }
+
+    function test_cost_ads() {
+        for ($i = 1; $i <= 30; $i++) {
+            $day = "-" . $i . " days";
+            $this->update_ad_cost($day);
         }
     }
 

@@ -5,24 +5,15 @@
  * and open the template in the editor.
  */
 
-$date_from = 'filter_date_from_' . $key;
-$date_end = 'filter_date_end_' . $key;
+$date_name = 'filter_date_' . $key;
 ?>
-<tr class="filter_date_rgt_from">
-    <td class="text-right"> <?php echo h_find_name_display($key, $this->list_view); ?> từ: </td>
+<tr class="filter_date_date_rgt">
+    <td class="text-right"> <?php echo h_find_name_display($key, $this->list_view); ?>  : </td>
     <td>
-        <input type="text" class="form-control datepicker" name="<?php echo $date_from; ?>"
-        <?php if (filter_has_var(INPUT_GET, $date_from)) { ?>
-                   value="<?php echo filter_input(INPUT_GET, $date_from); ?>"
-               <?php } ?> />
-    </td>
-</tr>
-<tr class="filter_date_rgt_end">
-    <td class="text-right"> đến: </td>
-    <td>
-        <input type="text" class="form-control datepicker" name="<?php echo $date_end; ?>"
-               <?php if (filter_has_var(INPUT_GET, $date_end)) { ?>
-                   value="<?php echo filter_input(INPUT_GET, $date_end); ?>"
-               <?php } ?> />
+        <input type="text" class="form-control daterangepicker" name="<?php echo $date_name; ?>" style="position: static"
+        <?php if (filter_has_var(INPUT_GET, $date_name)) { ?>
+                   value="<?php echo filter_input(INPUT_GET, $date_name) ;?>"
+               <?php } ?> 
+               />
     </td>
 </tr>
