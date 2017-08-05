@@ -17,4 +17,16 @@ class Channel_model extends MY_Model {
         parent::__construct();
         $this->table = 'channel';
     }
+
+    public function find_channel_name($id) {
+        $name = '';
+        $input2 = array();
+        $input2['where'] = array('id' => $id);
+        $names = $this->load_all($input2);
+        if (!empty($names)) {
+            $name = $names[0]['name'];
+        }
+        return $name;
+    }
+
 }

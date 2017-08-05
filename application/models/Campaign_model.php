@@ -17,4 +17,17 @@ class Campaign_model extends MY_Model {
         parent::__construct();
         $this->table = 'campaign';
     }
+    
+    
+    public function find_campaign_name($id) {
+        $name = '';
+        $input2 = array();
+        $input2['where'] = array('id' => $id);
+        $campaigns = $this->load_all($input2);
+        if (!empty($campaigns)) {
+            $name = $campaigns[0]['name'];
+        }
+        return $name;
+    }
+
 }

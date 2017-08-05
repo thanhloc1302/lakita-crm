@@ -37,6 +37,22 @@ class Link extends MY_Table {
                 'name_display' => 'URL',
                 'order' => '1'
             ),
+            'channel' => array(
+                'name_display' => 'Kênh',
+                'order' => '1'
+            ),
+            'campaign' => array(
+                'name_display' => 'Chiến dịch',
+                'order' => '1'
+            ),
+            'adset' => array(
+                'name_display' => 'Adset',
+                'order' => '1'
+            ),
+            'ad' => array(
+                'name_display' => 'Ad',
+                'order' => '1'
+            ),
             'time' => array(
                 'type' => 'datetime',
                 'name_display' => 'Ngày tạo',
@@ -64,37 +80,16 @@ class Link extends MY_Table {
             $date_form = strtotime($get['date_from']);
             $date_end = strtotime($get['date_end']);
         }
-//        foreach ($this->data['rows'] as &$value) {
-//            /*
-//             * Lấy số C3 & số tiền tiêu
-//             */
-//
-//            $input = array();
-//            $input['where'] = array('campaign_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
-//            $channel_cost = $this->campaign_cost_model->load_all($input);
-//            $channel_cost = h_caculate_channel_cost($channel_cost);
-//            if (!empty($channel_cost)) {
-//                $value['total_C1'] = $channel_cost['total_C1'];
-//                $value['total_C2'] = $channel_cost['total_C2'];
-//                $value['total_C3'] = $channel_cost['total_C3'];
-//                $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
-//                $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
-//                $value['spend'] = $channel_cost['spend'];
-//                $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) . ' đ' : '#N/A';
-//                $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) . ' đ' : '#N/A';
-//                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) . ' đ' : '#N/A';
-//            } else {
-//                $value['total_C1'] = '#NA';
-//                $value['total_C2'] = '#NA';
-//                $value['total_C3'] = '#NA';
-//                $value['C2pC1'] = '#NA';
-//                $value['C3pC2'] = '#NA';
-//                $value['spend'] = '#NA';
-//                $value['pricepC1'] = '#NA';
-//                $value['pricepC2'] = '#NA';
-//                $value['pricepC3'] = '#NA';
-//            }
-//        }
+        $this->load->model('channel_model');
+        $this->load->model('campaign_model');
+        $this->load->model('adset_model');
+        $this->load->model('ad_model');
+        foreach ($this->data['rows'] as &$value) {
+           $value['channel'] = $this->channel_model->find_channel_name($value['channel_id']);
+           $value['campaign'] = $this->campaign_model->find_campaign_name($value['campaign_id']);
+           $value['adset'] = $this->adset_model->find_adset_name($value['adset_id']);
+           $value['ad'] = $this->ad_model->find_ad_name($value['ad_id']);
+        }
         unset($value);
     }
 
@@ -102,13 +97,13 @@ class Link extends MY_Table {
      * Ghi đè hàm xóa lớp cha
      */
 
-    function delete_item() {
-        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
-    }
-
-    function delete_multi_item() {
-        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
-    }
+//    function delete_item() {
+//        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
+//    }
+//
+//    function delete_multi_item() {
+//        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
+//    }
 
     function index($offset = 0) {
         $this->list_filter = array(
@@ -158,7 +153,7 @@ class Link extends MY_Table {
                     'type' => 'array',
                     'value' => $channels,
                 ),
-                'campagin' => array(
+                'campaign' => array(
                     'type' => 'custom'
                 ),
             ),
@@ -198,24 +193,27 @@ class Link extends MY_Table {
                         $param[$value] = $post['add_' . $value];
                     }
                 }
+                if(!isset($param['landingpage_id']) || $param['landingpage_id'] == 0){
+                      show_error_and_redirect('Vui lòng chọn landing page!', '', false);
+                }
                 $param['time'] = time();
                 $param['marketer_id'] = $this->user_id;
                 $link_id = $this->{$this->model}->insert_return_id($param, 'id');
-                
-                
+
+
                 $input_ld = array();
                 $input_ld['where'] = array('id' => $post['add_landingpage_id']);
                 $this->load->model('landingpage_model');
                 $lds = $this->landingpage_model->load_all($input_ld);
-                
-                $url = 'http://'.$lds[0]['code'].'?link='.$link_id;
+
+                $url = 'http://' . $lds[0]['code'] . '?link=' . $link_id;
                 /*
                  * Cập nhật lại url
                  */
                 $where = array('id' => $link_id);
                 $data = array('url' => $url);
                 $this->{$this->model}->update($where, $data);
-                show_error_and_redirect('Link vừa tạo là '. $url);
+                show_error_and_redirect('Link vừa tạo là ' . $url);
             }
         }
     }
@@ -280,7 +278,7 @@ class Link extends MY_Table {
                             Chọn campagin
                         </td>
                         <td>
-                            <select class="form-control selectpicker" name="add_campagin_id">
+                            <select class="form-control selectpicker" name="add_campaign_id">
                                 <option value="0"> Chọn campagin </option>';
             foreach ($campaigns as $value) {
                 $xhml .= "<option value='{$value['id']}'> {$value['name']} </option>";

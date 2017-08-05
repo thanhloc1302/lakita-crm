@@ -24,7 +24,7 @@
                 }
             });
         });
-        $(document).on('change', '[name="add_campagin_id"]', function () {
+        $(document).on('change', '[name="add_campaign_id"]', function () {
             var campagin_id = $(this).val();
             $.ajax({
                 url: $('#base_url').val() + 'MANAGERS/link/get_adset',
