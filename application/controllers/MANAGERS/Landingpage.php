@@ -32,7 +32,7 @@ class Landingpage extends MY_Table {
             'id' => array(
                 'name_display' => 'ID landingpage'
             ),
-            'code' => array(
+            'url' => array(
                 'name_display' => 'URL',
                 'order' => '1'
             ),
@@ -111,7 +111,7 @@ class Landingpage extends MY_Table {
         $courses = $this->courses_model->load_all($input);
         $this->list_add = array(
             'left_table' => array(
-                'code' => array(
+                'url' => array(
                 ),
                 'course_code' => array(
                     'type' => 'array',
@@ -136,18 +136,19 @@ class Landingpage extends MY_Table {
             /*
              * Kiểm tra URL đã tồn tại chưa 
              */
-            if ($this->{$this->model}->check_exists(array('code' => $post['add_code']))) {
+            if ($this->{$this->model}->check_exists(array('url' => $post['add_url']))) {
                 redirect_and_die('URL đã tồn tại!');
             }
             if ($post['add_active'] != '0' && $post['add_active'] != '1') {
                 redirect_and_die('Trạng thái hoạt động là 0 hoặc 1!');
             }
-            $paramArr = array('code', 'course_code', 'price_root', 'price', 'active');
+            $paramArr = array('url', 'course_code', 'price_root', 'price', 'active');
             foreach ($paramArr as $value) {
                 if (isset($post['add_' . $value])) {
                     $param[$value] = $post['add_' . $value];
                 }
             }
+            $param['code'] = str_replace('.html', '', str_replace('https://lakita.vn/', '',  $param['url']));
             $this->{$this->model}->insert($param);
             show_error_and_redirect('Thêm landing page thành công!');
         }
@@ -164,7 +165,7 @@ class Landingpage extends MY_Table {
         $courses = $this->courses_model->load_all($input);
         $this->list_edit = array(
             'left_table' => array(
-                'code' => array(
+                'url' => array(
                 ),
                 'course_code' => array(
                     'type' => 'array',
@@ -192,15 +193,16 @@ class Landingpage extends MY_Table {
             $input = array();
             $input['where'] = array('id' => $id);
             $curr_code = $this->{$this->model}->load_all($input);
-            if ($post['edit_code'] != $curr_code[0]['code'] && $this->{$this->model}->check_exists(array('code' => $post['edit_code']))) {
+            if ($post['edit_url'] != $curr_code[0]['url'] && $this->{$this->model}->check_exists(array('url' => $post['edit_url']))) {
                 redirect_and_die('URL landing page đã tồn tại!');
             }
-            $paramArr = array('code', 'course_code', 'price_root','price', 'active');
+            $paramArr = array('url', 'course_code', 'price_root','price', 'active');
             foreach ($paramArr as $value) {
                 if (isset($post['edit_' . $value])) {
                     $param[$value] = $post['edit_' . $value];
                 }
             }
+            $param['code'] = str_replace('.html', '', str_replace('https://lakita.vn/', '',  $param['url']));
             $this->{$this->model}->update($input['where'], $param);
         }
         show_error_and_redirect('Sửa Landing page thành công!');

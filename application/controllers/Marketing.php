@@ -96,9 +96,9 @@ class Marketing extends MY_Table {
          */
 
         $this->load->model('channel_model');
-        $this->load->model('campaign_model');
-        $this->load->model('adset_model');
-        $this->load->model('ad_model');
+//        $this->load->model('campaign_model');
+//        $this->load->model('adset_model');
+//        $this->load->model('ad_model');
         $this->load->model('staffs_model');
         foreach ($this->data['rows'] as &$value) {
             $class = '';
@@ -112,9 +112,9 @@ class Marketing extends MY_Table {
                 $value['warning_class'] = $class;
             }
             $value['channel'] = $this->channel_model->find_channel_name($value['channel_id']);
-            $value['campaign'] = $this->campaign_model->find_campaign_name($value['campaign_id']);
-            $value['adset'] = $this->adset_model->find_adset_name($value['adset_id']);
-            $value['ad'] = $this->ad_model->find_ad_name($value['ad_id']);
+//            $value['campaign'] = $this->campaign_model->find_campaign_name($value['campaign_id']);
+//            $value['adset'] = $this->adset_model->find_adset_name($value['adset_id']);
+//            $value['ad'] = $this->ad_model->find_ad_name($value['ad_id']);
             $value['marketer'] = $this->staffs_model->find_staff_name($value['marketer_id']);
         }
         unset($value);

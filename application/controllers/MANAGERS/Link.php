@@ -97,13 +97,13 @@ class Link extends MY_Table {
      * Ghi đè hàm xóa lớp cha
      */
 
-//    function delete_item() {
-//        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
-//    }
-//
-//    function delete_multi_item() {
-//        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
-//    }
+    function delete_item() {
+        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
+    }
+
+    function delete_multi_item() {
+        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
+    }
 
     function index($offset = 0) {
         $this->list_filter = array(
@@ -206,7 +206,7 @@ class Link extends MY_Table {
                 $this->load->model('landingpage_model');
                 $lds = $this->landingpage_model->load_all($input_ld);
 
-                $url = 'http://' . $lds[0]['code'] . '?link=' . $link_id;
+                $url = $lds[0]['url'] . '?link=' . $link_id;
                 /*
                  * Cập nhật lại url
                  */

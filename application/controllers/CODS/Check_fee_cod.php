@@ -64,7 +64,7 @@ class Check_fee_cod extends MY_Table {
                 'display' => 'none'
             ),
             'fee_check' => array(
-                 'type' => 'custom',
+                'type' => 'custom',
                 'name_display' => 'Đã lưu?'
             )
         );
@@ -72,8 +72,7 @@ class Check_fee_cod extends MY_Table {
         $this->set_model('fee_cod_check_model');
         $this->load->model('fee_cod_check_model');
     }
-    
-    
+
     /*
      * override lại hàm show_table của lớp cha
      */
@@ -146,8 +145,8 @@ class Check_fee_cod extends MY_Table {
         }
         show_error_and_redirect('Xóa thành công các dòng đã chọn!');
     }
-   
-/*
+
+    /*
      * Các dòng đối soát chưa lưu (nháp)
      */
 
@@ -303,7 +302,8 @@ class Check_fee_cod extends MY_Table {
                         'noi_den' => $noi_den,
                         'dich_vu' => $dich_vu,
                         'weight_envelope' => $weight_envelope,
-                        'fee_resend' => $money);
+                        'fee_resend' => $money,
+                        'fee' => 0);
                 }
             } else {
                 if ($stt > 0) {
@@ -315,7 +315,8 @@ class Check_fee_cod extends MY_Table {
                         'noi_den' => $noi_den,
                         'dich_vu' => $dich_vu,
                         'weight_envelope' => $weight_envelope,
-                        'fee' => $money);
+                        'fee' => $money,
+                        'fee_resend' => 0);
                 }
             }
         }
@@ -333,8 +334,8 @@ class Check_fee_cod extends MY_Table {
             } else {
                 $fee[$key]['is_match'] = 0;
             }
-            if($fee[$key]['weight_envelope'] > 50) {
-                 $fee[$key]['is_match'] = 0;
+            if ($fee[$key]['weight_envelope'] > 50) {
+                $fee[$key]['is_match'] = 0;
             }
             $fee[$key]['time'] = time();
             $fee[$key]['duplicate_id'] = $this->_find_duplicate_fee_id($value);
@@ -342,8 +343,6 @@ class Check_fee_cod extends MY_Table {
         }
         redirect(base_url('cod/doi-soat-cuoc.html'));
     }
-
-    
 
     function confirm_check_fee_cod() {
         $post = $this->input->post();
@@ -374,15 +373,15 @@ class Check_fee_cod extends MY_Table {
         $this->load->model('call_log_model');
         foreach ($contacts as $value) {
             $where = array('code_cross_check' => $value['code_cross_check']);
-            
+
             $curr_contact = $this->contacts_model->load_all(array('where' => $where));
             $curr_fee = $curr_contact[0]['cod_fee'];
             $fee = $curr_fee + $value['fee'];
-            
+
             $curr_fee_resend = $curr_contact[0]['fee_resend'];
             $fee_resend = $curr_fee_resend + $value['fee_resend'];
-            
-            $data = array('cod_fee' => $fee, 
+
+            $data = array('cod_fee' => $fee,
                 'fee_resend' => $fee_resend,
                 'weight_envelope' => $value['weight_envelope'],
                 'last_activity' => time());
@@ -394,7 +393,7 @@ class Check_fee_cod extends MY_Table {
 
             $param['contact_id'] = $curr_contact[0]['id'];
             $param['staff_id'] = $this->user_id;
-            $param['content_change'] = 'Cước vận đơn: ' . $fee. ' - Cước chuyển hoàn: ' . $fee_resend;
+            $param['content_change'] = 'Cước vận đơn: ' . $fee . ' - Cước chuyển hoàn: ' . $fee_resend;
             $param['time'] = time();
             $this->call_log_model->insert($param);
             // echo $this->db->last_query();
@@ -408,13 +407,9 @@ class Check_fee_cod extends MY_Table {
         $input = array();
         $input['select'] = 'id';
         $input['where'] = array(
-           // 'stt' => $fee['stt'],
-            //'ngay_gui' => $fee['ngay_gui'],
-            //'ma_phieu_gui' => $fee['ma_phieu_gui'],
-            //'noi_den' => $fee['noi_den'],
-            //'dich_vu' => $fee['dich_vu'],
-            //'weight_envelope' => $fee['weight_envelope']
-             'code' => $fee['code'],
+            'fee' => $fee['fee'],
+            'fee_resend' => $fee['fee_resend'],
+            'code' => $fee['code'],
         );
         $duplicae_id = $this->fee_cod_check_model->load_all($input);
         if (!empty($duplicae_id)) {

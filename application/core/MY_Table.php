@@ -20,7 +20,7 @@ class MY_Table extends MY_Controller {
     /*
      * Các biến sử dụng gồm
 
-   
+
      * 
      *      - kiểu text: hiển thị text (mặc định kiểu text nên ko cần truyền vào)
      *      - kiểu currency: kiểu giá cả ( 199.000 VNĐ)
@@ -31,20 +31,21 @@ class MY_Table extends MY_Controller {
     /*
      * Biến chứa model tương ứng của danh mục
      */
+
     protected $model = '';
-   
+
     /*
      * $conditional: biến lấy điều kiện khi hiển thị danh sách item,
      *      ví dụ khi hiển thị danh sách contact L8 thì điều kiện là cod_status_id = 3
      */
     private $conditional = '';
-    
+
     /*
      *   $offset, $limit: dùng khi phân trang
      */
     private $offset = 0;
     private $limit = 0;
-    
+
     /*
      * Biến khi hiển thị các trường thông tin của bảng ra ngoài view.
      * Mỗi trường là một mảng trong đó key là tên trường trong db, 
@@ -87,14 +88,12 @@ class MY_Table extends MY_Controller {
      * Filter
      */
     public $list_filter = '';
-    
+
     /*
      * add item
      */
-
     public $list_add = array();
-    
-    
+
     public function __construct() {
         parent::__construct();
         $this->limit = $this->per_page;
@@ -191,7 +190,8 @@ class MY_Table extends MY_Controller {
         $this->end_paging = (($this->offset + $this->limit) < $total_row) ? ($this->offset + $this->limit) : $total_row;
         $this->total_paging = $total_row;
     }
-     function show_add_item() {
+
+    function show_add_item() {
         $this->load->view('base/add_item/ajax_content');
     }
 
@@ -270,7 +270,19 @@ class MY_Table extends MY_Controller {
                     $column_name = substr($key, strlen("filter_date_end_"));
                     $input_get['where'][$column_name . '<='] = strtotime($value) + 3600 * 24;
                 }
+                if (strpos($key, "filter_date_") !== FALSE && $value != '') {
+                    $dateArr = explode('-', $value);
+                    $date_from = trim($dateArr[0]);
+                    $date_from = strtotime(str_replace("/", "-", $date_from));
+                    $date_end = trim($dateArr[1]);
+                    $date_end = strtotime(str_replace("/", "-", $date_end)) + 3600 * 24;
+                    $column_name = substr($key, strlen("filter_date_"));
+                    $input_get['where'][$column_name . '>='] = $date_from;
+                    $input_get['where'][$column_name . '<='] = $date_end;
+                }
+
                 /*
+                 * 
                  * Lọc nhị phân
                  */
                 if (strpos($key, "filter_binary_") !== FALSE && $value == 'yes') {
