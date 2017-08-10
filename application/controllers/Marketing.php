@@ -55,11 +55,28 @@ class Marketing extends MY_Table {
                 'name_display' => 'Ngày đăng ký',
                 'order' => '1'
             ),
-              'channel_id' => array(
+            'channel' => array(
                 'name_display' => 'Kênh',
+                'order' => '1'
+            ),
+//            'campaign' => array(
+//                'name_display' => 'Chiến dịch',
+//                'order' => '1'
+//            ),
+//            'adset' => array(
+//                'name_display' => 'Adset',
+//                'order' => '1'
+//            ),
+//            'ad' => array(
+//                'name_display' => 'Ad',
+//                'order' => '1'
+//            ),
+            'marketer' => array(
+                'name_display' => 'Marketer',
+                'order' => '1'
             ),
             'duplicate_id' => array(
-                'name_display' => 'Contact trùng', 
+                'name_display' => 'Contact trùng',
                 'display' => 'none'
             )
         );
@@ -77,6 +94,12 @@ class Marketing extends MY_Table {
          * Nếu có điều kiện đặc biệt thì thêm vào $row class css đặc biệt khi hiển thị
          * ví dụ: giá khóa học lớn hơn 4 triệu thì báo đỏ
          */
+
+        $this->load->model('channel_model');
+        $this->load->model('campaign_model');
+        $this->load->model('adset_model');
+        $this->load->model('ad_model');
+        $this->load->model('staffs_model');
         foreach ($this->data['rows'] as &$value) {
             $class = '';
             if ($value['is_hide'] == 1) {
@@ -88,11 +111,15 @@ class Marketing extends MY_Table {
             if ($class != '') {
                 $value['warning_class'] = $class;
             }
+            $value['channel'] = $this->channel_model->find_channel_name($value['channel_id']);
+            $value['campaign'] = $this->campaign_model->find_campaign_name($value['campaign_id']);
+            $value['adset'] = $this->adset_model->find_adset_name($value['adset_id']);
+            $value['ad'] = $this->ad_model->find_ad_name($value['ad_id']);
+            $value['marketer'] = $this->staffs_model->find_staff_name($value['marketer_id']);
         }
         unset($value);
     }
-    
-    
+
     function delete_item() {
         die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
     }
@@ -101,16 +128,14 @@ class Marketing extends MY_Table {
         show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
     }
 
-
     function index($offset = 0) {
-         $this->list_filter = array(
+        $this->list_filter = array(
             'left_filter' => array(
-               'duplicate_id' => array(
+                'duplicate_id' => array(
                     'type' => 'binary',
                 )
             ),
             'right_filter' => array(
-                
             )
         );
         $conditional = array();
@@ -126,7 +151,7 @@ class Marketing extends MY_Table {
     }
 
     function view_all($offset = 0) {
-          $this->list_filter = array(
+        $this->list_filter = array(
             'left_filter' => array(
                 'date_rgt' => array(
                     'type' => 'datetime',

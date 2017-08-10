@@ -93,6 +93,7 @@ class MY_Model extends CI_Model {
         $query = $this->db->get($this->table);
         //echo $this->db->last_query();
         return $query->result_array();
+        //var_dump($query->result_array());
     }
 
     /**

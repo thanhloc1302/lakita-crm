@@ -52,6 +52,21 @@ class Contact_api extends REST_Controller {
             if (isset($input['ordering_status_id'])) {
                 $param['ordering_status_id'] = $input['ordering_status_id'];
             }
+            if (isset($input['link_id'])) {
+                $this->load->model('link_model');
+                $input_link = array();
+                $input_link['where'] = array('id' => $input['link_id']);
+                $links = $this->link_model->load_all($input_link);
+                if(!empty($links)) {
+                   $param['marketer_id'] = $links[0]['marketer_id'];
+                   $param['channel_id'] = $links[0]['channel_id'];
+                   $param['campaign_id'] = $links[0]['campaign_id'];
+                   $param['adset_id'] = $links[0]['adset_id'];
+                   $param['ad_id'] = $links[0]['ad_id'];
+                   $param['landingpage_id'] = $links[0]['landingpage_id'];
+                   $param['link_id'] = $links[0]['id'];
+                }
+            }
 
             $param['date_rgt'] = time();
             $param['last_activity'] = time();

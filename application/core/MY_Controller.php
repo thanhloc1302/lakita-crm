@@ -23,7 +23,7 @@ class MY_Controller extends CI_Controller {
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
-        //   echo date('H:i:s d/m/Y', 1500915600);die;
+        // echo date('H:i:s d/m/Y', 1501923156);die;
         //  echo strtotime('01-07-2016'); die;
         // echo strtotime(date("d-m-Y"));die;
         //echo $this->input->ip_address();die;
@@ -46,6 +46,7 @@ class MY_Controller extends CI_Controller {
         }
         $user_id = $this->session->userdata('user_id');
         if (!isset($user_id)) {
+            $this->session->set_userdata('last_page', current_url());
             redirect(base_url('dang-nhap.html'));
             die;
         }

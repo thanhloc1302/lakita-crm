@@ -68,6 +68,11 @@ class Home extends CI_Controller {
                 $this->session->set_userdata('name', $result[0]['name']);
                 $this->session->set_userdata('role_id', $result[0]['role_id']);
                 $this->session->set_userdata('image_staff', $result[0]['image']);
+                $last_page =  $this->session->userdata('last_page');
+                if(isset($last_page)){
+                    $this->session->unset_userdata('last_page');
+                    redirect($last_page);
+                }
                 switch ($result[0]['role_id']) {
                     case 1:
                         redirect(base_url('tu-van-tuyen-sinh/trang-chu.html'));
