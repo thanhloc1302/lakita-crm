@@ -112,6 +112,13 @@ class Ad extends MY_Table {
              * Lấy số C3 & số tiền tiêu
              */
 
+            $total_c3 = array();
+            $total_c3['where'] = array(
+                'ad_id' => $value['id'],
+               'date_rgt >=' => $date_form + 14*3600,
+                'date_rgt <=' => $date_end + 3600*38);
+            $value['total_C3'] = count($this->contacts_model->load_all($total_c3));
+
             $input = array();
             $input['where'] = array('ad_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
             $ad_cost = $this->ad_cost_model->load_all($input);
@@ -119,7 +126,6 @@ class Ad extends MY_Table {
             if (!empty($ad_cost)) {
                 $value['total_C1'] = $ad_cost['total_C1'];
                 $value['total_C2'] = $ad_cost['total_C2'];
-                $value['total_C3'] = $ad_cost['total_C3'];
                 $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
                 $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
                 $value['spend'] = $ad_cost['spend'];

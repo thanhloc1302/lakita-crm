@@ -208,10 +208,8 @@ class MY_Controller extends CI_Controller {
         if (!$has_user_order) {
             $input['order']['id'] = 'DESC';
         }
-        //   print_r($input);
-        //$total_row = count($this->contacts_model->load_all($input));
+       
         $total_row = $this->contacts_model->m_count_all_result_from_get($input);
-//echo $this->db->last_query();
         $result['total_row'] = $total_row; //lấy tổng dòng
         //lấy data sau khi phân trang
         $offset_max = intval($total_row / $limit) * $limit;  //vị trí tối đa
@@ -221,6 +219,18 @@ class MY_Controller extends CI_Controller {
             $input['limit'] = array($limit, $offset1);
         }
         $result['data'] = $this->contacts_model->load_all($input);
+        
+        /*
+         * Lấy thông tin 1 contact đăng ký nhiều khóa học
+         */
+        
+        foreach ( $result['data'] as &$value){
+            $input = array();
+            $input['where'] = array('phone' => $value['phone']);
+            $courses = $this->contacts_model->load_all($input);
+            $value['star'] = count($courses);
+        }
+        unset($value);
 
         //lấy thông tin hiển thị contact đầu, contact cuối và tổng contact
         $this->begin_paging = ($total_row == 0) ? 0 : $offset + 1;

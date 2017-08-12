@@ -118,10 +118,17 @@ class Marketer extends MY_Table {
     }
 
     function index($offset = 0) {
+        $this->load->model('campaign_model');
+        $input = array();
+        $input['where'] = array('active' => 1);
+        $this->data['campaigns'] = $this->campaign_model->load_all($input);
         $this->list_filter = array(
             'left_filter' => array(
                 'duplicate_id' => array(
                     'type' => 'binary',
+                ),
+                'campaign' => array(
+                    'type' => 'custom'
                 )
             ),
             'right_filter' => array(

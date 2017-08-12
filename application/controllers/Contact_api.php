@@ -25,8 +25,6 @@ class Contact_api extends REST_Controller {
             $param['name'] = isset($input['name']) ? $input['name'] : '';
             $param['name'] = trim(str_replace('[RGT_FROM_MOBILE]', '', $param['name']));
             $param['phone'] = isset($input['phone']) ? trim($input['phone']) : '';
-            if ($param['name'] == '' || $param['phone'] == '')
-                die;
             $email = isset($input['email']) ? $input['email'] : '';
             $param['email'] = str_replace('NO_PARAM@gmail.com', '', $email);
             $address = isset($input['dia_chi']) ? $input['dia_chi'] : '';
@@ -52,47 +50,52 @@ class Contact_api extends REST_Controller {
             if (isset($input['ordering_status_id'])) {
                 $param['ordering_status_id'] = $input['ordering_status_id'];
             }
+            /*
+             * MOL
+             */
             if (isset($input['link_id'])) {
                 $this->load->model('link_model');
                 $input_link = array();
                 $input_link['where'] = array('id' => $input['link_id']);
                 $links = $this->link_model->load_all($input_link);
-                if(!empty($links)) {
-                   $param['marketer_id'] = $links[0]['marketer_id'];
-                   $param['channel_id'] = $links[0]['channel_id'];
-                   $param['campaign_id'] = $links[0]['campaign_id'];
-                   $param['adset_id'] = $links[0]['adset_id'];
-                   $param['ad_id'] = $links[0]['ad_id'];
-                   $param['landingpage_id'] = $links[0]['landingpage_id'];
-                   $param['link_id'] = $links[0]['id'];
+                if (!empty($links)) {
+                    $param['marketer_id'] = $links[0]['marketer_id'];
+                    $param['channel_id'] = $links[0]['channel_id'];
+                    $param['campaign_id'] = $links[0]['campaign_id'];
+                    $param['adset_id'] = $links[0]['adset_id'];
+                    $param['ad_id'] = $links[0]['ad_id'];
+                    $param['landingpage_id'] = $links[0]['landingpage_id'];
+                    $param['link_id'] = $links[0]['id'];
                 }
             }
 
             $param['date_rgt'] = time();
             $param['last_activity'] = time();
-            if (isset($input['contact_cc'])) {
-                $this->load->model('contact_cc_model');
-                $this->contact_cc_model->insert_from_mol($param);
-            } else {
-                /* ======= Lọc trùng contact ============ */
-                $param['duplicate_id'] = $this->_find_dupliacte_contact($input['phone'], $input['course_code']);
+            $param['duplicate_id'] = $this->_find_dupliacte_contact($input['phone'], $input['course_code']);
 
-                //đếm số lần đăng ký khóa học
-                $input_count = array();
-                $input_count['where'] = array('phone' => $param['phone'], 'course_code !=' => $param['course_code'], 'is_hide' => '0');
-                $contacts = $this->contacts_model->load_all($input_count);
-                if (!empty($contacts)) {
-                    $param['star'] = $contacts[0]['star'] + 1;
-                    //update số lần contact đăng kí vào các contact
-                    $where = array('phone' => $param['phone'], 'course_code !=' => $param['course_code']);
-                    $data = array('star' => $param['star']);
-                    $this->contacts_model->update($where, $data);
-                }
-                $this->contacts_model->insert_from_mol($param);
-            }
-
+            $this->contacts_model->insert_from_mol($param);
             $this->load->model('last_contact_id_model');
             $this->last_contact_id_model->update(array(), array('id' => time()));
+
+            /*
+             * Gửi email
+             */
+
+            $this->load->model('courses_model');
+            $data = array();
+            $data['e_name'] = $input['name'];
+            $data['e_phone'] = $input['phone'];
+            $data['e_address'] = $address;
+            $data['e_price_sale'] = $input['price_purchase'];
+            $data['e_course_name'] = $this->courses_model->find_course_name($input['course_code']);
+            $data['e_price_root'] = $this->courses_model->find_course_price_root($input['course_code']);
+            $content = $this->load->view('email', $data, TRUE);
+            $this->load->library("email");
+            $this->email->from('cskh@lakita.vn', "Hệ thống học trực tuyến lakita.vn");
+            $this->email->to($input['email']);
+            $this->email->subject('Lakita.vn Thông tin khóa học đã đăng ký.');
+            $this->email->message($content);
+            $this->email->send();
         }
     }
 

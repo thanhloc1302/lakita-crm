@@ -54,19 +54,6 @@ class Cron extends CI_Controller {
                 $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
                 $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
                 $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
-
-                /*
-                 * Lấy tổng số C3 ngày hôm nay của campain có id = $value['id']
-                 */
-
-                $today_VN = $today + 3600 * 14;
-                $today_VN_end = $today + 3600 * 38;
-                $total_c3 = array();
-                $total_c3['where'] = array(
-                    'campaign_id' => $value['id'],
-                    'date_rgt >=' => $today_VN,
-                    'date_rgt <=' => $today_VN_end);
-                $param['total_C3'] = count($this->contacts_model->load_all($total_c3));
                 $this->campaign_cost_model->insert($param);
             }
         }
@@ -109,18 +96,6 @@ class Cron extends CI_Controller {
                     $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
                     $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
                     $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
-
-                    /*
-                     * Lấy tổng số C3 ngày hôm nay của campain có id = $value['id']
-                     */
-                    $today_VN = $today + 3600 * 14;
-                    $today_VN_end = $today + 3600 * 38;
-                    $total_c3 = array();
-                    $total_c3['where'] = array(
-                        'campaign_id' => $value['id'],
-                        'date_rgt >=' => $today_VN,
-                        'date_rgt <=' => $today_VN_end);
-                    $param['total_C3'] = count($this->contacts_model->load_all($total_c3));
                     $this->channel_cost_model->insert($param);
                 }
             }
@@ -162,18 +137,6 @@ class Cron extends CI_Controller {
                 $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
                 $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
                 $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
-
-                /*
-                 * Lấy tổng số C3 ngày hôm nay của adset có id = $value['id']
-                 */
-                $today_VN = $today + 3600 * 14;
-                $today_VN_end = $today + 3600 * 38;
-                $total_c3 = array();
-                $total_c3['where'] = array(
-                    'campaign_id' => $value['id'],
-                    'date_rgt >=' => $today_VN,
-                    'date_rgt <=' => $today_VN_end);
-                $param['total_C3'] = count($this->contacts_model->load_all($total_c3));
                 $this->adset_cost_model->insert($param);
             }
         }
@@ -214,18 +177,6 @@ class Cron extends CI_Controller {
                 $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
                 $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
                 $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
-
-                /*
-                 * Lấy tổng số C3 ngày hôm nay của ad có id = $value['id']
-                 */
-                $today_VN = $today + 3600 * 14;
-                $today_VN_end = $today + 3600 * 38;
-                $total_c3 = array();
-                $total_c3['where'] = array(
-                    'campaign_id' => $value['id'],
-                    'date_rgt >=' => $today_VN,
-                    'date_rgt <=' => $today_VN_end);
-                $param['total_C3'] = count($this->contacts_model->load_all($total_c3));
                 $this->ad_cost_model->insert($param);
             }
         }

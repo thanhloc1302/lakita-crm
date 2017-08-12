@@ -31,12 +31,25 @@ class Courses_model extends MY_Model {
     }
 
     function find_course_name($course_code) {
+        $name = '';
         $input2 = array();
         $input2['where'] = array('course_code' => $course_code);
         $courses = $this->load_all($input2);
-        if (!empty($courses))
-            return $courses[0]['name_course'];
-        return '';
+        if (!empty($courses)) {
+            $name = $courses[0]['name_course'];
+        }
+        return $name;
+    }
+
+    function find_course_price_root($course_code) {
+        $price = 600000;
+        $input2 = array();
+        $input2['where'] = array('course_code' => $course_code);
+        $courses = $this->load_all($input2);
+        if (!empty($courses)) {
+            $price = $courses[0]['price'];
+        }
+        return $price;
     }
 
 }
