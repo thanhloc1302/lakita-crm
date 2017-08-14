@@ -280,14 +280,17 @@ class MY_Table extends MY_Controller {
                     $input_get['where'][$column_name . '>='] = $date_from;
                     $input_get['where'][$column_name . '<='] = $date_end;
                 }
-                
+
                 /*
                  * Lọc theo mảng (chọn nhiều)
                  */
 
-                print_arr($get);
-                
-                
+                if (strpos($key, "filter_arr_multi_") !== FALSE && !empty($value)) {
+                      $column_name = substr($key, strlen("filter_arr_multi_"));
+                    $input_get['where_in'][$column_name] = $value;
+                    
+                }
+
                 /*
                  * 
                  * Lọc nhị phân

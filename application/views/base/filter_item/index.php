@@ -16,6 +16,11 @@
                             $this->load->view('base/filter_item/binary', $data);
                             break;
 
+                        case 'arr_multi' :
+                            $data['key'] = $key;
+                            $this->load->view('base/filter_item/arr_multi', $data);
+                            break;
+
                         case 'custom':
                             $this->load->view($this->view_path . '/filter_item/' . $key);
                             break;
@@ -40,6 +45,11 @@
                         case 'binary' :
                             $data['key'] = $key;
                             $this->load->view('base/filter_item/binary', $data);
+                            break;
+
+                        case 'arr_multi' :
+                            $data['key'] = $key;
+                            $this->load->view('base/filter_item/arr_multi', $data);
                             break;
 
                         case 'custom':

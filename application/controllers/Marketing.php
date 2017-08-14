@@ -133,14 +133,14 @@ class Marketing extends MY_Table {
         $input = array();
         $input['where'] = array('active' => '1');
         $channels = $this->channel_model->load_all($input);
-        $this->data['channels'] = $channels;
+        $this->data['channel'] = $channels;
         $this->list_filter = array(
             'left_filter' => array(
                 'duplicate_id' => array(
                     'type' => 'binary',
                 ),
                 'channel' => array(
-                    'type' => 'custom'
+                    'type' => 'arr_multi'
                 )
             ),
             'right_filter' => array(
