@@ -74,6 +74,14 @@ class Marketer extends MY_Table {
             'duplicate_id' => array(
                 'name_display' => 'Contact trùng',
                 'display' => 'none'
+            ),
+             'course' => array(
+                'name_display' => 'Mã khóa học',
+                'display' => 'none'
+            ),
+            'landingpage' => array(
+                'name_display' => 'Landing Page',
+                'display' => 'none'
             )
         );
         $this->set_list_view($list_item);
@@ -118,20 +126,49 @@ class Marketer extends MY_Table {
     }
 
     function index($offset = 0) {
+        $this->load->model('channel_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $channels = $this->channel_model->load_all($input);
+        $this->data['channel'] = $channels;
+
         $this->load->model('campaign_model');
         $input = array();
         $input['where'] = array('active' => 1);
-        $this->data['campaigns'] = $this->campaign_model->load_all($input);
+        $this->data['campaign'] = $this->campaign_model->load_all($input);
+
+        $this->load->model('adset_model');
+        $input = array();
+        $input['where'] = array('active' => 1);
+        $this->data['adset'] = $this->adset_model->load_all($input);
+
+        $this->load->model('ad_model');
+        $input = array();
+        $input['where'] = array('active' => 1);
+        $this->data['ad'] = $this->ad_model->load_all($input);
+
         $this->list_filter = array(
             'left_filter' => array(
+                'date_rgt' => array(
+                    'type' => 'datetime'
+                ),
+                'channel' => array(
+                    'type' => 'arr_multi'
+                ),
+                'campaign' => array(
+                    'type' => 'arr_multi'
+                ),
+            ),
+            'right_filter' => array(
+                'adset' => array(
+                    'type' => 'arr_multi'
+                ),
+                'ad' => array(
+                    'type' => 'arr_multi'
+                ),
                 'duplicate_id' => array(
                     'type' => 'binary',
                 ),
-                'campaign' => array(
-                    'type' => 'custom'
-                )
-            ),
-            'right_filter' => array(
             )
         );
         $conditional = array();
@@ -148,16 +185,71 @@ class Marketer extends MY_Table {
     }
 
     function view_all($offset = 0) {
+
+        $this->load->model('channel_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $channels = $this->channel_model->load_all($input);
+        $this->data['channel'] = $channels;
+
+        $this->load->model('campaign_model');
+        $input = array();
+        $input['where'] = array('active' => 1);
+        $this->data['campaign'] = $this->campaign_model->load_all($input);
+
+        $this->load->model('adset_model');
+        $input = array();
+        $input['where'] = array('active' => 1);
+        $this->data['adset'] = $this->adset_model->load_all($input);
+
+        $this->load->model('ad_model');
+        $input = array();
+        $input['where'] = array('active' => 1);
+        $this->data['ad'] = $this->ad_model->load_all($input);
+
+
+        $this->load->model('courses_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $this->data['course'] = $this->courses_model->load_all($input);
+
+        $this->load->model('landingpage_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $this->data['landingpage'] = $this->landingpage_model->load_all($input);
+
         $this->list_filter = array(
             'left_filter' => array(
                 'date_rgt' => array(
-                    'type' => 'datetime',
-                )
+                    'type' => 'datetime'
+                ),
+                'channel' => array(
+                    'type' => 'arr_multi'
+                ),
+                'campaign' => array(
+                    'type' => 'arr_multi'
+                ),
             ),
             'right_filter' => array(
+                'adset' => array(
+                    'type' => 'arr_multi'
+                ),
+                'ad' => array(
+                    'type' => 'arr_multi'
+                ),
+                'course' => array(
+                    'type' => 'arr_multi',
+                    'field_name' => 'course_code',
+                    'field' => 'course_code',
+                    'table_id' => 'course_code'
+                ),
+                'landingpage' => array(
+                    'type' => 'arr_multi',
+                    'field_name' => 'url',
+                ),
                 'duplicate_id' => array(
                     'type' => 'binary',
-                )
+                ),
             )
         );
         $conditional = array();

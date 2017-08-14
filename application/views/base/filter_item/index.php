@@ -18,6 +18,7 @@
 
                         case 'arr_multi' :
                             $data['key'] = $key;
+                            $data['value'] = $value;
                             $this->load->view('base/filter_item/arr_multi', $data);
                             break;
 
@@ -49,6 +50,7 @@
 
                         case 'arr_multi' :
                             $data['key'] = $key;
+                             $data['value'] = $value;
                             $this->load->view('base/filter_item/arr_multi', $data);
                             break;
 

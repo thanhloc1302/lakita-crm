@@ -59,24 +59,20 @@ class Marketing extends MY_Table {
                 'name_display' => 'Kênh',
                 'order' => '1'
             ),
-//            'campaign' => array(
-//                'name_display' => 'Chiến dịch',
-//                'order' => '1'
-//            ),
-//            'adset' => array(
-//                'name_display' => 'Adset',
-//                'order' => '1'
-//            ),
-//            'ad' => array(
-//                'name_display' => 'Ad',
-//                'order' => '1'
-//            ),
             'marketer' => array(
                 'name_display' => 'Marketer',
                 'order' => '1'
             ),
             'duplicate_id' => array(
                 'name_display' => 'Contact trùng',
+                'display' => 'none'
+            ),
+            'course' => array(
+                'name_display' => 'Mã khóa học',
+                'display' => 'none'
+            ),
+            'landingpage' => array(
+                'name_display' => 'Landing Page',
                 'display' => 'none'
             )
         );
@@ -134,16 +130,36 @@ class Marketing extends MY_Table {
         $input['where'] = array('active' => '1');
         $channels = $this->channel_model->load_all($input);
         $this->data['channel'] = $channels;
+
+
+        $input = array();
+        $input['where'] = array('role_id' => '6', 'active' => '1');
+        $this->data['marketer'] = $this->staffs_model->load_all($input);
+
+        $this->load->model('courses_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $this->data['course'] = $this->courses_model->load_all($input);
+
         $this->list_filter = array(
             'left_filter' => array(
-                'duplicate_id' => array(
-                    'type' => 'binary',
+                'marketer' => array(
+                    'type' => 'arr_multi'
                 ),
                 'channel' => array(
                     'type' => 'arr_multi'
-                )
+                ),
+                'course' => array(
+                    'type' => 'arr_multi',
+                    'field_name' => 'course_code',
+                    'field' => 'course_code',
+                    'table_id' => 'course_code'
+                ),
             ),
             'right_filter' => array(
+                'duplicate_id' => array(
+                    'type' => 'binary',
+                ),
             )
         );
         $conditional = array();
@@ -159,13 +175,50 @@ class Marketing extends MY_Table {
     }
 
     function view_all($offset = 0) {
+        $this->load->model('channel_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $channels = $this->channel_model->load_all($input);
+        $this->data['channel'] = $channels;
+
+
+        $input = array();
+        $input['where'] = array('role_id' => '6', 'active' => '1');
+        $this->data['marketer'] = $this->staffs_model->load_all($input);
+
+        $this->load->model('courses_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $this->data['course'] = $this->courses_model->load_all($input);
+
+        $this->load->model('landingpage_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $this->data['landingpage'] = $this->landingpage_model->load_all($input);
+
         $this->list_filter = array(
             'left_filter' => array(
                 'date_rgt' => array(
                     'type' => 'datetime',
-                )
+                ),
+                'marketer' => array(
+                    'type' => 'arr_multi'
+                ),
+                'channel' => array(
+                    'type' => 'arr_multi'
+                ),
             ),
             'right_filter' => array(
+                'course' => array(
+                    'type' => 'arr_multi',
+                    'field_name' => 'course_code',
+                    'field' => 'course_code',
+                    'table_id' => 'course_code'
+                ),
+                'landingpage' => array(
+                    'type' => 'arr_multi',
+                    'field_name' => 'url',
+                ),
                 'duplicate_id' => array(
                     'type' => 'binary',
                 )

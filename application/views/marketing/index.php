@@ -7,11 +7,11 @@
     <!-- Các trường filter trong bảng-->
     <?php $this->load->view('base/filter_item/index'); ?>
 
-    <?php $this->load->view('base/show_table/base_header'); ?>
+    <?php $this->load->view('marketing/show_table/base_header'); ?>
 
     <?php $this->load->view('marketing/show_table/index'); ?>
 
-    <?php $this->load->view('base/show_table/base_footer'); ?>
+    <?php $this->load->view('marketing/show_table/base_footer'); ?>
     
     <?php $this->load->view('base/show_table/hidden_input'); ?>
 
