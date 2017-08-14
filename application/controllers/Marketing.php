@@ -129,10 +129,18 @@ class Marketing extends MY_Table {
     }
 
     function index($offset = 0) {
+        $this->load->model('channel_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $channels = $this->channel_model->load_all($input);
+        $this->data['channels'] = $channels;
         $this->list_filter = array(
             'left_filter' => array(
                 'duplicate_id' => array(
                     'type' => 'binary',
+                ),
+                'channel' => array(
+                    'type' => 'custom'
                 )
             ),
             'right_filter' => array(

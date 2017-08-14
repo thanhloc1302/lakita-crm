@@ -1,3 +1,6 @@
-<td class="center tbl_code_cross_check">
+<td class="center tbl_code_cross_check btn-copy" data-clipboard-text="<?php echo trim($value['code_cross_check']); ?>">
     <?php echo $value['code_cross_check']; ?>
+    <sup> 
+        <i class="fa fa-clipboard btn-copy" aria-hidden="true" data-clipboard-text="<?php echo trim($value['code_cross_check']); ?>"></i>
+    </sup>
 </td>

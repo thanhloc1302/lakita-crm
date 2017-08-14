@@ -20,7 +20,7 @@ class Contact_api extends REST_Controller {
 
     function add_contact_post() {
         $input = $this->input->post();
-        if (!empty($input)) {
+        if (!empty($input) && !isset($input['contact_cc'])) {
             /* Lọc thông tin contact */
             $param['name'] = isset($input['name']) ? $input['name'] : '';
             $param['name'] = trim(str_replace('[RGT_FROM_MOBILE]', '', $param['name']));

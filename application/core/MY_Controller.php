@@ -226,7 +226,7 @@ class MY_Controller extends CI_Controller {
         
         foreach ( $result['data'] as &$value){
             $input = array();
-            $input['where'] = array('phone' => $value['phone']);
+            $input['where'] = array('phone' => $value['phone'], 'is_hide' => '0');
             $courses = $this->contacts_model->load_all($input);
             $value['star'] = count($courses);
         }
