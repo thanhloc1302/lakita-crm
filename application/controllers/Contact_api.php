@@ -80,22 +80,23 @@ class Contact_api extends REST_Controller {
             /*
              * Gửi email
              */
-
-            $this->load->model('courses_model');
-            $data = array();
-            $data['e_name'] = $input['name'];
-            $data['e_phone'] = $input['phone'];
-            $data['e_address'] = $address;
-            $data['e_price_sale'] = $input['price_purchase'];
-            $data['e_course_name'] = $this->courses_model->find_course_name($input['course_code']);
-            $data['e_price_root'] = $this->courses_model->find_course_price_root($input['course_code']);
-            $content = $this->load->view('email', $data, TRUE);
-            $this->load->library("email");
-            $this->email->from('cskh@lakita.vn', "Hệ thống học trực tuyến lakita.vn");
-            $this->email->to($input['email']);
-            $this->email->subject('Lakita.vn Thông tin khóa học đã đăng ký.');
-            $this->email->message($content);
-            $this->email->send();
+            if ($input['email'] != 'NO_PARAM@gmail.com') {
+                $this->load->model('courses_model');
+                $data = array();
+                $data['e_name'] = $input['name'];
+                $data['e_phone'] = $input['phone'];
+                $data['e_address'] = $address;
+                $data['e_price_sale'] = $input['price_purchase'];
+                $data['e_course_name'] = $this->courses_model->find_course_name($input['course_code']);
+                $data['e_price_root'] = $this->courses_model->find_course_price_root($input['course_code']);
+                $content = $this->load->view('email', $data, TRUE);
+                $this->load->library("email");
+                $this->email->from('cskh@lakita.vn', "Hệ thống học trực tuyến lakita.vn");
+                $this->email->to($input['email']);
+                $this->email->subject('Lakita.vn Thông tin khóa học đã đăng ký.');
+                $this->email->message($content);
+                $this->email->send();
+            }
         }
     }
 
