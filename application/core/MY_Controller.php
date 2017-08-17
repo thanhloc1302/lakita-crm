@@ -23,8 +23,9 @@ class MY_Controller extends CI_Controller {
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
-        // echo date('H:i:s d/m/Y', 1501923156);die;
-        //  echo strtotime('01-07-2016'); die;
+        //echo date('H:i:s d/m/Y', 1502766000);die;
+        //  echo time(). '<br>';
+       //   echo strtotime('01-05-2017 00:00:00'); die;
         // echo strtotime(date("d-m-Y"));die;
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
@@ -208,7 +209,7 @@ class MY_Controller extends CI_Controller {
         if (!$has_user_order) {
             $input['order']['id'] = 'DESC';
         }
-       
+
         $total_row = $this->contacts_model->m_count_all_result_from_get($input);
         $result['total_row'] = $total_row; //lấy tổng dòng
         //lấy data sau khi phân trang
@@ -219,12 +220,12 @@ class MY_Controller extends CI_Controller {
             $input['limit'] = array($limit, $offset1);
         }
         $result['data'] = $this->contacts_model->load_all($input);
-        
+
         /*
          * Lấy thông tin 1 contact đăng ký nhiều khóa học
          */
-        
-        foreach ( $result['data'] as &$value){
+
+        foreach ($result['data'] as &$value) {
             $input = array();
             $input['where'] = array('phone' => $value['phone'], 'is_hide' => '0');
             $courses = $this->contacts_model->load_all($input);

@@ -80,7 +80,7 @@ class Contact_api extends REST_Controller {
             /*
              * Gửi email
              */
-            if ($input['email'] != 'NO_PARAM@gmail.com') {
+            if ($input['email'] != 'NO_PARAM@gmail.com' && $input['email'] != 'lakita@lakita.vn') {
                 $this->load->model('courses_model');
                 $data = array();
                 $data['e_name'] = $input['name'];
@@ -96,6 +96,38 @@ class Contact_api extends REST_Controller {
                 $this->email->subject('Lakita.vn Thông tin khóa học đã đăng ký.');
                 $this->email->message($content);
                 $this->email->send();
+            }
+        }
+    }
+
+    function add_c2_post() {
+        $input = $this->input->post();
+        if (isset($input['link_id'])) {
+            $this->load->model('c2_model');
+            /*
+             * Nếu người dùng F5 trong vòng 2 phút thì không tính là C2
+             */
+            $input_c2_exist = array();
+            $input_c2_exist['where'] = array('link_id' => $input['link_id'], 'ip' => $input['ip'],
+                'date_rgt >=' => time() - 120);
+            $c2_exist = $this->c2_model->load_all($input_c2_exist);
+            if (empty($c2_exist)) {  
+                $this->load->model('link_model');
+                $input_link = array();
+                $input_link['where'] = array('id' => $input['link_id']);
+                $links = $this->link_model->load_all($input_link);
+                if (!empty($links)) {
+                    $param['marketer_id'] = $links[0]['marketer_id'];
+                    $param['channel_id'] = $links[0]['channel_id'];
+                    $param['campaign_id'] = $links[0]['campaign_id'];
+                    $param['adset_id'] = $links[0]['adset_id'];
+                    $param['ad_id'] = $links[0]['ad_id'];
+                    $param['landingpage_id'] = $links[0]['landingpage_id'];
+                    $param['link_id'] = $links[0]['id'];
+                }
+                $param['date_rgt'] = time();
+                $param['ip'] = $input['ip'];
+                $this->c2_model->insert($param);
             }
         }
     }

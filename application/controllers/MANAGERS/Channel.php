@@ -129,6 +129,7 @@ class Channel extends MY_Table {
              * Lấy số C3 & số tiền tiêu
              */
             $total_c3 = array();
+            $total_c3['select'] = 'id';
             $total_c3['where'] = array(
                 'channel_id' => $value['id'],
                 'date_rgt >=' => $date_form + 14 * 3600,

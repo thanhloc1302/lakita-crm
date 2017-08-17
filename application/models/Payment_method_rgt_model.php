@@ -17,5 +17,16 @@ class Payment_method_rgt_model extends MY_Model {
         parent::__construct();
         $this->table = 'payment_method_rgt';
     }
+    
+      public function find_payment_method_rgt_desc($id) {
+        $call_stt = 'Không có';
+        $input2 = array();
+        $input2['where'] = array('id' => $id);
+        $result = $this->load_all($input2);
+        if (!empty($result)) {
+            $call_stt = $result[0]['method'];
+        }
+        return $call_stt;
+    }
 
 }

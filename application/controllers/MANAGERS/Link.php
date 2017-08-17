@@ -34,6 +34,7 @@ class Link extends MY_Table {
                 'display' => 'none'
             ),
             'url' => array(
+                'type' => 'custom',
                 'name_display' => 'URL',
                 'order' => '1'
             ),
@@ -85,10 +86,10 @@ class Link extends MY_Table {
         $this->load->model('adset_model');
         $this->load->model('ad_model');
         foreach ($this->data['rows'] as &$value) {
-           $value['channel'] = $this->channel_model->find_channel_name($value['channel_id']);
-           $value['campaign'] = $this->campaign_model->find_campaign_name($value['campaign_id']);
-           $value['adset'] = $this->adset_model->find_adset_name($value['adset_id']);
-           $value['ad'] = $this->ad_model->find_ad_name($value['ad_id']);
+            $value['channel'] = $this->channel_model->find_channel_name($value['channel_id']);
+            $value['campaign'] = $this->campaign_model->find_campaign_name($value['campaign_id']);
+            $value['adset'] = $this->adset_model->find_adset_name($value['adset_id']);
+            $value['ad'] = $this->ad_model->find_ad_name($value['ad_id']);
         }
         unset($value);
     }
@@ -193,8 +194,8 @@ class Link extends MY_Table {
                         $param[$value] = $post['add_' . $value];
                     }
                 }
-                if(!isset($param['landingpage_id']) || $param['landingpage_id'] == 0){
-                      show_error_and_redirect('Vui lòng chọn landing page!', '', false);
+                if (!isset($param['landingpage_id']) || $param['landingpage_id'] == 0) {
+                    show_error_and_redirect('Vui lòng chọn landing page!', '', false);
                 }
                 $param['time'] = time();
                 $param['marketer_id'] = $this->user_id;

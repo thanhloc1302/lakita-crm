@@ -97,6 +97,7 @@ class Marketers extends MY_Table {
              * Lấy số C3
              */
             $input = array();
+            $input['select'] = 'id';
             $input['where'] = array('marketer_id' => $value['id'], 'date_rgt >=' => $date_form, 'date_rgt <=' => $date_end);
             $total_C3 = $this->contacts_model->load_all($input);
             $value['total_C3'] = count($total_C3);

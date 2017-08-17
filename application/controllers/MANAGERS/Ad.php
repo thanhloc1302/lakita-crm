@@ -113,10 +113,11 @@ class Ad extends MY_Table {
              */
 
             $total_c3 = array();
+            $total_c3['select'] = 'id';
             $total_c3['where'] = array(
                 'ad_id' => $value['id'],
-               'date_rgt >=' => $date_form + 14*3600,
-                'date_rgt <=' => $date_end + 3600*38);
+                'date_rgt >=' => $date_form + 14 * 3600,
+                'date_rgt <=' => $date_end + 3600 * 38);
             $value['total_C3'] = count($this->contacts_model->load_all($total_c3));
 
             $input = array();
@@ -173,7 +174,8 @@ class Ad extends MY_Table {
             )
         );
         $conditional = array();
-        $conditional['where'] = $this->set_conditional($conditional);
+        $conditional['where'] = array('marketer_id' => $this->user_id);
+        $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
         $data = $this->data;
@@ -230,6 +232,7 @@ class Ad extends MY_Table {
                     $param[$value] = $post['add_' . $value];
                 }
             }
+            $param['marketer_id'] = $this->user_id;
             $param['time'] = time();
             $this->{$this->model}->insert($param);
             show_error_and_redirect('Thêm ads thành công!');

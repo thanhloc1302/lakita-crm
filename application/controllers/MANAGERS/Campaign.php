@@ -113,10 +113,11 @@ class Campaign extends MY_Table {
              */
 
             $total_c3 = array();
+            $total_c3['select'] = 'id';
             $total_c3['where'] = array(
                 'campaign_id' => $value['id'],
-                'date_rgt >=' => $date_form + 14*3600,
-                'date_rgt <=' => $date_end + 3600*38);
+                'date_rgt >=' => $date_form + 14 * 3600,
+                'date_rgt <=' => $date_end + 3600 * 38);
             $value['total_C3'] = count($this->contacts_model->load_all($total_c3));
             $input = array();
             $input['where'] = array('campaign_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
@@ -125,7 +126,7 @@ class Campaign extends MY_Table {
             if (!empty($channel_cost)) {
                 $value['total_C1'] = $channel_cost['total_C1'];
                 $value['total_C2'] = $channel_cost['total_C2'];
-               // $value['total_C3'] = $channel_cost['total_C3'];
+                // $value['total_C3'] = $channel_cost['total_C3'];
                 $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
                 $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
                 $value['spend'] = $channel_cost['spend'];
@@ -173,10 +174,11 @@ class Campaign extends MY_Table {
             )
         );
         $conditional = array();
-        $conditional['where'] = $this->set_conditional($conditional);
+        $conditional['where'] = array('marketer_id' => $this->user_id);
+        $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
-       
+
         $data = $this->data;
         $data['slide_menu'] = 'marketer/common/slide-menu';
         $data['top_nav'] = 'marketer/common/top-nav';

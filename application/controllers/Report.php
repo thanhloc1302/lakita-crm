@@ -356,12 +356,12 @@ class Report extends MY_Controller {
 
             $courses[$key]['L2/L1_td'] = ($courses[$key]['L1_td'] != 0) ? round(($courses[$key]['L2_td'] / $courses[$key]['L1_td']) * 100, 2) . '%' : 'Không thể chia cho 0';
             $courses[$key]['L6/L2_td'] = ($courses[$key]['L2_td'] != 0) ? round(($courses[$key]['L6_td'] / $courses[$key]['L2_td']) * 100, 2) . '%' : 'Không thể chia cho 0';
-           
+
             $courses[$key]['L2/L1'] = ($courses[$key]['L1'] != 0) ? round(($courses[$key]['L2'] / $courses[$key]['L1']) * 100, 2) . '%' : 'Không thể chia cho 0';
             $courses[$key]['L6/L2'] = ($courses[$key]['L2'] != 0) ? round(($courses[$key]['L6'] / $courses[$key]['L2']) * 100, 2) . '%' : 'Không thể chia cho 0';
             $courses[$key]['L8/L6'] = ($courses[$key]['L6'] != 0) ? round(($courses[$key]['L8'] / $courses[$key]['L6']) * 100, 2) . '%' : 'Không thể chia cho 0';
             $courses[$key]['L8/L1'] = ($courses[$key]['L1'] != 0) ? round(($courses[$key]['L8'] / $courses[$key]['L1']) * 100, 2) . '%' : 'Không thể chia cho 0';
-            
+
 
             /*
              * Tính doanh thu theo từng khóa học
@@ -385,7 +385,7 @@ class Report extends MY_Controller {
         $data['courses'] = $courses;
         $data['content'] = 'report/view_general_report';
 
-       // $this->load->view('report/view_general_report', $data);
+        // $this->load->view('report/view_general_report', $data);
 
         $str = $this->load->view('report/view_general_report', $data, true);
         $this->load->library("email");
@@ -397,6 +397,41 @@ class Report extends MY_Controller {
         $this->email->subject('Báo cáo tổng hợp ngày ' . date('d-m-Y') . ' (by cron job)');
         $this->email->message($str);
         $this->email->send();
+    }
+
+    function json_pivot_table() {
+        $this->load->model('call_status_model');
+        $this->load->model('ordering_status_model');
+        $this->load->model('cod_status_model');
+        $this->load->model('providers_model');
+         $this->load->model('payment_method_rgt_model');
+        $input = array();
+        $input['where'] = array('date_rgt >=' => 1493571600);
+        $test = $this->contacts_model->load_all($input);
+        $rs = [];
+        foreach ($test as $key => $value) {
+            $rs[$key]['TVTS'] = $this->staffs_model->find_staff_name($value['sale_staff_id']);
+            $rs[$key]['Mã khóa học'] = $value['course_code'];
+            $rs[$key]['Trạng thái gọi'] = $this->call_status_model->find_call_status_desc($value['call_status_id']);
+            $rs[$key]['Trạng thái đơn hàng'] = $this->ordering_status_model->find_ordering_status_desc($value['ordering_status_id']);
+            $rs[$key]['Trạng thái giao hàng'] = $this->cod_status_model->find_cod_status_desc($value['cod_status_id']);
+            $rs[$key]['Đơn vị giao hàng'] = $this->providers_model->find_provider_name($value['provider_id']);
+            //  $rs[$key]['level'] =  $this->find_level($value['call_status_id'], )
+            $rs[$key]['Tháng đăng ký'] = date('Y-m', $value['date_rgt']);
+            $rs[$key]['Ngày đăng ký'] = date('Y-m-d', $value['date_rgt']);
+            $rs[$key]['Giá mua khóa học'] = number_format($value['price_purchase'], 0, ",", ".");
+            $rs[$key]['Hinh thức thanh toán'] = $this->payment_method_rgt_model->find_payment_method_rgt_desc($value['payment_method_rgt']);
+        }
+        echo $response = json_encode($rs);
+        die;
+        $fp = fopen(APPPATH . '../public/results.json', 'w');
+        fwrite($fp, json_encode($response));
+        fclose($fp);
+        die;
+    }
+
+    function view_pivot_table() {
+        $this->load->view('pivot_table');
     }
 
 }
