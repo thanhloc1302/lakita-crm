@@ -44,6 +44,10 @@ class Check_L7 extends MY_Table {
                 'name_display' => 'cod_status_id',
                 'display' => 'none'
             ),
+            'price_purchase' => array(
+                'type' => 'currency',
+                'name_display' => 'Giá mua',
+            ),
             'name' => array(
                 'name_display' => 'Họ tên'),
             'phone' => array(
@@ -66,6 +70,10 @@ class Check_L7 extends MY_Table {
             'L7_check' => array(
                 'type' => 'custom',
                 'name_display' => 'Đã lưu'
+            ),
+            'status_date' => array(
+                'display' => 'none',
+                'name_display' => 'Ngày trạng thái'
             ),
         );
         $this->set_list_view($list_item);
@@ -182,6 +190,12 @@ class Check_L7 extends MY_Table {
                 'time' => array(
                     'type' => 'datetime',
                 ),
+                'status_date' => array(
+                    'type' => 'datetime',
+                ),
+                'status' => array(
+                    'type' => 'custom'
+                ),
                 'L7_check' => array(
                     'type' => 'binary',
                 ),
@@ -277,9 +291,11 @@ class Check_L7 extends MY_Table {
             $stt = $row[0];
             if ($stt != '') {
                 if ($row[5] == 'Thanh cong - phat thanh cong' || $row[5] == 'Phát thành công') {
-                    $receiveCOD[] = array('code' => $row[0], 'status' => $row[5], 'cod_status_id' => _DA_THU_COD_, 'weight' => intval($row[6]));
+                    $receiveCOD[] = array('code' => $row[0], 'status' => $row[5],
+                        'cod_status_id' => _DA_THU_COD_, 'weight' => intval($row[6]), 'status_date' => strtotime(str_replace('/', '-', $row[4])));
                 } else if ($row[5] == 'Thanh cong chuyen tra nguoi gui' || $row[5] == 'CHuyển trả người gửi') {
-                    $receiveCOD[] = array('code' => $row[0], 'status' => $row[5], 'cod_status_id' => _HUY_DON_, 'weight' => intval($row[6]));
+                    $receiveCOD[] = array('code' => $row[0], 'status' => $row[5],
+                        'cod_status_id' => _HUY_DON_, 'weight' => intval($row[6]), 'status_date' => strtotime(str_replace('/', '-', $row[4])));
                 } else {
                     continue;
                 }
@@ -297,6 +313,7 @@ class Check_L7 extends MY_Table {
                 $receiveCOD[$key]['name'] = $contact[0]['name'];
                 $receiveCOD[$key]['phone'] = $contact[0]['phone'];
                 $receiveCOD[$key]['address'] = $contact[0]['address'];
+                $receiveCOD[$key]['price_purchase'] = $contact[0]['price_purchase'];
             } else {
                 $receiveCOD[$key]['is_match'] = 0;
             }
@@ -318,7 +335,7 @@ class Check_L7 extends MY_Table {
             $input = array();
             $input['where'] = array('id' => $value);
             $code_cross = $this->{$this->model}->load_all($input);
-            if ($code_cross[0]['is_match'] == 0 || $code_cross[0]['duplicate_id'] > 0 || $code_cross[0]['fee_check'] == 1) {
+            if ($code_cross[0]['is_match'] == 0 || $code_cross[0]['duplicate_id'] > 0 || $code_cross[0]['L7_check'] == 1) {
                 $msg = 'Vui lòng chọn mã vận đơn trùng khớp, không bị trùng lặp và chưa lưu!';
                 show_error_and_redirect($msg, '', false);
             }
@@ -390,6 +407,27 @@ class Check_L7 extends MY_Table {
             $duplicate = $duplicae_id[0]['id'];
         }
         return $duplicate;
+    }
+
+    /*
+     * ghi đè filter lớp cha
+     */
+
+    protected function _get_query_condition_arr($get) {
+        $parent = parent::_get_query_condition_arr($get);
+        if (isset($get['filter_status_L7']) && $get['filter_status_L7'] != '') {
+            if ($get['filter_status_L7'] == 'phat-thanh-cong') {
+                $parent['input_get']['like']['status'] = 'Phát thành công';
+                $parent['input_get']['or_like']['status'] = 'Ph&aacute;t th&agrave;nh c&ocirc;ng';
+            }
+            if ($get['filter_status_L7'] == 'huy-don') {
+                $parent['input_get']['like']['status'] = 'CHuyển trả người gửi';
+            }
+        }
+        return array(
+            'input_get' => $parent['input_get'],
+            'has_user_order' => $parent['has_user_order']
+        );
     }
 
 }
