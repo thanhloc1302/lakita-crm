@@ -8,7 +8,7 @@
 class Admin extends MY_Controller {
 
     function __construct() {
-        parent::__construct();
+        parent::__construct(); 
     }
 
     function index($offset = 0) {
@@ -56,7 +56,7 @@ class Admin extends MY_Controller {
         $post = $this->input->post();
         if (!empty($post['contact_id'])) {
             $where = array('id' => $post['contact_id']);
-            $data= array('is_hide' => 1);
+            $data = array('is_hide' => 1);
             $this->contacts_model->update($where, $data);
             echo '1';
         }
