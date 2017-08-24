@@ -29,5 +29,9 @@ $(function () {
             $(".table-1").height($(".table-2").height());
         }
         var clipboard = new Clipboard('.btn-copy');
+         $('.datetimepicker').datetimepicker(
+                {
+                    format: 'DD-MM-YYYY HH:mm'
+                });
     });
 });

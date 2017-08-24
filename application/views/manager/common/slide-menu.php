@@ -29,11 +29,12 @@
                                 
                             </ul>
                         </li>-->
-            <li><a href="<?php echo base_url('quan-ly/xem-tat-ca-contact.html'); ?>"><i class="fa fa-bars"></i> 
+            <li><a href="<?php echo base_url('quan-ly/xem-tat-ca-contact.html'); ?>"><i class="fa fa-globe"></i> 
                     Danh sách toàn bộ contact
                 </a>
             </li>
-            <li><a><i class="fa fa-edit"></i> Phân / Xóa Contact <span class="fa fa-chevron-down"></span></a>
+            <li class="dropdown-hover">
+                <a><i class="fa fa-edit"></i> Phân / Xóa Contact <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a class="divide_contact">Phân riêng contact cho một TVTS</a></li>
                     <li><a href="#" class="divide_contact_even">Phân đều contact cho các TVTS</a></li>
@@ -48,7 +49,7 @@
             <li>
                 <a href="<?php echo base_url('quan-ly/them-contact.html'); ?>"><i class="fa fa fa-user">+</i> Thêm mới contact </a>
             </li>
-            <li>
+            <li class="dropdown-hover">
                 <a><i class="fa fa-line-chart"></i> Các loại báo cáo <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li>
@@ -68,7 +69,7 @@
                     </li>
                 </ul>
             </li>
-            <li><a><i class="fa fa-cog"></i>Cài đặt <span class="fa fa-chevron-down"></span></a>
+            <li class="dropdown-hover"><a><i class="fa fa-cog"></i>Cài đặt <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="<?php echo base_url('config/sale'); ?>">Cài đặt TVTS</a></li>
                     <li><a href="<?php echo base_url('config/course'); ?>">Cài đặt Khóa học</a></li>

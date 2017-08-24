@@ -7,7 +7,7 @@
             </div>
 
             <ul class="nav navbar-nav navbar-right">
-                <li class="">
+                <li class="dropdown-hover">
                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         <img src="<?php echo $this->session->userdata('image_staff'); ?>" alt=""> <?php echo $this->session->userdata('name'); ?>
                         <span class=" fa fa-angle-down"></span>

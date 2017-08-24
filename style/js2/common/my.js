@@ -4,14 +4,14 @@ $(function () {
                 dateFormat: "dd-mm-yy"
             }
     );
-    
+
     /*
      * 
      * Tham khảo http://www.daterangepicker.com/#usage
      */
     var d = new Date();
-    var currDate = d.getDate() + '-' + (d.getMonth()+1) + '-' + d.getFullYear();
-    var pastDate = d.getDate() + '-' + d.getMonth()  + '-' + d.getFullYear();
+    var currDate = d.getDate() + '-' + (d.getMonth() + 1) + '-' + d.getFullYear();
+    var pastDate = d.getDate() + '-' + d.getMonth() + '-' + d.getFullYear();
     $(".daterangepicker").daterangepicker({
         "autoApply": true,
         autoUpdateInput: false,
@@ -24,8 +24,8 @@ $(function () {
             'Hôm qua': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
             '7 ngày vừa qua': [moment().subtract(6, 'days'), moment()],
             '30 ngày vừa qua': [moment().subtract(29, 'days'), moment()],
-            'Tuần này' : [moment().startOf('isoWeek'), moment().endOf('isoWeek')],
-            'Tuần trước' : [moment().subtract(1, 'weeks').startOf('isoWeek'), moment().subtract(1, 'weeks').endOf('isoWeek')],
+            'Tuần này': [moment().startOf('isoWeek'), moment().endOf('isoWeek')],
+            'Tuần trước': [moment().subtract(1, 'weeks').startOf('isoWeek'), moment().subtract(1, 'weeks').endOf('isoWeek')],
             'Tháng này': [moment().startOf('month'), moment().endOf('month')],
             'Tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
@@ -130,14 +130,14 @@ $(function () {
     });
 
     /*
-     * Thêm hiệu ứng khi ấn vào dropdown bootstrap
+     * Thêm hiệu ứng khi hover vào dropdown bootstrap 
      */
-    $('.dropdown-toggle').parent().on('show.bs.dropdown', function () {
-        $(this).find('.dropdown-menu').first().stop(true, true).slideDown();
-    });
-
-    $('.dropdown-toggle').parent().on('hide.bs.dropdown', function () {
-        $(this).find('.dropdown-menu').first().stop(true, true).slideUp();
+    $('.dropdown-hover').hover(function () {
+        $(this).find('.dropdown-menu').stop(true, true).fadeIn(200);
+        $(this).find('.child_menu').stop(true, true).fadeIn(200);
+    }, function () {
+        $(this).find('.dropdown-menu').stop(true, true).fadeOut(200);
+        $(this).find('.child_menu').stop(true, true).fadeOut(200);
     });
 
     /*
@@ -273,24 +273,21 @@ $(function () {
         }
 
     });
-    $(document).on('keydown', function (e) {
-        if ((e.metaKey || e.ctrlKey || e.shiftKey) && (String.fromCharCode(e.which).toLowerCase() === 'a')) {
-            e.preventDefault();
-            $("input[type='checkbox']").prop('checked', true);
-            $('.custom_right_menu').addClass('checked');
-            show_number_selected_row();
-        }
-        if (((e.metaKey || e.ctrlKey || e.shiftKey) && (String.fromCharCode(e.which).toLowerCase() === 'x'))
-                || e.which === 27) {
-            $("input[type='checkbox']").prop('checked', false);
-            $('.checked').removeClass('checked');
-            $(".menu").hide();
-        }
-        if ((e.metaKey || e.ctrlKey || e.shiftKey) && (String.fromCharCode(e.which).toLowerCase() === 's')) {
-            e.preventDefault();
-            $(".btn-edit-contact").click();
-        }
+
+    shortcut.add("Ctrl+s", function () {
+        $(".btn-edit-contact").click();
     });
+    shortcut.add("Ctrl+a", function () {
+        $("input[type='checkbox']").prop('checked', true);
+        $('.custom_right_menu').addClass('checked');
+        show_number_selected_row();
+    });
+    shortcut.add("Esc", function () {
+        $("input[type='checkbox']").prop('checked', false);
+        $('.checked').removeClass('checked');
+        $(".menu").hide();
+    });
+
 });
 
 

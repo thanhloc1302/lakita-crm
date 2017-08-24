@@ -26,8 +26,25 @@
                                         uniqueName: "Tháng đăng ký.Month"
                                     }],
                                 measures: [
-                                    {uniqueName: "id", aggregation: "count"}
+                                    {uniqueName: "C3", aggregation: "count"}
                                 ]
+                            },
+                            "options": {
+                                "chart": {
+                                    "type": "bar",
+                                    "title": "",
+                                    "showFilter": true,
+                                    "multipleMeasures": false,
+                                    "oneLevel": false,
+                                    "autoRange": false,
+                                    "reversedAxes": false,
+                                    "showLegendButton": false,
+                                    "showAllLabels": true,
+                                    "showMeasures": true,
+                                    "showOneMeasureSelection": true,
+                                    "showWarning": true,
+                                    "activeMeasure": ""
+                                }
                             }
                         },
                         licenseKey: "Z7PN-XCI86W-2H6G6U-2N042W"

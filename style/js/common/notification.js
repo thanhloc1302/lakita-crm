@@ -8,7 +8,7 @@
         $.ajax({
             url: $("#base_url").val()+"common/listen",
             success: function (data2) {
-                console.log(data2);
+                //console.log(data2);
                 if (data2 === '1') {
                     $("#notificate")[0].play();
                     notify = new Notification(

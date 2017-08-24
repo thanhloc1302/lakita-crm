@@ -7,7 +7,7 @@
             </div>
 
             <ul class="nav navbar-nav navbar-right">
-                <li class="">
+                <li class="dropdown-hover">
                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         <img src="<?php echo $this->session->userdata('image_staff'); ?>" alt=""> <?php echo $this->session->userdata('name'); ?>
                         <span class=" fa fa-angle-down"></span>
@@ -19,8 +19,16 @@
                         <li><a href="<?php echo base_url(); ?>sale/has_callback">Danh sách contact có lịch hẹn gọi lại tính đến thời điểm này </a></li>
                         <li><a href="<?php echo base_url(); ?>sale/can_save">Danh sách contact còn cứu được </a></li>
                         <li><a href="form.html" class="transfer_contact"> Chuyển nhượng toàn bộ contact cho nhân viên </a></li>
-                         <li><a href="<?php echo base_url(); ?>sale/view_all_contact">Danh sách toàn bộ contact </a></li>
+                        <li><a href="<?php echo base_url(); ?>sale/view_all_contact">Danh sách toàn bộ contact </a></li>
                         <li><a href="<?php echo base_url(); ?>home/logout"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown-hover">
+                    <a href="javascript:;" class="noti dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="position: relative"> 
+                        Contact cần gọi lại <sup> <span class="badge bg-red" id="num_noti"></span> </sup>
+
+                    </a>
+                    <ul class="dropdown-menu" id="noti_contact_recall">
                     </ul>
                 </li>
 

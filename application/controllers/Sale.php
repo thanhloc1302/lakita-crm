@@ -36,8 +36,8 @@ class Sale extends MY_Controller {
         /*
          * Filter ở cột trái và cột phải
          */
-        $data['left_col'] = array('tu_van','date_rgt');
-        $data['right_col'] = array( 'course_code');
+        $data['left_col'] = array('tu_van', 'date_rgt');
+        $data['right_col'] = array('course_code');
 
         /*
          * Các trường cần hiện của bảng contact (đã có default)
@@ -75,7 +75,7 @@ class Sale extends MY_Controller {
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
 
-        $data['left_col'] = array('tu_van',  'date_rgt', 'date_last_calling');
+        $data['left_col'] = array('tu_van', 'date_rgt', 'date_last_calling');
         $data['right_col'] = array('course_code');
 
         $this->table .= 'date_rgt date_last_calling date_recall';
@@ -113,8 +113,8 @@ class Sale extends MY_Controller {
             $last_note = $this->notes_model->load_all($input);
             $notes = '';
             if (!empty($last_note)) {
-                foreach ($last_note as $value2){
-                    $notes.= '<p>' . date('d/m/Y', $value2['time']) . ' ==> '. $value2['content'] . '</p>';
+                foreach ($last_note as $value2) {
+                    $notes .= '<p>' . date('d/m/Y', $value2['time']) . ' ==> ' . $value2['content'] . '</p>';
                 }
                 $value['last_note'] = $notes;
             } else {
@@ -323,6 +323,30 @@ class Sale extends MY_Controller {
         $content = $this->scripts_model->load_all($input);
         echo $content[0]['content'];
         //$this->load->view('sale/show_script');
+    }
+
+    function noti_contact_recall() {
+        $input['select'] = 'id, name, phone, date_recall, sale_staff_id';
+        $input['where']['sale_staff_id'] = $this->user_id;
+        $input['where']['date_recall >'] = '0';
+        $input['where']['date_recall <='] = time();
+        $input['order']['date_recall'] = 'DESC';
+        $noti_contact = $this->contacts_model->load_all_contacts($input);
+        if (!empty($noti_contact)) {
+             $result = array();
+            if(time() - $noti_contact[0]['date_recall'] < 30) {
+                $result['sound'] =  1;       
+            }
+            foreach ($noti_contact as &$value) {
+                $value['date_recall'] = date('H:i j/n/Y', $value['date_recall']);
+            }
+            unset($value);
+            $num_noti_contact = count($noti_contact);
+            $result['num_noti'] = $num_noti_contact;
+            $result['contacts_noti'] = $noti_contact;
+            echo json_encode($result);
+            die;
+        }
     }
 
     private function _action_transfer_contact($sale_transfer_id, $contact_id, $note) {

@@ -23,9 +23,9 @@ class MY_Controller extends CI_Controller {
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
-        //  echo date('H:i:s d/m/Y', 1502968260);die;
+        // echo date('H:i:s d/m/Y', 1503450000);die;
         //  echo time(). '<br>';
-        // echo strtotime('17-08-2017 18:11'); die;
+        // echo strtotime('23-08-2017 10:00'); die;
         // echo strtotime(date("d-m-Y"));die;
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
@@ -35,7 +35,10 @@ class MY_Controller extends CI_Controller {
         $this->_set_default_variable();
         $this->_check_permission();
         $this->_set_notificate();
-
+        if ($this->config->item('show_profiler') === TRUE) {
+            $this->output->enable_profiler(TRUE);
+        }
+        $this->load->vars($this->data);
     }
 
     private function _check_login() {
@@ -460,6 +463,20 @@ class MY_Controller extends CI_Controller {
             'input_get' => $input_get,
             'has_user_order' => $has_user_order
         );
+    }
+
+    protected function _ajax_redirect($location = '') {
+        $location = empty($location) ? '/' : $location;
+        if (strpos($location, '/') !== 0 || strpos($location, '://') !== FALSE) {
+            if (!function_exists('site_url')) {
+                $this->load->helper('url');
+            }
+            $location = site_url($location);
+        }
+        $script = "window.location='{$location}';";
+        $this->output->enable_profiler(FALSE)
+                ->set_content_type('application/x-javascript')
+                ->set_output($script);
     }
 
 }

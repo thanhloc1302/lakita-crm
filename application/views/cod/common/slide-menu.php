@@ -21,7 +21,7 @@
             <li>
                 <a href="<?php echo base_url('cod/contact-chuyen-khoan.html'); ?>"><i class="fa fa-credit-card"></i> Contact chuyển khoản </a>
             </li>
-            <li>
+            <li class="dropdown-hover">
                 <a><i class="fa fa-check-circle-o"></i> Tải file đối soát
                     <span class="fa fa-chevron-down"></span>
                 </a>
@@ -31,7 +31,7 @@
                     <li><a href="<?php echo base_url('cod/tai-file-doi-soat-cuoc.html'); ?>">Tải file cước phí COD </a></li>
                 </ul>
             </li>
-            <li>
+            <li class="dropdown-hover">
                 <a><i class="fa fa-compress"></i> Kết quả đối soát
                     <span class="fa fa-chevron-down"></span>
                 </a>
@@ -44,12 +44,7 @@
             <li>
                 <a href="<?php echo base_url('cod/tim-kiem-contact.html'); ?>"><i class="fa fa-search"></i> Tìm kiếm contact </a>
             </li>
-            <li><a href="<?php echo base_url('cod/xem-tat-ca-contact.html'); ?>"> <i class="fa fa-bars"></i>Danh sách toàn bộ contact </a></li>
-            <li><a><i class="fa fa-edit"></i> Thao tác <span class="fa fa-chevron-down"></span></a>
-                <ul class="nav child_menu">
-                    <li><a href="form.html" class="select_provider"> Chăm sóc các contact đã chọn </a></li>
-                </ul>
-            </li>
+            <li><a href="<?php echo base_url('cod/xem-tat-ca-contact.html'); ?>"> <i class="fa fa-globe"></i>Danh sách toàn bộ contact </a></li>
         </ul>
     </div>
 </div>

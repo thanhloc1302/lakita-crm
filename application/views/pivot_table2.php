@@ -41,7 +41,7 @@
 <!--        <script type="text/javascript" src="show_code.js"></script>-->
     </head>
     <body>
-<!--        <script type="text/javascript">
+      <script type="text/javascript">
             google.charts.load("visualization", "1", {packages: ["corechart", "charteditor"]});
             $(function () {
                 var derivers = $.pivotUtilities.derivers;
@@ -79,19 +79,8 @@
                  }); */
             });
 
-        </script>-->
-
-        <script src="https://cdn.flexmonster.com/flexmonster.js"></script>
-
-        <div id="pivot-container"></div>
-        <script>
-            var pivot = new Flexmonster({
-                container: "pivot-container",
-                componentFolder: "https://cdn.flexmonster.com/",
-                toolbar: true,
-                licenseKey: "Z7PN-XCI86W-2H6G6U-2N042W"
-            });
         </script>
+
 
         <div id="output" style="margin: 30px;"></div>
     </body>

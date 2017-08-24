@@ -20,5 +20,11 @@ span.badge-star{
     cursor: pointer;
 }
 .view_detail_contact_modal, .divide_one_contact_modal, .transfer_one_contact_modal, .edit_contact_modal{
-    z-index: 999999999;
+    z-index: 9;
+}
+.view_duplicate_modal {
+    z-index: 8;
+}
+.view_contact_star_modal{
+    z-index: 6;
 }

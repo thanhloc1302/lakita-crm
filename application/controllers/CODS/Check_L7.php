@@ -54,10 +54,16 @@ class Check_L7 extends MY_Table {
                 'name_display' => 'Số điện thoại'),
             'address' => array(
                 'name_display' => 'Địa chỉ'),
+            'status_date' => array(
+                'type' => 'datetime',
+                'name_display' => 'Ngày trạng thái',
+                'order' => '1',
+            ),
             'time' => array(
                 'type' => 'datetime',
                 'name_display' => 'Ngày tải file đối soát',
-                'order' => '1'
+                'order' => '1',
+                'display' => 'none'
             ),
             'is_match' => array(
                 'name_display' => 'Contact đúng thông tin mã vận đơn',
@@ -70,10 +76,6 @@ class Check_L7 extends MY_Table {
             'L7_check' => array(
                 'type' => 'custom',
                 'name_display' => 'Đã lưu'
-            ),
-            'status_date' => array(
-                'display' => 'none',
-                'name_display' => 'Ngày trạng thái'
             ),
         );
         $this->set_list_view($list_item);
@@ -263,7 +265,7 @@ class Check_L7 extends MY_Table {
             $config['upload_path'] = './public/upload/L7';
             $config['allowed_types'] = 'xls|xlsx';
             $config['max_size'] = '100000';
-            $config['file_name'] = date('d-m-Y-H-i');
+            $config['file_name'] = date('Y-m-d-H-i');
             $this->load->library('upload', $config);
             if ($this->upload->do_upload('file')) {
                 $data = $this->upload->data();
@@ -417,8 +419,8 @@ class Check_L7 extends MY_Table {
         $parent = parent::_get_query_condition_arr($get);
         if (isset($get['filter_status_L7']) && $get['filter_status_L7'] != '') {
             if ($get['filter_status_L7'] == 'phat-thanh-cong') {
-                $parent['input_get']['like']['status'] = 'Phát thành công';
-                $parent['input_get']['or_like']['status'] = 'Ph&aacute;t th&agrave;nh c&ocirc;ng';
+                $parent['input_get']['like']['status'] = 'Ph&aacute;t th&agrave;nh c&ocirc;ng';
+               // $parent['input_get']['or_like']['status'] = 'Ph&aacute;t th&agrave;nh c&ocirc;ng';
             }
             if ($get['filter_status_L7'] == 'huy-don') {
                 $parent['input_get']['like']['status'] = 'CHuyển trả người gửi';

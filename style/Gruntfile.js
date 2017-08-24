@@ -31,6 +31,24 @@ module.exports = function (grunt) {
             }
         },
 
+//        uglify: {
+//             options: {
+//                compress: {
+//                    drop_console: true // <-
+//                },
+//                sourceMap: true
+//            },
+//            my_target: {
+//               files: [{
+//                        expand: true,
+//                        cwd: 'js2',
+//                        src: ['*/*.js', '!*/*.min.js'],
+//                        dest: 'js2',
+//                        ext: '.min.js'
+//                    }]
+//            }
+//        },
+
         uglify: {
             options: {
                 compress: {
@@ -41,6 +59,21 @@ module.exports = function (grunt) {
             my_target: {
                 files: {
                     'js3/built.min.js': ['js3/built.js']
+                }
+            }
+        },
+        obfuscator: {
+            options: {
+                // global options for the obfuscator 
+            },
+            task1: {
+                options: {
+                    // options for each sub task 
+                },
+                files: {
+                    'js3/built_obfuscated.min.js': [
+                        'js3/built.min.js'
+                    ]
                 }
             }
         },
@@ -62,7 +95,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-obfuscator');
     // Default task(s).
-    grunt.registerTask('default', ['sass', 'concat', 'uglify', 'watch']);
-    grunt.registerTask('nowatch', ['sass', 'concat', 'uglify']);
+    grunt.registerTask('default', ['sass', 'concat', 'watch']);
+    grunt.registerTask('nowatch', ['sass', 'concat', 'uglify', 'obfuscator']);
+    grunt.registerTask('ob', ['obfuscator']);
 };

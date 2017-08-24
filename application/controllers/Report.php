@@ -404,29 +404,27 @@ class Report extends MY_Controller {
         $this->load->model('ordering_status_model');
         $this->load->model('cod_status_model');
         $this->load->model('providers_model');
-         $this->load->model('payment_method_rgt_model');
+        $this->load->model('payment_method_rgt_model');
         $input = array();
-        $input['where'] = array('date_rgt >=' => 1493571600);
-       // $input['where'] = array('id >=' => 6000);
+        $input['where'] = array('date_rgt >=' => 1483203600, 'is_hide' => '0');
         $test = $this->contacts_model->load_all($input);
         $rs = [];
         foreach ($test as $key => $value) {
-            $rs[$key]['id'] = $value['id'];
+            $rs[$key]['C3'] = '1';
+            $rs[$key]['L2'] = ($value['call_status_id'] == 4) ? '1' : '0';
+            $rs[$key]['L6'] = ($value['ordering_status_id'] == 4) ? '1' : '0';
+            $rs[$key]['L8'] = ($value['cod_status_id'] == 2) ? '1' : '0';
+            $rs[$key]['L8'] = ($value['cod_status_id'] == 3) ? '1' : '0';
             $rs[$key]['TVTS'] = $this->staffs_model->find_staff_name($value['sale_staff_id']);
             $rs[$key]['Mã khóa học'] = $value['course_code'];
-            $rs[$key]['Trạng thái gọi'] = $this->call_status_model->find_call_status_desc($value['call_status_id']);
-            $rs[$key]['Trạng thái đơn hàng'] = $this->ordering_status_model->find_ordering_status_desc($value['ordering_status_id']);
-            $rs[$key]['Trạng thái giao hàng'] = $this->cod_status_model->find_cod_status_desc($value['cod_status_id']);
+            //  $rs[$key]['Trạng thái gọi'] = $this->call_status_model->find_call_status_desc($value['call_status_id']);
+            //$rs[$key]['Trạng thái đơn hàng'] = $this->ordering_status_model->find_ordering_status_desc($value['ordering_status_id']);
+            //$rs[$key]['Trạng thái giao hàng'] = $this->cod_status_model->find_cod_status_desc($value['cod_status_id']);
             $rs[$key]['Đơn vị giao hàng'] = $this->providers_model->find_provider_name($value['provider_id']);
-            //  $rs[$key]['level'] =  $this->find_level($value['call_status_id'], )
             $rs[$key]['Tháng đăng ký'] = date('Y-m', $value['date_rgt']);
             $rs[$key]['Ngày đăng ký'] = date('Y-m-d', $value['date_rgt']);
             $rs[$key]['Giá mua khóa học'] = ($value['price_purchase']);
             $rs[$key]['Hinh thức thanh toán'] = $this->payment_method_rgt_model->find_payment_method_rgt_desc($value['payment_method_rgt']);
-//            $rs[$key]['level'][] = 'L1';
-//            if($value['call_status_id'] == 4) {
-//                $rs[$key]['level'][] = 'L2';
-//            }
         }
         echo $response = json_encode($rs);
         die;

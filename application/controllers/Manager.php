@@ -51,8 +51,10 @@ class Manager extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact',
             'm_delete_one_contact', 'm_divide_contact', 'm_view_duplicate', 'm_delete_multi_contact'
         );
-
         $data['content'] = 'manager/index';
+
+      
+
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 

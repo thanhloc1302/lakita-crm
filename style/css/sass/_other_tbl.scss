@@ -69,3 +69,6 @@ input[type=checkbox]
 .daterangepicker td, .daterangepicker th{
     border-radius: 0px !important;
 }
+.modal-backdrop{
+    z-index: 2;
+}

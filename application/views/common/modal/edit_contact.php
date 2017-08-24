@@ -2,7 +2,7 @@
     <?php if (!$edited_contact) echo'<fieldset disabled>'; ?>
     <div class="row" style="margin-right: 5px; margin-left: 5px;">
         <div class="col-md-6">
-            <table class="table table-striped table-bordered table-hover table-1 table-view-1 heavyTable">
+            <table class="table table-striped table-bordered table-hover table-1 table-view-1 edit_table">
                 <?php
                 if (isset($view_edit_left)) {
                     foreach ($view_edit_left as $key => $value) {
@@ -18,7 +18,7 @@
             </table>
         </div>
         <div class="col-md-6">
-            <table class="table table-striped table-bordered table-hover table-2 table-view-2">
+            <table class="table table-striped table-bordered table-hover table-2 table-view-2 edit_table">
                 <?php
                 if (isset($view_edit_right)) {
                     foreach ($view_edit_right as $key => $value) {
