@@ -45,9 +45,9 @@ table{
     }
     &.table-view-2{
         table-layout: fixed;
-            tr> td:first-child{
-                width: 150px;
-            }
+        tr> td:first-child{
+            width: 150px;
+        }
     }
     &.table-view-1{
         @extend .table-view-2;
@@ -55,20 +55,41 @@ table{
     td.click_see{
         cursor: pointer;
     }
+    thead{
+        &.table-head-pos{
+            th.tbl_marketing_course_code, th.tbl_marketer_course_code{
+                width: 27px;
+            }
+            th.tbl_marketing_price_purchase,  th.tbl_marketer_price_purchase{
+                width: 30px;
+            }
+            th.tbl_marketing_phone,  th.tbl_marketer_phone{
+                width: 40px;
+            }
+            th.tbl_marketing_name, th.tbl_marketing_date_rgt, th.tbl_marketer_name, th.tbl_marketer_date_rgt{
+                width: 45px;
+            }
+        }
+    }
 }
 input[type=checkbox]
 {
-  /* Double-sized Checkboxes */
-  -ms-transform: scale(2); /* IE */
-  -moz-transform: scale(2); /* FF */
-  -webkit-transform: scale(1.5); /* Safari and Chrome */
-  -o-transform: scale(2); /* Opera */
-  padding: 7px;
-  cursor: pointer;
+    /* Double-sized Checkboxes */
+    -ms-transform: scale(2); /* IE */
+    -moz-transform: scale(2); /* FF */
+    -webkit-transform: scale(1.5); /* Safari and Chrome */
+    -o-transform: scale(2); /* Opera */
+    padding: 7px;
+    cursor: pointer;
 }
 .daterangepicker td, .daterangepicker th{
     border-radius: 0px !important;
 }
 .modal-backdrop{
     z-index: 2;
+}
+
+#codeigniter_profiler{
+    z-index: 9;
+    position: relative;
 }

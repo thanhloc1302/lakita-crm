@@ -2,9 +2,6 @@
 thì người dùng vẫn có thể nhìn thấy các trường head là gì (dễ theo dõi) -->
 <thead class="fixed-table" style="display: none;">
     <tr>
-        <th class="tbl_selection_2 check_all" id="f_th_check_all">
-            Chọn <i class="fa fa-check" aria-hidden="true"></i>
-        </th>
         <!-- Hiển thị thông tin các trường của bảng, mặc định trường đầu là "chọn", trường cuối là "thao tác" -->
         <?php
         foreach ($head_tbl as $key => $value) {
@@ -33,9 +30,6 @@ thì người dùng vẫn có thể nhìn thấy các trường head là gì (d�
 </thead>
 <thead class="table-head-pos">
     <tr>
-        <th class="tbl_selection_2 check_all" id="th_check_all">
-            Chọn <i class="fa fa-check" aria-hidden="true"></i>
-        </th>
         <?php
         foreach ($head_tbl as $key => $value) {
             $data['key'] = $key;

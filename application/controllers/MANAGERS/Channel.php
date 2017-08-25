@@ -30,9 +30,9 @@ class Channel extends MY_Table {
          * - nếu trường nào cần hiển thị đặc biệt (ngoại lệ) thì để là type = custom
          */
         $list_item = array(
-            'id' => array(
-                'name_display' => 'ID Channel'
-            ),
+//            'id' => array(
+//                'name_display' => 'ID Channel'
+//            ),
             'code' => array(
                 'name_display' => 'Mã kênh',
                 'order' => '1'

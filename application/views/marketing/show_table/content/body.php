@@ -1,10 +1,7 @@
 <?php
 foreach ($rows as $row) {
     ?>
-    <tr class="<?php echo (isset($row['warning_class'])) ? $row['warning_class'] : ''; ?>">
-        <td class="center tbl_selection">
-            <input type="checkbox" name="item_id[]" value="<?php echo $row['id']; ?>" />
-        </td>
+    <tr class="<?php echo (isset($row['warning_class'])) ? $row['warning_class'] : ''; ?> custom_right_menu">
         <?php
         foreach ($head_tbl as $columm_name => $column_type) {
             if (isset($column_type['display']) && $column_type['display'] == 'none') {

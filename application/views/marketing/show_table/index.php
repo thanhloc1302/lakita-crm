@@ -1,4 +1,4 @@
-<table class="table table-bordered table-striped list_contact">
+<table class="table table-bordered table-striped list_contact list_contact_2">
     <?php
     $data['head_tbl'] = $this->list_view;
     $this->load->view('marketing/show_table/content/head', $data);

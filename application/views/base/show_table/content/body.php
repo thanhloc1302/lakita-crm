@@ -1,7 +1,9 @@
 <?php
 foreach ($rows as $row) {
     ?>
-    <tr class="<?php echo (isset($row['warning_class'])) ? $row['warning_class'] : ''; ?>">
+    <tr class="<?php echo (isset($row['warning_class'])) ? $row['warning_class'] : ''; ?> custom_right_menu_item"
+        item_id="<?php echo $row['id']; ?>"
+        >
         <td class="center tbl_selection">
             <input type="checkbox" name="item_id[]" value="<?php echo $row['id']; ?>" />
         </td>
@@ -31,7 +33,7 @@ foreach ($rows as $row) {
             }
         }
         ?>
-        <td class="center tbl_action">
+<!--        <td class="center tbl_action">
             <div class="btn-group">
                 <a href="#"
                    class="btn btn-danger delete_item"
@@ -46,7 +48,7 @@ foreach ($rows as $row) {
                     <i class="fa fa-pencil-square" aria-hidden="true"></i>
                 </a>
             </div>
-        </td>
+        </td>-->
     </tr>
 <?php }
 ?>

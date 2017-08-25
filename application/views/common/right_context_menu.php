@@ -50,3 +50,18 @@
         </a>
     </ul>
 </div>
+
+<div class="menu-item">
+    <ul>
+        <a href="#"
+           class="edit_item"
+           item_id="0">
+           <li>  <i class="fa fa-pencil-square" aria-hidden="true"></i> &nbsp; &nbsp; Chỉnh sửa</li>
+        </a>
+        <a href="#"
+           class="delete_item"
+           item_id="0">
+           <li>  <i class="fa fa-trash-o" aria-hidden="true"></i> &nbsp; &nbsp; Xóa dòng </li>
+        </a>
+    </ul>
+</div>

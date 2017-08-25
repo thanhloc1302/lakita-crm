@@ -58,7 +58,8 @@ module.exports = function (grunt) {
             },
             my_target: {
                 files: {
-                    'js3/built.min.js': ['js3/built.js']
+                    'js3/built.min.js': ['js3/built.js'],
+                    'js/sale/noti_contact_recall.min.js' : ['js/sale/noti_contact_recall.js']
                 }
             }
         },

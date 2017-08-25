@@ -19,9 +19,9 @@ thì người dùng vẫn có thể nhìn thấy các trường head là gì (d�
             </td>
         <?php }
         ?>
-        <td class="search_more" id="f_td_action"> 
+<!--        <td class="search_more" id="f_td_action"> 
             <input type="text" class="search_more" disabled="disabled"/> 
-        </td>
+        </td>-->
     </tr>
 </tbody>
 <tbody class="table-head-pos">
@@ -46,8 +46,8 @@ thì người dùng vẫn có thể nhìn thấy các trường head là gì (d�
                        ?>" /> 
             </td>
         <?php } ?>
-        <td class="search_more" id="td_action"> 
+<!--        <td class="search_more" id="td_action"> 
             <input type="text" class="search_more" disabled="disabled"/> 
-        </td>
+        </td>-->
     </tr>
 </tbody>

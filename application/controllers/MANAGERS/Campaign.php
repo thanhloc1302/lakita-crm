@@ -30,10 +30,9 @@ class Campaign extends MY_Table {
          * - nếu trường nào cần hiển thị đặc biệt (ngoại lệ) thì để là type = custom
          */
         $list_item = array(
-            'id' => array(
-                'name_display' => 'ID Campaign',
-            //'display' => 'none'
-            ),
+//            'id' => array(
+//                'name_display' => 'ID Campaign',
+//            ),
             'name' => array(
                 'name_display' => 'Tên chiến dịch',
                 'order' => '1'

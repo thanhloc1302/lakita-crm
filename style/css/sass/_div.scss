@@ -57,7 +57,7 @@ div{
         background-image: none;
         text-transform: uppercase;
     }
-    &.menu{
+    &.menu, &.menu-item{
         width: 330px;
         background: #000;
         color: #fff;

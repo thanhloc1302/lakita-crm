@@ -2,9 +2,6 @@
 thì người dùng vẫn có thể nhìn thấy các trường head là gì (dễ theo dõi) -->
 <tbody class="fixed-table" style="display: none;">
     <tr>
-        <td class="search_more" id="f_td_selection"> 
-            <input type="text" class="search_more" disabled="disabled"/> 
-        </td>
         <?php
         foreach ($head_tbl as $key => $value) {
             if (isset($value['display']) && $value['display'] == 'none') {
@@ -23,9 +20,6 @@ thì người dùng vẫn có thể nhìn thấy các trường head là gì (d�
 </tbody>
 <tbody class="table-head-pos">
     <tr>
-        <td class="search_more" id="td_selection"> 
-            <input type="text" class="search_more" disabled="disabled"/> 
-        </td>
         <?php
         foreach ($head_tbl as $key => $value) {
             if (isset($value['display']) && $value['display'] == 'none') {

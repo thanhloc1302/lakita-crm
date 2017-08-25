@@ -256,7 +256,7 @@ class Check_fee_cod extends MY_Table {
             $config['upload_path'] = './public/upload/CUOC';
             $config['allowed_types'] = 'xls|xlsx';
             $config['max_size'] = '100000';
-            $config['file_name'] = date('d-m-Y-H-i');
+            $config['file_name'] = date('Y-m-d-H-i');
             $this->load->library('upload', $config);
             if ($this->upload->do_upload('file')) {
                 $data = $this->upload->data();

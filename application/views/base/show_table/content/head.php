@@ -29,9 +29,9 @@ thì người dùng vẫn có thể nhìn thấy các trường head là gì (d�
             }
         }
         ?>
-        <th class="tbl_action" id="f_th_action">
+<!--        <th class="tbl_action" id="f_th_action">
             Thao tác
-        </th>
+        </th>-->
     </tr>
 </thead>
 <thead class="table-head-pos">
@@ -53,9 +53,9 @@ thì người dùng vẫn có thể nhìn thấy các trường head là gì (d�
             }
         }
         ?>
-        <th class="tbl_action th_action" id="th_action">
+<!--        <th class="tbl_action th_action" id="th_action">
             Thao tác
-        </th>
+        </th>-->
     </tr>
 </thead>
 

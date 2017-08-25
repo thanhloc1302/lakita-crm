@@ -16,4 +16,4 @@
         </div>
     </div>
 </div>
-<script src="<?php echo base_url(); ?>style/js/base/add_item.min.js"></script>
+<!--<script src="<?php echo base_url(); ?>style/js/base/add_item.min.js"></script>-->
