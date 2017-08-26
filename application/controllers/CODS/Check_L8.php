@@ -56,7 +56,7 @@ class Check_L8 extends MY_Table {
                 'name_display' => 'Số điện thoại'),
             'address' => array(
                 'name_display' => 'Địa chỉ'),
-            'date_deliver_success' =>array(
+            'date_deliver_success' => array(
                 'name_display' => 'Ngày phát thành công'),
             'time' => array(
                 'type' => 'datetime',
@@ -72,7 +72,7 @@ class Check_L8 extends MY_Table {
                 'display' => 'none'
             ),
             'L8_check' => array(
-                 'type' => 'custom',
+                'type' => 'custom',
                 'name_display' => 'Đã lưu'
             )
         );
@@ -305,28 +305,45 @@ class Check_L8 extends MY_Table {
 
     public function upload_file() {
         $data = $this->data;
-        $post = $this->input->post();
-        if (isset($post['submit'])) {
-            $file_path = '';
-            $config['upload_path'] = './public/upload/L8';
-            $config['allowed_types'] = 'xls|xlsx';
-            $config['max_size'] = '100000';
-            $config['file_name'] = date('Y-m-d-H-i');
-            $this->load->library('upload', $config);
-            if ($this->upload->do_upload('file')) {
-                $data = $this->upload->data();
-                $file_path = $data['full_path'];
-                $this->_import_L8($file_path);
-            } else {
-                $error = $this->upload->display_errors();
-                echo $error;
+        if (!empty($_FILES)) {
+            $tempFile = $_FILES['file']['tmp_name'];
+            $fileName = $_FILES['file']['name'];
+            $okExtensions = array('xls', 'xlsx');
+            $fileParts = explode('.', $fileName);
+            if (!in_array(strtolower(end($fileParts)), $okExtensions)) {
+                echo 'Vui lòng chọn file đúng định dạng!';die;
             }
+            $targetFile = APPPATH . '../public/upload/L8/' . date('Y-m-d-H-i') . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
+            move_uploaded_file($tempFile, $targetFile);
+            $this->_import_L8($targetFile);
         } else {
             $data['slide_menu'] = 'cod/check_L8/slide-menu';
             $data['top_nav'] = 'cod/common/top-nav';
             $data['content'] = 'cod/check_L8/upload';
             $this->load->view(_MAIN_LAYOUT_, $data);
         }
+//        $post = $this->input->post();
+//        if (isset($post['submit'])) {
+//            $file_path = '';
+//            $config['upload_path'] = './public/upload/L8';
+//            $config['allowed_types'] = 'xls|xlsx';
+//            $config['max_size'] = '100000';
+//            $config['file_name'] = date('Y-m-d-H-i');
+//            $this->load->library('upload', $config);
+//            if ($this->upload->do_upload('file')) {
+//                $data = $this->upload->data();
+//                $file_path = $data['full_path'];
+//                $this->_import_L8($file_path);
+//            } else {
+//                $error = $this->upload->display_errors();
+//                echo $error;
+//            }
+//        } else {
+//            $data['slide_menu'] = 'cod/check_L8/slide-menu';
+//            $data['top_nav'] = 'cod/common/top-nav';
+//            $data['content'] = 'cod/check_L8/upload';
+//            $this->load->view(_MAIN_LAYOUT_, $data);
+//        }
     }
 
     private function _import_L8($file_path) {
@@ -416,7 +433,7 @@ class Check_L8 extends MY_Table {
             $input['where'] = array('id' => $value);
             $code_cross = $this->{$this->model}->load_all($input);
             if ($code_cross[0]['is_match'] == 0 || $code_cross[0]['duplicate_id'] > 0 || $code_cross[0]['L8_check'] == 1) {
-                 $msg = 'Vui lòng chọn mã vận đơn trùng khớp, không bị trùng lặp và chưa lưu!';
+                $msg = 'Vui lòng chọn mã vận đơn trùng khớp, không bị trùng lặp và chưa lưu!';
                 show_error_and_redirect($msg, '', false);
             }
         }
@@ -477,12 +494,12 @@ class Check_L8 extends MY_Table {
         $input = array();
         $input['select'] = 'id';
         $input['where'] = array(
-           // 'stt' => $bill['stt'],
+            // 'stt' => $bill['stt'],
             //'custom_code' => $bill['custom_code'],
             //'date_deliver_success' => $bill['date_deliver_success'],
             'code' => $bill['code'],
-            //'ma_ky' => $bill['ma_ky'],
-            //'money' => $bill['money']
+                //'ma_ky' => $bill['ma_ky'],
+                //'money' => $bill['money']
         );
         $duplicae_id = $this->{$this->model}->load_all($input);
         if (!empty($duplicae_id)) {

@@ -3,7 +3,7 @@
         <h3 class="text-center marginbottom35"> Tải file đối soát đơn hàng L8 (Lưu ý chọn sheet active trước khi đối soát)</h3>
     </div>
 </div>
-<form action="#" method="POST" id="action_contact" class="form-inline" enctype="multipart/form-data">
+<!--<form action="#" method="POST" id="action_contact" class="form-inline" enctype="multipart/form-data">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-primary">
@@ -19,4 +19,18 @@
             </div>
         </div>
     </div>
-</form>
+</form>-->
+<input type="hidden" value="doi-soat-l8.html" id="redirect-dropzone" />
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Vui lòng chọn file excel</h3>
+            </div>
+            <div class="panel-body">
+                <form action="#" method="POST" class="dropzone needsclick dz-clickable" id="dropzoneFileUpload">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -39,7 +39,7 @@
                 <a href="<?php echo base_url('MANAGERS/marketers'); ?>">
                     <i class="fa fa-user" aria-hidden="true"></i> Quản lý Marketer </a>
             </li>
-            <li>
+<!--            <li>
                 <a><i class="fa fa-line-chart"></i> Các loại báo cáo <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li>
@@ -66,7 +66,7 @@
                     <li><a href="fixed_sidebar.html">Cài đặt lọc contact</a></li>
                     <li><a href="fixed_footer.html">Fixed Footer</a></li>
                 </ul>
-            </li>
+            </li>-->
         </ul>
     </div>
     <div class="menu_section">

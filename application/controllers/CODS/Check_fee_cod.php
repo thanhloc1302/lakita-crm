@@ -250,28 +250,46 @@ class Check_fee_cod extends MY_Table {
 
     public function upload_file() {
         $data = $this->data;
-        $post = $this->input->post();
-        if (isset($post['submit'])) {
-            $file_path = '';
-            $config['upload_path'] = './public/upload/CUOC';
-            $config['allowed_types'] = 'xls|xlsx';
-            $config['max_size'] = '100000';
-            $config['file_name'] = date('Y-m-d-H-i');
-            $this->load->library('upload', $config);
-            if ($this->upload->do_upload('file')) {
-                $data = $this->upload->data();
-                $file_path = $data['full_path'];
-                $this->_import_fee_cod($file_path);
-            } else {
-                $error = $this->upload->display_errors();
-                echo $error;
+        if (!empty($_FILES)) {
+            $tempFile = $_FILES['file']['tmp_name'];
+            $fileName = $_FILES['file']['name'];
+            $okExtensions = array('xls', 'xlsx');
+            $fileParts = explode('.', $fileName);
+            if (!in_array(strtolower(end($fileParts)), $okExtensions)) {
+                echo 'Vui lòng chọn file đúng định dạng!';
+                die;
             }
+            $targetFile = APPPATH . '../public/upload/CUOC/' . date('Y-m-d-H-i') . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
+            move_uploaded_file($tempFile, $targetFile);
+            $this->_import_fee_cod($targetFile);
         } else {
             $data['slide_menu'] = 'cod/check_fee_cod/slide-menu';
             $data['top_nav'] = 'cod/common/top-nav';
             $data['content'] = 'cod/check_fee_cod/upload';
             $this->load->view(_MAIN_LAYOUT_, $data);
         }
+//        $post = $this->input->post();
+//        if (isset($post['submit'])) {
+//            $file_path = '';
+//            $config['upload_path'] = './public/upload/CUOC';
+//            $config['allowed_types'] = 'xls|xlsx';
+//            $config['max_size'] = '100000';
+//            $config['file_name'] = date('Y-m-d-H-i');
+//            $this->load->library('upload', $config);
+//            if ($this->upload->do_upload('file')) {
+//                $data = $this->upload->data();
+//                $file_path = $data['full_path'];
+//                $this->_import_fee_cod($file_path);
+//            } else {
+//                $error = $this->upload->display_errors();
+//                echo $error;
+//            }
+//        } else {
+//            $data['slide_menu'] = 'cod/check_fee_cod/slide-menu';
+//            $data['top_nav'] = 'cod/common/top-nav';
+//            $data['content'] = 'cod/check_fee_cod/upload';
+//            $this->load->view(_MAIN_LAYOUT_, $data);
+//        }
     }
 
     private function _import_fee_cod($file_path) {
@@ -403,6 +421,8 @@ class Check_fee_cod extends MY_Table {
     }
 
     private function _find_duplicate_fee_id($fee) {
+        $fee['fee'] = ($fee['fee'] == 0) ? '0' : $fee['fee'];
+        $fee['fee_resend'] = ($fee['fee_resend'] == 0) ? '0' : $fee['fee_resend'];
         $duplicate = 0;
         $input = array();
         $input['select'] = 'id';

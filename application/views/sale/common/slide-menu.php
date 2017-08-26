@@ -18,6 +18,7 @@
         <ul class="nav side-menu">
             <li class="dropdown-hover">
                 <a><i class="fa fa-bars"></i> Danh sách contact 
+                    <i class="fa fa-arrow-right" aria-hidden="true" style="font-size: 10px!important; width: auto !important;"></i>
                     <span class="fa fa-chevron-down"></span>
                 </a>
                 <ul class="nav child_menu">

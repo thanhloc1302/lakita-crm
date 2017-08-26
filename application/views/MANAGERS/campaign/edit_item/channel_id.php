@@ -7,7 +7,9 @@
             <option value="0"> Chọn kênh quảng cáo </option>
             <?php foreach ($arr as $key => $value) {
                 ?>
-                <option value="<?php echo $value['id'] ?>" <?php if($value['id'] == $row['channel_id']) echo 'selected= "selected"';?>> <?php echo $value['name'] ?></option>
+                <option value="<?php echo $value['id'] ?>" 
+                    <?php if($value['id'] == $row['channel_id']) echo 'selected= "selected"';?>> <?php echo $value['name'] ?>
+                </option>
                 <?php
             }
             ?>

@@ -26,7 +26,7 @@ module.exports = function (grunt) {
                 sourceMap: true
             },
             dist: {
-                src: ['js2/*/*.js'],
+                src: ['js2/*/*.js', 'js2/*/*/*.js'],
                 dest: 'js3/built.js'
             }
         },
@@ -84,7 +84,7 @@ module.exports = function (grunt) {
                 tasks: ['sass']
             },
             scripts: {
-                files: 'js2/*/*.js',
+                files: ['js2/*/*.js','js2/*/*/*.js'],
                 tasks: ['concat']
             }
         }

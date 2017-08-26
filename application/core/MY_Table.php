@@ -204,7 +204,6 @@ class MY_Table extends MY_Controller {
             echo 'Không tồn tại danh mục này!';
             die;
         }
-
         $data['row'] = $rows[0];
         $this->load->view('base/edit_item/ajax_content', $data);
     }

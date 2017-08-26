@@ -93,7 +93,7 @@ $(document).on('scroll', function () {
         /*
          * Căn chỉnh lại cho thẳng hàng
          */
-        var offsetLeft = $(".table-head-pos").offset().left - 1;
-        $(".fixed-table").css("left", offsetLeft + "px");
+//        var offsetLeft = $(".table-head-pos").offset().left - 1;
+//        $(".fixed-table").css("left", offsetLeft + "px");
     }
 });

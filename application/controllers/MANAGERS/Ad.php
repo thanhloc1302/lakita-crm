@@ -197,7 +197,7 @@ class Ad extends MY_Table {
          */
         $this->load->model('adset_model');
         $input = array();
-        $input['where'] = array('active' => 1);
+        $input['where'] = array('active' => 1, 'marketer_id' => $this->user_id);
         $adsets = $this->adset_model->load_all($input);
         $this->list_add = array(
             'left_table' => array(
@@ -249,8 +249,8 @@ class Ad extends MY_Table {
          */
         $this->load->model('adset_model');
         $input = array();
-        $input['where'] = array('active' => 1);
-        $campaigns = $this->campaign_model->load_all($input);
+        $input['where'] = array('active' => 1, 'marketer_id' => $this->user_id);
+        $adsets = $this->adset_model->load_all($input);
         $this->list_edit = array(
             'left_table' => array(
                 'name' => array(

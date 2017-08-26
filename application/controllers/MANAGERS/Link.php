@@ -231,22 +231,55 @@ class Link extends MY_Table {
         $input = array();
         $input['where'] = array('active' => 1);
         $channels = $this->channel_model->load_all($input);
+
+
+        $this->load->model('campaign_model');
+        $input = array();
+        $input['where'] = array('active' => 1, 'marketer_id' => $this->user_id);
+        $campaigns = $this->campaign_model->load_all($input);
+
+        $this->load->model('adset_model');
+        $input = array();
+        $input['where'] = array('active' => 1, 'marketer_id' => $this->user_id);
+        $adsets = $this->adset_model->load_all($input);
+
+        $this->load->model('ad_model');
+        $input = array();
+        $input['where'] = array('active' => 1, 'marketer_id' => $this->user_id);
+        $ads = $this->ad_model->load_all($input);
+
+        $this->load->model('landingpage_model');
+        $input = array();
+        $input['where'] = array('active' => 1);
+        $landingpages = $this->landingpage_model->load_all($input);
+
         $this->list_edit = array(
             'left_table' => array(
-                'name' => array(
+                'url' => array(
+                    'type' => 'disable'
                 ),
                 'channel_id' => array(
                     'type' => 'array',
                     'value' => $channels,
                 ),
-                'campaign_id_facebook' => array(
-                )
+                'campaign_id' => array(
+                    'type' => 'array',
+                    'value' => $campaigns,
+                ),
+                'adset_id' => array(
+                    'type' => 'array',
+                    'value' => $adsets,
+                ),
+                'ad_id' => array(
+                    'type' => 'array',
+                    'value' => $ads,
+                ),
             ),
             'right_table' => array(
-                'desc' => array(
-                    'type' => 'textarea'
-                ),
-                'active' => array()
+                 'landingpage_id' => array(
+                    'type' => 'array',
+                    'value' => $landingpages
+                )
             ),
         );
         parent::show_edit_item();
@@ -256,7 +289,7 @@ class Link extends MY_Table {
         $post = $this->input->post();
         if (!empty($post)) {
             $input['where'] = array('id' => $id);
-            $paramArr = array('name', 'channel_id', 'campaign_id_facebook', 'desc', 'active');
+            $paramArr = array('channel_id', 'campaign_id', 'adset_id', 'ad_id', 'landingpage_id');
             foreach ($paramArr as $value) {
                 if (isset($post['edit_' . $value])) {
                     $param[$value] = $post['edit_' . $value];
@@ -264,14 +297,14 @@ class Link extends MY_Table {
             }
             $this->{$this->model}->update($input['where'], $param);
         }
-        show_error_and_redirect('Sửa chiến dịch thành công!');
+        show_error_and_redirect('Sửa link thành công!');
     }
 
     function get_campaign() {
         $post = $this->input->post();
         $this->load->model('campaign_model');
         $input = array();
-        $input['where'] = array('channel_id' => $post['channel_id']);
+        $input['where'] = array('channel_id' => $post['channel_id'], 'marketer_id' => $this->user_id);
         $campaigns = $this->campaign_model->load_all($input);
         $xhml = '';
         if (!empty($campaigns)) {

@@ -186,7 +186,7 @@ class Channel extends MY_Table {
                 ),
             )
         );
-        $conditional = array();
+        $conditional = array('order' => array('id' => 'ASC'));
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();

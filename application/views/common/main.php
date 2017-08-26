@@ -29,7 +29,7 @@
 
                 <footer>
                     <div class="pull-right">
-                        CRM LAKITA - BY <a href="">CHUYENPN</a>
+                        CRM LAKITA - BY <a href="https://www.facebook.com/chuyenbka" target="_blank">CHUYENPN</a>
                     </div>
                     <div class="clearfix"></div>
                 </footer>

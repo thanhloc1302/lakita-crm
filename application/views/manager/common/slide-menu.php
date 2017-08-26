@@ -34,7 +34,9 @@
                 </a>
             </li>
             <li class="dropdown-hover">
-                <a><i class="fa fa-edit"></i> Phân / Xóa Contact <span class="fa fa-chevron-down"></span></a>
+                <a><i class="fa fa-edit"></i> Phân / Xóa Contact 
+                    <i class="fa fa-arrow-right" aria-hidden="true" style="font-size: 10px!important; width: auto !important;"></i>
+                    <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a class="divide_contact">Phân riêng contact cho một TVTS</a></li>
                     <li><a href="#" class="divide_contact_even">Phân đều contact cho các TVTS</a></li>
@@ -50,7 +52,8 @@
                 <a href="<?php echo base_url('quan-ly/them-contact.html'); ?>"><i class="fa fa fa-user">+</i> Thêm mới contact </a>
             </li>
             <li class="dropdown-hover">
-                <a><i class="fa fa-line-chart"></i> Các loại báo cáo <span class="fa fa-chevron-down"></span></a>
+                <a><i class="fa fa-line-chart"></i> Các loại báo cáo 
+                    <i class="fa fa-arrow-right" aria-hidden="true" style="font-size: 10px!important; width: auto !important;"></i><span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li>
                         <a href="<?php echo base_url('quan-ly/xem-bao-cao-tu-van-tuyen-sinh.html'); ?>">

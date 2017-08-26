@@ -23,6 +23,7 @@
             </li>
             <li class="dropdown-hover">
                 <a><i class="fa fa-check-circle-o"></i> Tải file đối soát
+                    <i class="fa fa-arrow-right" aria-hidden="true" style="font-size: 10px!important; width: auto !important;"></i>
                     <span class="fa fa-chevron-down"></span>
                 </a>
                 <ul class="nav child_menu">
@@ -33,6 +34,7 @@
             </li>
             <li class="dropdown-hover">
                 <a><i class="fa fa-compress"></i> Kết quả đối soát
+                    <i class="fa fa-arrow-right" aria-hidden="true" style="font-size: 10px!important; width: auto !important;"></i>
                     <span class="fa fa-chevron-down"></span>
                 </a>
                 <ul class="nav child_menu">

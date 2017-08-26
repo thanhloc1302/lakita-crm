@@ -56,12 +56,15 @@
         <a href="#"
            class="edit_item"
            item_id="0">
-           <li>  <i class="fa fa-pencil-square" aria-hidden="true"></i> &nbsp; &nbsp; Chỉnh sửa</li>
+            <li>  <i class="fa fa-pencil-square" aria-hidden="true"></i> &nbsp; &nbsp; Chỉnh sửa</li>
         </a>
         <a href="#"
            class="delete_item"
            item_id="0">
-           <li>  <i class="fa fa-trash-o" aria-hidden="true"></i> &nbsp; &nbsp; Xóa dòng </li>
+            <li>  <i class="fa fa-trash-o" aria-hidden="true"></i> &nbsp; &nbsp; Xóa dòng </li>
         </a>
+        <a class="delete_multi_item" href="#"> 
+            <li>  <i class="fa fa-trash-o" aria-hidden="true"></i> &nbsp; &nbsp; Xóa các dòng đã chọn </li>
+        </a> 
     </ul>
 </div>
