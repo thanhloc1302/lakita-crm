@@ -13,6 +13,21 @@
  */
 class Sale extends MY_Controller {
 
+    public function __construct() {
+        parent::__construct();
+        $data['time_remaining'] = 0;
+        $input = array();
+        $input['where']['sale_staff_id'] = $this->user_id;
+        $input['where']['date_recall >'] = time();
+        $input['order']['date_recall'] = 'ASC';
+        $input['limit'] = array('1' ,'0');
+        $noti_contact = $this->contacts_model->load_all_contacts($input);
+       if(!empty($noti_contact)) {
+           $data['time_remaining'] =  $noti_contact[0]['date_recall'] - time();
+       }
+       $this->load->vars($data);
+    }
+
     function index($offset = 0) {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
@@ -333,9 +348,9 @@ class Sale extends MY_Controller {
         $input['order']['date_recall'] = 'DESC';
         $noti_contact = $this->contacts_model->load_all_contacts($input);
         if (!empty($noti_contact)) {
-             $result = array();
-            if(time() - $noti_contact[0]['date_recall'] < 30) {
-                $result['sound'] =  1;       
+            $result = array();
+            if (time() - $noti_contact[0]['date_recall'] < 30) {
+                $result['sound'] = 1;
             }
             foreach ($noti_contact as &$value) {
                 $value['date_recall'] = date('H:i j/n/Y', $value['date_recall']);

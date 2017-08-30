@@ -48,4 +48,17 @@ integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="ano
 //    }
 //}
 ?>
+<?php if ($this->controller == 'sale') { ?>
+    <?php if ($time_remaining > 0) { ?>
+        <div class="flip-clock"></div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flipclock/0.7.8/flipclock.min.js"></script>
+        <script type="text/javascript">
+            var distance = <?php echo $time_remaining; ?>;
+            var clock = $('.flip-clock').FlipClock(distance, {
+                clockFace: 'DailyCounter',
+                countdown: true
+            });
+        </script>
+    <?php } ?>
+<?php } ?>
 

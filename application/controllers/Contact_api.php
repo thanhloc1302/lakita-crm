@@ -111,7 +111,7 @@ class Contact_api extends REST_Controller {
             $input_c2_exist['where'] = array('link_id' => $input['link_id'], 'ip' => $input['ip'],
                 'date_rgt >=' => time() - 120);
             $c2_exist = $this->c2_model->load_all($input_c2_exist);
-            if (empty($c2_exist)) {  
+            if (empty($c2_exist)) {
                 $this->load->model('link_model');
                 $input_link = array();
                 $input_link['where'] = array('id' => $input['link_id']);

@@ -147,6 +147,16 @@ class MY_Model extends CI_Model {
                 $this->db->like($key, $value);
             }
         }
+        
+        
+             //like group_start
+        // $input['like'] = array('name' => 'abc');
+        if ((isset($input['group_start_like'])) && !empty($input['group_start_like'])) {
+             $this->db->group_start();
+            foreach ($input['group_start_like'] as $key => $value) {
+                $this->db->like($key, $value);
+            }
+        }
 
         // $input['like_before'] = array('name' => 'abc');
         if ((isset($input['like_before'])) && !empty($input['like_before'])) {
@@ -189,6 +199,14 @@ class MY_Model extends CI_Model {
             foreach ($input['or_like'] as $key => $value) {
                 $this->db->or_like($key, $value);
             }
+        }
+        
+        // group_end
+        if ((isset($input['group_end_or_like'])) && !empty($input['group_end_or_like'])) {
+            foreach ($input['group_end_or_like'] as $key => $value) {
+                $this->db->or_like($key, $value);
+            }
+             $this->db->group_end();
         }
 
         // Thêm sắp xếp dữ liệu thông qua biến $input['order']

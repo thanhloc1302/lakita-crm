@@ -13,6 +13,7 @@
               integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <!--        <link href="<?php echo base_url(); ?>vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">-->
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/flipclock/0.7.8/flipclock.min.css" type="text/css" rel="stylesheet" />
         <link href="<?php echo base_url(); ?>style/build/css/custom.min.css" rel="stylesheet">
         <link href="<?php echo base_url(); ?>style/css/style.css" rel="stylesheet" type="text/css" />
 <!--        <link rel="stylesheet" href="<?php echo base_url(); ?>style/jquery-ui-1.12.1.custom/jquery-ui.min.css">-->

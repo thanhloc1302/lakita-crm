@@ -445,8 +445,8 @@ class Check_L7 extends MY_Table {
         $parent = parent::_get_query_condition_arr($get);
         if (isset($get['filter_status_L7']) && $get['filter_status_L7'] != '') {
             if ($get['filter_status_L7'] == 'phat-thanh-cong') {
-                $parent['input_get']['like']['status'] = 'Ph&aacute;t th&agrave;nh c&ocirc;ng';
-                // $parent['input_get']['or_like']['status'] = 'Ph&aacute;t th&agrave;nh c&ocirc;ng';
+                $parent['input_get']['group_start_like']['status'] = 'Ph&aacute;t th&agrave;nh c&ocirc;ng';
+                 $parent['input_get']['group_end_or_like']['status'] = 'Ph&aacute;t th&agrave;nh c&ocirc;ng';
             }
             if ($get['filter_status_L7'] == 'huy-don') {
                 $parent['input_get']['like']['status'] = 'CHuyển trả người gửi';

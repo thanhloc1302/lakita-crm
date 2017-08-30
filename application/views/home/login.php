@@ -7,10 +7,10 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>CRM LAKITA </title>
-        <script src="<?php echo base_url(); ?>style/js/common/jquery.min.js"></script>
-        <!-- Bootstrap -->
-        <link href="<?php echo base_url(); ?>style/css/common/bootstrap.min.css" rel="stylesheet">
-        <script src="<?php echo base_url(); ?>style/js/common/bootstrap.min.js"></script>
+        <link rel="shortcut icon" href="http://crm2.lakita.vn/style/images/favicon.png" type="image/x-icon" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     </head>
     <body>
         <div class="modal fade" tabindex="-1" role="dialog" id="myModal">
@@ -37,7 +37,6 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
-        <button type="button" data-toggle="modal" data-target="#myModal3" id="myModal1" style="display:none">Large modal</button>
         <div class="modal" tabindex="-1" role="dialog" id="myModal3">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
@@ -54,10 +53,8 @@
         <script>
             $('#myModal').modal({show: true});
             $("#login").click(function () {
-                $("#myModal1").click();
-                setTimeout(function () {
-                    $("#target").submit();
-                }, 1000);
+                $("#myModal3").modal({show: true});
+                $("#target").submit();
                 return false;
             });
         </script>
