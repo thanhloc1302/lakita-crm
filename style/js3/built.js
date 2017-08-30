@@ -99,7 +99,7 @@ $(document).ready(function () {
                         console.log(data);
                         if (data === '1')
                         {
-                            del.parent().parent().parent().hide();
+                            location.reload();
                         } else {
                             alert(data);
                         }
@@ -1366,6 +1366,8 @@ $(function () {
         $(".transfer_one_contact_modal").modal("show");
     }
 });
+var a = 1;
+var b = "hay qu\u00E1 " + a + " h\u00EC h\u00EC";
 $(document).ready(function () {
     $(document).on('change', '[name="add_channel_id"], [name="edit_channel_id"]', function () {
         var channel_id = $(this).val();

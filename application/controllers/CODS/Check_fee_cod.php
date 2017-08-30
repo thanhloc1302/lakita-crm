@@ -50,6 +50,8 @@ class Check_fee_cod extends MY_Table {
                 'name_display' => 'Họ tên'),
             'phone' => array(
                 'name_display' => 'Số điện thoại'),
+            'cod_status' => array(
+                'name_display' => 'Trạng thái giao hàng'),
             'time' => array(
                 'type' => 'datetime',
                 'name_display' => 'Ngày tải file đối soát',
@@ -293,6 +295,7 @@ class Check_fee_cod extends MY_Table {
     }
 
     private function _import_fee_cod($file_path) {
+        $this->load->model('cod_status_model');
         $this->load->library('PHPExcel');
         $objPHPExcel = PHPExcel_IOFactory::load($file_path);
         $sheet = $objPHPExcel->getActiveSheet();
@@ -341,7 +344,7 @@ class Check_fee_cod extends MY_Table {
         // print_arr($fee);
         foreach ($fee as $key => $value) {
             $input = array();
-            $input['select'] = 'code_cross_check, price_purchase, name, phone, address, id';
+            $input['select'] = 'code_cross_check, price_purchase, name, phone, address, id, cod_status_id';
             $input['where'] = array('code_cross_check' => $value['code'], 'ordering_status_id' => _DONG_Y_MUA_);
             $contact = $this->contacts_model->load_all($input);
             if (!empty($contact)) {
@@ -349,6 +352,7 @@ class Check_fee_cod extends MY_Table {
                 $fee[$key]['name'] = $contact[0]['name'];
                 $fee[$key]['phone'] = $contact[0]['phone'];
                 $fee[$key]['address'] = $contact[0]['address'];
+                $fee[$key]['cod_status'] = $this->cod_status_model->find_cod_status_desc($contact[0]['cod_status_id']);
             } else {
                 $fee[$key]['is_match'] = 0;
             }
@@ -391,8 +395,10 @@ class Check_fee_cod extends MY_Table {
         $this->load->model('call_log_model');
         foreach ($contacts as $value) {
             $where = array('code_cross_check' => $value['code_cross_check']);
-
-            $curr_contact = $this->contacts_model->load_all(array('where' => $where));
+            $input = array();
+            $input['select'] = 'id, cod_fee, fee_resend';
+            $input['where'] = $where;
+            $curr_contact = $this->contacts_model->load_all($input);
             $curr_fee = $curr_contact[0]['cod_fee'];
             $fee = $curr_fee + $value['fee'];
 

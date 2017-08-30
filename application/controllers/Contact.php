@@ -53,6 +53,7 @@ class Contact extends CI_Controller {
     private function _find_dupliacte_contact($email = '', $phone = '', $course_code = '') {
         $dulicate = 0;
         $input = array();
+        $input['select'] = 'id';
         $input['where'] = array(
             'phone' => $phone,
             'course_code' => $course_code

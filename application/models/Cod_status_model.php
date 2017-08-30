@@ -19,12 +19,14 @@ class Cod_status_model extends MY_Model {
     }
 
     public function find_cod_status_desc($id) {
+        $name = '';
         $input2 = array();
         $input2['where'] = array('id' => $id);
         $result = $this->load_all($input2);
-        if (!empty($result))
-            return $result[0]['name'];
-        return '';
+        if (!empty($result)) {
+            $name = $result[0]['name'];
+        }
+        return $name;
     }
 
 }

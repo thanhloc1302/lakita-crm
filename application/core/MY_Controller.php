@@ -36,7 +36,7 @@ class MY_Controller extends CI_Controller {
         $this->_check_permission();
         $this->_set_notificate();
         if ($this->config->item('show_profiler') === TRUE) {
-            //$this->output->enable_profiler(TRUE);
+            $this->output->enable_profiler(TRUE);
         }
         $this->load->vars($this->data);
     }
@@ -231,6 +231,7 @@ class MY_Controller extends CI_Controller {
 
         foreach ($result['data'] as &$value) {
             $input = array();
+            $input['select'] = 'id';
             $input['where'] = array('phone' => $value['phone'], 'is_hide' => '0');
             $courses = $this->contacts_model->load_all($input);
             $value['star'] = count($courses);
@@ -333,6 +334,7 @@ class MY_Controller extends CI_Controller {
     protected function _find_dupliacte_contact($email = '', $phone = '', $course_code = '') {
         $dulicate = 0;
         $input = array();
+        $input['select'] = 'id';
         $input['where'] = array(
             'phone' => $phone,
             'course_code' => $course_code
@@ -477,6 +479,17 @@ class MY_Controller extends CI_Controller {
         $this->output->enable_profiler(FALSE)
                 ->set_content_type('application/x-javascript')
                 ->set_output($script);
+    }
+    
+     protected function renderJSON($json) {
+        // Resources are one of the few things that the json
+        // encoder will refuse to handle.
+        if (is_resource($json)) {
+            throw new \RuntimeException('Unable to encode and output the JSON data.');
+        }
+        $this->output->enable_profiler(FALSE)
+                ->set_content_type('application/json')
+                ->set_output(json_encode($json));
     }
 
 }

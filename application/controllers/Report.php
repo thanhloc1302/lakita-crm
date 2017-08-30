@@ -406,6 +406,8 @@ class Report extends MY_Controller {
         $this->load->model('providers_model');
         $this->load->model('payment_method_rgt_model');
         $input = array();
+        $input['select'] = 'call_status_id, ordering_status_id, cod_status_id, sale_staff_id, course_code, '
+                . 'provider_id, date_rgt, price_purchase, payment_method_rgt';
         $input['where'] = array('date_rgt >=' => 1483203600, 'is_hide' => '0');
         $test = $this->contacts_model->load_all($input);
         $rs = [];
@@ -413,7 +415,8 @@ class Report extends MY_Controller {
             $rs[$key]['C3'] = '1';
             $rs[$key]['L2'] = ($value['call_status_id'] == 4) ? '1' : '0';
             $rs[$key]['L6'] = ($value['ordering_status_id'] == 4) ? '1' : '0';
-            $rs[$key]['L8'] = ($value['cod_status_id'] == 2) ? '1' : '0';
+            $rs[$key]['L7'] = ($value['cod_status_id'] == 2) ? '1' : '0';
+            $rs[$key]['L7L8'] = ($value['cod_status_id'] == 3 || $value['cod_status_id'] == 2) ? '1' : '0';
             $rs[$key]['L8'] = ($value['cod_status_id'] == 3) ? '1' : '0';
             $rs[$key]['TVTS'] = $this->staffs_model->find_staff_name($value['sale_staff_id']);
             $rs[$key]['Mã khóa học'] = $value['course_code'];

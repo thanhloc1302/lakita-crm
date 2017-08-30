@@ -120,10 +120,24 @@ class MY_Model extends CI_Model {
             }
         }
 
+        if (isset($input['group_start_where']) && !empty($input['group_start_where'])) {
+            $this->db->group_start();
+            foreach ($input['where'] as $key => $value) {
+                $this->db->where($key, $value);
+            }
+        }
+
         if (isset($input['or_where']) && !empty($input['or_where'])) {
             foreach ($input['or_where'] as $key => $value) {
                 $this->db->or_where($key, $value);
             }
+        }
+        
+        if (isset($input['group_end_or_where']) && !empty($input['group_end_or_where'])) {
+            foreach ($input['or_where'] as $key => $value) {
+                $this->db->or_where($key, $value);
+            }
+            $this->db->group_end();
         }
 
         //where in
@@ -147,12 +161,12 @@ class MY_Model extends CI_Model {
                 $this->db->like($key, $value);
             }
         }
-        
-        
-             //like group_start
+
+
+        //like group_start
         // $input['like'] = array('name' => 'abc');
         if ((isset($input['group_start_like'])) && !empty($input['group_start_like'])) {
-             $this->db->group_start();
+            $this->db->group_start();
             foreach ($input['group_start_like'] as $key => $value) {
                 $this->db->like($key, $value);
             }
@@ -200,13 +214,13 @@ class MY_Model extends CI_Model {
                 $this->db->or_like($key, $value);
             }
         }
-        
+
         // group_end
         if ((isset($input['group_end_or_like'])) && !empty($input['group_end_or_like'])) {
             foreach ($input['group_end_or_like'] as $key => $value) {
                 $this->db->or_like($key, $value);
             }
-             $this->db->group_end();
+            $this->db->group_end();
         }
 
         // Thêm sắp xếp dữ liệu thông qua biến $input['order']

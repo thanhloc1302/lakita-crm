@@ -283,6 +283,7 @@ class Cod extends MY_Controller {
         $result = '';
         foreach ($post['contact_id'] as $value) {
             $input = array();
+            $input['select'] = 'code_cross_check';
             $input['where'] = array('id' => $value);
             $contact = $this->contacts_model->load_all($input);
             if ($contact[0]['code_cross_check'] != '') {
@@ -383,6 +384,7 @@ class Cod extends MY_Controller {
         $i = 0;
         foreach ($ids as $value) {
             $input = array();
+            $input['select'] = 'phone, code_cross_check, course_code, name, address, price_purchase, note_cod';
             $input['where'] = array('id' => $value);
             $contact = $this->contacts_model->load_all($input);
             //tìm xem số đt của contact có trong mảng contacts hay chưa, 

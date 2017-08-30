@@ -16,7 +16,7 @@ $(document).ready(function () {
                         console.log(data);
                         if (data === '1')
                         {
-                            del.parent().parent().parent().hide();
+                            location.reload();
                         } else {
                             alert(data);
                         }

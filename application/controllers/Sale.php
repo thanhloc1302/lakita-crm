@@ -17,6 +17,7 @@ class Sale extends MY_Controller {
         parent::__construct();
         $data['time_remaining'] = 0;
         $input = array();
+        $input['select'] = 'date_recall';
         $input['where']['sale_staff_id'] = $this->user_id;
         $input['where']['date_recall >'] = time();
         $input['order']['date_recall'] = 'ASC';
@@ -347,7 +348,7 @@ class Sale extends MY_Controller {
         $input['where']['date_recall >'] = '0';
         $input['where']['date_recall <='] = time();
         $input['order']['date_recall'] = 'DESC';
-        $noti_contact = $this->contacts_model->load_all_contacts($input);
+        $noti_contact = $this->contacts_model->load_all($input);
         if (!empty($noti_contact)) {
             $result = array();
             if (time() - $noti_contact[0]['date_recall'] < 30) {
@@ -360,8 +361,7 @@ class Sale extends MY_Controller {
             $num_noti_contact = count($noti_contact);
             $result['num_noti'] = $num_noti_contact;
             $result['contacts_noti'] = $noti_contact;
-            echo json_encode($result);
-            die;
+            $this->renderJSON($result);
         }
     }
 
@@ -415,13 +415,15 @@ class Sale extends MY_Controller {
         $name = '';
         foreach ($list as $value) {
             $input = array();
+            $input['select'] = 'name, sale_staff_id, call_status_id, ordering_status_id';
             $input['where'] = array('id' => $value);
             $rows = $this->contacts_model->load_all($input);
             if ($rows[0]['sale_staff_id'] != $this->user_id) {
                 $msg = 'Contact này không được phân cho bạn vì vậy bạn không thể chuyển nhượng contact này!';
                 show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
             }
-            if (in_array($rows[0]['call_status_id'], $this->_get_stop_care_call_stt()) || in_array($rows[0]['ordering_status_id'], $this->_get_stop_care_order_stt())) {
+            if (in_array($rows[0]['call_status_id'], $this->_get_stop_care_call_stt()) 
+                    || in_array($rows[0]['ordering_status_id'], $this->_get_stop_care_order_stt())) {
                 $name = $rows[0]['name'];
                 $transfered_contact = false;
                 break;

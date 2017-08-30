@@ -53,7 +53,7 @@ class Manager extends MY_Controller {
         );
         $data['content'] = 'manager/index';
 
-      
+
 
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
@@ -279,6 +279,7 @@ class Manager extends MY_Controller {
         $this->load->model('Staffs_model');
         foreach ($contact_ids as $value) {
             $input = array();
+            $input['select'] = 'sale_staff_id, id';
             $input['where'] = array('id' => $value);
             $rows = $this->contacts_model->load_all($input);
 
@@ -513,6 +514,7 @@ class Manager extends MY_Controller {
         $this->load->model('Staffs_model');
         foreach ($list as $value) {
             $input = array();
+            $input['select'] = 'duplicate_id, sale_staff_id';
             $input['where'] = array('id' => $value);
             $rows = $this->contacts_model->load_all($input);
             if ($rows[0]['duplicate_id'] == 0) {

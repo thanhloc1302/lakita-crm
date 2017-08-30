@@ -259,19 +259,20 @@ class Check_L7 extends MY_Table {
 
     public function upload_file() {
         $data = $this->data;
-       // $post = $this->input->post();
+        // $post = $this->input->post();
         if (!empty($_FILES)) {
             $tempFile = $_FILES['file']['tmp_name'];
             $fileName = $_FILES['file']['name'];
             $okExtensions = array('xls', 'xlsx');
             $fileParts = explode('.', $fileName);
             if (!in_array(strtolower(end($fileParts)), $okExtensions)) {
-               echo 'Vui lòng chọn file đúng định dạng!';die;
+                echo 'Vui lòng chọn file đúng định dạng!';
+                die;
             }
             $targetFile = APPPATH . '../public/upload/L7/' . date('Y-m-d-H-i') . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
             move_uploaded_file($tempFile, $targetFile);
             $this->_import_L7($targetFile);
-        }else {
+        } else {
             $data['slide_menu'] = 'cod/check_L7/slide-menu';
             $data['top_nav'] = 'cod/common/top-nav';
             $data['content'] = 'cod/check_L7/upload';
@@ -446,7 +447,7 @@ class Check_L7 extends MY_Table {
         if (isset($get['filter_status_L7']) && $get['filter_status_L7'] != '') {
             if ($get['filter_status_L7'] == 'phat-thanh-cong') {
                 $parent['input_get']['group_start_like']['status'] = 'Ph&aacute;t th&agrave;nh c&ocirc;ng';
-                 $parent['input_get']['group_end_or_like']['status'] = 'Ph&aacute;t th&agrave;nh c&ocirc;ng';
+                $parent['input_get']['group_end_or_like']['status'] = 'Ph&aacute;t th&agrave;nh c&ocirc;ng';
             }
             if ($get['filter_status_L7'] == 'huy-don') {
                 $parent['input_get']['like']['status'] = 'CHuyển trả người gửi';
