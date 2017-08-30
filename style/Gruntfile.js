@@ -1,5 +1,4 @@
 module.exports = function (grunt) {
-
 // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -28,6 +27,8 @@ module.exports = function (grunt) {
             dist: {
                 src: ['js2/*/*.js', 'js2/*/*/*.js'],
                 dest: 'js3/built.js'
+//                 src: ['js2/ts/*/*.ts'],
+//                 dest: 'js3/built.ts'
             }
         },
 
@@ -59,7 +60,7 @@ module.exports = function (grunt) {
             my_target: {
                 files: {
                     'js3/built.min.js': ['js3/built.js'],
-                    'js/sale/noti_contact_recall.min.js' : ['js/sale/noti_contact_recall.js']
+                    'js/sale/noti_contact_recall.min.js': ['js/sale/noti_contact_recall.js']
                 }
             }
         },
@@ -84,8 +85,18 @@ module.exports = function (grunt) {
                 tasks: ['sass']
             },
             scripts: {
-                files: ['js2/*/*.js','js2/*/*/*.js'],
+                files: ['js2/*/*.js', 'js2/*/*/*.js'],
                 tasks: ['concat']
+            }
+        },
+        typescript: {
+            base: {
+                src: ['js2/ts/*/*.ts'],
+                dest: 'js2/ts/*/',
+                ext: '.js',
+                options: {
+                    module: 'amd' //or commonjs 
+                }
             }
         }
 
@@ -97,8 +108,10 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-obfuscator');
+    grunt.loadNpmTasks('grunt-typescript');
     // Default task(s).
     grunt.registerTask('default', ['sass', 'concat', 'watch']);
     grunt.registerTask('nowatch', ['sass', 'concat', 'uglify', 'obfuscator']);
     grunt.registerTask('ob', ['obfuscator']);
+    grunt.registerTask('ts', ['typescript']);
 };
