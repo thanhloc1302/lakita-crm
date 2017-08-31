@@ -36,7 +36,7 @@ class MY_Controller extends CI_Controller {
         $this->_check_permission();
         $this->_set_notificate();
         if ($this->config->item('show_profiler') === TRUE) {
-            $this->output->enable_profiler(TRUE);
+            //$this->output->enable_profiler(TRUE);
         }
         $this->load->vars($this->data);
     }

@@ -32,20 +32,6 @@ class Cod extends MY_Controller {
             'c_check_edit_contact', 'c_select_provider');
 
         $data['content'] = 'cod/index';
-        // Load the DB utility class
-        $this->load->dbutil();
-
-        
-// Backup your entire database and assign it to a variable
-        $backup = $this->dbutil->backup();
-
-// Load the file helper and write the file to your server
-        $this->load->helper('file');
-        write_file('mybackup.gz', $backup);
-
-
-
-
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
