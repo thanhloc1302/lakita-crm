@@ -31,12 +31,14 @@ class Staffs_model extends MY_Model {
     }
 
     public function find_staff_name($id) {
+        $name = '';
         $input2 = array();
         $input2['where'] = array('id' => $id);
         $staffs = $this->load_all($input2);
-        if (!empty($staffs))
-            return $staffs[0]['name'];
-        return '';
+        if (!empty($staffs)) {
+            $name = $staffs[0]['name'];
+        }
+        return $name;
     }
 
 }

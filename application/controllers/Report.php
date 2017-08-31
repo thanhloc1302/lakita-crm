@@ -407,7 +407,7 @@ class Report extends MY_Controller {
         $this->load->model('payment_method_rgt_model');
         $input = array();
         $input['select'] = 'call_status_id, ordering_status_id, cod_status_id, sale_staff_id, course_code, '
-                . 'provider_id, date_rgt, price_purchase, payment_method_rgt';
+                . 'provider_id, date_rgt, price_purchase, payment_method_rgt, date_receive_lakita';
         $input['where'] = array('date_rgt >=' => 1483203600, 'is_hide' => '0');
         $test = $this->contacts_model->load_all($input);
         $rs = [];
@@ -425,6 +425,7 @@ class Report extends MY_Controller {
             //$rs[$key]['Trạng thái giao hàng'] = $this->cod_status_model->find_cod_status_desc($value['cod_status_id']);
             $rs[$key]['Đơn vị giao hàng'] = $this->providers_model->find_provider_name($value['provider_id']);
             $rs[$key]['Tháng đăng ký'] = date('Y-m', $value['date_rgt']);
+            $rs[$key]['Tháng nhận tiền'] = date('Y-m', $value['date_receive_lakita']);
             $rs[$key]['Ngày đăng ký'] = date('Y-m-d', $value['date_rgt']);
             $rs[$key]['Giá mua khóa học'] = ($value['price_purchase']);
             $rs[$key]['Hinh thức thanh toán'] = $this->payment_method_rgt_model->find_payment_method_rgt_desc($value['payment_method_rgt']);

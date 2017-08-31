@@ -1,50 +1,44 @@
-$(function () {
-
-
-    /*
-     * Real order
-     */
-    $('th[class^="order_new_"]').click(function () {
-        var myclass = $(this).attr("class");
-        myclass = myclass.split(/ /);
-        myclass = myclass[0];
-        $('input[class^="order_new_"]').not("input." + myclass).attr('value', '0');
-        if ($("input." + myclass).val() === '0')
-        {
-            $("input." + myclass).attr('value', 'ASC').promise().done(
-                    function () {
-                        $("#form_item").submit();
-                    }
-            );
-            return;
-        }
-        if ($("input." + myclass).val() === 'ASC')
-        {
-            $("input." + myclass).val('DESC').promise().done(
-                    function () {
-                        $("#form_item").submit();
-                    }
-            );
-            return;
-        }
-        if ($("input." + myclass).val() === 'DESC')
-        {
-            $("input." + myclass).val('0').promise().done(
-                    function () {
-                        $("#form_item").submit();
-                    }
-            );
-            return;
-        }
-
-    });
-
-    /*
-     * Real filter
-     */
-    $(".real_filter").on('change', function () {
-        $("#form_item").submit();
-    });
+/*
+ * Real order
+ */
+$('th[class^="order_new_"]').on('click',function () {
+    var myclass = $(this).attr("class");
+    myclass = myclass.split(/ /);
+    myclass = myclass[0];
+    $('input[class^="order_new_"]').not("input." + myclass).attr('value', '0');
+    if ($("input." + myclass).val() === '0')
+    {
+        $("input." + myclass).attr('value', 'ASC').promise().done(
+                function () {
+                    $("#form_item").submit();
+                }
+        );
+        return;
+    }
+    if ($("input." + myclass).val() === 'ASC')
+    {
+        $("input." + myclass).val('DESC').promise().done(
+                function () {
+                    $("#form_item").submit();
+                }
+        );
+        return;
+    }
+    if ($("input." + myclass).val() === 'DESC')
+    {
+        $("input." + myclass).val('0').promise().done(
+                function () {
+                    $("#form_item").submit();
+                }
+        );
+        return;
+    }
+});
+/*
+ * Real filter
+ */
+$(".real_filter").on('change', function () {
+    $("#form_item").submit();
 });
 
 /*

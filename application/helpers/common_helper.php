@@ -57,7 +57,7 @@ function display_money($money){
 }
 
 function found_position_in_array($phone, $contacts) {
-    $result = 0;
+    $result = -1;
     if (is_array($contacts) && !empty($contacts)) {
         foreach ($contacts as $key => $value) {
             if ($phone == $value['phone']) {

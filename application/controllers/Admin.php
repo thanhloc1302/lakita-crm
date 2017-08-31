@@ -61,6 +61,15 @@ class Admin extends MY_Controller {
             echo '1';
         }
     }
+    
+    function delete_forever_one_contact() {
+        $post = $this->input->post();
+        if (!empty($post['contact_id'])) {
+            $where = array('id' => $post['contact_id']);
+            $this->contacts_model->delete($where);
+            echo '1';
+        }
+    }
 
     function retrieve_contact() {
         $post = $this->input->post();

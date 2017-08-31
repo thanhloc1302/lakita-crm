@@ -1,4 +1,3 @@
-$(document).ready(function () {
     $(document).on('click', 'a.delete_bill', function (e) {
         var r = confirm("Bạn có chắc chắn muốn xóa dòng đối soát này không?");
         if (r == true) {
@@ -27,4 +26,3 @@ $(document).ready(function () {
             });
         }
     });
-});

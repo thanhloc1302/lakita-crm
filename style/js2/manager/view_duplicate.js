@@ -1,4 +1,4 @@
-$("a.view_duplicate").click(function (e) {
+$("a.view_duplicate").on('click', function (e) {
     e.preventDefault();
    // alert(1);
     var duplicate_id = $(this).attr("duplicate_id");

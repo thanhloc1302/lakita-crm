@@ -20,15 +20,16 @@ $(document).on('scroll', function () {
         var offsetLeft = $(".table-head-pos").offset().left + 2;
         $("table thead.fixed-table").css("left", offsetLeft + "px");
     }
-}).ready(function () {
-    $("input.reset_form").click(function (e) {
-        e.preventDefault();
-        $('option[value=0]').attr('selected', 'selected');
-        $('option[value="empty"]').attr('selected', 'selected');
-        $(".datepicker").val('');
-        $("input[type='text']").val('');
-        // $("#action_contact option:selected").prop("selected", false);
-        $('.selectpicker').selectpicker('deselectAll');
-    });
 });
+
+$("input.reset_form").on('click', function (e) {
+    e.preventDefault();
+    $('option[value=0]').attr('selected', 'selected');
+    $('option[value="empty"]').attr('selected', 'selected');
+    $(".datepicker").val('');
+    $("input[type='text']").val('');
+    // $("#action_contact option:selected").prop("selected", false);
+    $('.selectpicker').selectpicker('deselectAll');
+});
+
 

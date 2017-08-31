@@ -1,4 +1,4 @@
-$(document).ready(function () {
+
     $(document).on('click', 'a.delete_one_contact', function (e) {
         var del = $(this);
         var contact_id = $(this).attr("contact_id");
@@ -24,4 +24,3 @@ $(document).ready(function () {
             }
         });
     });
-});

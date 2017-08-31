@@ -1,3 +1,9 @@
 <td class="tbl_matrix">
-    <?php echo $value['matrix']; ?>
+    <?php
+    if ($value['matrix'] != '') {
+        echo $value['matrix'];
+    } else {
+        echo $value['marketer_name'];
+    }
+    ?>
 </td>

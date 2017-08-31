@@ -9,6 +9,7 @@ class Manager extends MY_Controller {
 
     function __construct() {
         parent::__construct();
+        $this->load->model('');
     }
 
     function index($offset = 0) {
@@ -25,7 +26,14 @@ class Manager extends MY_Controller {
         /*
          * Lấy danh sách contacts
          */
-        $data['contacts'] = $data_pagination['data'];
+        $contacts = $data_pagination['data'];
+        foreach ($contacts as &$value) {
+            $value['marketer_name'] = $this->staffs_model->find_staff_name($value['marketer_id']);
+        }
+        unset($value);
+
+        $data['contacts'] = $contacts;
+
         $data['total_contact'] = $data_pagination['total_row'];
         /*
          * Lấy link phân trang
@@ -73,7 +81,12 @@ class Manager extends MY_Controller {
          * Lấy link phân trang và danh sách contacts
          */
         $data['pagination'] = $this->_create_pagination_link('manager/view_all_contact', $data_pagination['total_row']);
-        $data['contacts'] = $data_pagination['data'];
+        $contacts = $data_pagination['data'];
+        foreach ($contacts as &$value) {
+            $value['marketer_name'] = $this->staffs_model->find_staff_name($value['marketer_id']);
+        }
+        unset($value);
+        $data['contacts'] = $contacts;
         $data['total_contact'] = $data_pagination['total_row'];
 
         /*
@@ -227,8 +240,9 @@ class Manager extends MY_Controller {
 
     private function _action_divide_contact($post) {
         $this->load->model('Staffs_model');
-        if (empty($post))
+        if (empty($post)) {
             die('Có lỗi xảy ra! Mã lỗi : 30201');
+        }
         if (!isset($post['contact_id'])) {
             redirect_and_die("Vui lòng chọn contact!");
         }
@@ -292,12 +306,11 @@ class Manager extends MY_Controller {
                 $msg = 'Contact có id = ' . $rows[0]['id'] . ' đã được phân cho TVTS: ' . $name . '. Vì vậy không thể phân tiếp được nữa!';
                 show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
             }
-
-//            if ($rows[0]['duplicate_id'] > 0) {
-//                $msg = 'Contact "' . $rows[0]['name'] . '" có id = ' . $rows[0]['id'] . ' bị trùng. '
-//                        . 'Vì vậy không thể phân contact đó được! Vui lòng thực hiện lại';
-//                show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
-//            }
+            if($this->role_id == 3 && $rows[0]['duplicate_id'] > 0) {
+                $msg = 'Contact "' . $rows[0]['name'] . '" có id = ' . $rows[0]['id'] . ' bị trùng. '
+                        . 'Vì vậy không thể phân contact đó được! Vui lòng thực hiện lại';
+                show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
+            }
         }
     }
 
@@ -683,13 +696,12 @@ class Manager extends MY_Controller {
             $conditional['select'] = 'course_code, cod_status_id, price_purchase';
             if (!count($get)) {
                 $conditional['where']['date_receive_cod >='] = strtotime(date('01-m-Y'));
-            }
-            $conditional['where']['course_code'] = $value['course_code'];
-            $conditional['where']['cod_status_id'] = _DA_THU_COD_;
-            if (isset($get['filter_date_report']) && $get['filter_date_report'] != '') {
+            } else {
                 $conditional['where']['date_receive_cod >='] = $date_report_from;
                 $conditional['where']['date_receive_cod <='] = $date_report_end;
             }
+            $conditional['where']['course_code'] = $value['course_code'];
+            $conditional['where']['cod_status_id'] = _DA_THU_COD_;
 
             $_L7 = $this->contacts_model->load_all($conditional);
             $courses[$key]['L7'] = sum_L8($_L7);
@@ -699,13 +711,12 @@ class Manager extends MY_Controller {
             $conditional['select'] = 'course_code, cod_status_id, price_purchase';
             if (!count($get)) {
                 $conditional['where']['date_receive_lakita >='] = strtotime(date('01-m-Y'));
-            }
-            $conditional['where']['course_code'] = $value['course_code'];
-            $conditional['where']['cod_status_id'] = _DA_THU_LAKITA_;
-            if (isset($get['filter_date_report']) && $get['filter_date_report'] != '') {
+            } else {
                 $conditional['where']['date_receive_lakita >='] = $date_report_from;
                 $conditional['where']['date_receive_lakita <='] = $date_report_end;
             }
+            $conditional['where']['course_code'] = $value['course_code'];
+            $conditional['where']['cod_status_id'] = _DA_THU_LAKITA_;
 
             /*
              * Xem theo ngày phát thành công
@@ -736,15 +747,12 @@ class Manager extends MY_Controller {
             $conditional['select'] = 'course_code, cod_status_id, price_purchase';
             if (!count($get)) {
                 $conditional['where']['date_receive_cod >='] = strtotime(date('01-m-Y'));
+            } else {
+                $conditional['where']['date_receive_cod >='] = $date_report_from;
+                $conditional['where']['date_receive_cod <='] = $date_report_end;
             }
             $conditional['where']['sale_staff_id'] = $value['id'];
             $conditional['where']['cod_status_id'] = _DA_THU_COD_;
-            if (isset($get['filter_date_report_from']) && $get['filter_date_report_from'] != '') {
-                $conditional['where']['date_receive_cod >='] = strtotime($get['filter_date_report_from']);
-            }
-            if (isset($get['filter_date_report_end']) && $get['filter_date_report_end'] != '') {
-                $conditional['where']['date_receive_cod <='] = strtotime($get['filter_date_report_end']) + 3600 * 24;
-            }
             $_L7 = $this->contacts_model->load_all($conditional);
             $staffs[$key]['L7'] = sum_L8($_L7);
             $L7_TVTS += $staffs[$key]['L7'];
@@ -753,19 +761,15 @@ class Manager extends MY_Controller {
             $conditional['select'] = 'course_code, cod_status_id, price_purchase';
             if (!count($get)) {
                 $conditional['where']['date_receive_lakita >='] = strtotime(date('01-m-Y'));
+            } else {
+                $conditional['where']['date_receive_lakita >='] = $date_report_from;
+                $conditional['where']['date_receive_lakita <='] = $date_report_end;
             }
             $conditional['where']['sale_staff_id'] = $value['id'];
             $conditional['where']['cod_status_id'] = _DA_THU_LAKITA_;
-            if (isset($get['filter_date_report_from']) && $get['filter_date_report_from'] != '') {
-                $conditional['where']['date_receive_lakita >='] = strtotime($get['filter_date_report_from']);
-            }
-            if (isset($get['filter_date_report_end']) && $get['filter_date_report_end'] != '') {
-                $conditional['where']['date_receive_lakita <='] = strtotime($get['filter_date_report_end']) + 3600 * 24;
-            }
             $_L8 = $this->contacts_model->load_all($conditional);
             $staffs[$key]['L8'] = sum_L8($_L8);
             $L8_TVTS += $staffs[$key]['L8'];
-
             $staffs[$key]['L7L8'] = $staffs[$key]['L7'] + $staffs[$key]['L8'];
             $L7L8_TVTS += $staffs[$key]['L7L8'];
         }

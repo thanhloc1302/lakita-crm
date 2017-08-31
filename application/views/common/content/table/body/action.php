@@ -45,12 +45,17 @@
     </td>
 <?php } ?>
 <?php if ($controller == 'admin') { ?>
-    <td class="text-center action">    
-        <a href="#" class="edit_contact_admin btn btn-primary" 
-           contact_id="<?php echo $value['id']; ?>"> Chỉnh sửa </a>
+    <td class="text-center action">  
+        <a href="#" class="divide_one_contact_achor btn btn-success"
+           contact_id="<?php echo $value['id']; ?>"
+           contact_name="<?php echo $value['name']; ?>"> Bàn giao </a>
+<!--        <a href="#" class="edit_contact_admin btn btn-primary" 
+           contact_id="<?php echo $value['id']; ?>"> Chỉnh sửa </a>-->
         <a href="#" class="retrieve_contact btn btn-warning" 
            contact_id="<?php echo $value['id']; ?>"> Thu hồi </a>
         <a href="#" class="delete_one_contact_admin btn btn-danger" 
-           contact_id="<?php echo $value['id']; ?>"> Xóa </a>
+           contact_id="<?php echo $value['id']; ?>"> Thùng rác </a>
+         <a href="#" class="delete_forever_one_contact_admin btn btn-danger" 
+           contact_id="<?php echo $value['id']; ?>"> Xóa hẳn</a>
     </td>
 <?php } ?>

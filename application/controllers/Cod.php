@@ -376,7 +376,7 @@ class Cod extends MY_Controller {
             //tìm xem số đt của contact có trong mảng contacts hay chưa, 
             //nếu chưa thì thêm vào, nếu có thì cộng tiền
             $position = found_position_in_array($contact[0]['phone'], $contacts);
-            if ($position == 0) {
+            if ($position == -1) {
                 $contacts[$i] = array(
                     'code_cross_check' => $contact[0]['code_cross_check'],
                     'course_code' => $contact[0]['course_code'],

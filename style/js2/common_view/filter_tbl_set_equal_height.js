@@ -7,5 +7,5 @@ $(function () {
         {
             $(".filter-tbl-1").height($(".filter-tbl-2").height());
         }
-    }, 100);
+    }, 300);
 });

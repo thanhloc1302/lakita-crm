@@ -1,4 +1,3 @@
-$(function () {
     $(document).on('click', 'a.edit_bill', function (e) {
         e.preventDefault();
         var bill_id = $(this).attr("bill_id");
@@ -18,13 +17,3 @@ $(function () {
             }
         });
     });
-    $('.edit_bill_modal').on('shown.bs.modal', function () {
-        if ($(".table-1").height() > $(".table-2").height())
-        {
-            $(".table-2").height($(".table-1").height());
-        } else
-        {
-            $(".table-1").height($(".table-2").height());
-        }
-    });
-});
