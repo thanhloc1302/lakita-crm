@@ -22,7 +22,7 @@ class Sale extends MY_Controller {
         $input['where']['date_recall >'] = time();
         $input['order']['date_recall'] = 'ASC';
         $input['limit'] = array('1' ,'0');
-        $noti_contact = $this->contacts_model->load_all_contacts($input);
+        $noti_contact = $this->contacts_model->load_all($input);
        if(!empty($noti_contact)) {
            $time_remaining =  $noti_contact[0]['date_recall'] - time();
            $data['time_remaining'] = ($time_remaining < 1800) ? $time_remaining : 0;

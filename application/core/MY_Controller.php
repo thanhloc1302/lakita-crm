@@ -159,11 +159,7 @@ class MY_Controller extends CI_Controller {
             if ($key != 'staffs' && $key != 'contacts') { // 2 model load tự động
                 $this->load->model($model);
             }
-            if ($key == 'courses') {
-                $data['courses'] = $this->get_list_courses();
-            } else {
-                $data[$key] = $this->{$model}->load_all($value);
-            }
+            $data[$key] = $this->{$model}->load_all($value);
         }
         return $data;
     }
@@ -495,18 +491,4 @@ class MY_Controller extends CI_Controller {
                 ->set_content_type('application/json')
                 ->set_output(json_encode($json));
     }
-
-    function get_list_courses() {
-        //nếu không tồn tại biến cache product
-        if (!$products_data = $this->cache->get('courses')) {
-            //lấy danh sách sản phẩm
-            $this->load->model('courses_model');
-            $products_data = $this->courses_model->load_all([]);
-
-            //Lưu danh sách sản phẩm trong cache product thời gian 10 phút
-            $this->cache->save('courses', $products_data, 600);
-        }
-        return $products_data;
-    }
-
 }
