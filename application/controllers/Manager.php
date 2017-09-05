@@ -66,7 +66,7 @@ class Manager extends MY_Controller {
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="view_all_contact">
+    
     function view_all_contact($offset = 0) {
         $data = $this->get_all_require_data();
         $get = $this->input->get();
@@ -112,7 +112,14 @@ class Manager extends MY_Controller {
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
-    // </editor-fold>
+        function view_pivot_table() {
+        $data = $this->data;
+        $data['left_col'] = array('date_rgt',);
+        $data['load_js'] = array('m_pivot_table');
+        $data['content'] = 'manager/pivot_table';
+        $this->load->view(_MAIN_LAYOUT_, $data);
+    }
+ 
     // <editor-fold defaultstate="collapsed" desc="view_duplicate">
     function view_duplicate() {
         $require_model = array(

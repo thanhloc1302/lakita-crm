@@ -438,6 +438,33 @@ class Report extends MY_Controller {
         die;
     }
 
+    function json_pivot_table_2($offset = 0) {
+        $get = $this->input->get();
+        $this->load->model('call_status_model');
+        $this->load->model('ordering_status_model');
+        $this->load->model('cod_status_model');
+        $this->load->model('providers_model');
+        $this->load->model('payment_method_rgt_model');
+        $conditional['select'] = 'phone, cod_status_id, sale_staff_id, course_code, '
+                . 'provider_id, date_rgt, price_purchase, payment_method_rgt, date_receive_lakita';
+        if ((isset($get['filter_date_date_rgt']) && $get['filter_date_date_rgt'] == '')) {
+            $conditional['where'] = array('date_rgt >=' => strtotime(date('Y-m-01 00:00:00')), 'cod_status_id' => 3, 'is_hide' => '0');
+        } else {
+            $conditional['where'] = array('cod_status_id' => 3, 'is_hide' => '0');
+        }
+        $data_pagination = $this->_query_all_from_get($get, $conditional, 10000, $offset);
+        $contacts = $data_pagination['data'];
+        $rs = [];
+        foreach ($contacts as $key => $value) {
+            $rs[$key]['TVTS'] = $this->staffs_model->find_staff_name($value['sale_staff_id']);
+            $rs[$key]['Mã khóa học'] = $value['course_code'];
+            $rs[$key]['Ngày đăng ký'] = date('Y-m-d', $value['date_rgt']);
+            $rs[$key]['Giá mua khóa học'] = ($value['price_purchase']);
+        }
+        echo json_encode($rs);
+        die;
+    }
+
     function view_pivot_table() {
         $this->load->view('pivot_table');
     }
