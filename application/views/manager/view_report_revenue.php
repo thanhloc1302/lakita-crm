@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <table class="table table-striped table-bordered table-hover filter-tbl-1">
-                <tr>
+<!--                <tr>
                     <td class="text-right"> Ngày phát thành công: </td>
                     <td>  
 
@@ -13,7 +13,7 @@
                                />
 
                     </td>
-                </tr>
+                </tr>-->
                 <tr>
                     <td class="text-right"> Ngày nhận tiền: </td>
                     <td>  

@@ -13,10 +13,10 @@ $(document).on('click', 'a.action_view_detail_contact', function (e) {
         },
         success: function (data) {
             // console.log(data);
-            $("div.replace_content_view_detail_contact").html(data);
+           // $("div.replace_content_view_detail_contact").html(data);
         },
         complete: function () {
-            $(".view_detail_contact_modal").modal("show");
+            //$(".view_detail_contact_modal").modal("show");
         }
     });
 });
