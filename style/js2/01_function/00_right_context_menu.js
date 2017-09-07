@@ -68,7 +68,7 @@ function right_context_menu_display(controller, contact_id, contact_name, duplic
         $(".action_view_detail_contact, .divide_one_contact_achor, a.view_duplicate, "
                 + ".edit_contact, .transfer_one_contact, .send_to_mobile").removeClass("hidden");
         $(".divide_multi_contact, .transfer_contact, "
-                + ".select_provider, .btn-export-excel, .btn-export-excel-for-viettel, .export_to_string").addClass('hidden');
+                + ".select_provider, .export_to_string").addClass('hidden');
         if (duplicate_id > 0) {
             $("a.view_duplicate").removeClass("hidden");
         } else {

@@ -1,5 +1,6 @@
 $(function () {
     var url = $("#base_url").val() + "sale/noti_contact_recall";
+    var i = 0;
     setInterval(noti, 10000);
     function noti() {
         $.ajax({
@@ -16,6 +17,15 @@ $(function () {
                     content_noti += '</li>';
                 });
                 $('#noti_contact_recall').html(content_noti);
+                if (data.num_noti > 0) {
+                    if (i++ === 0) {
+                        var originTitle = 'CONTACT CẦN GỌI LẠI';
+                    } else {
+                        var originTitle = $("title").text().substring(3);
+                    }
+                    var title = '(' + data.num_noti + ') ' + originTitle;
+                    $("title").text(title);
+                }
                 if (typeof data.sound !== 'undefined') {
                     $("#notificate_sound")[0].play();
                     notify = new Notification(

@@ -8,6 +8,11 @@
  */
 class Cod extends MY_Controller {
 
+    public function __construct() {
+        parent::__construct();
+        $this->load->model('L7_check_model');
+    }
+
     function index($offset = 0) {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
@@ -61,6 +66,23 @@ class Cod extends MY_Controller {
         $data['content'] = 'cod/pending';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
+
+    function pending2() {
+        $input = array();
+        $input['select'] = 'code_cross_check';
+        $input['where'] = array('cod_status_id' => _DANG_GIAO_HANG_, 'is_hide' => '0', 'provider_id' => 1);
+        $contacts = $this->contacts_model->load_all($input);
+        require_once APPPATH . 'libraries/simple_html_dom.php';
+        foreach ($contacts as $value) {
+            $html = file_get_html('https://www.viettelpost.com.vn/Tracking?KEY=' . $value['code_cross_check']);
+            $rs = $html->find('div[id=dnn_ctr507_Main_ViewKQ_PanelItem]', 0)->find('ul', 0);
+            $where = array('code_cross_check' => $value['code_cross_check']);
+            $data = array('viettel_tracking_status' => $rs);
+            $this->contacts_model->update($where, $data);
+        }
+    }
+
+    
 
     function transfer($offset = 0) {
         $data = $this->_get_all_require_data();
