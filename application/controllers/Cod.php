@@ -82,8 +82,6 @@ class Cod extends MY_Controller {
         }
     }
 
-    
-
     function transfer($offset = 0) {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();

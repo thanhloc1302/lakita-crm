@@ -1,4 +1,4 @@
-<tr>
+<tr class="tbl_cod">
     <td class="text-right">  Ngày in COD </td>
     <td>  
         <?php

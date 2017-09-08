@@ -21,6 +21,7 @@
                             <h3 class="text-center"> Đăng nhập vào hệ thống CRM Lakita</h3>
                             <div class="col-md-offset-1 col-md-8">
                                 <form id="target" action="<?php echo base_url(); ?>home/action_login" method="POST">
+<!--                                    <input type="hidden" name="<?= $this->security->get_csrf_token_name() ?>" value="<?= $this->security->get_csrf_hash() ?>" id="__VIEWSTAT" /> -->
                                     <div class="form-group">
                                         <label for="Username">Username</label>
                                         <input type="text" required class="form-control" id="username" name= "username" placeholder="Username">

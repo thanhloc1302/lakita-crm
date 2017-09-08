@@ -524,11 +524,43 @@ $(document).on('click', 'a.edit_contact', function (e) {
         }
     });
 });
+
+$(document).on('change', 'select.edit_payment_method_rgt', function (e) {
+    if ($(this).val() == 2) {
+        $(".tbl_bank").show(1000);
+    } else {
+        $(".tbl_bank").hide();
+    }
+    if ($(this).val() == 1) {
+        $(".tbl_cod").show(1000);
+    } else {
+        $(".tbl_cod").hide();
+    }
+    set_equal_table_height();
+});
+
+
+function set_equal_table_height() {
+    if ($(".table-1").height() > $(".table-2").height())
+    {
+        $(".table-2").height($(".table-1").height());
+    } else
+    {
+        $(".table-1").height($(".table-2").height());
+    }
+}
+
 $('.edit_contact_modal').on('shown.bs.modal', function () {
     $('.datetimepicker').datetimepicker(
             {
                 format: 'DD-MM-YYYY HH:mm'
             });
+    if ($("select.edit_payment_method_rgt").val() != 2) {
+        $(".tbl_bank").hide();
+    }
+    if ($("select.edit_payment_method_rgt").val() != 1) {
+        $(".tbl_cod").hide();
+    }
 });$(function () {
     setTimeout(function () {
         if ($(".filter-tbl-1").height() > $(".filter-tbl-2").height())
@@ -540,6 +572,39 @@ $('.edit_contact_modal').on('shown.bs.modal', function () {
         }
     }, 300);
 });
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+$(document).on('click', '.btn-send-banking-info', function (e) {
+    e.preventDefault();
+    var contact_id = $(this).attr("contact_id");
+    var url = $("#base_url").val() + "send_email/send_banking_info";
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            contact_id: contact_id
+        },
+        beforeSend: function () {
+            $(".popup-wrapper").show();
+        },
+        success: function (data) {
+            $(".popup-wrapper").hide();
+            $("#send_email_sound")[0].play();
+        },
+        complete: function () {
+            $.notify('Gửi email thành công!', {
+                position: "top left",
+                className: 'success',
+                showDuration: 200,
+                autoHideDelay: 3000
+            });
+        }
+    });
+});
+
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -1180,6 +1245,7 @@ $(function () {
         $(".reset_datepicker").click(function (e) {
             e.preventDefault();
             $(".datepicker").val("");
+            $(".datetimepicker").val('');
         });
         if ($(".table-1").height() > $(".table-2").height())
         {

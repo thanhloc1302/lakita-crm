@@ -116,6 +116,7 @@ class Common extends MY_Controller {
                 'ordering_stt' => 'edit',
                 'date_recall' => 'edit',
                 'date_expect_receive_cod' => 'edit',
+                'send_banking_info' => 'edit',
                 'note' => 'edit',
                 'note_cod' => 'edit'
             );
@@ -144,6 +145,8 @@ class Common extends MY_Controller {
                 'weight_envelope' => 'edit',
                 'cod_fee' => 'edit',
                 'fee_resend' => 'edit',
+                'send_banking_info' => 'edit',
+                'send_account_lakita' => 'edit',
                 'note' => 'edit',
                 'note_cod' => 'edit'
             );

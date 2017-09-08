@@ -9,7 +9,7 @@
 $config['protocol'] = 'smtp';
 $config['smtp_host'] = 'ssl://smtp.gmail.com';
 $config['smtp_port'] = '465';
-$config['smtp_timeout'] = '6000';
+$config['smtp_timeout'] = '60000';
 $config['smtp_user'] = 'cskh@lakita.vn';
 $config['smtp_pass'] = 'lakita.com.vn';
 $config['charset'] = 'utf-8';

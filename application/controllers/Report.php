@@ -218,13 +218,14 @@ class Report extends MY_Controller {
         $data['courses'] = $courses;
         $this->load->view('report/view_report_revenue', $data);
     }
-    
+
     function pending3() {
+         $this->load->model('call_log_model');
         $get = $this->input->get();
         if (empty($get) || !isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs') {
             die;
         }
-        
+
         $input = array();
         $input['select'] = 'code_cross_check';
         $input['where'] = array('cod_status_id' => _DANG_GIAO_HANG_, 'is_hide' => '0', 'provider_id' => 1);
@@ -249,11 +250,11 @@ class Report extends MY_Controller {
             $weight = trim($row->find('td', 6)->plaintext);
             if ($status == 'Thanh cong - phat thanh cong' || $status == 'Phát thành công') {
                 $where = array('code_cross_check' => $code_cross_check);
-                $data = array('cod_status_id' => _DA_THU_COD_, 'date_receive_cod' => time());
+                $data = array('cod_status_id' => _DA_THU_COD_, 'date_receive_cod' => time(), 'last_activity' => time());
                 $this->contacts_model->update($where, $data);
             } else if ($status == 'Thanh cong chuyen tra nguoi gui' || $status == 'CHuyển trả người gửi') {
                 $where = array('code_cross_check' => $code_cross_check);
-                $data = array('cod_status_id' => _HUY_DON_, '	date_receive_cancel_cod' => time());
+                $data = array('cod_status_id' => _HUY_DON_, 'date_receive_cancel_cod' => time(), 'last_activity' => time());
                 $this->contacts_model->update($where, $data);
             } else if ($status == 'Chờ duyệt Chuyển hoàn') {
                 $input_warning = array();
@@ -281,6 +282,21 @@ class Report extends MY_Controller {
                     'contact_id' => $contact_id, 'name' => $name, 'phone' => $phone, 'address' => $address,
                     'price_purchase' => $price_purchase, 'time' => time(), 'L7_check' => 1);
                 $this->L7_check_model->insert($insert);
+
+                /*
+                 * Cập nhật lịch sử chăm sóc
+                 */
+                if ($status == 'Thanh cong - phat thanh cong' || $status == 'Phát thành công') {
+                    $cod_status_id = _DA_THU_COD_;
+                }
+                if ($status == 'Thanh cong chuyen tra nguoi gui' || $status == 'CHuyển trả người gửi') {
+                    $cod_status_id = _HUY_DON_;
+                }
+                $param['contact_id'] = $contact_id;
+                $param['staff_id'] = 33;
+                $param['cod_status_id'] = $cod_status_id;
+                $param['time'] = time();
+                $this->call_log_model->insert($param);
             }
         }
         if (!empty($contact_warning)) {
@@ -296,7 +312,7 @@ class Report extends MY_Controller {
             $this->load->library("email");
             $this->email->from('cskh@lakita.vn', "lakita.vn");
             $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, '
-                    . 'trinhnv@bkindex.com, tund@bkindex.com, hoangthuy100995@gmail.com';
+                    . 'trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com';
             $this->email->to($emailTo);
             $this->email->subject('Các contact chờ duyệt chuyển hoàn (nguy cơ hủy đơn) ngày ' . date('d-m-Y') . ' (by cron job)');
             $this->email->message($str);
