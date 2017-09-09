@@ -220,7 +220,8 @@ class Report extends MY_Controller {
     }
 
     function pending3() {
-         $this->load->model('call_log_model');
+        $this->load->model('call_log_model');
+        $this->load->model('L7_check_model');
         $get = $this->input->get();
         if (empty($get) || !isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs') {
             die;
@@ -230,16 +231,23 @@ class Report extends MY_Controller {
         $input['select'] = 'code_cross_check';
         $input['where'] = array('cod_status_id' => _DANG_GIAO_HANG_, 'is_hide' => '0', 'provider_id' => 1);
         $contacts = $this->contacts_model->load_all($input);
+
+        $all_code_cross_check = [];
+
         require_once APPPATH . 'libraries/simple_html_dom.php';
         $trackingText = '';
         foreach ($contacts as $value) {
             $trackingText .= $value['code_cross_check'] . ',';
+            $all_code_cross_check[] = $value['code_cross_check'];
         }
         $html = file_get_html('https://www.viettelpost.com.vn/Tracking?KEY=' . $trackingText);
         $rs = $html->find('div[id=dnn_ctr507_Main_ViewKQ_PanelList]', 0);
         $contact_warning = array();
         $contact_other = array();
+        $contact_success = array();
+        $contact_cancel = array();
         $contact_other_key = 0;
+        $viettel_code_cross_check = [];
         foreach ($rs->find('tr') as $key => $row) {
             if ($key == 0) {
                 continue;
@@ -248,20 +256,31 @@ class Report extends MY_Controller {
             $status_date = strtotime(str_replace('/', '-', trim($row->find('td', 4)->plaintext)));
             $status = trim($row->find('td', 5)->plaintext);
             $weight = trim($row->find('td', 6)->plaintext);
+            $viettel_code_cross_check[] = $code_cross_check;
             if ($status == 'Thanh cong - phat thanh cong' || $status == 'Phát thành công') {
                 $where = array('code_cross_check' => $code_cross_check);
                 $data = array('cod_status_id' => _DA_THU_COD_, 'date_receive_cod' => time(), 'last_activity' => time());
                 $this->contacts_model->update($where, $data);
+                $input_success = array();
+                $input_success['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
+                $input_success['where'] = array('code_cross_check' => $code_cross_check, 'call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_);
+                $contact_success[] = $this->contacts_model->load_all($input_success)[0];
             } else if ($status == 'Thanh cong chuyen tra nguoi gui' || $status == 'CHuyển trả người gửi') {
                 $where = array('code_cross_check' => $code_cross_check);
                 $data = array('cod_status_id' => _HUY_DON_, 'date_receive_cancel_cod' => time(), 'last_activity' => time());
                 $this->contacts_model->update($where, $data);
+                $input_cancel = array();
+                $input_cancel['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
+                $input_cancel['where'] = array('code_cross_check' => $code_cross_check, 'call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_);
+                $contact_cancel[] = $this->contacts_model->load_all($input_cancel)[0];
             } else if ($status == 'Chờ duyệt Chuyển hoàn') {
                 $input_warning = array();
+                $input_warning['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
                 $input_warning['where'] = array('code_cross_check' => $code_cross_check, 'call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_);
                 $contact_warning[] = $this->contacts_model->load_all($input_warning)[0];
             } else {
                 $input_other = array();
+                $input_other['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
                 $input_other['where'] = array('code_cross_check' => $code_cross_check, 'call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_);
                 $contact_other[$contact_other_key] = $this->contacts_model->load_all($input_other)[0];
                 $contact_other[$contact_other_key]['status_viettel'] = $status;
@@ -299,25 +318,34 @@ class Report extends MY_Controller {
                 $this->call_log_model->insert($param);
             }
         }
-        if (!empty($contact_warning)) {
-            foreach ($contact_warning as &$value) {
-                $value['star'] = 0;
-            }
-            unset($value);
-            $data_load = [];
-            $data_load['contacts'] = $contact_warning;
-            $data_load['contact_other'] = $contact_other;
-            $str = $this->load->view('cod/waiting_cancel_list', $data_load, true);
 
-            $this->load->library("email");
-            $this->email->from('cskh@lakita.vn', "lakita.vn");
-            $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, '
-                    . 'trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com';
-            $this->email->to($emailTo);
-            $this->email->subject('Các contact chờ duyệt chuyển hoàn (nguy cơ hủy đơn) ngày ' . date('d-m-Y') . ' (by cron job)');
-            $this->email->message($str);
-            $this->email->send();
+        $vietel_not_send = array_diff([], []);
+        $contact_not_send = array();
+        if (!empty($vietel_not_send)) {
+            foreach ($vietel_not_send as $code_cross_check) {
+                $input_not_send = array();
+                $input_not_send['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
+                $input_not_send['where'] = array('code_cross_check' => $code_cross_check, 'call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_);
+                $contact_not_send[] = $this->contacts_model->load_all($input_not_send)[0];
+            }
         }
+
+        $data_load = [];
+        $data_load['total_contacts'] = count($contacts);
+        $data_load['contacts'] = $contact_warning;
+        $data_load['contact_other'] = $contact_other;
+        $data_load['contact_success'] = $contact_success;
+        $data_load['contact_cancel'] = $contact_cancel;
+        $data_load['contact_not_send'] = $contact_not_send;
+        $str = $this->load->view('cod/waiting_cancel_list/index', $data_load, true);
+        $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, '
+                . 'trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com';
+        $this->load->library("email");
+        $this->email->from('cskh@lakita.vn', "lakita.vn");
+        $this->email->to($emailTo);
+        $this->email->subject('Các contact chờ duyệt chuyển hoàn (nguy cơ hủy đơn) ngày ' . date('d-m-Y') . ' (by cron job)');
+        $this->email->message($str);
+        $this->email->send();
     }
 
     function send_report_product_daily() {

@@ -9,6 +9,6 @@
                  Chưa
              </option>
         </select>
-        <button class="btn btn-success btn-fixed btn-send-banking-info" contact_id="<?php echo $rows['id'];?>"> Click để gửi email</button>
+        <button class="btn btn-success btn-fixed btn-send-account-lakita" contact_id="<?php echo $rows['id'];?>"> Click để gửi email</button>
     </td>
 </tr>

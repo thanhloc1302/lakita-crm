@@ -13,6 +13,8 @@ class Cod extends MY_Controller {
         $this->load->model('L7_check_model');
     }
 
+ 
+
     function index($offset = 0) {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
@@ -416,6 +418,19 @@ class Cod extends MY_Controller {
             }
         }
         return $contacts;
+    }
+    
+    
+       public function test() {
+        $this->load->library('rest');
+        $config = array('server' => 'https://sheets.googleapis.com/',
+            'api_key' => 'AIzaSyCdjll4ib79ZGtUEEEAxksl6zff2NkLCII',
+            'api_name' => 'key');
+        $this->rest->initialize($config);
+        $key = '?key=AIzaSyCdjll4ib79ZGtUEEEAxksl6zff2NkLCII';
+        $tweets = $this->rest->get('v4/spreadsheets/18x9FB074aMpgm66PbaPMtmol6HgG6eeidl3P5wJcH6w/values/Sheet1!A1:C' . $key);
+        print_r($tweets);
+        die;
     }
 
 }
