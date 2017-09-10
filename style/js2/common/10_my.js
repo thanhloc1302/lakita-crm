@@ -20,6 +20,7 @@ $(function () {
         $(".reset_datepicker").click(function (e) {
             e.preventDefault();
             $(".datepicker").val("");
+            $(".datetimepicker").val('');
         });
         if ($(".table-1").height() > $(".table-2").height())
         {

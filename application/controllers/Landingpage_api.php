@@ -18,9 +18,6 @@ class Landingpage_api extends REST_Controller {
         $price = $this->landingpage_model->load_all($input);
         if (!empty($price)) {
            $this->response(json_encode($price[0]), 200);
-            $where = array('code' => $code);
-            $data = array('last_visited' => date('H:i:s d/m/Y'));
-            $this->landingpage_model->update($where, $data);
         } else {
             $default = array('course_code' => 'L999', 'price' => 495000, 'price_root' => 895000);
             $this->response(json_encode($default), 200);

@@ -49,11 +49,18 @@ class Common extends MY_Controller {
         );
         $data = array_merge($this->data, $this->_get_require_data($require_model));
         $left_view = array(
-            'id' => 'view',
+            'contact_id' => 'view',
             'name' => 'view',
             'email' => 'view',
+            'phone' => 'view',
+            'address' => 'view',
+            'course_code' => 'view',
             'price_purchase' => 'view',
-            
+            'date_rgt' => 'view',
+            'matrix' => 'view',
+            'sale' => 'view',
+            'date_handover' => 'view',
+            'source' => 'view'
         );
         $right_view = array(
             'transfer_log' => 'view',
@@ -81,8 +88,7 @@ class Common extends MY_Controller {
         $this->load->model('call_log_model');
         $data['call_logs'] = $this->call_log_model->load_all_call_log($input_call_log);
         $data['rows'] = $rows[0];
-        $this->renderJSON($data);
-        //$this->load->view('common/modal/view_detail_contact', $data);
+        $this->load->view('common/modal/view_detail_contact', $data);
     }
 
     function show_edit_contact_modal() {
@@ -110,6 +116,7 @@ class Common extends MY_Controller {
                 'ordering_stt' => 'edit',
                 'date_recall' => 'edit',
                 'date_expect_receive_cod' => 'edit',
+                'send_banking_info' => 'edit',
                 'note' => 'edit',
                 'note_cod' => 'edit'
             );
@@ -138,6 +145,8 @@ class Common extends MY_Controller {
                 'weight_envelope' => 'edit',
                 'cod_fee' => 'edit',
                 'fee_resend' => 'edit',
+                'send_banking_info' => 'edit',
+                'send_account_lakita' => 'edit',
                 'note' => 'edit',
                 'note_cod' => 'edit'
             );

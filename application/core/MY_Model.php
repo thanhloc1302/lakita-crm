@@ -40,6 +40,14 @@ class MY_Model extends CI_Model {
         $this->db->insert($this->table, $data);
     }
 
+    function find($id) {
+        $this->db->where('id', $id);
+        //thuc hien truy van du lieu
+        $query = $this->db->get($this->table);
+        //echo $this->db->last_query();
+        return $query->result_array();
+    }
+
     function update($where = array(), $data = array()) {
         $result = FALSE;
         foreach ($where as $key => $value) {
@@ -132,7 +140,7 @@ class MY_Model extends CI_Model {
                 $this->db->or_where($key, $value);
             }
         }
-        
+
         if (isset($input['group_end_or_where']) && !empty($input['group_end_or_where'])) {
             foreach ($input['or_where'] as $key => $value) {
                 $this->db->or_where($key, $value);

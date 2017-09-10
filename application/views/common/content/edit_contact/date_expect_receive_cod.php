@@ -1,4 +1,4 @@
-<tr>
+<tr class="tbl_cod">
     <td class="text-right">  Ngày dự kiến giao hàng (option) </td>
     <td style="position: relative;">  
         <input type="text" class="form-control datepicker date_recall" name="date_expect_receive_cod"

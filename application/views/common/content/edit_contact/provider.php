@@ -1,4 +1,4 @@
-<tr>
+<tr class="tbl_cod">
     <td class="text-right"> Chọn đơn vị giao hàng </td>
     <td>  
         <select class="form-control selectpicker" name="provider_id">

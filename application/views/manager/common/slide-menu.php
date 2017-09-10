@@ -65,6 +65,11 @@
                             Xem báo cáo doanh thu 
                         </a>
                     </li>
+                      <li>
+                        <a href="<?php echo base_url('manager/view_pivot_table'); ?>">
+                            Xem báo cáo doanh thu (phát sinh và lũy kế)
+                        </a>
+                    </li>
                     <li>
                         <a href="<?php echo base_url('quan-ly/bao-cao-tong-hop.html'); ?>">
                             Xem báo cáo tổng hợp 
