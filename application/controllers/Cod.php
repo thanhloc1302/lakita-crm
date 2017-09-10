@@ -38,15 +38,15 @@ class Cod extends MY_Controller {
     function pending($offset = 0) {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
-        $conditional['where'] = array('cod_status_id' => _DANG_GIAO_HANG_, 'is_hide' => '0');
+        $conditional['where'] = array('cod_status_id' => _DANG_GIAO_HANG_, 'payment_method_rgt' => '1', 'is_hide' => '0');
         $conditional['order'] = array('code_cross_check' => 'ASC');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         $data['pagination'] = $this->_create_pagination_link('cod/pending', $data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
         // echo $this->db->last_query();
-        $data['left_col'] = array('date_confirm', 'date_print_cod', 'date_receive_lakita');
-        $data['right_col'] = array('provider', 'payment_method_rgt');
+        $data['left_col'] = array('date_confirm', 'date_print_cod');
+        $data['right_col'] = array('provider');
         $this->table .= 'date_print_cod provider code_cross_check';
         $data['table'] = explode(' ', $this->table);
 

@@ -26,7 +26,10 @@ class Contact_api extends REST_Controller {
             $param['name'] = trim(str_replace('[RGT_FROM_MOBILE]', '', $param['name']));
             $param['phone'] = isset($input['phone']) ? trim($input['phone']) : '';
             $email = isset($input['email']) ? $input['email'] : '';
-            $param['email'] = str_replace('NO_PARAM@gmail.com', '', $email);
+            $param['email'] = trim(str_replace('NO_PARAM@gmail.com', '', $email));
+            if($param['email'] == '' && $param['phone'] == ''){
+                $param['is_hide'] = 1;
+            }
             $address = isset($input['dia_chi']) ? $input['dia_chi'] : '';
             $address .= ' ';
             $address .= isset($input['quan']) ? $input['quan'] : '';
