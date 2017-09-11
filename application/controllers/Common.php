@@ -257,7 +257,7 @@ class Common extends MY_Controller {
     }
 
     function action_edit_contact($id) {
-        $result = array('success' => 1);
+        $result = array();
         $input = array();
         $input['where'] = array('id' => $id);
         $rows = $this->contacts_model->load_all($input);
@@ -280,6 +280,7 @@ class Common extends MY_Controller {
     }
 
     private function _action_edit_by_sale($id, $rows) {
+        $result = array();
         $edited_contact = $this->_can_edit_by_sale($rows[0]['call_status_id'], $rows[0]['ordering_status_id']);
         if (!$edited_contact) {
             $result['success'] = 0;
@@ -418,6 +419,7 @@ class Common extends MY_Controller {
 
     function action_edit_multi_cod_contact() {
         $post = $this->input->post();
+        $result = array();
         if (!isset($post['contact_id']) || empty($post['contact_id'])) {
             show_error_and_redirect('Bạn cần chọn contact!', '', FALSE);
         }
@@ -428,12 +430,13 @@ class Common extends MY_Controller {
             $this->_action_edit_by_cod($value, $rows, true);
         }
         $result['success'] = 1;
-                $result['message'] = 'Chăm sóc thành công contact!';
-                echo json_encode($result);
-                die;
+        $result['message'] = 'Chăm sóc thành công contact!';
+        echo json_encode($result);
+        die;
     }
 
     private function _action_edit_by_cod($id, $rows, $multi = false) {
+        $result = array();
         // print_arr($rows);
         $edited_contact = $this->_can_edit_by_cod($rows[0]['cod_status_id']);
         if (!$edited_contact) {

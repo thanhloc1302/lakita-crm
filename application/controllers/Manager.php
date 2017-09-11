@@ -246,6 +246,7 @@ class Manager extends MY_Controller {
      */
 
     private function _action_divide_contact($post) {
+        $result = array();
         $this->load->model('Staffs_model');
         $result = array();
         if (empty($post)) {
@@ -303,7 +304,7 @@ class Manager extends MY_Controller {
         $staff_name = $this->Staffs_model->find_staff_name($sale_id);
 
         $result['success'] = 1;
-        $result['message'] = 'Phân contact thành công cho nhân viên ' . $staff_name ;
+        $result['message'] = 'Phân contact thành công cho nhân viên ' . $staff_name;
         echo json_encode($result);
         die;
     }

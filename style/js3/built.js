@@ -483,7 +483,6 @@ $(document).on('scroll', function () {
                         showDuration: 200,
                         autoHideDelay: 5000
                     });
-                    $(".edit_contact_modal").modal("hide");
                     $.each(contactIdArray, function(){
                         $('tr[contact_id="'+this+'"]').hide();
                     });
@@ -1666,6 +1665,54 @@ $(document).on('click', '.btn-divide-one-contact', function (e) {
                 });
                 $(".divide_one_contact_modal").modal("hide");
                 $('tr[contact_id="' + contact_id + '"]').hide();
+            } else {
+                $("#send_email_error")[0].play();
+                $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
+                    position: "top left",
+                    className: 'error',
+                    showDuration: 200,
+                    autoHideDelay: 7000
+                });
+            }
+        },
+        complete: function () {
+
+        }
+    });
+});
+
+
+$(document).on('click', '.btn-divide-multi-contact', function (e) {
+    e.preventDefault();
+    var url = $('#base_url').val() + "manager/divide_contact";
+    /*
+     * Lấy các contact chăm sóc để ẩn đi
+     */
+    var contactIdArray = [];
+    $('input[type="checkbox"]').each(
+            function () {
+                if ($(this).is(":checked")) {
+                    contactIdArray.push($(this).val());
+                }
+            });
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: 'json',
+        data: $('#action_contact').serialize(),
+        success: function (data) {
+            if (data.success == 1) {
+                $("#send_email_sound")[0].play();
+                $.notify(data.message, {
+                    position: "top left",
+                    className: 'success',
+                    showDuration: 200,
+                    autoHideDelay: 5000
+                });
+                $(".divide_multi_contact_modal").modal("hide");
+                $.each(contactIdArray, function () {
+                    $('tr[contact_id="' + this + '"]').hide();
+                });
             } else {
                 $("#send_email_error")[0].play();
                 $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
