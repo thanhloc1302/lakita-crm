@@ -106,7 +106,59 @@ function right_context_menu_display(controller, contact_id, contact_name, duplic
  * and open the template in the editor.
  */
 
-// $(".btn-edit-contact").click();
+var _SO_MAY_SAI_ = 1;
+var _KHONG_NGHE_MAY_ = 2;
+var _NHAM_MAY_ = 3;
+var _DA_LIEN_LAC_DUOC_ = 4;
+var _CONTACT_CHET_ = 5;
+
+var _CHUA_CHAM_SOC_ = 0;
+var _TU_CHOI_MUA_ = 3;
+var _DONG_Y_MUA_ = 4;
+
+function check_edit_contact() {
+    var call_status_id = $("select[name='call_status_id']").val();
+    var ordering_status_id = $("select[name='ordering_status_id']").val();
+    var date_recall = $(".date_recall").val();
+    var course_code = $('select.select_course_code').val();
+    var price_purchase = $('[name="price_purchase"]').val();
+    if ($("select.edit_payment_method_rgt").val() == 0) {
+        alert("Bạn cần cập nhật hình thức thanh toán!");
+        return false;
+    }
+    if (call_status_id == 0) {
+        alert("Bạn cần cập nhật trạng thái gọi!");
+        return false;
+    }
+    if (check_rule_call_stt(call_status_id, ordering_status_id) == false) {
+        alert("Trạng thái gọi và trạng thái đơn hàng không logic!");
+        return false;
+    }
+    if (date_recall != '') {
+        if (now_greater_than_input_date(date_recall)) {
+            alert("Ngày gọi lại không thể là một ngày trước ngày hôm nay!");
+            return false;
+        }
+        if (check_rule_call_stt_and_date_recall(call_status_id, ordering_status_id, date_recall)) {
+            alert("Nếu contact không liên lạc được hoặc không thể chăm sóc được nữa thì không thể có ngày gọi lại lớn hơn ngày hiện tại!");
+            return false;
+        }
+    }
+    if (course_code == '0') {
+        alert("Vui lòng chọn mã khóa học!");
+        return false;
+    }
+    if (price_purchase == '') {
+        alert("Vui lòng chọn giá tiền mua!");
+        return false;
+    }
+    return true;
+}
+
+
+
+
+
 
 function check_rule_call_stt(call_status_id, ordering_status_id) {
     if (call_status_id == _SO_MAY_SAI_ || call_status_id == _KHONG_NGHE_MAY_ || call_status_id == _NHAM_MAY_) {
@@ -401,24 +453,56 @@ $(document).on('scroll', function () {
 //        var offsetLeft = $(".table-head-pos").offset().left - 1;
 //        $(".fixed-table").css("left", offsetLeft + "px");
     }
-});$(".btn-modal_edit-multi-contact").on('click',function (e) {
+});$(".btn-modal_edit-multi-contact").on('click', function (e) {
     e.preventDefault();
     var error = false;
-    var modal_edit_provider_id = $('.edit_multi_cod_contact [name="provider_id"]').val();
-    var modal_edit_cod_status_id = $('.edit_multi_cod_contact [name="cod_status_id"]').val();
-    console.log(modal_edit_provider_id);
-    if (modal_edit_cod_status_id == 0) {
-        alert("Bạn cần chọn trạng thái giao COD!");
-        error = true;
-        return false;
-    }
-    if (modal_edit_provider_id == 0) {
-        alert("Bạn cần chọn đơn vị giao hàng!");
-        error = true;
-        return false;
-    }
+
     if (!error) {
-        $("#action_contact").submit();
+        var url = $("#base_url").val() + "common/action_edit_multi_cod_contact";
+        /*
+         * Lấy các contact chăm sóc để ẩn đi
+         */
+        var contactIdArray = [];
+        $('input[type="checkbox"]').each(
+                function () {
+                    if ($(this).is(":checked")) {
+                        contactIdArray.push($(this).val());
+                    }
+                });
+        $.ajax({
+            url: url,
+            type: "POST",
+            dataType: 'json',
+            data: $("#action_contact").serialize(),
+            success: function (data) {
+                if (data.success == 1) {
+                    $("#send_email_sound")[0].play();
+                    $.notify(data.message, {
+                        position: "top left",
+                        className: 'success',
+                        showDuration: 200,
+                        autoHideDelay: 5000
+                    });
+                    $(".edit_contact_modal").modal("hide");
+                    $.each(contactIdArray, function(){
+                        $('tr[contact_id="'+this+'"]').hide();
+                    });
+                    $(".edit_multi_cod_contact").modal("hide");
+                } else {
+                    $("#send_email_error")[0].play();
+                    $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
+                        position: "top left",
+                        className: 'error',
+                        showDuration: 200,
+                        autoHideDelay: 7000
+                    });
+                }
+            },
+            complete: function () {
+
+            }
+        });
+        //$("#action_contact").submit();
     }
 });
     $(document).on('click', 'a.delete_bill', function (e) {
@@ -516,11 +600,50 @@ $(document).on('click', 'a.edit_contact', function (e) {
             contact_id: contact_id
         },
         success: function (data) {
-            //console.log(data);
+            // console.log(data);
             $("div.replace_content").html(data);
         },
         complete: function () {
             $(".edit_contact_modal").modal("show");
+        }
+    });
+});
+
+$(document).on('click', '.btn-edit-contact', function (e) {
+    e.preventDefault();
+    if(check_edit_contact() == false) {
+        return false;
+    }
+    var url = $(this).parents('.form_edit_contact_modal').attr("action");
+    var contact_id = $(this).parents('.form_edit_contact_modal').attr("contact_id");
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: 'json',
+        data: $(".form_edit_contact_modal").serialize(),
+        success: function (data) {
+            if (data.success == 1) {
+                $("#send_email_sound")[0].play();
+                $.notify(data.message, {
+                    position: "top left",
+                    className: 'success',
+                    showDuration: 200,
+                    autoHideDelay: 5000
+                });
+                $(".edit_contact_modal").modal("hide");
+                $('tr[contact_id="'+contact_id+'"]').hide();
+            } else {
+                $("#send_email_error")[0].play();
+                $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
+                    position: "top left",
+                    className: 'error',
+                    showDuration: 200,
+                    autoHideDelay: 7000
+                });
+            }
+        },
+        complete: function () {
+
         }
     });
 });
@@ -579,6 +702,16 @@ $('.edit_contact_modal').on('shown.bs.modal', function () {
  */
 $(document).on('click', '.btn-send-account-lakita', function (e) {
     e.preventDefault();
+    if ($("select.cod_status_id").val() != 3) {
+        $("#send_email_error")[0].play();
+        $.notify('Bạn cần chuyển trạng thái giao hàng là "Đã thu Lakita" trước khi thực hiện thao tác này!', {
+            position: "top left",
+            className: 'error',
+            showDuration: 200,
+            autoHideDelay: 7000
+        });
+        return false;
+    }
     var contact_id = $(this).attr("contact_id");
     var url = $("#base_url").val() + "send_email/send_account_lakita";
     $.ajax({
@@ -587,18 +720,29 @@ $(document).on('click', '.btn-send-account-lakita', function (e) {
         data: {
             contact_id: contact_id
         },
+        dataType: 'json',
         beforeSend: function () {
             $(".popup-wrapper").show();
         },
         success: function (data) {
-            console.log(data);
-            $("#send_email_sound")[0].play();
-            $.notify('Gửi email thành công!', {
-                position: "top left",
-                className: 'success',
-                showDuration: 200,
-                autoHideDelay: 3000
-            });
+            console.log(data.success);
+            if (data.success == 0) {
+                $("#send_email_error")[0].play();
+                $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
+                    position: "top left",
+                    className: 'error',
+                    showDuration: 200,
+                    autoHideDelay: 7000
+                });
+            } else {
+                $("#send_email_sound")[0].play();
+                $.notify('Gửi email thành công!', {
+                    position: "top left",
+                    className: 'success',
+                    showDuration: 200,
+                    autoHideDelay: 3000
+                });
+            }
         },
         complete: function () {
             $(".popup-wrapper").hide();
@@ -1498,6 +1642,44 @@ $(".divide_contact_even").on('click', function (e) {
     e.preventDefault();
     $("#action_contact").attr("action", $("#base_url").val() + "manager/divide_contact_even");
     $("#action_contact").submit();
+});
+
+/*===================================== phân contact bằng ajax ==============*/
+
+$(document).on('click', '.btn-divide-one-contact', function (e) {
+    e.preventDefault();
+    var url = $(this).parents('#transfer_one_contact').attr("action");
+    var contact_id = $("#contact_id_input").val();
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: 'json',
+        data: $('#transfer_one_contact').serialize(),
+        success: function (data) {
+            if (data.success == 1) {
+                $("#send_email_sound")[0].play();
+                $.notify(data.message, {
+                    position: "top left",
+                    className: 'success',
+                    showDuration: 200,
+                    autoHideDelay: 5000
+                });
+                $(".divide_one_contact_modal").modal("hide");
+                $('tr[contact_id="' + contact_id + '"]').hide();
+            } else {
+                $("#send_email_error")[0].play();
+                $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
+                    position: "top left",
+                    className: 'error',
+                    showDuration: 200,
+                    autoHideDelay: 7000
+                });
+            }
+        },
+        complete: function () {
+
+        }
+    });
 });$("a.view_duplicate").on('click', function (e) {
     e.preventDefault();
    // alert(1);
@@ -1552,66 +1734,58 @@ $("input.reset_form").on('click', function (e) {
 });
 
 
-var _SO_MAY_SAI_ = 1;
-var _KHONG_NGHE_MAY_ = 2;
-var _NHAM_MAY_ = 3;
-var _DA_LIEN_LAC_DUOC_ = 4;
-var _CONTACT_CHET_ = 5;
 
-var _CHUA_CHAM_SOC_ = 0;
-var _TU_CHOI_MUA_ = 3;
-var _DONG_Y_MUA_ = 4;
 $(document).on('click', '.btn-edit-contact', function (e) {
     if ($("#input_controller").val() === 'sale') {
-        e.preventDefault();
-        var error = false;
-        var call_status_id = $("select[name='call_status_id']").val();
-        console.log('call_status_id= ' + call_status_id);
-        var ordering_status_id = $("select[name='ordering_status_id']").val();
-        console.log('ordering_status_id= ' + ordering_status_id);
-        var date_recall = $(".date_recall").val();
-        var course_code = $('select.select_course_code').val();
-        var price_purchase = $('[name="price_purchase"]').val();
-        if ($("select.edit_payment_method_rgt").val() == 0) {
-            alert("Bạn cần cập nhật hình thức thanh toán!");
-            error = true;
-            return false;
-        }
-        if (call_status_id == 0) {
-            alert("Bạn cần cập nhật trạng thái gọi!");
-            error = true;
-            return false;
-        }
-        if (check_rule_call_stt(call_status_id, ordering_status_id) == false) {
-            alert("Trạng thái gọi và trạng thái đơn hàng không logic!");
-            error = true;
-            return false;
-        }
-        if (date_recall != '') {
-            if (now_greater_than_input_date(date_recall)) {
-                alert("Ngày gọi lại không thể là một ngày trước ngày hôm nay!");
-                error = true;
-                return false;
-            }
-            if (check_rule_call_stt_and_date_recall(call_status_id, ordering_status_id, date_recall)) {
-                alert("Nếu contact không liên lạc được hoặc không thể chăm sóc được nữa thì không thể có ngày gọi lại lớn hơn ngày hiện tại!");
-                error = true;
-                return false;
-            }
-        }
-        if (course_code == '0') {
-            alert("Vui lòng chọn mã khóa học!");
-            error = true;
-            return false;
-        }
-        if (price_purchase == '') {
-            alert("Vui lòng chọn giá tiền mua!");
-            error = true;
-            return false;
-        }
-        if (!error) {
-            $(".form_submit").submit();
-        }
+//        e.preventDefault();
+//        var error = false;
+//        var call_status_id = $("select[name='call_status_id']").val();
+//       // console.log('call_status_id= ' + call_status_id);
+//        var ordering_status_id = $("select[name='ordering_status_id']").val();
+//       // console.log('ordering_status_id= ' + ordering_status_id);
+//        var date_recall = $(".date_recall").val();
+//        var course_code = $('select.select_course_code').val();
+//        var price_purchase = $('[name="price_purchase"]').val();
+//        if ($("select.edit_payment_method_rgt").val() == 0) {
+//            alert("Bạn cần cập nhật hình thức thanh toán!");
+//            error = true;
+//            return false;
+//        }
+//        if (call_status_id == 0) {
+//            alert("Bạn cần cập nhật trạng thái gọi!");
+//            error = true;
+//            return false;
+//        }
+//        if (check_rule_call_stt(call_status_id, ordering_status_id) == false) {
+//            alert("Trạng thái gọi và trạng thái đơn hàng không logic!");
+//            error = true;
+//            return false;
+//        }
+//        if (date_recall != '') {
+//            if (now_greater_than_input_date(date_recall)) {
+//                alert("Ngày gọi lại không thể là một ngày trước ngày hôm nay!");
+//                error = true;
+//                return false;
+//            }
+//            if (check_rule_call_stt_and_date_recall(call_status_id, ordering_status_id, date_recall)) {
+//                alert("Nếu contact không liên lạc được hoặc không thể chăm sóc được nữa thì không thể có ngày gọi lại lớn hơn ngày hiện tại!");
+//                error = true;
+//                return false;
+//            }
+//        }
+//        if (course_code == '0') {
+//            alert("Vui lòng chọn mã khóa học!");
+//            error = true;
+//            return false;
+//        }
+//        if (price_purchase == '') {
+//            alert("Vui lòng chọn giá tiền mua!");
+//            error = true;
+//            return false;
+//        }
+//        if (!error) {
+//            $(".form_submit").submit();
+//        }
     }
 });
 

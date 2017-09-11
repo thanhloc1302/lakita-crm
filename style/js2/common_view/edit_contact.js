@@ -11,11 +11,50 @@ $(document).on('click', 'a.edit_contact', function (e) {
             contact_id: contact_id
         },
         success: function (data) {
-            //console.log(data);
+            // console.log(data);
             $("div.replace_content").html(data);
         },
         complete: function () {
             $(".edit_contact_modal").modal("show");
+        }
+    });
+});
+
+$(document).on('click', '.btn-edit-contact', function (e) {
+    e.preventDefault();
+    if(check_edit_contact() == false) {
+        return false;
+    }
+    var url = $(this).parents('.form_edit_contact_modal').attr("action");
+    var contact_id = $(this).parents('.form_edit_contact_modal').attr("contact_id");
+    $.ajax({
+        url: url,
+        type: "POST",
+        dataType: 'json',
+        data: $(".form_edit_contact_modal").serialize(),
+        success: function (data) {
+            if (data.success == 1) {
+                $("#send_email_sound")[0].play();
+                $.notify(data.message, {
+                    position: "top left",
+                    className: 'success',
+                    showDuration: 200,
+                    autoHideDelay: 5000
+                });
+                $(".edit_contact_modal").modal("hide");
+                $('tr[contact_id="'+contact_id+'"]').hide();
+            } else {
+                $("#send_email_error")[0].play();
+                $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
+                    position: "top left",
+                    className: 'error',
+                    showDuration: 200,
+                    autoHideDelay: 7000
+                });
+            }
+        },
+        complete: function () {
+
         }
     });
 });

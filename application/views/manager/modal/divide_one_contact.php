@@ -27,7 +27,7 @@
                         <textarea class="form-control" rows="3" name="note"></textarea>
                     </div>
                     <div class="form-group">
-                        <input class="btn btn-success btn-block btn-lg" type="submit" value="OK" />
+                        <input class="btn btn-success btn-block btn-lg btn-divide-one-contact" type="submit" value="OK" />
                     </div>
                 </form> 
             </div>

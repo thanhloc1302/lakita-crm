@@ -65,32 +65,27 @@
                                             <tbody>
                                                 <tr>
                                                     <td style="padding:0px 20px">
-                                                        
+
                                                         <div>
                                                             <ul style="list-style:none;padding:0px">
-                                                                <li style="margin-bottom:20px;color:#272727"><span style="font-weight:bold"> Anh/chị "<?php echo $name;?>" thân mến, </span></li>
-                                                                <li style="margin-bottom:20px;color:#272727">Lakita xin gửi chị thông tin thanh toán như sau:</li>
-																
-																<li style="margin-bottom:10px;color:#272727; padding-left: 40px;" >1. Ngân hàng ACB: </li>
-																<li style="margin-bottom:10px;color:#272727; padding-left: 60px;" >- Số tài khoản: 16221068 </li>
-																<li style="margin-bottom:10px;color:#272727; padding-left: 60px;" >- Chủ tài khoản: Công ty cổ phần giáo dục Lakita </li>
-																<li style="margin-bottom:20px;color:#272727; padding-left: 60px;" >- Chi nhánh: Ngân hàng ACB, chi nhánh Trần Đại Nghĩa, Hai Bà Trưng, Hà Nội </li>
-																
-																
-																
-																<li style="margin-bottom:10px;color:#272727; padding-left: 40px;" >2. Ngân hàng Vietcombank: </li>
-																<li style="margin-bottom:10px;color:#272727; padding-left: 60px;" >- Số tài khoản: 0301000357860 </li>
-																<li style="margin-bottom:10px;color:#272727; padding-left: 60px;" >- Chủ tài khoản: NGUYỄN VĂN TRỊNH </li>
-																<li style="margin-bottom:20px;color:#272727; padding-left: 60px;" >- Chi nhánh: Ngân hàng Vietcombank, chi nhánh Vietcombank Hoàn Kiếm, Hà Nội </li>
-																<li style="margin-bottom:20px;color:#272727"> Tại mục ghi chú khi chuyển khoản, chị ghi rõ số điện thoại, email đăng ký, 
-																	số tiền <?php echo number_format($price_purchase,0,",",".").'VNĐ';?> để em hỗ trợ kích hoạt luôn cho mình nhé. Em cảm ơn !!! </li>
-																
+                                                                <li style="margin-bottom:20px;color:#272727"><span style="font-weight:bold"> Anh/chị "<?php echo $name; ?>" thân mến, </span></li>
+                                                                <li style="margin-bottom:20px;color:#272727">Lakita đã kích hoạt khóa học cho chi trên hệ thống của Lakita.vn. Để vào học chị sử dụng tài khoản sau:</li>
+                                                                <ul>
+                                                                    <li style="margin-bottom:10px;color:#272727; padding-left: 40px;" > 
+                                                                        <span style="font-weight:bold"> Tài khoản: </span> <?php echo $email; ?> </li>
+                                                                    <li style="margin-bottom:20px;color:#272727; padding-left: 40px;" >
+                                                                        <span style="font-weight:bold"> Mật khẩu: </span> <?php echo ($password == 'new') ? 'lakita' : '(mật khẩu giống như mật khẩu khi quý khách đăng ký tài khoản Lakita)'; ?> </li>
+                                                                </ul>
+                                                                <li style="margin-bottom:10px;color:#272727"> Mời anh xem hướng dẫn dưới đây để biết cách thao tác trên hệ thống của Lakita.vn nhé. </li>
+                                                                <li style="margin-bottom:10px;color:#272727"> Chúc chi học tập vui vẻ! </li>
+                                                                <li style="margin-bottom:10px;color:#272727"> Trân trọng, </li>
+                                                                <li style="margin-bottom:20px;color:#272727"> <span style="font-weight:bold"> Lakita team. </span> </li>
                                                             </ul>
                                                             <hr>
                                                             <ul style="padding:none;list-style:none;padding:0px;list-style:none;text-align:center;line-height:25px;color:#272727">
                                                                 <li><a href="https://lakita.vn/" style="font-weight:bold;color:#41a85f;text-decoration:none" target="_blank" data-saferedirecturl="https://www.google.com/url?hl=vi&amp;q=https://lakita.vn/&amp;source=gmail&amp;ust=1500609481608000&amp;usg=AFQjCNEbLp-K8kACMsrP_j85e5oYR9c_8A">Lakita.vn</a> | Cùng bạn vươn xa</li>
                                                                 <li>Văn phòng: 701 CT1 skylight 125D Minh Khai, Hai Bà Trưng, Hà Nội</li>
-																<li>Website: <a href="https://lakita.vn"> https://lakita.vn </a></li>
+                                                                <li>Website: <a href="https://lakita.vn"> https://lakita.vn </a></li>
                                                             </ul>
                                                             <div>
                                                                 <ul style="padding:0px;text-align:center">

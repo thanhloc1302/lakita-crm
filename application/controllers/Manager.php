@@ -66,7 +66,6 @@ class Manager extends MY_Controller {
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
-    
     function view_all_contact($offset = 0) {
         $data = $this->get_all_require_data();
         $get = $this->input->get();
@@ -112,14 +111,14 @@ class Manager extends MY_Controller {
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
-        function view_pivot_table() {
+    function view_pivot_table() {
         $data = $this->data;
         $data['left_col'] = array('date_rgt',);
         $data['load_js'] = array('m_pivot_table');
         $data['content'] = 'manager/pivot_table';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
- 
+
     // <editor-fold defaultstate="collapsed" desc="view_duplicate">
     function view_duplicate() {
         $require_model = array(
@@ -238,6 +237,7 @@ class Manager extends MY_Controller {
     /* ========================  hàm chia contact (chia riêng contact) và các hàm phụ trợ =========================== */
     function divide_contact() {
         $post = $this->input->post();
+
         $this->_action_divide_contact($post);
     }
 
@@ -247,20 +247,33 @@ class Manager extends MY_Controller {
 
     private function _action_divide_contact($post) {
         $this->load->model('Staffs_model');
+        $result = array();
         if (empty($post)) {
-            die('Có lỗi xảy ra! Mã lỗi : 30201');
+            $result['success'] = 0;
+            $result['message'] = "Có lỗi xảy ra! Mã lỗi : 30201";
+            echo json_encode($result);
+            die;
         }
         if (!isset($post['contact_id'])) {
-            redirect_and_die("Vui lòng chọn contact!");
+            $result['success'] = 0;
+            $result['message'] = "Vui lòng chọn contact!";
+            echo json_encode($result);
+            die;
         }
         $sale_id = $post['sale_id'];
         $contact_ids = is_array($post['contact_id']) ? $post['contact_id'] : array($post['contact_id']);
         $note = $post['note'];
         if ($sale_id == 0) {
-            redirect_and_die("Vui lòng chọn nhân viên TVTS!");
+            $result['success'] = 0;
+            $result['message'] = "Vui lòng chọn nhân viên TVTS!";
+            echo json_encode($result);
+            die;
         }
         if (empty($contact_ids)) {
-            redirect_and_die("Vui lòng chọn contact!");
+            $result['success'] = 0;
+            $result['message'] = "Vui lòng chọn contact!";
+            echo json_encode($result);
+            die;
         }
         $this->_check_contact_can_be_divide($contact_ids);
 
@@ -288,8 +301,11 @@ class Manager extends MY_Controller {
             }
         }
         $staff_name = $this->Staffs_model->find_staff_name($sale_id);
-        $msg = 'Phân contact thành công cho nhân viên <strong>' . $staff_name . '</strong>';
-        show_error_and_redirect($msg);
+
+        $result['success'] = 1;
+        $result['message'] = 'Phân contact thành công cho nhân viên ' . $staff_name ;
+        echo json_encode($result);
+        die;
     }
 
     /*
@@ -300,12 +316,15 @@ class Manager extends MY_Controller {
         $this->load->model('Staffs_model');
         foreach ($contact_ids as $value) {
             $input = array();
-            $input['select'] = 'sale_staff_id, id';
+            $input['select'] = 'sale_staff_id, id, duplicate_id';
             $input['where'] = array('id' => $value);
             $rows = $this->contacts_model->load_all($input);
 
             if (empty($rows)) {
-                die('Không tồn tại khách hàng này! Mã lỗi : 30203');
+                $result['success'] = 0;
+                $result['message'] = "Không tồn tại khách hàng này! Mã lỗi : 30203";
+                echo json_encode($result);
+                die;
             }
 
             if ($rows[0]['sale_staff_id'] > 0) {
@@ -313,7 +332,7 @@ class Manager extends MY_Controller {
                 $msg = 'Contact có id = ' . $rows[0]['id'] . ' đã được phân cho TVTS: ' . $name . '. Vì vậy không thể phân tiếp được nữa!';
                 show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
             }
-            if($this->role_id == 3 && $rows[0]['duplicate_id'] > 0) {
+            if ($this->role_id == 3 && $rows[0]['duplicate_id'] > 0) {
                 $msg = 'Contact "' . $rows[0]['name'] . '" có id = ' . $rows[0]['id'] . ' bị trùng. '
                         . 'Vì vậy không thể phân contact đó được! Vui lòng thực hiện lại';
                 show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
