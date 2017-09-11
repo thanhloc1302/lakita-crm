@@ -1,7 +1,7 @@
 <tr>
     <td class="text-right"> Chọn trạng thái giao COD </td>
     <td>  
-        <select class="form-control selectpicker" name="cod_status_id">
+        <select class="form-control selectpicker cod_status_id" name="cod_status_id">
             <option value="0"> Chọn trạng thái giao COD </option>
             <?php
             foreach ($cod_status as $key => $value) {

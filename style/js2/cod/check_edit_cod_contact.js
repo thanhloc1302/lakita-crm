@@ -1,20 +1,52 @@
-$(".btn-modal_edit-multi-contact").on('click',function (e) {
+$(".btn-modal_edit-multi-contact").on('click', function (e) {
     e.preventDefault();
     var error = false;
-    var modal_edit_provider_id = $('.edit_multi_cod_contact [name="provider_id"]').val();
-    var modal_edit_cod_status_id = $('.edit_multi_cod_contact [name="cod_status_id"]').val();
-    console.log(modal_edit_provider_id);
-    if (modal_edit_cod_status_id == 0) {
-        alert("Bạn cần chọn trạng thái giao COD!");
-        error = true;
-        return false;
-    }
-    if (modal_edit_provider_id == 0) {
-        alert("Bạn cần chọn đơn vị giao hàng!");
-        error = true;
-        return false;
-    }
+
     if (!error) {
-        $("#action_contact").submit();
+        var url = $("#base_url").val() + "common/action_edit_multi_cod_contact";
+        /*
+         * Lấy các contact chăm sóc để ẩn đi
+         */
+        var contactIdArray = [];
+        $('input[type="checkbox"]').each(
+                function () {
+                    if ($(this).is(":checked")) {
+                        contactIdArray.push($(this).val());
+                    }
+                });
+        $.ajax({
+            url: url,
+            type: "POST",
+            dataType: 'json',
+            data: $("#action_contact").serialize(),
+            success: function (data) {
+                if (data.success == 1) {
+                    $("#send_email_sound")[0].play();
+                    $.notify(data.message, {
+                        position: "top left",
+                        className: 'success',
+                        showDuration: 200,
+                        autoHideDelay: 5000
+                    });
+                    $(".edit_contact_modal").modal("hide");
+                    $.each(contactIdArray, function(){
+                        $('tr[contact_id="'+this+'"]').hide();
+                    });
+                    $(".edit_multi_cod_contact").modal("hide");
+                } else {
+                    $("#send_email_error")[0].play();
+                    $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
+                        position: "top left",
+                        className: 'error',
+                        showDuration: 200,
+                        autoHideDelay: 7000
+                    });
+                }
+            },
+            complete: function () {
+
+            }
+        });
+        //$("#action_contact").submit();
     }
 });

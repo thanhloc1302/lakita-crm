@@ -1,5 +1,8 @@
-<form method="post" action="<?php echo base_url($action_url); ?>" class="form_submit">
-    <?php if (!$edited_contact) echo'<fieldset disabled>'; ?>
+<form method="post" action="<?php echo base_url($action_url); ?>" class="form_submit form_edit_contact_modal" contact_id="<?php echo $contact_id;?>">
+    <?php if (!$edited_contact) {
+        echo'<fieldset disabled>';
+    }
+    ?>
     <div class="row" style="margin-right: 5px; margin-left: 5px;">
         <div class="col-md-6">
             <table class="table table-striped table-bordered table-hover table-1 table-view-1 edit_table">

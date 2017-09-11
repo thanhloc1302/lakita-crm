@@ -13,8 +13,6 @@ class Cod extends MY_Controller {
         $this->load->model('L7_check_model');
     }
 
- 
-
     function index($offset = 0) {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
