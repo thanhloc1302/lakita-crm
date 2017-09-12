@@ -5,12 +5,10 @@
 </div>
 <form action="<?php echo base_url(); ?>common/action_edit_multi_cod_contact" method="POST" id="action_contact" class="form-inline">
     <?php $this->load->view('common/content/filter'); ?>
-    <input type="submit" class="btn btn-success export_to_string" value="Xuất thành chuỗi đối soát" /> <br/>
     <?php $this->load->view('common/content/tbl_contact'); ?>
     <?php $this->load->view('cod/modal/edit_multi_contact'); ?>
-    <input type="submit" class="btn btn-success btn-export-excel" value="Xuất file excel để in" />
 </form>
-<div class="edit_contact">
+<div class="export_to_string1">
     <div class="modal fade export_to_string_modal " tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog btn-very-lg" role="document">
             <div class="modal-content">

@@ -28,7 +28,6 @@ $(".btn-modal_edit-multi-contact").on('click', function (e) {
                         showDuration: 200,
                         autoHideDelay: 5000
                     });
-                    $(".edit_contact_modal").modal("hide");
                     $.each(contactIdArray, function(){
                         $('tr[contact_id="'+this+'"]').hide();
                     });
