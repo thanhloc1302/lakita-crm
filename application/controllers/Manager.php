@@ -246,8 +246,8 @@ class Manager extends MY_Controller {
      */
 
     private function _action_divide_contact($post) {
-        $this->load->model('Staffs_model');
         $result = array();
+        $this->load->model('Staffs_model');
         if (empty($post)) {
             $result['success'] = 0;
             $result['message'] = "Có lỗi xảy ra! Mã lỗi : 30201";
@@ -303,7 +303,7 @@ class Manager extends MY_Controller {
         $staff_name = $this->Staffs_model->find_staff_name($sale_id);
 
         $result['success'] = 1;
-        $result['message'] = 'Phân contact thành công cho nhân viên ' . $staff_name ;
+        $result['message'] = 'Phân contact thành công cho nhân viên ' . $staff_name;
         echo json_encode($result);
         die;
     }
@@ -313,6 +313,7 @@ class Manager extends MY_Controller {
      */
 
     private function _check_contact_can_be_divide($contact_ids) {
+        $result = array();
         $this->load->model('Staffs_model');
         foreach ($contact_ids as $value) {
             $input = array();
@@ -330,12 +331,18 @@ class Manager extends MY_Controller {
             if ($rows[0]['sale_staff_id'] > 0) {
                 $name = $this->Staffs_model->find_staff_name($rows[0]['sale_staff_id']);
                 $msg = 'Contact có id = ' . $rows[0]['id'] . ' đã được phân cho TVTS: ' . $name . '. Vì vậy không thể phân tiếp được nữa!';
-                show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
+                $result['success'] = 0;
+                $result['message'] = $msg;
+                echo json_encode($result);
+                die;
             }
             if ($this->role_id == 3 && $rows[0]['duplicate_id'] > 0) {
                 $msg = 'Contact "' . $rows[0]['name'] . '" có id = ' . $rows[0]['id'] . ' bị trùng. '
                         . 'Vì vậy không thể phân contact đó được! Vui lòng thực hiện lại';
-                show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
+                      $result['success'] = 0;
+                $result['message'] = $msg;
+                echo json_encode($result);
+                die;
             }
         }
     }
