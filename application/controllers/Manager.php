@@ -275,8 +275,11 @@ class Manager extends MY_Controller {
             echo json_encode($result);
             die;
         }
-        $this->_check_contact_can_be_divide($contact_ids);
-
+        $checkContactCanBeDivide = $this->_check_contact_can_be_divide($contact_ids);
+        if (!empty($checkContactCanBeDivide)) {
+            echo json_encode($checkContactCanBeDivide);
+            die;
+        }
         $data = array(
             'sale_staff_id' => $sale_id,
             'date_handover' => time(),
@@ -289,7 +292,6 @@ class Manager extends MY_Controller {
         if ($note != '') {
             $this->load->model('notes_model');
             foreach ($contact_ids as $value) {
-                $param2 = array();
                 $param2 = array(
                     'contact_id' => $value,
                     'content' => $note,
@@ -324,8 +326,6 @@ class Manager extends MY_Controller {
             if (empty($rows)) {
                 $result['success'] = 0;
                 $result['message'] = "Không tồn tại khách hàng này! Mã lỗi : 30203";
-                echo json_encode($result);
-                die;
             }
 
             if ($rows[0]['sale_staff_id'] > 0) {
@@ -333,18 +333,16 @@ class Manager extends MY_Controller {
                 $msg = 'Contact có id = ' . $rows[0]['id'] . ' đã được phân cho TVTS: ' . $name . '. Vì vậy không thể phân tiếp được nữa!';
                 $result['success'] = 0;
                 $result['message'] = $msg;
-                echo json_encode($result);
-                die;
             }
             if ($this->role_id == 3 && $rows[0]['duplicate_id'] > 0) {
                 $msg = 'Contact "' . $rows[0]['name'] . '" có id = ' . $rows[0]['id'] . ' bị trùng. '
                         . 'Vì vậy không thể phân contact đó được! Vui lòng thực hiện lại';
-                      $result['success'] = 0;
+                $result['success'] = 0;
                 $result['message'] = $msg;
-                echo json_encode($result);
-                die;
             }
         }
+
+        return $result;
     }
 
     /* ========================  hàm chia contact (chia riêng contact) và các hàm phụ trợ  (hết) =========================== */

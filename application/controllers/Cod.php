@@ -150,11 +150,6 @@ class Cod extends MY_Controller {
         $objPHPExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
         $objPHPExcel->getActiveSheet()->getSheetView()->setZoomScale(73);
 
-        foreach (range('A', 'G') as $columnID) {
-            $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
-                    ->setAutoSize(true);
-        }
-
         //set độ rộng của các cột
         $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
         $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
@@ -205,6 +200,11 @@ class Cod extends MY_Controller {
             $objPHPExcel->getActiveSheet()->getStyle('A' . $rowCount . ':H' . $rowCount)->applyFromArray($BStyle);
             $rowCount++;
         }
+        foreach (range('A', 'H') as $columnID) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+                    ->setAutoSize(true);
+        }
+
 //die;
         $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
         header('Content-Type: application/vnd.ms-excel');
@@ -417,9 +417,8 @@ class Cod extends MY_Controller {
         }
         return $contacts;
     }
-    
-    
-       public function test() {
+
+    public function test() {
         $this->load->library('rest');
         $config = array('server' => 'https://sheets.googleapis.com/',
             'api_key' => 'AIzaSyCdjll4ib79ZGtUEEEAxksl6zff2NkLCII',
