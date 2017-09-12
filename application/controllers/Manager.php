@@ -248,7 +248,6 @@ class Manager extends MY_Controller {
     private function _action_divide_contact($post) {
         $result = array();
         $this->load->model('Staffs_model');
-        $result = array();
         if (empty($post)) {
             $result['success'] = 0;
             $result['message'] = "Có lỗi xảy ra! Mã lỗi : 30201";
@@ -276,8 +275,11 @@ class Manager extends MY_Controller {
             echo json_encode($result);
             die;
         }
-        $this->_check_contact_can_be_divide($contact_ids);
-
+        $checkContactCanBeDivide = $this->_check_contact_can_be_divide($contact_ids);
+        if (!empty($checkContactCanBeDivide)) {
+            echo json_encode($checkContactCanBeDivide);
+            die;
+        }
         $data = array(
             'sale_staff_id' => $sale_id,
             'date_handover' => time(),
@@ -290,7 +292,6 @@ class Manager extends MY_Controller {
         if ($note != '') {
             $this->load->model('notes_model');
             foreach ($contact_ids as $value) {
-                $param2 = array();
                 $param2 = array(
                     'contact_id' => $value,
                     'content' => $note,
@@ -314,6 +315,7 @@ class Manager extends MY_Controller {
      */
 
     private function _check_contact_can_be_divide($contact_ids) {
+        $result = array();
         $this->load->model('Staffs_model');
         foreach ($contact_ids as $value) {
             $input = array();
@@ -324,21 +326,23 @@ class Manager extends MY_Controller {
             if (empty($rows)) {
                 $result['success'] = 0;
                 $result['message'] = "Không tồn tại khách hàng này! Mã lỗi : 30203";
-                echo json_encode($result);
-                die;
             }
 
             if ($rows[0]['sale_staff_id'] > 0) {
                 $name = $this->Staffs_model->find_staff_name($rows[0]['sale_staff_id']);
                 $msg = 'Contact có id = ' . $rows[0]['id'] . ' đã được phân cho TVTS: ' . $name . '. Vì vậy không thể phân tiếp được nữa!';
-                show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
+                $result['success'] = 0;
+                $result['message'] = $msg;
             }
             if ($this->role_id == 3 && $rows[0]['duplicate_id'] > 0) {
                 $msg = 'Contact "' . $rows[0]['name'] . '" có id = ' . $rows[0]['id'] . ' bị trùng. '
                         . 'Vì vậy không thể phân contact đó được! Vui lòng thực hiện lại';
-                show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
+                $result['success'] = 0;
+                $result['message'] = $msg;
             }
         }
+
+        return $result;
     }
 
     /* ========================  hàm chia contact (chia riêng contact) và các hàm phụ trợ  (hết) =========================== */
