@@ -23,7 +23,8 @@ class MY_Controller extends CI_Controller {
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
-        // echo date('H:i:s d/m/Y', 1505048400);die;
+        //  echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
+        // echo date('H:i:s d/m/Y', 1505408400);die;
         //  echo time(). '<br>';
         // echo strtotime('09-06-2018 20:00:00'); die;
         // echo strtotime(date("d-m-Y"));die;
@@ -144,7 +145,7 @@ class MY_Controller extends CI_Controller {
         $rows = $this->db->query($query)->result_array();
         $last_id = $this->session->tempdata('last_id');
         if (!isset($last_id)) {
-            $this->session->set_tempdata('last_id', $rows[0]['id'], 3600 * 24);
+            $this->session->set_tempdata('last_id', $rows[0]['id'], 3600);
         }
     }
 
@@ -224,8 +225,8 @@ class MY_Controller extends CI_Controller {
             $input['limit'] = array($limit, $offset1);
         }
         $result['data'] = $this->contacts_model->load_all($input);
-        
-       // echoQuery();
+
+        // echoQuery();
 
         /*
          * Lấy thông tin 1 contact đăng ký nhiều khóa học
@@ -493,4 +494,5 @@ class MY_Controller extends CI_Controller {
                 ->set_content_type('application/json')
                 ->set_output(json_encode($json));
     }
+
 }

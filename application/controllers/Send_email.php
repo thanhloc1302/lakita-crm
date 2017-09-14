@@ -18,27 +18,38 @@ class Send_email extends CI_Controller {
     }
 
     public function send_banking_info() {
+        
+       
+        
         $post = $this->input->post();
-        if (!empty($post) && isset($post['contact_id'])) {
-            $this->db->select('name, email, price_purchase');
-            $contacts = $this->contacts_model->find($post['contact_id']);
-            if (!empty($contacts)) {
-                $contact = $contacts[0];
-                $content = $this->load->view('email_template/send_banking_info', $contact, TRUE);
-                //gửi email
-                $this->load->library("email");
-                $this->email->from('cskh@lakita.vn', "lakita.vn");
-                $this->email->to($contact['email']);
-                $this->email->subject('THÔNG TIN CHUYỂN KHOẢN LAKITA');
-                $this->email->message($content);
-                $this->email->send();
-
-                //cập nhật đã gửi mail
-                $where = array('id' => $post['contact_id']);
-                $data = array('send_banking_info' => 1);
-                $this->contacts_model->update($where, $data);
+        $result = array('success' => 0, 'message' => '');
+        if (!empty($post)) {
+            
+            //$apiKey = '5b0b7d7cd362775ddb8ff7b88b920e7b'; // chuyenbka90
+            $apiKey = '1893c78450021cc84200d63c2f03d822'; //chuyenbka
+            
+            $emailCheck = json_decode(file_get_contents('http://apilayer.net/api/check?access_key='.$apiKey.'&email='.$post['email'].'&smtp=1&format=1'));
+            if($emailCheck->smtp_check == false){
+                $result['message'] = 'Không tồn tại email này!';
+                echo json_encode($result);
+                die;
             }
+            $content = $this->load->view('email_template/send_banking_info', $post, TRUE);
+            //gửi email
+            $this->load->library("email");
+            $this->email->from('cskh@lakita.vn', "lakita.vn");
+            $this->email->to($post['email']);
+            $this->email->subject('THÔNG TIN CHUYỂN KHOẢN LAKITA');
+            $this->email->message($content);
+            $this->email->send();
+
+            //cập nhật đã gửi mail
+            $where = array('id' => $post['contact_id']);
+            $data = array('send_banking_info' => 1);
+            $this->contacts_model->update($where, $data);
+            $result['success'] = 1;
         }
+          echo json_encode($result);
     }
 
     public function send_account_lakita() {
@@ -53,7 +64,7 @@ class Send_email extends CI_Controller {
                 if ($client->success != 0) {
                     $contact['password'] = $client->password;
                     $content = $this->load->view('email_template/send_account_lakita', $contact, TRUE);
-                    
+
                     //gửi email
                     $this->load->library("email");
                     $this->email->from('cskh@lakita.vn', "lakita.vn");

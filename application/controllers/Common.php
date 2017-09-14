@@ -764,7 +764,7 @@ class Common extends MY_Controller {
         $last_id = $this->session->tempdata('last_id');
         if ($last_id != $rows[0]['id']) {
             echo '1';
-            $this->session->set_tempdata('last_id', $rows[0]['id'], 3600 * 24);
+            $this->session->set_tempdata('last_id', $rows[0]['id'], 3600 * 12);
         } else {
             echo '0';
         }
