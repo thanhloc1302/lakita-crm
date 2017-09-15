@@ -18,7 +18,7 @@ class Report extends MY_Controller {
         );
         $data = $this->_get_require_data($require_model);
         $get = $this->input->get();
-        if (empty($get) || $get['key'] != 'ACOPDreqidsadfs') {
+        if (empty($get) || $get['key'] != 'ACOPDreqidsadfs2') {
             die;
         }
         $input = array();
@@ -158,7 +158,7 @@ class Report extends MY_Controller {
     function send_report_revenue_daily() {
         $this->load->helper('manager_helper');
         $get = $this->input->get();
-        if (empty($get) || $get['key'] != 'ACOPDreqidsadfs') {
+        if (empty($get) || $get['key'] != 'ACOPDreqidsadfs2') {
             die;
         }
         $input = array();
@@ -223,7 +223,7 @@ class Report extends MY_Controller {
         $this->load->model('call_log_model');
         $this->load->model('L7_check_model');
         $get = $this->input->get();
-        if (empty($get) || !isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs') {
+        if (empty($get) || !isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
             die;
         }
 
@@ -351,7 +351,7 @@ class Report extends MY_Controller {
 
     function send_report_product_daily() {
         $get = $this->input->get();
-        if (empty($get) || !isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs') {
+        if (empty($get) || !isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
             die;
         }
         $input = array();
@@ -425,7 +425,7 @@ class Report extends MY_Controller {
         $this->load->model('courses_model');
         $courses = $this->courses_model->load_all($input);
         $get = $this->input->get();
-        if (empty($get) || $get['key'] != 'ACOPDreqidsadfs') {
+        if (empty($get) || $get['key'] != 'ACOPDreqidsadfs2') {
             die;
         }
         $conditionArr = array(

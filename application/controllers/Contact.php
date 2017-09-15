@@ -45,8 +45,9 @@ class Contact extends CI_Controller {
                 $this->contacts_model->insert_from_mol($param);
             }
 
-            $this->load->model('last_contact_id_model');
-            $this->last_contact_id_model->update(array(), array('id' => time()));
+            $myfile = fopen(APPPATH . "../public/last_reg.txt", "w") or die("Unable to open file!");
+            fwrite($myfile, time());
+            fclose($myfile);
         }
     }
 

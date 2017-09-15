@@ -35,7 +35,6 @@ class MY_Controller extends CI_Controller {
         $this->_check_login();
         $this->_set_default_variable();
         $this->_check_permission();
-        $this->_set_notificate();
         if ($this->config->item('show_profiler') === TRUE) {
             //$this->output->enable_profiler(TRUE);
         }
@@ -137,15 +136,6 @@ class MY_Controller extends CI_Controller {
                     die;
                 }
             }
-        }
-    }
-
-    private function _set_notificate() {
-        $query = 'SELECT `id` FROM `tbl_last_contact_id`';
-        $rows = $this->db->query($query)->result_array();
-        $last_id = $this->session->tempdata('last_id');
-        if (!isset($last_id)) {
-            $this->session->set_tempdata('last_id', $rows[0]['id'], 3600);
         }
     }
 

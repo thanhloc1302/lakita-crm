@@ -759,15 +759,22 @@ class Common extends MY_Controller {
 
     // <editor-fold defaultstate="collapsed" desc="listen">
     function listen() {
-        $query = 'SELECT `id` FROM `tbl_last_contact_id`';
-        $rows = $this->db->query($query)->result_array();
-        $last_id = $this->session->tempdata('last_id');
-        if ($last_id != $rows[0]['id']) {
+        $this->load->helper('cookie');
+        $myfile = fopen(APPPATH . "../public/last_reg.txt", "r") or die("Unable to open file!");
+        $last_id_txt = fgets($myfile);
+        $last_id = get_cookie('last_id');
+        if (!$last_id) {
+            set_cookie('last_id', $last_id_txt, 3600 * 48);
+            echo '0';
+            die;
+        }
+        if ($last_id != $last_id_txt) {
             echo '1';
-            $this->session->set_tempdata('last_id', $rows[0]['id'], 3600 * 12);
+            set_cookie('last_id', $last_id_txt, 3600 * 48);
         } else {
             echo '0';
         }
+        fclose($myfile);
     }
 
     function find_course_name() {

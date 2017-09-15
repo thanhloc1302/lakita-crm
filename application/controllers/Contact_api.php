@@ -27,7 +27,7 @@ class Contact_api extends REST_Controller {
             $param['phone'] = isset($input['phone']) ? trim($input['phone']) : '';
             $email = isset($input['email']) ? $input['email'] : '';
             $param['email'] = trim(str_replace('NO_PARAM@gmail.com', '', $email));
-            if($param['email'] == '' && $param['phone'] == ''){
+            if ($param['email'] == '' && $param['phone'] == '') {
                 $param['is_hide'] = 1;
             }
             $address = isset($input['dia_chi']) ? $input['dia_chi'] : '';
@@ -77,8 +77,13 @@ class Contact_api extends REST_Controller {
             $param['duplicate_id'] = $this->_find_dupliacte_contact($input['phone'], $input['course_code']);
 
             $this->contacts_model->insert_from_mol($param);
-            $this->load->model('last_contact_id_model');
-            $this->last_contact_id_model->update(array(), array('id' => time()));
+
+            $myfile = fopen(APPPATH . "../public/last_reg.txt", "w") or die("Unable to open file!");
+            fwrite($myfile, time());
+            fclose($myfile);
+
+//            $this->load->model('last_contact_id_model');
+//            $this->last_contact_id_model->update(array(), array('id' => time()));
 
             /*
              * Gửi email

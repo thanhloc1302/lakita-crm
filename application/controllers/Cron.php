@@ -24,7 +24,7 @@ class Cron extends CI_Controller {
             $day = "-1 days";
         }
         $get = $this->input->get();
-        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs') {
+        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
             die('token sai!');
         }
         $this->load->model('campaign_cost_model');
@@ -64,7 +64,7 @@ class Cron extends CI_Controller {
             $day = "-1 days";
         }
         $get = $this->input->get();
-        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs') {
+        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
             die('token sai!');
         }
         $this->load->model('channel_cost_model');
@@ -107,7 +107,7 @@ class Cron extends CI_Controller {
             $day = "-1 days";
         }
         $get = $this->input->get();
-        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs') {
+        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
             die('token sai!');
         }
         $this->load->model('adset_cost_model');
@@ -147,7 +147,7 @@ class Cron extends CI_Controller {
             $day = "-1 days";
         }
         $get = $this->input->get();
-        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs') {
+        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
             die('token sai!');
         }
         $this->load->model('ad_cost_model');

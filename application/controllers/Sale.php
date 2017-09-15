@@ -216,7 +216,7 @@ class Sale extends MY_Controller {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('name', 'Họ tên', 'trim|required|min_length[2]');
         $this->form_validation->set_rules('address', 'Địa chỉ', 'trim|required|min_length[3]');
-        $this->form_validation->set_rules('phone', 'Số điện thoại', 'required|min_length[2]');
+        $this->form_validation->set_rules('phone', 'Số điện thoại', 'required|min_length[2]|integer');
         $this->form_validation->set_rules('course_code', 'Mã khóa học', 'required|callback_check_course_code');
         $this->form_validation->set_rules('source_id', 'Nguồn contact', 'required|callback_check_source_id');
         if (!empty($input)) {
@@ -259,8 +259,9 @@ class Sale extends MY_Controller {
                     $this->load->model('notes_model');
                     $this->notes_model->insert($param2);
                 }
-                $this->load->model('last_contact_id_model');
-                $this->last_contact_id_model->update(array(), array('id' => time()));
+                $myfile = fopen(APPPATH . "../public/last_reg.txt", "w") or die("Unable to open file!");
+                fwrite($myfile, time());
+                fclose($myfile);
                 show_error_and_redirect('Thêm thành công contact', $input['back_location']);
             }
         } else {
