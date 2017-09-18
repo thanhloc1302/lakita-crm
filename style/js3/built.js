@@ -484,7 +484,7 @@ $(document).on('scroll', function () {
                         autoHideDelay: 5000
                     });
                     $.each(contactIdArray, function(){
-                        $('tr[contact_id="'+this+'"]').hide();
+                        $('tr[contact_id="'+this+'"]').html("");
                     });
                     $(".edit_multi_cod_contact").modal("hide");
                 } else {
@@ -657,7 +657,7 @@ $(document).on('click', '.btn-edit-contact', function (e) {
                     autoHideDelay: 5000
                 });
                 $(".edit_contact_modal").modal("hide");
-                $('tr[contact_id="'+contact_id+'"]').hide();
+                $('tr[contact_id="'+contact_id+'"]').html("");
             } else {
                 $("#send_email_error")[0].play();
                 $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
@@ -1524,6 +1524,23 @@ $(function () {
      * Sửa lại value của thẻ input curr_url
      */
     $("#curr_url").val(location.href);
+
+    var hide = 1;
+    $(document).on('mousemove', function (e) {
+
+        if (e.pageX < 0.5) {
+            $("body").removeClass("nav-sm");
+            $("body").addClass("nav-md");
+            hide = 0;
+        }
+
+        if (e.pageX > 500 && hide == 0) {
+            $("body").removeClass("nav-md");
+            $("body").addClass("nav-sm");
+            hide = 1;
+        }
+    });
+
 });
 /*
  * To change this license header, choose License Headers in Project Properties.

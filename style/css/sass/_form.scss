@@ -9,7 +9,21 @@ and open the template in the editor.
 */
 
 input[type="checkbox"]{
-    width: 20px;
-    height: 20px;
+    width: 15px;
+    height: 15px;
     cursor: pointer;
+}
+
+form.form-search{
+    width: 70%;
+    float: left;
+    margin-top: 10px;
+    input{
+        width: 50%;
+        float: left;
+        padding: 20px;
+    }
+    .btn{
+        padding: 10px;
+    }
 }

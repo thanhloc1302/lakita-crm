@@ -63,4 +63,21 @@ $(function () {
      * Sửa lại value của thẻ input curr_url
      */
     $("#curr_url").val(location.href);
+
+    var hide = 1;
+    $(document).on('mousemove', function (e) {
+
+        if (e.pageX < 0.5) {
+            $("body").removeClass("nav-sm");
+            $("body").addClass("nav-md");
+            hide = 0;
+        }
+
+        if (e.pageX > 500 && hide == 0) {
+            $("body").removeClass("nav-md");
+            $("body").addClass("nav-sm");
+            hide = 1;
+        }
+    });
+
 });

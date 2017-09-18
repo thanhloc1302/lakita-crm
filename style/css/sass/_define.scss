@@ -217,6 +217,7 @@ font-size: 15px;
 .alert-red{
     background-color: red;
     color:#fff;
+    margin-top: 50px;
 }
 .has_transfer{
     font-weight: bold;
@@ -232,7 +233,7 @@ font-size: 15px;
     width: 15%
 }
 .nav-sm .logo{
-    width: 80%
+/*    width: 80%*/
 }
 .btn-duplicate{
     background-color: #fff;
@@ -246,10 +247,10 @@ font-size: 15px;
     font-size: 11px;
 }
 .nav-sm .container.body .col-md-3.left_col, .nav-md .container.body .col-md-3.left_col {
-    -webkit-transition: all 1s ease;
+    -webkit-transition: all 0.3s ease;
 }
 .btn, ul.child_menu li a, ul.side-menu > li{
-    -webkit-transition: all 0.5s ease;
+    //-webkit-transition: all 0.5s ease;
 }
 
 ::-webkit-scrollbar

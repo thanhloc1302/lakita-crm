@@ -72,7 +72,7 @@ class MY_Controller extends CI_Controller {
          * lấy thành phần chung là slide_menu và top_nav
          */
         $this->data['slide_menu'] = $this->controller . '/common/slide-menu';
-        $this->data['top_nav'] = $this->controller . '/common/top-nav';
+        $this->data['top_nav'] =  'manager/common/top-nav';
 
         /*
          * Lấy số contact trên 1 trang, nếu người dùng nhập vào số contact
@@ -454,6 +454,20 @@ class MY_Controller extends CI_Controller {
                 $input_get['where'][$column_name . '<='] = $date_end;
             }
         }
+
+
+
+        /* search every where */
+
+        if (isset($get['search_all']) && $get['search_all'] != '') {
+            $input_get['group_start_like']['name'] = $get['search_all'];
+            $input_get['or_like']['phone'] = $get['search_all'];
+            $input_get['or_like']['email'] = $get['search_all'];
+            $input_get['or_like']['matrix'] = $get['search_all'];
+            $input_get['or_like']['code_cross_check'] = $get['search_all'];
+            $input_get['group_end_or_like']['address'] = $get['search_all'];
+        }
+
         return array(
             'input_get' => $input_get,
             'has_user_order' => $has_user_order
@@ -483,6 +497,77 @@ class MY_Controller extends CI_Controller {
         $this->output->enable_profiler(FALSE)
                 ->set_content_type('application/json')
                 ->set_output(json_encode($json));
+    }
+
+    function search($offset = 0) {
+
+        $require_model = array(
+            'staffs' => array(
+                'where' => array(
+                    'role_id' => 1,
+                    'active' => 1
+                )
+            ),
+            'courses' => array(
+                'where' => array(
+                    'active' => 1
+                )
+            ),
+            'call_status' => array(),
+            'ordering_status' => array(),
+            'cod_status' => array(),
+            'providers' => array(),
+            'payment_method_rgt' => array(),
+            'sources' => array()
+        );
+        $data = array_merge($this->data, $this->_get_require_data($require_model));
+
+        $get = $this->input->get();
+        /*
+         * Điều kiện lấy contact :
+         * contact ở trang chủ là contact chưa được phân cho TVTS nào và chua gọi lần nào
+         *
+         */
+
+        $conditional = [];
+        $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
+        /*
+         * Lấy danh sách contacts
+         */
+        $contacts = $data_pagination['data'];
+        foreach ($contacts as &$value) {
+            $value['marketer_name'] = $this->staffs_model->find_staff_name($value['marketer_id']);
+        }
+        unset($value);
+
+        $data['contacts'] = $contacts;
+
+        $data['total_contact'] = $data_pagination['total_row'];
+        /*
+         * Lấy link phân trang
+         */
+        $data['pagination'] = $this->_create_pagination_link('manager/index', $data_pagination['total_row']);
+        /*
+         * Filter ở cột trái và cột phải
+         */
+        $data['left_col'] = array('tu_van', 'duplicate', 'date_rgt');
+        $data['right_col'] = array('course_code');
+
+        /*
+         * Các trường cần hiện của bảng contact (đã có default)
+         */
+        $this->table .= 'date_rgt matrix';
+        $data['table'] = explode(' ', $this->table);
+
+        /*
+         * Các file js cần load
+         */
+        $data['load_js'] = array(
+            'common_view_detail_contact', 'common_real_filter_contact',
+            'm_delete_one_contact', 'm_divide_contact', 'm_view_duplicate', 'm_delete_multi_contact'
+        );
+        $data['content'] = 'common/search_all';
+        $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
 }
