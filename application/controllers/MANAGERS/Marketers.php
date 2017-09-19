@@ -158,7 +158,7 @@ class Marketers extends MY_Table {
         $this->show_table();
         $data = $this->data;
         $data['slide_menu'] = 'marketing/common/slide-menu';
-        $data['top_nav'] = 'marketing/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Danh sách các Marketers';
         $data['edit_title'] = 'Sửa thông tin Marketer';
         $data['content'] = 'base/index';

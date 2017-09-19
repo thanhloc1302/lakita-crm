@@ -20,7 +20,7 @@ class Cod extends MY_Controller {
             'date_expect_receive_cod <' => strtotime('tomorrow'), 'payment_method_rgt' => '1', 'is_hide' => '0');
         $conditional['order'] = array('date_confirm' => 'DESC');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
-        $data['pagination'] = $this->_create_pagination_link('cod/index', $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
         $data['left_col'] = array('sale');
@@ -46,7 +46,7 @@ class Cod extends MY_Controller {
         $conditional['where'] = array('cod_status_id' => _DANG_GIAO_HANG_, 'payment_method_rgt' => '1', 'is_hide' => '0');
         $conditional['order'] = array('code_cross_check' => 'ASC');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
-        $data['pagination'] = $this->_create_pagination_link('cod/pending', $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
         // echo $this->db->last_query();
@@ -88,7 +88,7 @@ class Cod extends MY_Controller {
         $conditional['where'] = array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
             'payment_method_rgt >' => '1', 'is_hide' => '0');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
-        $data['pagination'] = $this->_create_pagination_link('cod/transfer', $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
         // echo $this->db->last_query();
@@ -259,7 +259,7 @@ class Cod extends MY_Controller {
         $get = $this->input->get();
         $conditional['where'] = array('ordering_status_id' => _DONG_Y_MUA_, 'is_hide' => '0');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
-        $data['pagination'] = $this->_create_pagination_link('cod/view_all_contact', $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
         //print_arr($data['contacts']);
         $data['total_contact'] = $data_pagination['total_row'];

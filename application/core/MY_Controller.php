@@ -36,7 +36,7 @@ class MY_Controller extends CI_Controller {
         $this->_set_default_variable();
         $this->_check_permission();
         if ($this->config->item('show_profiler') === TRUE) {
-            //$this->output->enable_profiler(TRUE);
+           // $this->output->enable_profiler(TRUE);
         }
         $this->load->vars($this->data);
     }
@@ -72,7 +72,7 @@ class MY_Controller extends CI_Controller {
          * lấy thành phần chung là slide_menu và top_nav
          */
         $this->data['slide_menu'] = $this->controller . '/common/slide-menu';
-        $this->data['top_nav'] =  'manager/common/top-nav';
+        $this->data['top_nav'] = 'manager/common/top-nav';
 
         /*
          * Lấy số contact trên 1 trang, nếu người dùng nhập vào số contact
@@ -161,10 +161,11 @@ class MY_Controller extends CI_Controller {
      * @return: link phân trang
      */
 
-    protected function _create_pagination_link($baseurl, $total_contact, $uri_segment = 3) {
+    protected function _create_pagination_link($total_contact, $baseurl = '', $uri_segment = 3) {
         $this->load->library("pagination");
         $config = array();
-        $config['base_url'] = base_url($baseurl);
+        $baseURL = ($baseurl == '') ? $this->controller . '/' . $this->method : $baseurl;
+        $config['base_url'] = base_url($baseURL);
         $config['total_rows'] = $total_contact;
         $config['per_page'] = $this->per_page;
         $config['uri_segment'] = $uri_segment;
@@ -460,12 +461,12 @@ class MY_Controller extends CI_Controller {
         /* search every where */
 
         if (isset($get['search_all']) && $get['search_all'] != '') {
-            $input_get['group_start_like']['name'] = $get['search_all'];
-            $input_get['or_like']['phone'] = $get['search_all'];
-            $input_get['or_like']['email'] = $get['search_all'];
-            $input_get['or_like']['matrix'] = $get['search_all'];
+            $input_get['group_start_like']['phone'] = $get['search_all'];
+            $input_get['or_like']['name'] = $get['search_all'];
             $input_get['or_like']['code_cross_check'] = $get['search_all'];
-            $input_get['group_end_or_like']['address'] = $get['search_all'];
+            $input_get['or_like']['email'] = $get['search_all'];
+            $input_get['or_like']['address'] = $get['search_all'];
+            $input_get['group_end_or_like']['id'] = $get['search_all'];
         }
 
         return array(
@@ -499,7 +500,7 @@ class MY_Controller extends CI_Controller {
                 ->set_output(json_encode($json));
     }
 
-    function search($offset = 0) {
+    public function search($offset = 0) {
 
         $require_model = array(
             'staffs' => array(
@@ -546,7 +547,7 @@ class MY_Controller extends CI_Controller {
         /*
          * Lấy link phân trang
          */
-        $data['pagination'] = $this->_create_pagination_link('manager/index', $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($this->controller .'/'. $this->method, $data_pagination['total_row']);
         /*
          * Filter ở cột trái và cột phải
          */
@@ -556,7 +557,7 @@ class MY_Controller extends CI_Controller {
         /*
          * Các trường cần hiện của bảng contact (đã có default)
          */
-        $this->table .= 'date_rgt matrix';
+        $this->table .= 'date_last_calling call_stt ordering_stt last_activity matrix';
         $data['table'] = explode(' ', $this->table);
 
         /*

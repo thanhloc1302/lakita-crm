@@ -15,19 +15,20 @@ class Sale extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
+        $this->data['top_nav'] = 'sale/common/top-nav';
         $data['time_remaining'] = 0;
         $input = array();
         $input['select'] = 'date_recall';
         $input['where']['sale_staff_id'] = $this->user_id;
         $input['where']['date_recall >'] = time();
         $input['order']['date_recall'] = 'ASC';
-        $input['limit'] = array('1' ,'0');
+        $input['limit'] = array('1', '0');
         $noti_contact = $this->contacts_model->load_all($input);
-       if(!empty($noti_contact)) {
-           $time_remaining =  $noti_contact[0]['date_recall'] - time();
-           $data['time_remaining'] = ($time_remaining < 1800) ? $time_remaining : 0;
-       }
-       $this->load->vars($data);
+        if (!empty($noti_contact)) {
+            $time_remaining = $noti_contact[0]['date_recall'] - time();
+            $data['time_remaining'] = ($time_remaining < 1800) ? $time_remaining : 0;
+        }
+        $this->load->vars($data);
     }
 
     function index($offset = 0) {
@@ -46,7 +47,7 @@ class Sale extends MY_Controller {
         /*
          * Lấy link phân trang và danh sách contacts
          */
-        $data['pagination'] = $this->_create_pagination_link('sale/index', $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
 
@@ -88,7 +89,7 @@ class Sale extends MY_Controller {
             'ordering_status_id' => $this->_get_stop_care_order_stt());
         $conditional['order'] = array('date_recall' => 'DESC');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
-        $data['pagination'] = $this->_create_pagination_link('sale/has_callback', $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
 
@@ -118,7 +119,7 @@ class Sale extends MY_Controller {
         $conditional['where']['(`call_status_id` = ' . _KHONG_NGHE_MAY_ . ' OR `ordering_status_id` in (' . _BAN_GOI_LAI_SAU_ . ' , ' . _CHAM_SOC_SAU_MOT_THOI_GIAN_ . ',' . _LAT_NUA_GOI_LAI_ . '))'] = 'NO-VALUE';
         $conditional['order'] = array('date_last_calling' => 'DESC');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
-        $data['pagination'] = $this->_create_pagination_link('sale/can_save', $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
 
         //$data['contacts'] 
         $contacts = $data_pagination['data'];
@@ -188,7 +189,7 @@ class Sale extends MY_Controller {
         $conditional['where'] = array('sale_staff_id' => $this->user_id, 'is_hide' => '0');
         $conditional['order'] = array('date_last_calling' => 'DESC');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
-        $data['pagination'] = $this->_create_pagination_link('sale/view_all_contact', $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
 
@@ -423,8 +424,7 @@ class Sale extends MY_Controller {
                 $msg = 'Contact này không được phân cho bạn vì vậy bạn không thể chuyển nhượng contact này!';
                 show_error_and_redirect($msg, $_SERVER['HTTP_REFERER'], false);
             }
-            if (in_array($rows[0]['call_status_id'], $this->_get_stop_care_call_stt()) 
-                    || in_array($rows[0]['ordering_status_id'], $this->_get_stop_care_order_stt())) {
+            if (in_array($rows[0]['call_status_id'], $this->_get_stop_care_call_stt()) || in_array($rows[0]['ordering_status_id'], $this->_get_stop_care_order_stt())) {
                 $name = $rows[0]['name'];
                 $transfered_contact = false;
                 break;

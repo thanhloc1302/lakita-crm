@@ -193,7 +193,7 @@ class Channel extends MY_Table {
         //echoQuery();
         $data = $this->data;
         $data['slide_menu'] = 'marketing/common/slide-menu';
-        $data['top_nav'] = 'marketing/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Danh sách kênh quảng cáo';
         $data['edit_title'] = 'Sửa thông tin kênh quảng cáo';
         $data['content'] = 'base/index';

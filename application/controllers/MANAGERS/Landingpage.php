@@ -90,7 +90,7 @@ class Landingpage extends MY_Table {
         //echoQuery();
         $data = $this->data;
         $data['slide_menu'] = 'marketing/common/slide-menu';
-        $data['top_nav'] = 'marketing/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Danh sách các Landingpage';
         $data['edit_title'] = 'Sửa thông tin Landingpage';
         $data['content'] = 'base/index';

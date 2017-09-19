@@ -268,8 +268,20 @@ class Common extends MY_Controller {
             die;
         }
         if ($this->role_id == 1) {
+            if ($rows[0]['sale_staff_id'] != $this->user_id) {
+                $result['success'] = 0;
+                $result['message'] = "Contact này không được phân cho bạn, vì vậy bạn không thể chăm sóc!";
+                echo json_encode($result);
+                die;
+            }
             $this->_action_edit_by_sale($id, $rows);
         } else if ($this->role_id == 2) {
+            if ($rows[0]['ordering_status_id'] != _DONG_Y_MUA_ || $rows[0]['call_status_id'] != _DA_LIEN_LAC_DUOC_) {
+                $result['success'] = 0;
+                $result['message'] = "Contact không là L6, nên không thể chăm sóc!";
+                echo json_encode($result);
+                die;
+            }
             $this->_action_edit_by_cod($id, $rows);
         } else {
             $result['success'] = 0;
@@ -742,7 +754,7 @@ class Common extends MY_Controller {
         /*
          * Lấy link phân trang và danh sách contacts
          */
-        $data['pagination'] = $this->_create_pagination_link('manager/index', $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
 
@@ -751,7 +763,7 @@ class Common extends MY_Controller {
         /*
          * Các trường cần hiện của bảng contact (đã có default)
          */
-        $this->table .= 'date_rgt date_last_calling call_stt ordering_stt action';
+        $this->table .= 'date_rgt date_last_calling call_stt ordering_stt';
         $data['table'] = explode(' ', $this->table);
         $data['controller'] = $this->input->post('controller', true);
         $this->load->view('common/modal/view_contact_star', $data);

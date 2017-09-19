@@ -38,7 +38,7 @@ class Manager extends MY_Controller {
         /*
          * Lấy link phân trang
          */
-        $data['pagination'] = $this->_create_pagination_link('manager/index', $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         /*
          * Filter ở cột trái và cột phải
          */
@@ -79,7 +79,7 @@ class Manager extends MY_Controller {
         /*
          * Lấy link phân trang và danh sách contacts
          */
-        $data['pagination'] = $this->_create_pagination_link('manager/view_all_contact', $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $contacts = $data_pagination['data'];
         foreach ($contacts as &$value) {
             $value['marketer_name'] = $this->staffs_model->find_staff_name($value['marketer_id']);

@@ -91,4 +91,17 @@ div{
             min-height: 900px;
         }
     }
+    &.black-over{
+        background: #000;
+        bottom: 100%;
+        left: 0;
+        opacity: 0;
+        position: fixed;
+        right: 0;
+        top: 0;
+        transition: opacity .3s, bottom 0s .3s;
+        z-index: 1;
+        opacity: .6;
+        transition: opacity .3s;
+    }
 }

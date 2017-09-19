@@ -123,7 +123,7 @@ class Link extends MY_Table {
         $this->show_table();
         $data = $this->data;
         $data['slide_menu'] = 'marketer/common/slide-menu';
-        $data['top_nav'] = 'marketer/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Danh sách các link đã tạo';
         $data['edit_title'] = 'Sửa thông tin link';
         $data['content'] = 'base/index';

@@ -170,7 +170,7 @@ class Check_L8 extends MY_Table {
         //echoQuery();
         $data = $this->data;
         $data['slide_menu'] = 'cod/check_L8/slide-menu';
-        $data['top_nav'] = 'cod/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Kết quả đối soát L8';
         $data['edit_title'] = 'Sửa thông tin dòng đối soát L8';
         $data['content'] = 'cod/check_L8/index';
@@ -208,7 +208,7 @@ class Check_L8 extends MY_Table {
         //echoQuery();
         $data = $this->data;
         $data['slide_menu'] = 'cod/check_L8/slide-menu';
-        $data['top_nav'] = 'cod/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Kết quả đối soát L8';
         $data['edit_title'] = 'Sửa thông tin dòng đối soát L8';
         $data['content'] = 'cod/check_L8/index';
@@ -245,7 +245,7 @@ class Check_L8 extends MY_Table {
         //echoQuery();
         $data = $this->data;
         $data['slide_menu'] = 'cod/check_L8/slide-menu';
-        $data['top_nav'] = 'cod/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Kết quả đối soát L8';
         $data['edit_title'] = 'Sửa thông tin dòng đối soát L8';
         $data['content'] = 'cod/check_L8/index';
@@ -318,7 +318,7 @@ class Check_L8 extends MY_Table {
             $this->_import_L8($targetFile);
         } else {
             $data['slide_menu'] = 'cod/check_L8/slide-menu';
-            $data['top_nav'] = 'cod/common/top-nav';
+            $data['top_nav'] = 'manager/common/top-nav';
             $data['content'] = 'cod/check_L8/upload';
             $this->load->view(_MAIN_LAYOUT_, $data);
         }

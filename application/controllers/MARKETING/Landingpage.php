@@ -32,7 +32,7 @@ class Landingpage extends MY_Controller{
         /*
          * Lấy link phân trang và danh sách contacts
          */
-        $data['pagination'] = $this->_create_pagination_link('MANAGERS/manage_course/index', $data_pagination['total_row'], 4);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row'], 4, 'MANAGERS/manage_course/index');
         $data['courses'] = $data_pagination['data'];
         $data['total_courses'] = $data_pagination['total_row'];
 

@@ -174,7 +174,7 @@ class Check_fee_cod extends MY_Table {
         $this->show_table();
         $data = $this->data;
         $data['slide_menu'] = 'cod/check_fee_cod/slide-menu';
-        $data['top_nav'] = 'cod/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Kết quả đối soát cước';
         $data['edit_title'] = 'Sửa thông tin dòng đối soát cước';
         $data['content'] = 'cod/check_fee_cod/index';
@@ -211,7 +211,7 @@ class Check_fee_cod extends MY_Table {
         $this->show_table();
         $data = $this->data;
         $data['slide_menu'] = 'cod/check_fee_cod/slide-menu';
-        $data['top_nav'] = 'cod/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Kết quả đối soát cước';
         $data['edit_title'] = 'Sửa thông tin dòng đối soát cước';
         $data['content'] = 'base/index';
@@ -243,7 +243,7 @@ class Check_fee_cod extends MY_Table {
         $this->show_table();
         $data = $this->data;
         $data['slide_menu'] = 'cod/check_fee_cod/slide-menu';
-        $data['top_nav'] = 'cod/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Kết quả đối soát cước';
         $data['edit_title'] = 'Sửa thông tin dòng đối soát cước';
         $data['content'] = 'base/index';
@@ -266,7 +266,7 @@ class Check_fee_cod extends MY_Table {
             $this->_import_fee_cod($targetFile);
         } else {
             $data['slide_menu'] = 'cod/check_fee_cod/slide-menu';
-            $data['top_nav'] = 'cod/common/top-nav';
+            $data['top_nav'] = 'manager/common/top-nav';
             $data['content'] = 'cod/check_fee_cod/upload';
             $this->load->view(_MAIN_LAYOUT_, $data);
         }

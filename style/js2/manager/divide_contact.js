@@ -47,7 +47,7 @@ $(document).on('click', '.btn-divide-one-contact', function (e) {
                     autoHideDelay: 5000
                 });
                 $(".divide_one_contact_modal").modal("hide");
-                $('tr[contact_id="' + contact_id + '"]').hide();
+                $('tr[contact_id="' + contact_id + '"]').html("");
             } else {
                 $("#send_email_error")[0].play();
                 $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
@@ -94,7 +94,7 @@ $(document).on('click', '.btn-divide-multi-contact', function (e) {
                 });
                 $(".divide_multi_contact_modal").modal("hide");
                 $.each(contactIdArray, function () {
-                    $('tr[contact_id="' + this + '"]').hide();
+                    $('tr[contact_id="' + this + '"]').html("");
                 });
             } else {
                 $("#send_email_error")[0].play();

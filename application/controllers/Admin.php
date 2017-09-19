@@ -25,7 +25,7 @@ class Admin extends MY_Controller {
         /*
          * Lấy link phân trang và danh sách contacts
          */
-        $data['pagination'] = $this->_create_pagination_link('admin/index', $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
 

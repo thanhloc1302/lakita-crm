@@ -52,7 +52,8 @@
                 <a href="<?php echo base_url('quan-ly/them-contact.html'); ?>"><i class="fa fa fa-user">+</i> Thêm mới contact </a>
             </li>
             <li class="dropdown-hover">
-                <a><i class="fa fa-line-chart"></i> Các loại báo cáo 
+                <a>
+                    <i class="fa fa-line-chart"></i> Các loại báo cáo 
                     <i class="fa fa-arrow-right" aria-hidden="true" style="font-size: 10px!important; width: auto !important;"></i><span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li>
@@ -65,7 +66,7 @@
                             Xem báo cáo doanh thu 
                         </a>
                     </li>
-                      <li>
+                    <li>
                         <a href="<?php echo base_url('manager/view_pivot_table'); ?>">
                             Xem báo cáo doanh thu (phát sinh và lũy kế)
                         </a>

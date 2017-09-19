@@ -453,58 +453,7 @@ $(document).on('scroll', function () {
 //        var offsetLeft = $(".table-head-pos").offset().left - 1;
 //        $(".fixed-table").css("left", offsetLeft + "px");
     }
-});$(".btn-modal_edit-multi-contact").on('click', function (e) {
-    e.preventDefault();
-    var error = false;
-
-    if (!error) {
-        var url = $("#base_url").val() + "common/action_edit_multi_cod_contact";
-        /*
-         * Lấy các contact chăm sóc để ẩn đi
-         */
-        var contactIdArray = [];
-        $('input[type="checkbox"]').each(
-                function () {
-                    if ($(this).is(":checked")) {
-                        contactIdArray.push($(this).val());
-                    }
-                });
-        $.ajax({
-            url: url,
-            type: "POST",
-            dataType: 'json',
-            data: $("#action_contact").serialize(),
-            success: function (data) {
-                if (data.success == 1) {
-                    $("#send_email_sound")[0].play();
-                    $.notify(data.message, {
-                        position: "top left",
-                        className: 'success',
-                        showDuration: 200,
-                        autoHideDelay: 5000
-                    });
-                    $.each(contactIdArray, function(){
-                        $('tr[contact_id="'+this+'"]').html("");
-                    });
-                    $(".edit_multi_cod_contact").modal("hide");
-                } else {
-                    $("#send_email_error")[0].play();
-                    $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
-                        position: "top left",
-                        className: 'error',
-                        showDuration: 200,
-                        autoHideDelay: 7000
-                    });
-                }
-            },
-            complete: function () {
-
-            }
-        });
-        //$("#action_contact").submit();
-    }
-});
-    $(document).on('click', 'a.delete_bill', function (e) {
+});    $(document).on('click', 'a.delete_bill', function (e) {
         var r = confirm("Bạn có chắc chắn muốn xóa dòng đối soát này không?");
         if (r == true) {
             var del = $(this);
@@ -585,6 +534,58 @@ $('.export_to_string').on('click', function (e) {
     $("#action_contact").removeClass("form-inline");
     e.preventDefault();
     $(".edit_multi_cod_contact").modal("show");
+});
+
+$(".btn-modal_edit-multi-contact").on('click', function (e) {
+    e.preventDefault();
+    var error = false;
+
+    if (!error) {
+        var url = $("#base_url").val() + "common/action_edit_multi_cod_contact";
+        /*
+         * Lấy các contact chăm sóc để ẩn đi
+         */
+        var contactIdArray = [];
+        $('input[type="checkbox"]').each(
+                function () {
+                    if ($(this).is(":checked")) {
+                        contactIdArray.push($(this).val());
+                    }
+                });
+        $.ajax({
+            url: url,
+            type: "POST",
+            dataType: 'json',
+            data: $("#action_contact").serialize(),
+            success: function (data) {
+                if (data.success == 1) {
+                    $("#send_email_sound")[0].play();
+                    $.notify(data.message, {
+                        position: "top left",
+                        className: 'success',
+                        showDuration: 200,
+                        autoHideDelay: 5000
+                    });
+                    $.each(contactIdArray, function(){
+                        $('tr[contact_id="'+this+'"]').html("");
+                    });
+                    $(".edit_multi_cod_contact").modal("hide");
+                } else {
+                    $("#send_email_error")[0].play();
+                    $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
+                        position: "top left",
+                        className: 'error',
+                        showDuration: 200,
+                        autoHideDelay: 7000
+                    });
+                }
+            },
+            complete: function () {
+
+            }
+        });
+        //$("#action_contact").submit();
+    }
 });
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -1029,9 +1030,7 @@ $('.view_detail_contact_modal').on('shown.bs.modal', function () {
 /*
  * Hiển thị menu chuột phải
  */
-$("tr.custom_right_menu").on(
-        {
-            contextmenu: function (e) {
+$(document).on('contextmenu', 'tr.custom_right_menu', function (e) {
                 e.preventDefault();
                 /*
                  * Lấy các thuộc tính của contact
@@ -1079,17 +1078,69 @@ $("tr.custom_right_menu").on(
                     unselect_not_checked();
                 }
                 $(this).addClass('checked'); /*.find('[name="contact_id[]"]').prop('checked', true); */
-            },
-            click: function () {
+            });
 
-            },
-            dblclick: function (e) {
-                var contact_id = $(this).attr('contact_id');
-                $(".edit_contact").attr('contact_id', contact_id);
-                e.preventDefault();
-                $("a.edit_contact").click();
-            }
-        });
+//$("tr.custom_right_menu").on(
+//        {
+//            contextmenu: function (e) {
+//                e.preventDefault();
+//                /*
+//                 * Lấy các thuộc tính của contact
+//                 */
+//                var contact_id = $(this).attr('contact_id');
+//                var contact_name = $(this).attr('contact_name');
+//                var duplicate_id = $(this).attr("duplicate_id");
+//                var contact_phone = $(this).attr("contact_phone");
+//                var controller = $("#input_controller").val();
+//                right_context_menu_display(controller, contact_id, contact_name, duplicate_id, contact_phone);
+//
+//                var menu = $(".menu");
+//                menu.hide();
+//                var pageX = e.pageX;
+//                var pageY = e.pageY;
+//                menu.css({top: pageY, left: pageX});
+//                var mwidth = menu.width();
+//                var mheight = menu.height();
+//                var screenWidth = $(window).width();
+//                var screenHeight = $(window).height();
+//                var scrTop = $(window).scrollTop();
+//                /*
+//                 * Nếu "tọa độ trái chuột" + "chiều dài menu" > "chiều dài trình duyệt" 
+//                 * thì hiển thị sang bên phải tọa độ click
+//                 */
+//                if (pageX + mwidth > screenWidth) {
+//                    menu.css({left: pageX - mwidth});
+//                }
+//                /*
+//                 * Nếu "tọa độ top chuột" + "chiều cao menu" > "chiều cao trình duyệt" + "chiều dài cuộn chuột"
+//                 * thì hiển thị lên trên tọa độ click
+//                 */
+//                if (pageY + mheight > screenHeight + scrTop) {
+//                    menu.css({top: pageY - mheight});
+//                }
+//                menu.show();
+//                /*
+//                 * Nếu dòng đó đang không chọn (đã click trái) thì bỏ chọn và bỏ check những dòng đã chọn
+//                 */
+//                var is_checked_input = $(this).find('input[type="checkbox"]');
+//                if (!is_checked_input[0].checked) {
+//                    $(".checked").removeClass("checked");
+//                    uncheck_checked();
+//                } else {
+//                    unselect_not_checked();
+//                }
+//                $(this).addClass('checked'); /*.find('[name="contact_id[]"]').prop('checked', true); */
+//            },
+//            click: function () {
+//
+//            },
+//            dblclick: function (e) {
+//                var contact_id = $(this).attr('contact_id');
+//                $(".edit_contact").attr('contact_id', contact_id);
+//                e.preventDefault();
+//                $("a.edit_contact").click();
+//            }
+//        });
 
 /*
  * High light vào các dòng khi click trái để chọn 
@@ -1525,21 +1576,21 @@ $(function () {
      */
     $("#curr_url").val(location.href);
 
-    var hide = 1;
-    $(document).on('mousemove', function (e) {
-
-        if (e.pageX < 0.5) {
-            $("body").removeClass("nav-sm");
-            $("body").addClass("nav-md");
-            hide = 0;
-        }
-
-        if (e.pageX > 500 && hide == 0) {
-            $("body").removeClass("nav-md");
-            $("body").addClass("nav-sm");
-            hide = 1;
-        }
-    });
+//    var hide = 1;
+//    $(document).on('mousemove', function (e) {
+//
+//        if (e.pageX < 0.5) {
+//            $("body").removeClass("nav-sm");
+//            $("body").addClass("nav-md");
+//            hide = 0;
+//        }
+//
+//        if (e.pageX > 500 && hide == 0) {
+//            $("body").removeClass("nav-md");
+//            $("body").addClass("nav-sm");
+//            hide = 1;
+//        }
+//    });
 
 });
 /*
@@ -1605,7 +1656,53 @@ $(".send_to_mobile").on('click', function (e) {
                 }
             }
         });
-    }, 3000);$("a.cancel_one_contact").on('click', function (e) {
+    }, 3000);/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
+$(document).on({
+    mousemove: function () {
+        if ($('div.mega-dropdown-menu').is(":visible")) {
+            $(".black-over").css('bottom', '0%');
+            console.log(1);
+        } else {
+            $(".black-over").css('bottom', '100%');
+        }
+    },
+    click: function () {
+        if ($('div.mega-dropdown-menu').is(":visible")) {
+            $(".black-over").css('bottom', '0%');
+            console.log(1);
+        } else {
+            $(".black-over").css('bottom', '100%');
+        }
+    }
+}, 'body');
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+$('.modal').on('hide.bs.modal', function (e) {
+    e.preventDefault();
+   // var fadeOutClass = $(this).find(".modal-dialog").attr('class');
+    //fadeOutClass = fadeOutClass.replace("fadeIn animated", "");
+   // fadeOutClass += ' fadeOut animated';
+    $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated btn-very-lg');
+    $(this).modal('toggle');
+});
+$('.modal').on('show.bs.modal', function () {
+   // var fadeInClass = $(this).find(".modal-dialog").attr('class');
+  //  fadeInClass = fadeInClass.replace("fadeOut animated", "");
+  //  fadeInClass += ' fadeIn animated';
+    $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated btn-very-lg');
+});
+$("a.cancel_one_contact").on('click', function (e) {
     var del = $(this);
     var sale_id = $(this).attr("sale_id");
     var total_contact_for_sale = $(".total_contact_sale_" + sale_id).text();
@@ -1722,7 +1819,7 @@ $(document).on('click', '.btn-divide-one-contact', function (e) {
                     autoHideDelay: 5000
                 });
                 $(".divide_one_contact_modal").modal("hide");
-                $('tr[contact_id="' + contact_id + '"]').hide();
+                $('tr[contact_id="' + contact_id + '"]').html("");
             } else {
                 $("#send_email_error")[0].play();
                 $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
@@ -1769,7 +1866,7 @@ $(document).on('click', '.btn-divide-multi-contact', function (e) {
                 });
                 $(".divide_multi_contact_modal").modal("hide");
                 $.each(contactIdArray, function () {
-                    $('tr[contact_id="' + this + '"]').hide();
+                    $('tr[contact_id="' + this + '"]').html("");
                 });
             } else {
                 $("#send_email_error")[0].play();

@@ -1,5 +1,5 @@
 <?php $this->load->view('common/head'); ?>
-<body class="nav-sm">
+<body class="nav-sm">  
      <?php $this->load->view('common/hidden_input'); ?>
     <?php
     if ($this->agent->is_mobile()) {
@@ -9,7 +9,7 @@
         ?>
         <div class="container body">
             <div class="main_container">
-                <?php $this->load->view('common/left_col'); ?>
+                <?php //$this->load->view('common/left_col'); ?>
 
                 <?php
                 if (isset($top_nav)) {

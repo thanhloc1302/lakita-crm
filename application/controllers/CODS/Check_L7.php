@@ -179,7 +179,7 @@ class Check_L7 extends MY_Table {
         $this->show_table();
         $data = $this->data;
         $data['slide_menu'] = 'cod/check_L7/slide-menu';
-        $data['top_nav'] = 'cod/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Kết quả đối soát L7';
         $data['edit_title'] = 'Sửa thông tin dòng đối soát L7';
         $data['content'] = 'cod/check_L7/index';
@@ -217,7 +217,7 @@ class Check_L7 extends MY_Table {
         $this->show_table();
         $data = $this->data;
         $data['slide_menu'] = 'cod/check_L7/slide-menu';
-        $data['top_nav'] = 'cod/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Kết quả đối soát L7';
         $data['edit_title'] = 'Sửa thông tin dòng đối soát L7';
         $data['content'] = 'cod/check_L7/index';
@@ -250,7 +250,7 @@ class Check_L7 extends MY_Table {
         $this->show_table();
         $data = $this->data;
         $data['slide_menu'] = 'cod/check_L7/slide-menu';
-        $data['top_nav'] = 'cod/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Kết quả đối soát L7';
         $data['edit_title'] = 'Sửa thông tin dòng đối soát L7';
         $data['content'] = 'cod/check_L7/index';
@@ -274,7 +274,7 @@ class Check_L7 extends MY_Table {
             $this->_import_L7($targetFile);
         } else {
             $data['slide_menu'] = 'cod/check_L7/slide-menu';
-            $data['top_nav'] = 'cod/common/top-nav';
+            $data['top_nav'] = 'manager/common/top-nav';
             $data['content'] = 'cod/check_L7/upload';
             $this->load->view(_MAIN_LAYOUT_, $data);
         }

@@ -1,5 +1,5 @@
 <div class="detail_contact">
-    <div class="modal fade view_detail_contact_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal view_detail_contact_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog btn-very-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">

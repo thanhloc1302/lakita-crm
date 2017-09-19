@@ -1,3 +1,6 @@
+<div class="black-over">
+    
+</div>
 <div id="Popup" class="popup-wrapper" style="display: none;">
     <div class="popup-loading">
         <div class="loading-container">
@@ -30,7 +33,7 @@ integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="ano
 <!--<script src="<?php echo base_url(); ?>style/js/dropzone/dropzone.min.js"></script>-->
 <script src="<?php echo base_url(); ?>style/js/common/shortcut.min.js" type="text/javascript"></script>
 <!--<script src="<?php echo base_url(); ?>style/js/common_view/filter_tbl_set_equal_height.min.js" type="text/javascript"></script>-->
-<script src="<?php echo base_url(); ?>vendors/build/js/custom.min.js" type="text/javascript"></script>
+<!--<script src="<?php echo base_url(); ?>vendors/build/js/custom.min.js" type="text/javascript"></script>-->
 <!--<script src="<?php echo base_url(); ?>style/js/common_view/view_contact_star.min.js" type="text/javascript"></script>-->
 <?php if (ENVIRONMENT == 'production') { ?>
     <script src="<?php echo base_url(); ?>style/js3/built_obfuscated.min.js" type="text/javascript"></script>

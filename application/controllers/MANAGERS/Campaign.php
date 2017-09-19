@@ -180,7 +180,7 @@ class Campaign extends MY_Table {
 
         $data = $this->data;
         $data['slide_menu'] = 'marketer/common/slide-menu';
-        $data['top_nav'] = 'marketer/common/top-nav';
+        $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Danh sách chiến dịch (tính theo giờ Mỹ)';
         $data['edit_title'] = 'Sửa thông tin chiến dịch';
         $data['content'] = 'base/index';
