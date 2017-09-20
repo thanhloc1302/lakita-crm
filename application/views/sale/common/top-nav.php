@@ -4,12 +4,12 @@
     <div class="nav_menu">
         <nav class="" role="navigation">
             <ul class="nav navbar-nav">
-                <a href="<?php echo base_url();?>" class="logo">
+                <a href="<?php echo base_url(); ?>" class="logo">
                     <img src="<?php echo base_url(); ?>style/img/logo5.png" class="logo-fix">
                 </a>
 
                 <li class="dropdown mega-dropdown dropdown-hover">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-space-shuttle"></i> MENU <span class="caret"></span></a>				
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> MENU <span class="caret"></span></a>				
                     <div id="filters" class="dropdown-menu mega-dropdown-menu">
                         <div class="container-fluid2">
                             <!-- Tab panes -->
@@ -26,6 +26,12 @@
                                             <a href="<?php echo base_url('tu-van-tuyen-sinh/contact-con-cuu-duoc.html'); ?>">
                                                 <img src="<?php echo base_url(); ?>public/images/can-save.png"> 
                                                 <span>Danh sách contact còn cứu được  </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="<?php echo base_url('tu-van-tuyen-sinh/contact-co-lich-hen.html'); ?>">
+                                               <img src="<?php echo base_url(); ?>public/images/call-back.png"> 
+                                                <span> Danh sách contact có lịch hẹn gọi lại  </span>
                                             </a>
                                         </li>
                                         <li>

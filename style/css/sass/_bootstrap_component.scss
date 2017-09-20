@@ -13,6 +13,15 @@ and open the template in the editor.
 }
 .modal {
     overflow-y: scroll;
+    .modal-header{
+        background-color: #0c812d;
+        color: #fff;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+    .modal-content{
+        border-radius: 11px;
+    }
 }
 span.badge-star{
     background: red; 

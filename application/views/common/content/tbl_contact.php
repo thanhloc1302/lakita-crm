@@ -1,9 +1,12 @@
+<?php if ($this->total_paging > 0) { ?>
 <div class="pagination">
     <?php echo isset($pagination) ? $pagination : ''; ?>
 </div>
-<div class="number_paging">
-    <?php echo 'Hiển thị ' . $this->begin_paging . ' - ' . $this->end_paging . ' của ' . $this->total_paging . ' contacts'; ?>
-</div>
+
+    <div class="number_paging">
+        <?php echo 'Hiển thị ' . $this->begin_paging . ' - ' . $this->end_paging . ' của ' . $this->total_paging . ' contacts'; ?>
+    </div>
+
 <table class="table table-bordered table-striped list_contact list_contact_2">
     <thead>
         <tr>
@@ -55,7 +58,7 @@
                     contact_id="<?php echo $value['id']; ?>" 
                     duplicate_id="<?php echo $value['duplicate_id']; ?>" 
                     contact_name="<?php echo $value['name']; ?>"
-                    contact_phone="<?php echo $value['phone'];?>">
+                    contact_phone="<?php echo $value['phone']; ?>">
                         <?php
                         $data['value'] = $value;
                         foreach ($table as $value2) {
@@ -69,12 +72,13 @@
         ?>
     </tbody>
 </table>
-<div class="number_paging" > 
-    Tổng tiền: <?php echo isset($contacts) ? number_format(h_sum_money($contacts), 0, ",", ".") . " VNĐ" : 0; ?>
-</div>
-<div class="number_paging"> 
-    <?php echo 'Hiển thị ' . $this->begin_paging . ' - ' . $this->end_paging . ' của ' . $this->total_paging . ' contacts'; ?>
-</div>
+    <div class="number_paging" > 
+        Tổng tiền: <?php echo isset($contacts) ? number_format(h_sum_money($contacts), 0, ",", ".") . " VNĐ" : 0; ?>
+    </div>
+    <div class="number_paging"> 
+        <?php echo 'Hiển thị ' . $this->begin_paging . ' - ' . $this->end_paging . ' của ' . $this->total_paging . ' contacts'; ?>
+    </div>
 <div class="pagination">
     <?php echo isset($pagination) ? $pagination : ''; ?>
 </div>
+<?php } ?>

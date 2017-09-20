@@ -81,7 +81,7 @@ class Sale extends MY_Controller {
         $get = $this->input->get();
         $conditional['where'] = array(
             'date_recall >' => '0',
-            'date_recall <' => strtotime('tomorrow'),
+           // 'date_recall <' => strtotime('tomorrow'),
             'sale_staff_id' => $this->user_id,
             'is_hide' => '0');
         $conditional['where_not_in'] = array(
@@ -96,7 +96,7 @@ class Sale extends MY_Controller {
         $data['left_col'] = array('tu_van', 'date_rgt', 'date_last_calling');
         $data['right_col'] = array('course_code');
 
-        $this->table .= 'date_rgt date_last_calling date_recall';
+        $this->table = 'selection name phone last_note course_code price_purchase date_recall';
         $data['table'] = explode(' ', $this->table);
 
         /*
@@ -145,7 +145,7 @@ class Sale extends MY_Controller {
         $data['left_col'] = array('tu_van', 'date_handover', 'date_last_calling');
         $data['right_col'] = array('ordering_status', 'course_code');
 
-        $this->table = 'selection name phone last_note course_code price_purchase date_rgt date_last_calling date_recall';
+        $this->table = 'selection name phone last_note course_code price_purchase date_rgt date_last_calling';
         $data['table'] = explode(' ', $this->table);
         $data['content'] = 'sale/can_save';
 

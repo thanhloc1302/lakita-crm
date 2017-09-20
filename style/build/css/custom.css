@@ -24,6 +24,7 @@
     /*  margin-left: 70px;*/
     z-index: 2;
     margin-top: 60px;
+    min-height: 553px;
 }
 
 .nav-sm .navbar.nav_title {
@@ -203,7 +204,7 @@
     position: fixed; }
 
 body .container.body .right_col {
-    background: #F7F7F7; }
+    background: #EBEBEB; }
 
 .nav-md .container.body .right_col {
     padding: 10px 20px 0;
@@ -327,7 +328,7 @@ body .container.body .right_col {
     color: #fff !important; }
 
 .top_nav .nav > li > a:focus, .top_nav .nav > li > a:hover, .top_nav .nav .open > a, .top_nav .nav .open > a:focus, .top_nav .nav .open > a:hover {
-/*    background: #D9DEE4; */
+    /*    background: #D9DEE4; */
 }
 
 body {

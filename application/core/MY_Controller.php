@@ -36,7 +36,7 @@ class MY_Controller extends CI_Controller {
         $this->_set_default_variable();
         $this->_check_permission();
         if ($this->config->item('show_profiler') === TRUE) {
-           // $this->output->enable_profiler(TRUE);
+            // $this->output->enable_profiler(TRUE);
         }
         $this->load->vars($this->data);
     }
@@ -223,14 +223,16 @@ class MY_Controller extends CI_Controller {
          * Lấy thông tin 1 contact đăng ký nhiều khóa học
          */
 
-        foreach ($result['data'] as &$value) {
-            $input = array();
-            $input['select'] = 'id';
-            $input['where'] = array('phone' => $value['phone'], 'is_hide' => '0');
-            $courses = $this->contacts_model->load_all($input);
-            $value['star'] = count($courses);
+        if ((isset($condition['select']) && strpos($condition['select'], "phone") !== FALSE) || !isset($condition['select'])) {
+            foreach ($result['data'] as &$value) {
+                $input = array();
+                $input['select'] = 'id';
+                $input['where'] = array('phone' => $value['phone'], 'is_hide' => '0');
+                $courses = $this->contacts_model->load_all($input);
+                $value['star'] = count($courses);
+            }
+            unset($value);
         }
-        unset($value);
 
         //lấy thông tin hiển thị contact đầu, contact cuối và tổng contact
         $this->begin_paging = ($total_row == 0) ? 0 : $offset + 1;
@@ -547,7 +549,7 @@ class MY_Controller extends CI_Controller {
         /*
          * Lấy link phân trang
          */
-        $data['pagination'] = $this->_create_pagination_link($this->controller .'/'. $this->method, $data_pagination['total_row']);
+        $data['pagination'] = $this->_create_pagination_link($this->controller . '/' . $this->method, $data_pagination['total_row']);
         /*
          * Filter ở cột trái và cột phải
          */

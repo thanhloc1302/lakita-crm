@@ -27,7 +27,7 @@
                     ?>
                 </div>
 
-                <footer>
+                <footer <?php if($this->total_paging == 0) echo 'class="fixed"';?>>
                     <div class="pull-right">
                         CRM LAKITA - BY <a href="https://www.facebook.com/chuyenbka" target="_blank">CHUYENPN</a>
                     </div>

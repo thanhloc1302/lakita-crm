@@ -1,6 +1,7 @@
+<?php if ($this->total_paging > 0) { ?>
 <div class="row">
     <div class="col-md-6">
-        <table class="table table-striped table-bordered table-hover filter-contact filter-tbl-1">
+        <table class="table table-bordered table-hover filter-contact filter-tbl-1">
             <?php
             if (isset($left_col) && count($left_col)) {
                 foreach ($left_col as $value) {
@@ -11,7 +12,7 @@
         </table>
     </div>
     <div class="col-md-6">
-        <table class="table table-striped table-bordered table-hover many-content filter-contact filter-tbl-2">
+        <table class="table table-bordered table-hover filter-contact filter-tbl-2">
               <?php
             if (isset($right_col) && count($right_col)) {
                 foreach ($right_col as $value) {
@@ -39,3 +40,4 @@
         </table>
     </div>
 </div>
+<?php } ?>
