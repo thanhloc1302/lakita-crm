@@ -1688,19 +1688,23 @@ $(document).on({
  * and open the template in the editor.
  */
 
-$('.modal').on('hide.bs.modal', function (e) {
-    e.preventDefault();
-   // var fadeOutClass = $(this).find(".modal-dialog").attr('class');
-    //fadeOutClass = fadeOutClass.replace("fadeIn animated", "");
-   // fadeOutClass += ' fadeOut animated';
-    $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated btn-very-lg');
-    $(this).modal('toggle');
+$('.modal').on('hide.bs.modal', function () {
+    if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
+        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated btn-very-lg');
+    } else if ($(this).find(".modal-dialog").attr('class').search('btn-lg') != -1) {
+        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated btn-lg');
+    } else {
+        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated');
+    }
 });
 $('.modal').on('show.bs.modal', function () {
-   // var fadeInClass = $(this).find(".modal-dialog").attr('class');
-  //  fadeInClass = fadeInClass.replace("fadeOut animated", "");
-  //  fadeInClass += ' fadeIn animated';
-    $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated btn-very-lg');
+    if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
+        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated btn-very-lg');
+    } else if ($(this).find(".modal-dialog").attr('class').search('btn-lg') != -1) {
+        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated btn-lg');
+    } else {
+        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated');
+    }
 });
 $("a.cancel_one_contact").on('click', function (e) {
     var del = $(this);
@@ -1882,7 +1886,8 @@ $(document).on('click', '.btn-divide-multi-contact', function (e) {
 
         }
     });
-});$("a.view_duplicate").on('click', function (e) {
+});/*
+$("a.view_duplicate").on('click', function (e) {
     e.preventDefault();
    // alert(1);
     var duplicate_id = $(this).attr("duplicate_id");
@@ -1901,7 +1906,9 @@ $(document).on('click', '.btn-divide-multi-contact', function (e) {
             $(".view_duplicate_modal").modal("show");
         }
     });
-});$(document).on('scroll', function () {
+});
+
+*/$(document).on('scroll', function () {
     if ($(".table-head-pos").length) {
         if ($("body").scrollTop() > ($(".table-head-pos").offset().top)
                 ) {

@@ -1,4 +1,4 @@
-<div class="modal view_duplicate_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!--<div class="modal fade view_duplicate_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog btn-very-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -173,7 +173,7 @@
 
                                 </td>
                                 <td class="center">
-    <!--                                        <a href="#" class="delete_one_contact btn btn-danger" contact_id="<?php echo $value['id']; ?>"> Xóa </a>-->
+                                            <a href="#" class="delete_one_contact btn btn-danger" contact_id="<?php echo $value['id']; ?>"> Xóa </a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -191,7 +191,7 @@
         e.preventDefault();
         $(".view_duplicate_modal").modal("hide");
     });
-</script>
+</script>-->
 <?php //$this->load->view('manager/script/delete_contact'); ?>
 <?php
 //$this->load->view('manager/script/divide_contact'); ?>

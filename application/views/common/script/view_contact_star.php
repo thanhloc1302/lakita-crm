@@ -1,4 +1,4 @@
-<div class="modal view_contact_star_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade view_contact_star_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog btn-very-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">

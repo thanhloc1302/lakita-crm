@@ -1,3 +1,4 @@
+/*
 $("a.view_duplicate").on('click', function (e) {
     e.preventDefault();
    // alert(1);
@@ -18,3 +19,5 @@ $("a.view_duplicate").on('click', function (e) {
         }
     });
 });
+
+*/

@@ -42,9 +42,9 @@
                 <li> <i class="fa fa-link" aria-hidden="true"></i> &nbsp; &nbsp; Xuất thành chuỗi đối soát </li>
             </a>
         <?php } ?>
-        <a href="#" class="view_duplicate" duplicate_id="0">
+<!--        <a href="#" class="view_duplicate" duplicate_id="0">
             <li> <i class="fa fa-files-o" aria-hidden="true"></i> &nbsp; &nbsp; Xem contact trùng </li>
-        </a>
+        </a>-->
         <a href="#" class="action_view_detail_contact" contact_id="0">
             <li> <i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; &nbsp; Chi tiết contact </li>
         </a>

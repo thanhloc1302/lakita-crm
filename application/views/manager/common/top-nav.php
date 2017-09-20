@@ -3,7 +3,7 @@
     <div class="nav_menu">
         <nav class="" role="navigation">
             <ul class="nav navbar-nav">
-                <a href="<?php echo base_url(); ?>">
+                <a href="<?php echo base_url(); ?>" class="logo">
                     <img src="<?php echo base_url(); ?>style/img/logo5.png" class="logo-fix">
                 </a>
 

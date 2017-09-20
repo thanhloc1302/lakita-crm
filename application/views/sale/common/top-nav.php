@@ -4,7 +4,7 @@
     <div class="nav_menu">
         <nav class="" role="navigation">
             <ul class="nav navbar-nav">
-                <a href="<?php echo base_url(); ?>">
+                <a href="<?php echo base_url();?>" class="logo">
                     <img src="<?php echo base_url(); ?>style/img/logo5.png" class="logo-fix">
                 </a>
 
@@ -15,10 +15,10 @@
                             <!-- Tab panes -->
                             <div class="tab-content">
                                 <div class="tab-pane active" id="kids">
-                                    <ul class="nav-list list-inline">
+                                    <ul class="nav-list list-inline display-flex">
                                         <li>
                                             <a data-filter=".97" href="<?php echo base_url(); ?>">
-                                                <img src="<?php echo base_url(); ?>public/images/new.jpg"> 
+                                                <img src="<?php echo base_url(); ?>public/images/new.png"> 
                                                 <span> Danh sách contact mới </span>
                                             </a>
                                         </li>
@@ -30,7 +30,7 @@
                                         </li>
                                         <li>
                                             <a data-filter=".97" href="<?php echo base_url('tu-van-tuyen-sinh/xem-tat-ca-contact.html'); ?>">
-                                                <img src="<?php echo base_url(); ?>public/images/view-all.jpg"> 
+                                                <img src="<?php echo base_url(); ?>public/images/view-all.png"> 
                                                 <span> Danh sách toàn bộ contact </span>
                                             </a>
                                         </li>

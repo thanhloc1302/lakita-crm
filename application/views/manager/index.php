@@ -9,6 +9,6 @@
     <?php $this->load->view('manager/modal/divide_contact'); ?>
 </form>
 <?php $this->load->view('manager/modal/divide_one_contact'); ?>
-<div class="view_duplicate">
+<!--<div class="view_duplicate">
     
-</div>
+</div>-->

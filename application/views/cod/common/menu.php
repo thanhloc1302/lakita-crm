@@ -5,11 +5,11 @@
             <!-- Tab panes -->
             <div class="tab-content">
                 <div class="tab-pane active" id="kids">
-                    <ul class="nav-list list-inline">
+                    <ul class="nav-list list-inline display-flex">
                         <li>
                             <a data-filter=".97" href="<?php echo base_url(); ?>">
-                                <img src="<?php echo base_url(); ?>public/images/new.jpg"> 
-                                <span> Danh sách contact mới </span>
+                                <img src="<?php echo base_url(); ?>public/images/L6.png"> 
+                                <span> Danh sách contact đồng ý mua </span>
                             </a>
                         </li>
                         <li>
@@ -26,7 +26,7 @@
                         </li>
                         <li>
                             <a data-filter=".97" href="<?php echo base_url('cod/xem-tat-ca-contact.html'); ?>">
-                                <img src="<?php echo base_url(); ?>public/images/view-all.jpg"> 
+                                <img src="<?php echo base_url(); ?>public/images/view-all.png"> 
                                 <span> Danh sách toàn bộ contact </span>
                             </a>
                         </li>
@@ -38,7 +38,7 @@
                         </li>
                         <li>
                             <a href="<?php echo base_url('cod/tai-file-doi-soat-l8.html'); ?>">
-                                <img src="<?php echo base_url(); ?>public/images/L8.jpg"> 
+                                <img src="<?php echo base_url(); ?>public/images/L8.png"> 
                                 <span> Tải file đối soát Viettel (L8) </span>
                             </a>
                         </li>

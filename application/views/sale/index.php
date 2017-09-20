@@ -8,8 +8,8 @@
     <?php $this->load->view('common/content/tbl_contact'); ?>
     <?php $this->load->view('sale/modal/transfer_multi_contact'); ?> <br/>
 </form>
-<div class="view_duplicate">
+<!--<div class="view_duplicate">
 
-</div>
+</div>-->
 <?php $this->load->view('sale/modal/transfer_one_contact'); ?>
 <?php $this->load->view('sale/modal/show_script'); ?>
