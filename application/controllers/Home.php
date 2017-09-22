@@ -72,7 +72,7 @@ class Home extends CI_Controller {
                 if (isset($last_page)) {
                     $this->session->unset_userdata('last_page');
                     $alert['success'] = 1;
-                    $alert['redirect_page'] = $last_page;
+                    $alert['redirect_page'] = base64_encode($last_page);
                     echo json_encode($alert);
                     die;
                 }
@@ -106,7 +106,7 @@ class Home extends CI_Controller {
                 }
 
                 $alert['success'] = 1;
-                $alert['redirect_page'] = $redirect_page;
+                $alert['redirect_page'] = base64_encode(base_url().$redirect_page);
                 echo json_encode($alert);
                 die;
             } else {

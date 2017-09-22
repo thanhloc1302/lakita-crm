@@ -3,7 +3,8 @@
  *
  */
 
-$(document).on('click', 'span.badge-star', function (e) {
+$('.tbl_name').on('click', 'span.badge-star', function (e) {
+    e.stopPropagation();
     e.preventDefault();
     var contact_phone = $(this).attr("contact_phone");
     var contact_course_code = $(this).attr("contact_course_code");

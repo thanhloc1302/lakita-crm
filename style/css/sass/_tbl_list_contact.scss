@@ -86,12 +86,21 @@ table{
                 &.receive-lakita{
                     color: #fff;
                     background: rgba(12, 129, 45, 0.85) !important;
+                    a{
+                        color: #fff;
+                    }
                 }
                 &.receive-cod{
                     color: #fff;
                     background: rgba(12, 129, 45, 0.69) !important;
+                    a{
+                        color: #fff;
+                    }
                 }
             }
+        }
+        a{
+            color: #333;
         }
     }
     &.list_contact_2{

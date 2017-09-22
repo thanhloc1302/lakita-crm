@@ -1,5 +1,12 @@
 <td class="center tbl_name">
-    <?php if($value['cod_status_id'] == _HUY_DON_ || $value['ordering_status_id'] == _TU_CHOI_MUA_) echo '<i class="fa fa-ban" aria-hidden="true"></i> ';?>
+    <?php if ($value['cod_status_id'] == _HUY_DON_ 
+            || $value['ordering_status_id'] == _TU_CHOI_MUA_ 
+            || $value['ordering_status_id'] == _CONTACT_CHET_ 
+            || $value['call_status_id'] == _SO_MAY_SAI_ 
+            || $value['call_status_id'] == _NHAM_MAY_) {
+        echo '<i class="fa fa-ban" aria-hidden="true"></i> ';
+    }
+    ?>
     <?php echo $value['name']; ?> 
     <?php if($value['star'] > 1) {?>
    <sup> <span class="badge badge-star" 

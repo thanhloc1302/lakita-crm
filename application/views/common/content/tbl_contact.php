@@ -20,15 +20,15 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+<!--            <tr>
                 <?php
-                if (isset($table)) {
-                    foreach ($table as $value) {
-                        $this->load->view('common/content/table/search/' . $value);
-                    }
-                }
+//                if (isset($table)) {
+//                    foreach ($table as $value) {
+//                        $this->load->view('common/content/table/search/' . $value);
+//                    }
+//                }
                 ?>
-            </tr>
+            </tr>-->
             <?php
             if (isset($contacts)) {
                 foreach ($contacts as $key => $value) {
@@ -54,6 +54,7 @@
                         echo ' is_hide';
                     }
                     if ($value['cod_status_id'] == _HUY_DON_ || $value['ordering_status_id'] == _TU_CHOI_MUA_
+                            || $value['ordering_status_id'] == _CONTACT_CHET_
                             || $value['call_status_id'] == _SO_MAY_SAI_ || $value['call_status_id'] == _NHAM_MAY_) {
                         echo ' ban';
                     }

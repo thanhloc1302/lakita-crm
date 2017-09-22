@@ -15,17 +15,12 @@ $(document).on('click', '.btn-login', function (e) {
         success: function (data) {
             if (data.success == 1) {
                 $("#send_email_sound")[0].play();
-                $.notify("Đăng nhập thành công!", {
-                    position: "top left",
-                    className: 'success',
-                    showDuration: 200,
-                    autoHideDelay: 5000
-                });
                 $(".login_box").hide();
-                $("body").css("background-size", "auto");
-                $(".redirect").show();
+                //$("body").css("background-size", "auto");
+                //$(".redirect").show();
+                $(".animated").addClass("yt-loader");
                 setTimeout(function () {
-                    location.href = data.redirect_page;
+                    location.assign(atob(data.redirect_page));
                 }, 2500);
 
             } else {

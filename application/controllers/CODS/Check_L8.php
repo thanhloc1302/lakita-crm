@@ -30,7 +30,8 @@ class Check_L8 extends MY_Table {
          */
         $list_item = array(
             'id' => array(
-                'name_display' => 'ID đối soát'
+                'name_display' => 'ID đối soát',
+                'display' => 'none'
             ),
             'stt' => array(
                 'name_display' => 'STT',
@@ -61,7 +62,8 @@ class Check_L8 extends MY_Table {
             'time' => array(
                 'type' => 'datetime',
                 'name_display' => 'Ngày tải file đối soát',
-                'order' => '1'
+                'order' => '1',
+                
             ),
             'duplicate_id' => array(
                 'name_display' => 'Contact bị trùng',
@@ -102,6 +104,7 @@ class Check_L8 extends MY_Table {
             if ($class != '') {
                 $value['warning_class'] = $class;
             }
+            $value['code'] = '<a href="https://www.viettelpost.com.vn/Tracking?KEY='.$value['code'].'" target="_blank"> ' .$value['code'] . '</a>';
         }
         unset($value);
     }

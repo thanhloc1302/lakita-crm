@@ -202,7 +202,8 @@ class Common extends MY_Controller {
         $data['view_edit_right'] = $right_edit;
 
         if ($this->role_id == 1) {
-            $edited_contact = $this->_can_edit_by_sale($rows[0]['call_status_id'], $rows[0]['ordering_status_id']);
+            $edited_contact = ( $this->_can_edit_by_sale($rows[0]['call_status_id'], $rows[0]['ordering_status_id']) 
+                    &&  $this->_can_edit_by_cod($rows[0]['cod_status_id']));
         }
         if ($this->role_id == 2) {
             $edited_contact = $this->_can_edit_by_cod($rows[0]['cod_status_id']);
@@ -226,16 +227,18 @@ class Common extends MY_Controller {
         $stop_care_call_stt_id = $this->call_status_model->load_all($stop_care_call_stt_where);
         if (!empty($stop_care_call_stt_id)) {
             foreach ($stop_care_call_stt_id as $value) {
-                if ($value['id'] == $call_stt)
+                if ($value['id'] == $call_stt) {
                     return false;
+                }
             }
         }
 
         $stop_care_call_order_id = array(_TU_CHOI_MUA_, _CONTACT_CHET_);
         if (!empty($stop_care_call_order_id)) {
             foreach ($stop_care_call_order_id as $value) {
-                if ($value == $ordering_stt)
+                if ($value == $ordering_stt) {
                     return false;
+                }
             }
         }
         return true;
@@ -771,6 +774,9 @@ class Common extends MY_Controller {
 
     // <editor-fold defaultstate="collapsed" desc="listen">
     function listen() {
+//        if (!$this->input->is_ajax_request()) {
+//            redirect();
+//        }
         $this->load->helper('cookie');
         $myfile = fopen(APPPATH . "../public/last_reg.txt", "r") or die("Unable to open file!");
         $last_id_txt = fgets($myfile);

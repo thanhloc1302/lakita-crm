@@ -1,5 +1,5 @@
 <li class="dropdown mega-dropdown dropdown-hover">
-    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-space-shuttle"></i> MENU <span class="caret"></span></a>				
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown"> MENU <span class="caret"></span></a>				
     <div id="filters" class="dropdown-menu mega-dropdown-menu">
         <div class="container-fluid2">
             <!-- Tab panes -->
@@ -14,7 +14,7 @@
                         </li>
                         <li>
                             <a href="<?php echo base_url('cod/doi-soat-cod/xem-tat-ca.html'); ?>">
-                                <img src="<?php echo base_url(); ?>public/images/view-all.jpg"> 
+                                <img src="<?php echo base_url(); ?>public/images/view-all.png"> 
                                 <span> Danh sách tất cả KQ đối soát cước </span>
                             </a>
                         </li>

@@ -29,7 +29,7 @@ table{
         background-color: #0C812D;
         color:#fff;
         cursor: pointer;
-/*        -webkit-transition: all 0.5s ease;*/
+        /*        -webkit-transition: all 0.5s ease;*/
         &:hover{
             background-color: #0c6681;
         }
@@ -55,7 +55,7 @@ table{
         }
     }
     tr{
-       
+
         &.duplicate{
             background-color: #b54848 !important;
             color: #fff !important;
@@ -79,9 +79,12 @@ table{
         &.inactive{
             background-color: rgba(86, 83, 83, 0.18) !important;
         }
-         &.checked{
+        &.checked{
             background-color: #2C944A !important;
             color: #fff !important;
+            a{
+                color: #fff;
+            }
         }
     }
 }

@@ -220,6 +220,7 @@ class Report extends MY_Controller {
     }
 
     function pending3() {
+        $this->load->helper('bill_helper');
         $this->load->model('call_log_model');
         $this->load->model('L7_check_model');
         $get = $this->input->get();
@@ -322,6 +323,9 @@ class Report extends MY_Controller {
         $vietel_not_send = array_diff($all_code_cross_check, $viettel_code_cross_check);
         $contact_not_send = array();
         if (!empty($vietel_not_send)) {
+            
+            $vietel_not_send = ReArrangeBillCheck($vietel_not_send);
+            
             foreach ($vietel_not_send as $code_cross_check) {
                 $input_not_send = array();
                 $input_not_send['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
@@ -332,12 +336,12 @@ class Report extends MY_Controller {
 
         $data_load = [];
         $data_load['total_contacts'] = count($contacts);
-        $data_load['contacts'] = $contact_warning;
-        $data_load['contact_other'] = $contact_other;
-        $data_load['contact_success'] = $contact_success;
-        $data_load['contact_cancel'] = $contact_cancel;
-        $data_load['contact_not_send'] = $contact_not_send;
-        $str = $this->load->view('cod/waiting_cancel_list/index', $data_load, true);
+        $data_load['contacts'] = ReArrangeContactsByBillCheck($contact_warning);
+        $data_load['contact_other'] = ReArrangeContactsByBillCheck($contact_other);
+        $data_load['contact_success'] = ReArrangeContactsByBillCheck($contact_success);
+        $data_load['contact_cancel'] = ReArrangeContactsByBillCheck($contact_cancel);
+        $data_load['contact_not_send'] = ReArrangeContactsByBillCheck($contact_not_send);
+         $str = $this->load->view('cod/waiting_cancel_list/index', $data_load, true);
         // $emailTo = 'chuyenpn@lakita.vn';
         $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, '
                 . 'trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com';

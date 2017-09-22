@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="<?php echo base_url(); ?>style/css/home/login.css">
     </head>
     <body>
+        <div class="animated"></div>
         <div class="container">
             <div class="row login_box">
                 <div class="col-md-12 col-xs-12" align="center">
@@ -36,19 +37,19 @@
         </div>
 
         <div class="redirect" style="display:none;">
-            <div class='body'>
+            <div class="body">
                 <span>
                     <span></span>
                     <span></span>
                     <span></span>
                     <span></span>
                 </span>
-                <div class='base'>
+                <div class="base">
                     <span></span>
-                    <div class='face'></div>
+                    <div class="face"></div>
                 </div>
             </div>
-            <div class='longfazers'>
+            <div class="longfazers">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -56,10 +57,9 @@
             </div>
             <h1> Đang chuyển trang ..... </h1>
         </div>
-        <?php $this->load->view('common/hidden_input'); ?>
-        <?php $this->load->view('common/content/notification'); ?>
+        <?php $this->load->view("common/hidden_input"); ?>
+        <?php $this->load->view("common/content/notification"); ?>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
         <script src="<?php echo base_url(); ?>style/js/home/login.min.js"></script>
-
     </body>
 </html>
