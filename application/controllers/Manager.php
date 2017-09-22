@@ -97,7 +97,7 @@ class Manager extends MY_Controller {
         /*
          * Các trường cần hiện của bảng contact (đã có default)
          */
-        $this->table .= 'date_last_calling call_stt ordering_stt last_activity matrix';
+        $this->table .= 'call_stt ordering_stt last_activity matrix';
         $data['table'] = explode(' ', $this->table);
 
         /*

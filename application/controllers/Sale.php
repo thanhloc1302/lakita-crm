@@ -145,7 +145,7 @@ class Sale extends MY_Controller {
         $data['left_col'] = array('tu_van', 'date_handover', 'date_last_calling');
         $data['right_col'] = array('ordering_status', 'course_code');
 
-        $this->table = 'selection name phone last_note course_code price_purchase date_rgt date_last_calling';
+        $this->table = 'selection name phone last_note course_code price_purchase date_last_calling';
         $data['table'] = explode(' ', $this->table);
         $data['content'] = 'sale/can_save';
 
@@ -196,7 +196,7 @@ class Sale extends MY_Controller {
         $data['left_col'] = array('tu_van', 'course_code', 'date_rgt', 'date_handover', 'date_last_calling');
         $data['right_col'] = array('call_status', 'ordering_status', 'cod_status');
 
-        $this->table .= 'date_rgt date_last_calling call_stt ordering_stt';
+        $this->table .= 'date_last_calling call_stt ordering_stt';
         $data['table'] = explode(' ', $this->table);
 
         /*

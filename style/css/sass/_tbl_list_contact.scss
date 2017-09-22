@@ -48,6 +48,9 @@ table{
                     &.tbl_landingpage_url{
                         width: 200px;
                     }
+                    &.tbl_name{
+                        width: 107px;
+                    }
                 }
             }
         }
@@ -77,7 +80,17 @@ table{
                         padding-left: 15px;
                     }
                 }
-
+                &.ban{
+                    color: #7f7f7f;
+                }
+                &.receive-lakita{
+                    color: #fff;
+                    background: rgba(12, 129, 45, 0.85) !important;
+                }
+                &.receive-cod{
+                    color: #fff;
+                    background: rgba(12, 129, 45, 0.69) !important;
+                }
             }
         }
     }
