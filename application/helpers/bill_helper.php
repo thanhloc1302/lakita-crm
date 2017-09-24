@@ -14,15 +14,13 @@ function ReArrangeContactsByBillCheck($contacts){
     foreach($contacts as $value){
         $billArr[] = $value['code_cross_check'];
     }
+    $billArr = array_unique($billArr);
     $billArr = ReArrangeBillCheck($billArr);
-    
     $ResultContacts = [];
-    
     foreach ($billArr as $Bill){
         foreach($contacts as $key => $value){
             if($value['code_cross_check'] == $Bill){
                 $ResultContacts[] = $contacts[$key];
-                break;
             }
         }
     }
@@ -42,7 +40,7 @@ function ConvertToNumberArr($billArr) {
         foreach ($billArr as $value) {
             $day = substr($value, 6, 2);
             $month = substr($value, 8, 2);
-            $order = substr($value, 10, 2);
+            $order = substr($value, 10);
             $numberArr[] = $month . $day . $order;
         }
     }
@@ -55,7 +53,7 @@ function ConvertToBillOrderArr($numberOrderedArr) {
         foreach ($numberOrderedArr as $value) {
             $month = substr($value, 0, 2);
             $day = substr($value, 2, 2);
-            $order = substr($value, 4, 2);
+            $order = substr($value, 4);
             $billOrderArr[] = 'LAKITA' . $day . $month . $order;
         }
     }

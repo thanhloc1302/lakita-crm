@@ -320,6 +320,8 @@ class Report extends MY_Controller {
             }
         }
 
+       
+        
         $vietel_not_send = array_diff($all_code_cross_check, $viettel_code_cross_check);
         $contact_not_send = array();
         if (!empty($vietel_not_send)) {
@@ -333,7 +335,7 @@ class Report extends MY_Controller {
                 $contact_not_send[] = $this->contacts_model->load_all($input_not_send)[0];
             }
         }
-
+        
         $data_load = [];
         $data_load['total_contacts'] = count($contacts);
         $data_load['contacts'] = ReArrangeContactsByBillCheck($contact_warning);
@@ -341,10 +343,10 @@ class Report extends MY_Controller {
         $data_load['contact_success'] = ReArrangeContactsByBillCheck($contact_success);
         $data_load['contact_cancel'] = ReArrangeContactsByBillCheck($contact_cancel);
         $data_load['contact_not_send'] = ReArrangeContactsByBillCheck($contact_not_send);
+        
          $str = $this->load->view('cod/waiting_cancel_list/index', $data_load, true);
         // $emailTo = 'chuyenpn@lakita.vn';
-        $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, '
-                . 'trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com';
+        $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com';
         $this->load->library("email");
         $this->email->from('cskh@lakita.vn', "lakita.vn");
         $this->email->to($emailTo);

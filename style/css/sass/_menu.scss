@@ -178,21 +178,26 @@ Logo by Sneaker-mission.com (http://www.sneaker-mission.com/)
     .nav-pills>li[data-slide-to="3"].active a { background-color: #8e44ad; }
 }
 
-.top_nav .mega-dropdown .dropdown-menu li {
-    width: 15%;
-    img{
-        width: 100px;
-        margin: 0 auto;
-        margin-bottom: 10px;
-        display: block;
+.top_nav {
+    .mega-dropdown .dropdown-menu li {
+        width: 15%;
+        img{
+            width: 100px;
+            margin: 0 auto;
+            margin-bottom: 10px;
+            display: block;
+        }
     }
-}
 
-.top_nav .navbar-nav {
-    background: rgb(24, 117, 51);
-    a.logo, a.logo:hover{
-        display: inline-block;
-        float: left;
-        margin-top: 1px;
+    .navbar-nav {
+        background: rgb(24, 117, 51);
+        a.logo, a.logo:hover{
+            display: inline-block;
+            float: left;
+            margin-top: 1px;
+        }
     }
+/*    .navbar-nav>li {
+        float: right;
+    }*/
 }
