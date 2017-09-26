@@ -39,7 +39,6 @@ class MY_Controller extends CI_Controller {
             // $this->output->enable_profiler(TRUE);
         }
         $this->load->vars($this->data);
-        
     }
 
     private function _check_login() {
