@@ -35,24 +35,23 @@ Logo by Sneaker-mission.com (http://www.sneaker-mission.com/)
     border-radius: 0;
 }
 
-.nav-list { border-bottom: 1px solid #eee; }
-.nav-list > li { 
-    padding: 20px 15px 15px;
-
+.nav-list {
+    padding: 15px;
+    padding-bottom: 25px;
 }
+
 .nav-list > li:last-child { border-right: 0px solid #eee; }
 .nav-list > li > a:hover { text-decoration: none; }
 .nav-list > li > a > span {
     display: block;
-    font-weight: bold;
-    text-transform: uppercase;
+    line-height: 15px;
+    font-size: 13px;
 }
 
 .mega-dropdown { position: static !important; }
 .mega-dropdown-menu {
     padding: 20px 15px 15px;
     text-align: center;
-    width: 100%;
 }
 
 
@@ -120,9 +119,8 @@ Logo by Sneaker-mission.com (http://www.sneaker-mission.com/)
     left: 0px;
     z-index: 1000;
     display: none;
-    float: left;
     min-width: 160px;
-    padding: 5px 0px;
+    padding: 10px 30px 40px 30px;
     margin: 2px 0px 0px;
     font-size: 14px;
     list-style: none;
@@ -139,7 +137,6 @@ Logo by Sneaker-mission.com (http://www.sneaker-mission.com/)
     box-shadow: rgba(0, 0, 0, 0.172549) 0px 6px 12px;
 }
 .nav-list > li {
-    padding: 20px 15px 15px;
     border-left:0px;
     .nav-list {
         border-bottom: 0px;
@@ -179,15 +176,24 @@ Logo by Sneaker-mission.com (http://www.sneaker-mission.com/)
 }
 
 .top_nav {
-    .mega-dropdown .dropdown-menu li {
-        width: 15%;
-        img{
-            width: 100px;
-            margin: 0 auto;
-            margin-bottom: 10px;
-            display: block;
+    .mega-dropdown{
+        .dropdown-menu {
+            right: 100px;
+            li {
+                width: 100px;
+                img{
+                    width: 50px;
+                    margin: 0 auto;
+                    margin-bottom: 10px;
+                    display: block;
+                }
+                span{
+                    /*                    font-size: 12px;*/
+                }
+            }
         }
     }
+
 
     .navbar-nav {
         background: rgb(24, 117, 51);
@@ -197,7 +203,7 @@ Logo by Sneaker-mission.com (http://www.sneaker-mission.com/)
             margin-top: 1px;
         }
     }
-/*    .navbar-nav>li {
-        float: right;
-    }*/
+    /*    .navbar-nav>li {
+            float: right;
+        }*/
 }

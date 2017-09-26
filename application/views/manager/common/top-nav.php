@@ -20,23 +20,14 @@
                         <img src="<?php echo $this->session->userdata('image_staff'); ?>" alt=""> <?php echo $this->session->userdata('name'); ?>
                         <span class=" fa fa-angle-down"></span>
                     </a>
-<!--                    <ul class="dropdown-menu dropdown-usermenu pull-right">
-                        <li><a href="<?php echo base_url(); ?>home/logout"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
-                    </ul>-->
+                    <!--                    <ul class="dropdown-menu dropdown-usermenu pull-right">
+                                            <li><a href="<?php echo base_url(); ?>home/logout"><i class="fa fa-sign-out pull-right"></i> Đăng xuất</a></li>
+                                        </ul>-->
                 </li>
                 <li class="dropdown mega-dropdown dropdown-hover pull-right">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> MENU <span class="caret"></span></a>				
                     <div id="filters" class="dropdown-menu mega-dropdown-menu">
-                        <div class="container-fluid2">
-                            <!-- Tab panes -->
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="kids">
-                                    <ul class="nav-list list-inline display-flex">
-                                        <?php $this->load->view($this->router->directory . $this->controller . '/common/menu'); ?>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        <?php $this->load->view($this->router->directory . $this->controller . '/common/menu'); ?>
                     </div>				
                 </li>
             </ul>
