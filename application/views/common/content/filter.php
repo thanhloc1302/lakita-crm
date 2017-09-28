@@ -1,4 +1,4 @@
-<?php if ( ! ($this->total_paging == 0 && empty($this->input->get()))) { ?>
+<?php if(!(isset($contacts) && count($contacts) == 0 && empty($_GET))) { ?>
 <div class="row">
     <div class="col-md-6">
         <table class="table table-bordered table-hover filter-contact filter-tbl-1">

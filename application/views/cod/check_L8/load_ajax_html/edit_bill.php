@@ -58,7 +58,7 @@
         </div>
     </div>
     <div class="text-center">
-        <button type="submit" class="btn btn-success btn-lg btn-edit-contact">Lưu Lại</button>
+        <button type="submit" class="btn btn-success btn-lg btn-edit-contact-1">Lưu Lại</button>
     </div>
 
 </form>

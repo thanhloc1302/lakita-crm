@@ -119,7 +119,7 @@ class Manager extends MY_Controller {
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="view_duplicate">
+    
     function view_duplicate() {
         $require_model = array(
             'staffs' => array(
@@ -153,7 +153,7 @@ class Manager extends MY_Controller {
         $this->load->view('manager/modal/view_duplicate', $data);
     }
 
-    // </editor-fold>
+  
     // <editor-fold defaultstate="collapsed" desc="hàm add contact và các hàm phụ trợ">
     /* ========================  hàm add contact và các hàm phụ trợ =========================== */
 
@@ -207,7 +207,10 @@ class Manager extends MY_Controller {
 
     private function _view_add_contact() {
         $require_model = array(
-            'courses' => array(),
+            'courses' => array(
+                'where' => ['active' => '1'],
+                'order' => ['course_code' => 'DESC']
+            ),
             'sources' => array()
         );
         $data = array_merge($this->data, $this->_get_require_data($require_model));
@@ -335,12 +338,12 @@ class Manager extends MY_Controller {
                 $result['success'] = 0;
                 $result['message'] = $msg;
             }
-            if ($this->role_id == 3 && $rows[0]['duplicate_id'] > 0) {
-                $msg = 'Contact "' . $rows[0]['name'] . '" có id = ' . $rows[0]['id'] . ' bị trùng. '
-                        . 'Vì vậy không thể phân contact đó được! Vui lòng thực hiện lại';
-                $result['success'] = 0;
-                $result['message'] = $msg;
-            }
+//            if ($this->role_id == 3 && $rows[0]['duplicate_id'] > 0) {
+//                $msg = 'Contact "' . $rows[0]['name'] . '" có id = ' . $rows[0]['id'] . ' bị trùng. '
+//                        . 'Vì vậy không thể phân contact đó được! Vui lòng thực hiện lại';
+//                $result['success'] = 0;
+//                $result['message'] = $msg;
+//            }
         }
 
         return $result;
