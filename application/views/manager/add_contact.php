@@ -59,7 +59,7 @@
                                 <?php foreach ($courses as $key => $value) { ?>
                                     <option value="<?php echo $value['course_code']; ?>"
                                             <?php if(set_value('course_code') == $value['course_code']) echo "selected"; ?>>
-                                        <?php echo $value['name_course']; ?> 
+                                        <?php echo $value['course_code']; ?> 
                                     </option>
                                 <?php } ?>
                             </select>

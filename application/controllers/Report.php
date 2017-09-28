@@ -265,7 +265,10 @@ class Report extends MY_Controller {
                 $input_success = array();
                 $input_success['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
                 $input_success['where'] = array('code_cross_check' => $code_cross_check, 'call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_);
-                $contact_success[] = $this->contacts_model->load_all($input_success)[0];
+                $contactSuccessArr = $this->contacts_model->load_all($input_success);
+                foreach ($contactSuccessArr as $contactSuccess) {
+                    $contact_success[] = $contactSuccess;
+                }
             } else if ($status == 'Thanh cong chuyen tra nguoi gui' || $status == 'CHuyển trả người gửi') {
                 $where = array('code_cross_check' => $code_cross_check);
                 $data = array('cod_status_id' => _HUY_DON_, 'date_receive_cancel_cod' => time(), 'last_activity' => time());
@@ -273,19 +276,28 @@ class Report extends MY_Controller {
                 $input_cancel = array();
                 $input_cancel['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
                 $input_cancel['where'] = array('code_cross_check' => $code_cross_check, 'call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_);
-                $contact_cancel[] = $this->contacts_model->load_all($input_cancel)[0];
+                $contactCancelArr = $this->contacts_model->load_all($input_cancel);
+                foreach ($contactCancelArr as $contactCancel) {
+                    $contact_cancel[] = $contactCancel;
+                }
             } else if ($status == 'Chờ duyệt Chuyển hoàn') {
                 $input_warning = array();
                 $input_warning['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
                 $input_warning['where'] = array('code_cross_check' => $code_cross_check, 'call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_);
-                $contact_warning[] = $this->contacts_model->load_all($input_warning)[0];
+                $contactWarningArr = $this->contacts_model->load_all($input_warning);
+                foreach ($contactWarningArr as $contactWarning) {
+                    $contact_warning[] = $contactWarning;
+                }
             } else {
                 $input_other = array();
                 $input_other['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
                 $input_other['where'] = array('code_cross_check' => $code_cross_check, 'call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_);
-                $contact_other[$contact_other_key] = $this->contacts_model->load_all($input_other)[0];
+                $contactOtherArr = $this->contacts_model->load_all($input_other);
+                foreach ($contactOtherArr as $contactOther) {
+                $contact_other[$contact_other_key] = $contactOther;
                 $contact_other[$contact_other_key]['status_viettel'] = $status;
                 $contact_other_key++;
+                }
             }
 
             if ($status == 'Thanh cong - phat thanh cong' || $status == 'Phát thành công' || $status == 'Thanh cong chuyen tra nguoi gui' || $status == 'CHuyển trả người gửi') {
@@ -320,14 +332,14 @@ class Report extends MY_Controller {
             }
         }
 
-       
-        
+
+
         $vietel_not_send = array_diff($all_code_cross_check, $viettel_code_cross_check);
         $contact_not_send = array();
         if (!empty($vietel_not_send)) {
-            
+
             $vietel_not_send = ReArrangeBillCheck($vietel_not_send);
-            
+
             foreach ($vietel_not_send as $code_cross_check) {
                 $input_not_send = array();
                 $input_not_send['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
@@ -335,7 +347,7 @@ class Report extends MY_Controller {
                 $contact_not_send[] = $this->contacts_model->load_all($input_not_send)[0];
             }
         }
-        
+
         $data_load = [];
         $data_load['total_contacts'] = count($contacts);
         $data_load['contacts'] = ReArrangeContactsByBillCheck($contact_warning);
@@ -343,9 +355,8 @@ class Report extends MY_Controller {
         $data_load['contact_success'] = ReArrangeContactsByBillCheck($contact_success);
         $data_load['contact_cancel'] = ReArrangeContactsByBillCheck($contact_cancel);
         $data_load['contact_not_send'] = ReArrangeContactsByBillCheck($contact_not_send);
-        
-         $str = $this->load->view('cod/waiting_cancel_list/index', $data_load, true);
-        // $emailTo = 'chuyenpn@lakita.vn';
+        $str = $this->load->view('cod/waiting_cancel_list/index', $data_load, true);
+        //$emailTo = 'chuyenpn@lakita.vn';
         $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com';
         $this->load->library("email");
         $this->email->from('cskh@lakita.vn', "lakita.vn");

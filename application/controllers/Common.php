@@ -202,8 +202,7 @@ class Common extends MY_Controller {
         $data['view_edit_right'] = $right_edit;
 
         if ($this->role_id == 1) {
-            $edited_contact = ( $this->_can_edit_by_sale($rows[0]['call_status_id'], $rows[0]['ordering_status_id']) 
-                    &&  $this->_can_edit_by_cod($rows[0]['cod_status_id']));
+            $edited_contact = ( $this->_can_edit_by_sale($rows[0]['call_status_id'], $rows[0]['ordering_status_id']) && $this->_can_edit_by_cod($rows[0]['cod_status_id']));
         }
         if ($this->role_id == 2) {
             $edited_contact = $this->_can_edit_by_cod($rows[0]['cod_status_id']);
@@ -362,6 +361,8 @@ class Common extends MY_Controller {
                     echo json_encode($result);
                     die;
                 }
+            } else {
+                $param['date_confirm'] = 0;
             }
             $param['last_activity'] = time();
             $where = array('id' => $id);
@@ -559,6 +560,10 @@ class Common extends MY_Controller {
                     case 4: $param['date_receive_cancel_cod'] = time();
                         break;
                 }
+            } else {
+                $param['date_receive_cod'] = 0;
+                $param['date_receive_lakita'] = 0;
+                $param['date_receive_cancel_cod'] = 0;
             }
 
             $where = array('id' => $id);

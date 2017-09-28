@@ -33,6 +33,7 @@ class Landingpage extends MY_Table {
                 'name_display' => 'ID landingpage'
             ),
             'url' => array(
+                 'type' => 'custom',
                 'name_display' => 'URL',
                 'order' => '1'
             ),

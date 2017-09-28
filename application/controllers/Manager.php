@@ -207,7 +207,10 @@ class Manager extends MY_Controller {
 
     private function _view_add_contact() {
         $require_model = array(
-            'courses' => array(),
+            'courses' => array(
+                'where' => ['active' => '1'],
+                'order' => ['course_code' => 'DESC']
+            ),
             'sources' => array()
         );
         $data = array_merge($this->data, $this->_get_require_data($require_model));
