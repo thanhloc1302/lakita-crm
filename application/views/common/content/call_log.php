@@ -43,32 +43,24 @@
                         <?php echo $value_call_log['staff_name']; ?>
                     </td>
                     <td>
-                        <?php
-                        if ($value_call_log['call_status_id'] > 0) {
-                            echo $value_call_log['call_status_desc'];
-                        }
-                        ?>
+                        <?php echo $value_call_log['call_status_desc']; ?>
                     </td>
                     <td>
-                        <?php if ($value_call_log['ordering_status_id'] > 0) {
-                            echo $value_call_log['ordering_status_desc'];
-                        } ?>
+                        <?php echo $value_call_log['ordering_status_desc']; ?>
                     </td>
                     <td>
-                        <?php if ($value_call_log['cod_status_id'] > 0) {
-                            echo $value_call_log['cod_status_desc'];
-                        } ?>
+                        <?php echo $value_call_log['cod_status_desc']; ?>
                     </td>
                     <td>
-        <?php if ($value_call_log['provider_id'] > 0) { echo $value_call_log['provider_name']; } ?>
+                        <?php echo $value_call_log['provider_name']; ?>
                     </td>
                     <td>
-                <?php echo $value_call_log['content_change']; ?>
+                        <?php echo $value_call_log['content_change']; ?>
                     </td>
                 </tr>
-        <?php
-    }
-}
-?>
+                <?php
+            }
+        }
+        ?>
     </tbody>
 </table>

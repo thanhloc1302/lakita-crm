@@ -35,7 +35,7 @@ $(".btn-modal_edit-multi-contact").on('click', function (e) {
                         autoHideDelay: 5000
                     });
                     $.each(contactIdArray, function(){
-                        $('tr[contact_id="'+this+'"]').html("");
+                        $('tr[contact_id="'+this+'"]').remove();
                     });
                     $(".edit_multi_cod_contact").modal("hide");
                 } else {

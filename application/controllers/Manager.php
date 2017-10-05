@@ -512,7 +512,8 @@ class Manager extends MY_Controller {
     function confirm_divide_contact_even() {
         $post = $this->input->post();
         if (isset($post['submit_ok']) && $post['submit_ok'] == 'OK') {
-            $query1 = 'UPDATE `tbl_contact` set `sale_staff_id` = `draft_sale_staff_id`, `date_handover`=' . time() . ' WHERE `draft_sale_staff_id` > 0';
+            $query1 = 'UPDATE `tbl_contact` set `sale_staff_id` = `draft_sale_staff_id`, `date_handover`=' . time() 
+                    . ', `last_activity` = '. time() .' WHERE `draft_sale_staff_id` > 0';
             $query2 = 'UPDATE `tbl_contact` set `draft_sale_staff_id` = 0, `has_draft_divide` = 0 WHERE `draft_sale_staff_id` > 0';
             $total = $this->contacts_model->query($query1);
             $this->contacts_model->query($query2);
@@ -540,7 +541,7 @@ class Manager extends MY_Controller {
         $this->_check_contact_can_be_delete($post['contact_id']);
         foreach ($post['contact_id'] as $value) {
             $where = array('id' => $value);
-            $data = array('is_hide' => 1);
+            $data = array('is_hide' => 1,  'last_activity' => time());
             $this->contacts_model->update($where, $data);
         }
         $msg = 'Xóa thành công các contact vừa chọn!';
@@ -552,7 +553,7 @@ class Manager extends MY_Controller {
         if (!empty($post['contact_id'])) {
             $this->_check_contact_can_be_delete(array($post['contact_id']));
             $where = array('id' => $post['contact_id']);
-            $data = array('is_hide' => 1);
+            $data = array('is_hide' => 1, 'last_activity' => time());
             $this->contacts_model->update($where, $data);
             echo '1';
         }

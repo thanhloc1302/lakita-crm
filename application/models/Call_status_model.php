@@ -19,7 +19,7 @@ class Call_status_model extends MY_Model {
     }
 
     public function find_call_status_desc($id) {
-        $call_stt = 'Không có';
+        $call_stt = '';
         $input2 = array();
         $input2['where'] = array('id' => $id);
         $result = $this->load_all($input2);

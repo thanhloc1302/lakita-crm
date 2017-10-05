@@ -663,9 +663,13 @@ class Common extends MY_Controller {
             if (isset($post[$value])) {
                 $data[$value] = $post[$value];
             }
+            else{
+                $data[$value] = "-1";
+            }
         }
         $data['time'] = time();
-        $diffArr = array('[Họ tên]: ' => 'name',
+        $diffArr = array(
+            '[Họ tên]: ' => 'name',
             '[Email]:' => 'email',
             '[Địa chỉ]: ' => 'address',
             '[Mã khóa học]:' => 'course_code',

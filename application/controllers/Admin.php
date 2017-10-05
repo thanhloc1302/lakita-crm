@@ -8,7 +8,7 @@
 class Admin extends MY_Controller {
 
     function __construct() {
-        parent::__construct(); 
+        parent::__construct();
     }
 
     function index($offset = 0) {
@@ -61,7 +61,7 @@ class Admin extends MY_Controller {
             echo '1';
         }
     }
-    
+
     function delete_forever_one_contact() {
         $post = $this->input->post();
         if (!empty($post['contact_id'])) {
@@ -75,10 +75,32 @@ class Admin extends MY_Controller {
         $post = $this->input->post();
         if (!empty($post['contact_id'])) {
             $where = array('id' => $post['contact_id']);
-            $data = array('call_status_id' => 0, 'ordering_status_id' => 0,
-                'sale_staff_id' => 0, 'cod_status_id' => 0, 'date_handover' => 0,
-                'date_confirm' => 0, 'date_print_cod' => 0, 'date_receive_cod' => 0, 'date_receive_lakita' => 0, 'is_hide' => 0);
+            $data = array(
+                'call_status_id' => 0,
+                'ordering_status_id' => 0,
+                'sale_staff_id' => 0,
+                'cod_status_id' => 0,
+                'date_handover' => 0,
+                'date_confirm' => 0,
+                'date_print_cod' => 0,
+                'date_receive_cod' => 0,
+                'date_receive_cancel_cod' => 0,
+                'date_receive_lakita' => 0,
+                'is_hide' => 0,
+                'last_activity' => time());
             $this->contacts_model->update($where, $data);
+
+            $data2 = array();
+            $data2['contact_id'] = $post['contact_id'];
+            $data2['staff_id'] = $this->user_id;
+            $data2['time'] = time();
+            $statusArr = array('call_status_id', 'ordering_status_id', 'cod_status_id', 'payment_method_rgt', 'provider_id');
+            foreach ($statusArr as $value) {
+                $data2[$value] = "-1";
+            }
+            $data2['content_change'] = 'Thu hồi contact';
+            $this->load->model('call_log_model');
+            $this->call_log_model->insert($data2);
             echo '1';
         }
     }

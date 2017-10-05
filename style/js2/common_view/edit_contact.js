@@ -42,7 +42,7 @@ $(document).on('click', '.btn-edit-contact', function (e) {
                     autoHideDelay: 5000
                 });
                 $(".edit_contact_modal").modal("hide");
-                $('tr[contact_id="'+contact_id+'"]').html("");
+                $('tr[contact_id="'+contact_id+'"]').remove();
             } else {
                 $("#send_email_error")[0].play();
                 $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {

@@ -24,7 +24,7 @@ class MY_Controller extends CI_Controller {
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
        //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
-        //echo date('H:i:s d/m/Y', 1506590663);die;
+        //echo date('H:i:s d/m/Y', 1504544400);die;
         //  echo time(). '<br>';
         // echo strtotime('09-06-2018 20:00:00'); die;
         // echo strtotime(date("d-m-Y"));die;
@@ -532,7 +532,7 @@ class MY_Controller extends CI_Controller {
          *
          */
 
-        $conditional = [];
+        $conditional['order'] = ['last_activity' => 'DESC'];
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         /*
          * Lấy danh sách contacts

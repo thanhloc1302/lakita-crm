@@ -22,8 +22,9 @@ class Providers_model extends MY_Model {
         $input2 = array();
         $input2['where'] = array('id' => $id);
         $result = $this->load_all($input2);
-        if (!empty($result))
+        if (!empty($result)) {
             return $result[0]['name'];
+        }
         return '';
     }
 
