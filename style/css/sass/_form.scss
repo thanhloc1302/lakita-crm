@@ -32,13 +32,17 @@ form.form-search{
     .btn{
         padding: 10px;
     }
-   
+
 }
 form{
-     &.empty{
+    &.empty{
         background: url(../../public/images/empty.png) no-repeat;
         /* background-size: contain; */
         height: 478px;
         background-position: 50%;
     }
+}
+input#input-copy{
+    z-index: -1;
+    position: relative;
 }

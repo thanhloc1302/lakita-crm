@@ -29,3 +29,14 @@ $('.view_detail_contact_modal').on('shown.bs.modal', function () {
         $(".table-view-1").height($(".table-view-2").height());
     }
 });
+
+$(document).on("click", ".view_contact_phone", function () {
+    document.querySelector("#input-copy").select();
+    document.execCommand('copy');
+    $.notify("Copy thành công vào clipboard", {
+            position: "top left",
+            className: 'success',
+            showDuration: 200,
+            autoHideDelay: 2000
+        });
+});
