@@ -123,7 +123,7 @@ $(document).on('contextmenu', 'tr.custom_right_menu', function (e) {
 /*
  * High light vào các dòng khi click trái để chọn 
  */
-$("td.tbl_name, td.tbl_address").on("click", function () {
+$(document).on("click", "td.tbl_name, td.tbl_address", function () {
     if ($(this).parent().hasClass('checked')) {
         $(this).parent().removeClass('checked');
     } else {

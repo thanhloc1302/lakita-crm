@@ -7,12 +7,20 @@
 
 function show_number_selected_row() {
     var numberOfChecked = $('input:checkbox:checked').length;
+    console.log();
     var totalCheckboxes = $('input:checkbox').length;
-    $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
-        position: "left middle",
+    /*
+     * Lấy tổng giá
+     */
+    var sum = 0;
+    for(i = 0; i < numberOfChecked; i++){
+        sum += parseInt($($('input:checkbox:checked')[i]).parent().parent().find('.tbl_price_purchase').text());
+    }
+    $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes + ' . Tổng tiền = ' + sum.toLocaleString(), {
+        position: "top left",
         className: 'success',
         showDuration: 200,
-        autoHideDelay: 1000
+        autoHideDelay: 3000
     });
 }
 
@@ -963,7 +971,11 @@ $('.tbl_name').on('click', 'span.badge-star', function (e) {
         }
     });
 });
-$(document).on('click', 'a.action_view_detail_contact', function (e) {
+
+
+$('.view_contact_star_modal').on('hide.bs.modal', function () {
+    $("div.replace_content_view_contact_star").html("");
+});$(document).on('click', 'a.action_view_detail_contact', function (e) {
     e.preventDefault();
     $(".checked").removeClass("checked");
     $(this).parent().parent().addClass("checked");
@@ -1119,7 +1131,7 @@ $(document).on('contextmenu', 'tr.custom_right_menu', function (e) {
 /*
  * High light vào các dòng khi click trái để chọn 
  */
-$("td.tbl_name, td.tbl_address").on("click", function () {
+$(document).on("click", "td.tbl_name, td.tbl_address", function () {
     if ($(this).parent().hasClass('checked')) {
         $(this).parent().removeClass('checked');
     } else {
@@ -1261,8 +1273,8 @@ $(document).on('change', 'input[type="checkbox"]', function () {
      */
     var numberOfChecked = $('input:checkbox:checked').length;
     var totalCheckboxes = $('input:checkbox').length;
-    $(this).notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
-        position: "right middle",
+    $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
+        position: "top left",
         className: 'success',
         showDuration: 200,
         autoHideDelay: 1000
@@ -1287,6 +1299,20 @@ $(".check_all").on('click', function () {
                     $(this).parent().parent().addClass('checked');
                 }
         );
+        var numberOfChecked = $('input:checkbox:checked').length;
+        /*
+         * Lấy tổng giá
+         */
+        var sum = 0;
+        for (i = 0; i < numberOfChecked; i++) {
+            sum += parseInt($($('input:checkbox:checked')[i]).parent().parent().find('.tbl_price_purchase').text());
+        }
+        $.notify('Đã chọn: ' + numberOfChecked + '/' + numberOfChecked + ' . Tổng tiền = ' + sum.toLocaleString(), {
+            position: "top left",
+            className: 'success',
+            showDuration: 200,
+            autoHideDelay: 10000
+        });
     }
 });
 /* 
@@ -1523,15 +1549,7 @@ $(function () {
 //    $(".back_location").click(function () {
 //        location.href = document.referrer;
 //    });
-    /*
-     * Chỉnh lại giao diện gốc (slide bar)
-     */
-    if ($("li.current-page").parent().hasClass("child_menu")) {
-        $("li.current-page").parent().css("display", 'none');
-    }
-    if ($("li.active").parent().hasClass("side-menu")) {
-        $(this).removeClass("active");
-    }
+   
 
 
     /*

@@ -28,3 +28,8 @@ $('.tbl_name').on('click', 'span.badge-star', function (e) {
         }
     });
 });
+
+
+$('.view_contact_star_modal').on('hide.bs.modal', function () {
+    $("div.replace_content_view_contact_star").html("");
+});

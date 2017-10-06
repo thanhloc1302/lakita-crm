@@ -152,7 +152,12 @@ class Marketers extends MY_Table {
                 ),
             )
         );
-        $conditional = array('where' => array('role_id' => '6'));
+        $conditional = array();
+        $conditional['where']['role_id'] =  '6';
+        $get = $this->input->get();
+        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
+            $conditional['where']['active'] = 1;
+        }
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();

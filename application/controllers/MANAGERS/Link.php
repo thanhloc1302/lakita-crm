@@ -98,13 +98,9 @@ class Link extends MY_Table {
      * Ghi đè hàm xóa lớp cha
      */
 
-    function delete_item() {
-        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
-    }
-
-    function delete_multi_item() {
-        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
-    }
+//    function delete_multi_item() {
+//        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
+//    }
 
     function index($offset = 0) {
         $this->list_filter = array(
@@ -117,7 +113,11 @@ class Link extends MY_Table {
             )
         );
         $conditional = array();
-        $conditional['where'] = array('marketer_id' => $this->user_id);
+        $conditional['where']['marketer_id'] = $this->user_id;
+//        $get = $this->input->get();
+//        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
+//            $conditional['where']['active'] = 1;
+//        }
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
@@ -184,7 +184,6 @@ class Link extends MY_Table {
                 }
             }
             $input['where']['marketer_id'] = $this->user_id;
-
             $exist_link = $this->{$this->model}->load_all($input);
             if (!empty($exist_link)) {
                 show_error_and_redirect('Đã tồn tại link, mời bạn kiểm tra lại!', '', false);
@@ -276,7 +275,7 @@ class Link extends MY_Table {
                 ),
             ),
             'right_table' => array(
-                 'landingpage_id' => array(
+                'landingpage_id' => array(
                     'type' => 'array',
                     'value' => $landingpages
                 )

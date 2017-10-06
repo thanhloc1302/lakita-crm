@@ -83,9 +83,9 @@
             ?>
         </tbody>
     </table>
-    <div class="number_paging" > 
-        Tổng tiền: <?php echo isset($contacts) ? number_format(h_sum_money($contacts), 0, ",", ".") . " VNĐ" : 0; ?>
-    </div>
+<!--    <div class="number_paging" > 
+        Tổng tiền: <?php //echo isset($contacts) ? number_format(h_sum_money($contacts), 0, ",", ".") . " VNĐ" : 0; ?>
+    </div>-->
     <div class="number_paging"> 
         <?php echo 'Hiển thị ' . $this->begin_paging . ' - ' . $this->end_paging . ' của ' . $this->total_paging . ' contacts'; ?>
     </div>

@@ -19,8 +19,8 @@ $(document).on('change', 'input[type="checkbox"]', function () {
      */
     var numberOfChecked = $('input:checkbox:checked').length;
     var totalCheckboxes = $('input:checkbox').length;
-    $(this).notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
-        position: "right middle",
+    $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
+        position: "top left",
         className: 'success',
         showDuration: 200,
         autoHideDelay: 1000
@@ -45,5 +45,19 @@ $(".check_all").on('click', function () {
                     $(this).parent().parent().addClass('checked');
                 }
         );
+        var numberOfChecked = $('input:checkbox:checked').length;
+        /*
+         * Lấy tổng giá
+         */
+        var sum = 0;
+        for (i = 0; i < numberOfChecked; i++) {
+            sum += parseInt($($('input:checkbox:checked')[i]).parent().parent().find('.tbl_price_purchase').text());
+        }
+        $.notify('Đã chọn: ' + numberOfChecked + '/' + numberOfChecked + ' . Tổng tiền = ' + sum.toLocaleString(), {
+            position: "top left",
+            className: 'success',
+            showDuration: 200,
+            autoHideDelay: 10000
+        });
     }
 });

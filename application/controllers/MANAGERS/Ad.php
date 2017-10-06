@@ -84,6 +84,7 @@ class Ad extends MY_Table {
             'active' => array(
                 'type' => 'custom',
                 'name_display' => 'Hoạt động',
+                'display' => 'none'
             )
         );
         $this->set_list_view($list_item);
@@ -152,13 +153,13 @@ class Ad extends MY_Table {
      * Ghi đè hàm xóa lớp cha
      */
 
-    function delete_item() {
-        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
-    }
-
-    function delete_multi_item() {
-        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
-    }
+//    function delete_item() {
+//        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
+//    }
+//
+//    function delete_multi_item() {
+//        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
+//    }
 
     function index($offset = 0) {
         $this->list_filter = array(
@@ -174,7 +175,11 @@ class Ad extends MY_Table {
             )
         );
         $conditional = array();
-        $conditional['where'] = array('marketer_id' => $this->user_id);
+        $conditional['where']['marketer_id'] = $this->user_id;
+        $get = $this->input->get();
+        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
+            $conditional['where']['active'] = 1;
+        }
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();

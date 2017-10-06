@@ -7,12 +7,20 @@
 
 function show_number_selected_row() {
     var numberOfChecked = $('input:checkbox:checked').length;
+    console.log();
     var totalCheckboxes = $('input:checkbox').length;
-    $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
-        position: "left middle",
+    /*
+     * Lấy tổng giá
+     */
+    var sum = 0;
+    for(i = 0; i < numberOfChecked; i++){
+        sum += parseInt($($('input:checkbox:checked')[i]).parent().parent().find('.tbl_price_purchase').text());
+    }
+    $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes + ' . Tổng tiền = ' + sum.toLocaleString(), {
+        position: "top left",
         className: 'success',
         showDuration: 200,
-        autoHideDelay: 1000
+        autoHideDelay: 3000
     });
 }
 

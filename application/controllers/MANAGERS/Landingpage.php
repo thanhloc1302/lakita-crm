@@ -55,6 +55,7 @@ class Landingpage extends MY_Table {
             'active' => array(
                 'type' => 'custom',
                 'name_display' => 'Hoạt động',
+                'display' => 'none'
             )
         );
         $this->set_list_view($list_item);
@@ -85,6 +86,10 @@ class Landingpage extends MY_Table {
             )
         );
         $conditional = array();
+        $get = $this->input->get();
+         if(!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0'){
+            $conditional['where'] = array('active' => 1);
+        }
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();

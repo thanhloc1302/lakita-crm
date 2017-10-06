@@ -37,15 +37,7 @@ $(function () {
 //    $(".back_location").click(function () {
 //        location.href = document.referrer;
 //    });
-    /*
-     * Chỉnh lại giao diện gốc (slide bar)
-     */
-    if ($("li.current-page").parent().hasClass("child_menu")) {
-        $("li.current-page").parent().css("display", 'none');
-    }
-    if ($("li.active").parent().hasClass("side-menu")) {
-        $(this).removeClass("active");
-    }
+   
 
 
     /*

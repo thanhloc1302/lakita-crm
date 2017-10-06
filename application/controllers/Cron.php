@@ -43,7 +43,6 @@ class Cron extends CI_Controller {
              */
             $where = array('campaign_id' => $value['id'], 'time' => $today);
             $this->campaign_cost_model->delete($where);
-
             $url = 'https://graph.facebook.com/v2.9/' . $value['campaign_id_facebook'] .
                     '/insights?fields=spend,reach,clicks&level=account'
                     . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
@@ -173,7 +172,7 @@ class Cron extends CI_Controller {
     }
 
     function test_cost_campaign() {
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             $day = "-" . $i . " days";
             $this->update_campain_cost($day);
         }
@@ -187,14 +186,14 @@ class Cron extends CI_Controller {
     }
 
     function test_cost_adset() {
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 15; $i++) {
             $day = "-" . $i . " days";
             $this->update_adset_cost($day);
         }
     }
 
     function test_cost_ads() {
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 15; $i++) {
             $day = "-" . $i . " days";
             $this->update_ad_cost($day);
         }

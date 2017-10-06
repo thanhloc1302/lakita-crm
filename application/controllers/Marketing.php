@@ -163,6 +163,7 @@ class Marketing extends MY_Table {
         );
         $conditional = array();
         $conditional['where']['date_rgt >'] = strtotime(date('d-m-Y'));
+        $conditional['where']['source_id'] = '1';
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
@@ -224,6 +225,7 @@ class Marketing extends MY_Table {
             )
         );
         $conditional = array();
+        $conditional['where']['source_id'] = '1';
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
