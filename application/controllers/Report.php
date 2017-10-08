@@ -357,7 +357,7 @@ class Report extends MY_Controller {
         $data_load['contact_not_send'] = ReArrangeContactsByBillCheck($contact_not_send);
         $str = $this->load->view('cod/waiting_cancel_list/index', $data_load, true);
         //$emailTo = 'chuyenpn@lakita.vn';
-        $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com';
+        $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com, lakitavn@gmail.com';
         $this->load->library("email");
         $this->email->from('cskh@lakita.vn', "lakita.vn");
         $this->email->to($emailTo);

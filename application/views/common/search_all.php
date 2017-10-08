@@ -7,10 +7,10 @@
     <?php $this->load->view('common/content/tbl_contact'); ?>
     <?php $this->load->view('manager/modal/divide_contact'); ?>
     <?php $this->load->view('sale/modal/transfer_multi_contact'); ?> 
-     <?php $this->load->view('cod/modal/edit_multi_contact'); ?> 
+    <?php $this->load->view('cod/modal/edit_multi_contact'); ?> 
 </form>
 <?php $this->load->view('manager/modal/divide_one_contact'); ?>
 <?php $this->load->view('sale/modal/transfer_one_contact'); ?>
 <div class="view_duplicate">
-    
+
 </div>
