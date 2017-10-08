@@ -17,13 +17,15 @@ class MY_Controller extends CI_Controller {
     public $total_paging = 0;
     protected $table = '';
     protected $role_id = 0;
+    public $can_view_contact = 0;
+    public $can_edit_contact = 0;
 
     function __construct() {
         parent::__construct();
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
-       //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
+        //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
         //echo date('H:i:s d/m/Y', 1504544400);die;
         //  echo time(). '<br>';
         // echo strtotime('09-06-2018 20:00:00'); die;
@@ -35,6 +37,7 @@ class MY_Controller extends CI_Controller {
         $this->_check_login();
         $this->_set_default_variable();
         $this->_check_permission();
+        $this->_check_permission_edit_view();
         if ($this->config->item('show_profiler') === TRUE) {
             // $this->output->enable_profiler(TRUE);
         }
@@ -136,6 +139,17 @@ class MY_Controller extends CI_Controller {
                     die;
                 }
             }
+        }
+    }
+
+    private function _check_permission_edit_view() {
+        $this->load->model('permission_edit_view');
+        $input = array();
+        $input['where'] = array('controller' => $this->controller, 'method' => $this->method);
+        $edit_view = $this->permission_edit_view->load_all($input);
+        if (!empty($edit_view)) {
+            $this->can_edit_contact = $edit_view[0]['can_edit'];
+            $this->can_view_contact = $edit_view[0]['can_view'];
         }
     }
 

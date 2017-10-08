@@ -7,15 +7,15 @@
  */
 
 /**
- * Description of Test
+ * Description of Role_model
  *
- * @author Beto
+ * @author CHUYEN
  */
-class Test extends CI_Controller {
+class Permission_edit_view extends MY_Model {
 
-    function index() {
-  
-        $this->load->view('test');
+    public function __construct() {
+        parent::__construct();
+        $this->table = 'permission_edit_view';
     }
 
 }

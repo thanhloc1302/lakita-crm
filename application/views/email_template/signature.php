@@ -1,4 +1,4 @@
-<table border="0" cellspacing="0" cellpadding="0" style="background:none;margin:0px;padding:0px;border:0px currentcolor;color:rgb(85,85,85);font-family:proxima-nova,&quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;font-size:16px;border-collapse:collapse;border-spacing:0px">
+<table border="0" cellspacing="0" cellpadding="0" style="background:none;margin:0px;padding:0px;border:0px currentcolor;color:rgb(85,85,85);font-family:Helvetica,Arial,sans-serif;font-size:16px;border-collapse:collapse;border-spacing:0px">
     <tbody>
         <tr>
             <td valign="top" style="padding:0px 7px 0px 0px;border-top:0px none currentcolor;border-right:3px solid rgb(27,115,70)"><img src="https://ci5.googleusercontent.com/proxy/_okvqVtTNUvPcSBJZ20ty_HaRu_3SK34MxAeE-leyWXqhuKg9kGqCHXcL-PZyo2wO1Ii4lS0cVisxwN9bZOr-oHe7ApN=s0-d-e1-ft#http://lakita.vn/styles/v2.0/img/logo-small.jpg" style="border:0px currentcolor;max-width:100%"></td>

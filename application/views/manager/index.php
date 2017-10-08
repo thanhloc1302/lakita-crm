@@ -9,7 +9,4 @@
     <?php $this->load->view('common/content/tbl_contact'); ?>
     <?php $this->load->view('manager/modal/divide_contact'); ?>
 </form>
-<?php $this->load->view('manager/modal/divide_one_contact'); ?>
-<!--<div class="view_duplicate">
-    
-</div>-->
+<?php $this->load->view('manager/modal/divide_one_contact'); 
