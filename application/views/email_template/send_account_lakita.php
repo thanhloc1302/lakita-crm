@@ -69,7 +69,7 @@
                                                         <div>
                                                             <ul style="list-style:none;padding:0px">
                                                                 <li style="margin-bottom:20px;color:#272727"><span style="font-weight:bold"> Anh/chị "<?php echo $name; ?>" thân mến, </span></li>
-                                                                <li style="margin-bottom:20px;color:#272727">Lakita đã kích hoạt khóa học cho chi trên hệ thống của Lakita.vn. Để vào học chị sử dụng tài khoản sau:</li>
+                                                                <li style="margin-bottom:20px;color:#272727">Lakita đã kích hoạt khóa học cho anh/chị trên hệ thống của Lakita.vn. Để vào học anh/chị sử dụng tài khoản sau:</li>
                                                                 <ul>
                                                                     <li style="margin-bottom:10px;color:#272727; padding-left: 40px;" > 
                                                                         <span style="font-weight:bold"> Tài khoản: </span> <?php echo $email; ?> </li>

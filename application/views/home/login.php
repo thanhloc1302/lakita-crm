@@ -35,6 +35,7 @@
                 </div>
             </div>
         </div>
+        <div id="particles-js"></div>
 
         <div class="redirect" style="display:none;">
             <div class="body">
@@ -60,6 +61,7 @@
         <?php $this->load->view("common/hidden_input"); ?>
         <?php $this->load->view("common/content/notification"); ?>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
-        <script src="<?php echo base_url(); ?>style/js/home/login.min.js"></script>
+        <script src="<?php echo base_url(); ?>style/js/home/particles.min.js"></script>
+        <script src="<?php echo base_url(); ?>style/js/home/login.min.js?<?php echo time();?>"></script>
     </body>
 </html>

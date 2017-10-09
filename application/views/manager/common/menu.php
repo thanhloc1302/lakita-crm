@@ -31,6 +31,14 @@
             <span> Xem báo cáo doanh thu  </span>
         </a>
     </li>
+     <li>
+        <a href="<?php echo base_url('config/course'); ?>">
+            <img src="<?php echo base_url(); ?>public/images/courses.png"> 
+            <span> Cài đặt khóa học </span>
+        </a>
+    </li>
+</ul>
+<ul class="nav-list list-inline display-flex">
     <li>
         <a href="<?php echo base_url('home/logout'); ?>">
             <img src="<?php echo base_url(); ?>public/images/logout.png"> 

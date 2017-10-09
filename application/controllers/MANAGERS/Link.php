@@ -303,7 +303,7 @@ class Link extends MY_Table {
         $post = $this->input->post();
         $this->load->model('campaign_model');
         $input = array();
-        $input['where'] = array('channel_id' => $post['channel_id'], 'marketer_id' => $this->user_id);
+        $input['where'] = array('channel_id' => $post['channel_id'], 'marketer_id' => $this->user_id, 'active' => '1');
         $campaigns = $this->campaign_model->load_all($input);
         $xhml = '';
         if (!empty($campaigns)) {
@@ -327,7 +327,7 @@ class Link extends MY_Table {
         $post = $this->input->post();
         $this->load->model('adset_model');
         $input = array();
-        $input['where'] = array('campaign_id' => $post['campagin_id']);
+        $input['where'] = array('campaign_id' => $post['campagin_id'], 'active' => '1');
         $adsets = $this->adset_model->load_all($input);
         $xhml = '';
         if (!empty($adsets)) {
@@ -351,7 +351,7 @@ class Link extends MY_Table {
         $post = $this->input->post();
         $this->load->model('ad_model');
         $input = array();
-        $input['where'] = array('adset_id' => $post['adset_id']);
+        $input['where'] = array('adset_id' => $post['adset_id'], 'active' => '1');
         $ads = $this->ad_model->load_all($input);
         $xhml = '';
         if (!empty($ads)) {

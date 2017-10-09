@@ -180,6 +180,10 @@ class MY_Controller extends CI_Controller {
         $config = array();
         $baseURL = ($baseurl == '') ? $this->controller . '/' . $this->method : $baseurl;
         $config['base_url'] = base_url($baseURL);
+          if (count($_GET) > 0) {
+            $config['suffix'] = '?' . http_build_query($_GET, '', "&");
+        }
+        $config['first_url'] = $config['base_url'].'?'.http_build_query($_GET);
         $config['total_rows'] = $total_contact;
         $config['per_page'] = $this->per_page;
         $config['uri_segment'] = $uri_segment;

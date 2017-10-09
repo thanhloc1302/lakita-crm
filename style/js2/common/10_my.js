@@ -3,13 +3,13 @@ $(function () {
     /*
      * Sửa lại link phân trang nếu có các thao tác lọc, tìm kiếm, sắp xếp
      */
-    if (location.search !== "") {
-        $(".pagination a").each(
-                function () {
-                    var curr_href = $(this).attr("href");
-                    $(this).attr('href', curr_href + location.search);
-                });
-    }
+//    if (location.search !== "") {
+//        $(".pagination a").each(
+//                function () {
+//                    var curr_href = $(this).attr("href");
+//                    $(this).attr('href', curr_href + location.search);
+//                });
+//    }
 
     /*
      * Hiển thị datepicker và selectpicker khi modal edit item đc bật lên
