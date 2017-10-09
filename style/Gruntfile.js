@@ -126,7 +126,7 @@ module.exports = function (grunt) {
     // Default task(s).
     grunt.registerTask('default', ['sass', 'concat', 'watch']);
     grunt.registerTask('nowatch', ['sass', 'concat', 'uglify', 'obfuscator']);
-    grunt.registerTask('nowatch2', ['sass', 'babel', 'uglify', 'obfuscator']);
+    grunt.registerTask('nowatch2', ['sass', 'concat', 'babel', 'uglify', 'obfuscator']);
     grunt.registerTask('ob', ['obfuscator']);
     grunt.registerTask('ts', ['typescript']);
 };

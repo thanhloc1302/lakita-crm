@@ -16,7 +16,7 @@ show_number_selected_row = function show_number_selected_row() {
     for (i = 0; i < numberOfChecked; i++) {
         sum += parseInt($($('input:checkbox:checked')[i]).parent().parent().find('.tbl_price_purchase').text());
     }
-    $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes + ' . Tổng tiền = ' + sum.toLocaleString(), {
+    $.notify('\u0110\xE3 ch\u1ECDn: ' + numberOfChecked + ' / ' + totalCheckboxes + '. t\u1ED5ng ti\u1EC1n = ' + sum.toLocaleString(), {
         position: "top left",
         className: 'success',
         showDuration: 200,
