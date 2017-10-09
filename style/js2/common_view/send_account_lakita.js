@@ -24,10 +24,8 @@ $(document).on('click', '.btn-send-account-lakita', function (e) {
             contact_id: contact_id
         },
         dataType: 'json',
-        beforeSend: function () {
-            $(".popup-wrapper").show();
-        },
-        success: function (data) {
+        beforeSend: () => $(".popup-wrapper").show(),
+        success: data => {
             console.log(data.success);
             if (data.success == 0) {
                 $("#send_email_error")[0].play();
@@ -47,10 +45,8 @@ $(document).on('click', '.btn-send-account-lakita', function (e) {
                 });
             }
         },
-        complete: function () {
-            $(".popup-wrapper").hide();
-        },
-        error: function () {
+        complete: () => $(".popup-wrapper").hide(),
+        error: () => {
             $("#send_email_error")[0].play();
             $.notify('Có lỗi xảy ra trong quá trình gửi email!', {
                 position: "top left",

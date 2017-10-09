@@ -14,7 +14,7 @@ $(document).on('click', '.find-course-code', function () {
         url: $("#base_url").val() + "common/find_course_name",
         type: 'POST',
         data: {course_code: $(this).text().trim()},
-        success: function (data, textStatus, jqXHR) {
+        success: data => {
             if (_this.parent().attr('class') === 'view_course_code') {
                 _this.notify(data, {
                     position: "top left",

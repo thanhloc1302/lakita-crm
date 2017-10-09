@@ -5,9 +5,8 @@
  */
 
 
-function show_number_selected_row() {
+show_number_selected_row = () => {
     var numberOfChecked = $('input:checkbox:checked').length;
-    console.log();
     var totalCheckboxes = $('input:checkbox').length;
     /*
      * Lấy tổng giá
@@ -22,43 +21,43 @@ function show_number_selected_row() {
         showDuration: 200,
         autoHideDelay: 3000
     });
-}
+};
 
-function unselect_not_checked() {
+unselect_not_checked = () => {
     $('input[type="checkbox"]').each(
-            function () {
+             () => {
                 if (!$(this).is(":checked")) {
                     $(this).parent().parent().removeClass('checked');
                 }
             });
-}
+};
 
-function unselect_checked() {
+unselect_checked = () => {
     $('input[type="checkbox"]').each(
-            function () {
+             () => {
                 if ($(this).is(":checked")) {
                     $(this).parent().parent().removeClass('checked');
                 }
             });
-}
-function uncheck_checked() {
+};
+uncheck_checked = () => {
     $('input[type="checkbox"]').each(
-            function () {
+            () => {
                 if ($(this).is(":checked")) {
                     $(this).prop("checked", false);
                 }
             });
-}
-function uncheck_not_checked() {
+};
+uncheck_not_checked = () => {
     $('input[type="checkbox"]').each(
-            function () {
+            () => {
                 if (!$(this).is(":checked")) {
                     $(this).prop("checked", false);
                 }
             });
-}
+};
 
-function right_context_menu_display(controller, contact_id, contact_name, duplicate_id, contact_phone) {
+right_context_menu_display = (controller, contact_id, contact_name, duplicate_id, contact_phone) => {
     $(".action_view_detail_contact").attr('contact_id', contact_id);
     $("a.view_duplicate").attr("duplicate_id", duplicate_id);
     $("a.send_to_mobile").attr("contact_name", contact_name).attr("contact_phone", contact_phone);
@@ -106,5 +105,5 @@ function right_context_menu_display(controller, contact_id, contact_name, duplic
         $(".transfer_one_contact").attr('contact_id', contact_id);
         $(".transfer_one_contact").attr('contact_name', contact_name);
     }
-}
+};
 

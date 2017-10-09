@@ -11,16 +11,11 @@ $(document).on('click', 'a.action_view_detail_contact', function (e) {
         data: {
             contact_id: contact_id
         },
-        success: function (data) {
-            // console.log(data);
-            $("div.replace_content_view_detail_contact").html(data);
-        },
-        complete: function () {
-            $(".view_detail_contact_modal").modal("show");
-        }
+        success: data => $("div.replace_content_view_detail_contact").html(data),
+        complete: () => $(".view_detail_contact_modal").modal("show")
     });
 });
-$('.view_detail_contact_modal').on('shown.bs.modal', function () {
+$('.view_detail_contact_modal').on('shown.bs.modal',  () => {
     if ($(".table-view-1").height() > $(".table-view-2").height())
     {
         $(".table-view-2").height($(".table-view-1").height());
@@ -30,7 +25,7 @@ $('.view_detail_contact_modal').on('shown.bs.modal', function () {
     }
 });
 
-$(document).on("click", ".view_contact_phone", function () {
+$(document).on("click", ".view_contact_phone", () => {
     document.querySelector("#input-copy").select();
     document.execCommand('copy');
     $.notify("Copy thành công vào clipboard", {

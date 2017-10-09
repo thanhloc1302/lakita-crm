@@ -19,17 +19,9 @@ $('.tbl_name').on('click', 'span.badge-star', function (e) {
             contact_course_code: contact_course_code,
             controller: controller
         },
-        success: function (data) {
-            // console.log(data);
-            $("div.replace_content_view_contact_star").html(data);
-        },
-        complete: function () {
-            $(".view_contact_star_modal").modal("show");
-        }
+        success: data => $("div.replace_content_view_contact_star").html(data),
+        complete: () => $(".view_contact_star_modal").modal("show")
     });
 });
 
-
-$('.view_contact_star_modal').on('hide.bs.modal', function () {
-    $("div.replace_content_view_contact_star").html("");
-});
+$('.view_contact_star_modal').on('hide.bs.modal', () => $("div.replace_content_view_contact_star").html(""));

@@ -1,5 +1,5 @@
 $(function () {
-    setTimeout(function () {
+    setTimeout( () => {
         if ($(".filter-tbl-1").height() > $(".filter-tbl-2").height())
         {
             $(".filter-tbl-2").height($(".filter-tbl-1").height());

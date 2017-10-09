@@ -10,13 +10,8 @@ $(document).on('click', 'a.edit_contact', function (e) {
         data: {
             contact_id: contact_id
         },
-        success: function (data) {
-            // console.log(data);
-            $("div.replace_content").html(data);
-        },
-        complete: function () {
-            $(".edit_contact_modal").modal("show");
-        }
+        success: data => $("div.replace_content").html(data),
+        complete: () =>  $(".edit_contact_modal").modal("show")
     });
 });
 
@@ -32,7 +27,7 @@ $(document).on('click', '.btn-edit-contact', function (e) {
         type: "POST",
         dataType: 'json',
         data: $(".form_edit_contact_modal").serialize(),
-        success: function (data) {
+        success: data => {
             if (data.success == 1) {
                 $("#send_email_sound")[0].play();
                 $.notify(data.message, {
@@ -52,9 +47,6 @@ $(document).on('click', '.btn-edit-contact', function (e) {
                     autoHideDelay: 7000
                 });
             }
-        },
-        complete: function () {
-
         }
     });
 });

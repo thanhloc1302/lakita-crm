@@ -15,7 +15,7 @@ $(".send_to_mobile").on('click', function (e) {
             contact_phone: contact_phone,
             contact_name: contact_name
         },
-        success: function () {
+        success:  () =>  {
             $.notify('Gửi thành công đến mobile!', {
                 position: "top left",
                 className: 'success',
