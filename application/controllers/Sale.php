@@ -81,7 +81,7 @@ class Sale extends MY_Controller {
         $get = $this->input->get();
         $conditional['where'] = array(
             'date_recall >' => '0',
-           // 'date_recall <' => strtotime('tomorrow'),
+            // 'date_recall <' => strtotime('tomorrow'),
             'sale_staff_id' => $this->user_id,
             'is_hide' => '0');
         $conditional['where_not_in'] = array(
@@ -90,8 +90,26 @@ class Sale extends MY_Controller {
         $conditional['order'] = array('date_recall' => 'DESC');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
-        $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
+        $contacts = $data_pagination['data'];
+        $this->load->model('notes_model');
+        foreach ($contacts as &$value) {
+            $input = array();
+            $input['where'] = array('contact_code' => $value['phone'] . '_' . $value['course_code']);
+            $input['order'] = array('id' => 'DESC');
+            $last_note = $this->notes_model->load_all($input);
+            $notes = '';
+            if (!empty($last_note)) {
+                foreach ($last_note as $value2) {
+                    $notes .= '<p>' . date('d/m/Y', $value2['time']) . ' ==> ' . $value2['content'] . '</p>';
+                }
+                $value['last_note'] = $notes;
+            } else {
+                $value['last_note'] = $notes;
+            }
+        }
+        unset($value);
+        $data['contacts'] = $contacts;
 
         $data['left_col'] = array('tu_van', 'date_rgt', 'date_last_calling');
         $data['right_col'] = array('course_code');
@@ -495,6 +513,7 @@ class Sale extends MY_Controller {
             'call_status' => array('order' => array('sort' => 'ASC')),
             'ordering_status' => array('order' => array('sort' => 'ASC')),
             'cod_status' => array(),
+            'payment_method_rgt' => array(),
         );
         return array_merge($this->data, $this->_get_require_data($require_model));
     }

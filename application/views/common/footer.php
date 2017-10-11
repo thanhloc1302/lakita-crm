@@ -1,5 +1,5 @@
 <div class="black-over">
-    
+
 </div>
 <div id="Popup" class="popup-wrapper" style="display: none;">
     <div class="popup-loading">
@@ -8,7 +8,8 @@
         </div>
     </div>
 </div>
-
+<!--<link rel="stylesheet" href="<?php echo base_url(); ?>style/build/bootstrap-table-expandable.css">
+<script src="<?php echo base_url(); ?>style/build//bootstrap-table-expandable.js"></script>-->
 <!--<script src="<?php echo base_url(); ?>style/js/common/jquery.min.js"></script>
 <script src="<?php echo base_url(); ?>style/js/common/bootstrap.min.js"></script>
 <script src="<?php echo base_url(); ?>style/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
@@ -37,9 +38,9 @@ integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="ano
 <!--<script src="<?php echo base_url(); ?>vendors/build/js/custom.min.js" type="text/javascript"></script>-->
 <!--<script src="<?php echo base_url(); ?>style/js/common_view/view_contact_star.min.js" type="text/javascript"></script>-->
 <?php if (ENVIRONMENT == 'production') { ?>
-<script src="<?php echo base_url(); ?>style/js3/built_obfuscated.min.js?<?php echo time();?>" type="text/javascript"></script>
+    <script src="<?php echo base_url(); ?>style/js3/built_obfuscated.min.js?<?php echo time(); ?>" type="text/javascript"></script>
 <?php } else { ?>
-    <script src="<?php echo base_url(); ?>style/js3/built.js?<?php echo time();?>" type="text/javascript"></script>
+    <script src="<?php echo base_url(); ?>style/js3/built.js?<?php echo time(); ?>" type="text/javascript"></script>
 <?php } ?>
 
 <?php if ($controller == 'sale') { ?>
@@ -65,4 +66,3 @@ integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="ano
         </script>
     <?php } ?>
 <?php } ?>
-

@@ -116,6 +116,15 @@ class MY_Controller extends CI_Controller {
         $this->load->model('permission_model');
         $permissions = $this->permission_model->load_all($input);
 
+        $input = array();
+        $input['where'] = array('id' => $this->user_id);
+        $user = $this->staffs_model->load_all($input);
+        if ($user[0]['active'] == 0) {
+            echo 'Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản lý để đc giúp đỡ';
+            echo '<a href="' . base_url('home/logout') . '"> Đăng xuất </a>';
+            die;
+        }
+
         if (empty($permissions)) {
             redirect(base_url('no_access'));
             die;
@@ -180,10 +189,10 @@ class MY_Controller extends CI_Controller {
         $config = array();
         $baseURL = ($baseurl == '') ? $this->controller . '/' . $this->method : $baseurl;
         $config['base_url'] = base_url($baseURL);
-          if (count($_GET) > 0) {
+        if (count($_GET) > 0) {
             $config['suffix'] = '?' . http_build_query($_GET, '', "&");
         }
-        $config['first_url'] = $config['base_url'].'?'.http_build_query($_GET);
+        $config['first_url'] = $config['base_url'] . '?' . http_build_query($_GET);
         $config['total_rows'] = $total_contact;
         $config['per_page'] = $this->per_page;
         $config['uri_segment'] = $uri_segment;
@@ -197,7 +206,7 @@ class MY_Controller extends CI_Controller {
      * @return: mảng chứa thông tin các contact và tổng số contact thỏa điều kiện
      */
 
-    protected function _query_all_from_get($get, $condition = [], $limit = 0, $offset = 0) {
+    protected function _query_all_from_get($get, $condition = [], $limit = 0, $offset = 0, $viewContactStar = 1) {
         if (count($get)) {
             $result = array();
         }
@@ -240,17 +249,19 @@ class MY_Controller extends CI_Controller {
         /*
          * Lấy thông tin 1 contact đăng ký nhiều khóa học
          */
-
-        if ((isset($condition['select']) && strpos($condition['select'], "phone") !== FALSE) || !isset($condition['select'])) {
-            foreach ($result['data'] as &$value) {
-                $input = array();
-                $input['select'] = 'id';
-                $input['where'] = array('phone' => $value['phone'], 'is_hide' => '0');
-                $courses = $this->contacts_model->load_all($input);
-                $value['star'] = count($courses);
+        if ($viewContactStar) {
+            if ((isset($condition['select']) && strpos($condition['select'], "phone") !== FALSE) || !isset($condition['select'])) {
+                foreach ($result['data'] as &$value) {
+                    $input = array();
+                    $input['select'] = 'id';
+                    $input['where'] = array('phone' => $value['phone'], 'is_hide' => '0');
+                    $courses = $this->contacts_model->load_all($input);
+                    $value['star'] = count($courses);
+                }
+                unset($value);
             }
-            unset($value);
         }
+
 
         //lấy thông tin hiển thị contact đầu, contact cuối và tổng contact
         $this->begin_paging = ($total_row == 0) ? 0 : $offset + 1;

@@ -5,7 +5,7 @@
     <div class="number_paging">
         <?php echo 'Hiển thị ' . $this->begin_paging . ' - ' . $this->end_paging . ' của ' . $this->total_paging . ' contacts'; ?>
     </div>
-    <table class="table table-bordered table-striped list_contact list_contact_2">
+    <table class="table table-bordered table-expandable table-striped list_contact list_contact_2">
         <thead>
             <tr>
                 <?php
@@ -22,7 +22,7 @@
             if (isset($contacts)) {
                 foreach ($contacts as $key => $value) {
                     ?>
-                    <tr class="custom_right_menu <?php echo h_get_row_class($value);?>" 
+                    <tr class="custom_right_menu <?php echo h_get_row_class($value); ?>" 
                         contact_id="<?php echo $value['id']; ?>" 
                         duplicate_id="<?php echo $value['duplicate_id']; ?>" 
                         contact_name="<?php echo $value['name']; ?>"
@@ -33,6 +33,11 @@
                                 $this->load->view('common/content/table/body/' . $value2, $data);
                             }
                             ?>
+                    </tr>
+                    <tr id="show-<?php echo $value['id']; ?>" class="fade in temp-hide" style="display:none">
+                        <td colspan="<?php echo count($table); ?>">
+                           <?php $this->load->view('common/content/table/extra_table'); ?>
+                        </td>
                     </tr>
                     <?php
                 }
@@ -46,4 +51,5 @@
     <div class="pagination">
         <?php echo isset($pagination) ? $pagination : ''; ?>
     </div>
-<?php } 
+    <?php
+} 

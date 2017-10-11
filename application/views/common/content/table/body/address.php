@@ -1,3 +1,10 @@
 <td class="center tbl_address">
-    <?php echo $value['address']; ?>
+    <div class="row">
+        <div class="col-md-11">
+            <?php echo $value['address']; ?>
+        </div>
+        <div class="col-md-1 show-more-table-info" contact-id="show-<?php echo $value['id']; ?>" is-hide="1">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+        </div>
+    </div>
 </td>

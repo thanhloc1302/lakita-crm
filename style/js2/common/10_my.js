@@ -37,7 +37,7 @@ $(function () {
 //    $(".back_location").click(function () {
 //        location.href = document.referrer;
 //    });
-   
+
 
 
     /*
@@ -71,5 +71,19 @@ $(function () {
 //            hide = 1;
 //        }
 //    });
+
+    $(".show-more-table-info").click(function (e) {
+        e.stopPropagation();
+        let contactId = $(this).attr('contact-id');
+        $("#" + contactId).toggle("slow");
+        let isHide = $(this).attr('is-hide');
+        if(isHide == '1'){
+            $(this).attr('is-hide', '0');
+            $(this).html('<i class="fa fa-minus-circle" aria-hidden="true"></i>');
+        }else{
+            $(this).attr('is-hide', '1');
+            $(this).html('<i class="fa fa-plus-circle" aria-hidden="true"></i>');
+        }
+    });
 
 });

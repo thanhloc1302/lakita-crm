@@ -46,6 +46,9 @@
                 </tbody>
             </table>
         <?php } ?>
-        <textarea class="form-control" rows="3" name="note"></textarea>
+        <div class="form-group">
+            <label for="note" class="sr-only">Note</label>
+            <textarea class="form-control" rows="3" name="note"></textarea>
+        </div>
     </td>
 </tr>

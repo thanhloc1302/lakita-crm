@@ -4,7 +4,7 @@ module.exports = function (grunt) {
         pkg: grunt.file.readJSON('package.json'),
         dirs: {
             src: 'src/files',
-            dest: 'style/js',
+            dest: 'style/js'
         },
         sass: {// Task 
             dist: {// Target 
@@ -22,7 +22,7 @@ module.exports = function (grunt) {
         concat: {
             options: {
                 separator: '',
-                sourceMap: true
+                //sourceMap: true
             },
             dist: {
                 src: ['js2/*/*.js', 'js2/*/*/*.js'],
@@ -52,12 +52,14 @@ module.exports = function (grunt) {
 
         babel: {
             options: {
-                sourceMap: true,
-                presets: ['env']
+                //sourceMap: true,
+                presets: ['babel-preset-es2015'],
+                plugins: ["transform-remove-strict-mode"]
             },
             dist: {
                 files: {
-                    'js3/built2.js': ['js3/built.js']
+                    'js3/built2.js': ['js3/built.js'],
+                    'js/sale/noti2.js' : ['js/sale/noti_contact_recall.js']
                 }
             }
         },
@@ -67,12 +69,12 @@ module.exports = function (grunt) {
                 compress: {
                     drop_console: true // <-
                 },
-                sourceMap: true
+                //sourceMap: true
             },
             my_target: {
                 files: {
                     'js3/built.min.js': ['js3/built2.js'],
-                    'js/sale/noti_contact_recall.min.js': ['js/sale/noti_contact_recall.js']
+                    'js/sale/noti_contact_recall.min.js': ['js/sale/noti2.js']
                 }
             }
         },
@@ -110,7 +112,7 @@ module.exports = function (grunt) {
                     module: 'amd' //or commonjs 
                 }
             }
-        },
+        }
 
     });
     // Load the plugin that provides the "uglify" task.

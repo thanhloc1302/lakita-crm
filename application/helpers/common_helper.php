@@ -55,6 +55,9 @@ function h_caculate_money($contact) {
 function display_money($money) {
     return number_format($money, 0, ",", ".");
 }
+function h_number_format($money) {
+    return number_format($money, 0, ",", ".");
+}
 
 function found_position_in_array($phone, $contacts) {
     $result = -1;

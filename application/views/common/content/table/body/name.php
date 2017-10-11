@@ -8,7 +8,7 @@
     }
     ?>
     <?php echo $value['name']; ?> 
-    <?php if($value['star'] > 1) {?>
+    <?php if(isset($value['star']) && $value['star'] > 1) {?>
    <sup> <span class="badge badge-star" 
           contact_phone="<?php echo $value['phone'];?>"
           contact_course_code ="<?php echo $value['course_code'];?>"

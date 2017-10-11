@@ -1,27 +1,28 @@
 $(function () {
     var url = $("#base_url").val() + "sale/noti_contact_recall";
     var i = 0;
-    setInterval(noti, 10000);
-    function noti() {
+    noti = () => {
         $.ajax({
             url: url,
             type: "POST",
             dataType: 'json',
-            success: function (data) {
+            success: data => {
                 $('#num_noti').html(data.num_noti);
-                var content_noti = '';
+                var content_noti = ``;
                 $.each(data.contacts_noti, function () {
-                    content_noti += '<li class="content_noti">';
-                    content_noti += '<a href="#" class="edit_contact" contact_id="' + this.id + '" title="Chăm sóc contact"> ' +
-                            this.name + ' - ' + this.phone + ' - Thời gian gọi lại ' + this.date_recall + '</a>';
-                    content_noti += '</li>';
+                    content_noti += `<li class="content_noti">`;
+                    content_noti += `<a href="#" class="edit_contact" contact_id="${this.id}" 
+                                    title="Chăm sóc contact"> ${this.name}  - ${this.phone} - Thời gian gọi lại ${this.date_recall} 
+                                    </a>`;
+                    content_noti += `</li>`;
                 });
                 $('#noti_contact_recall').html(content_noti);
+                var originTitle = '';
                 if (data.num_noti > 0) {
                     if (i++ === 0) {
-                        var originTitle = 'CONTACT CẦN GỌI LẠI';
+                        originTitle = 'CONTACT CẦN GỌI LẠI';
                     } else {
-                        var originTitle = $("title").text().substring(3);
+                        originTitle = $("title").text().substring(3);
                     }
                     var title = '(' + data.num_noti + ') ' + originTitle;
                     $("title").text(title);
@@ -41,5 +42,6 @@ $(function () {
                 }
             }
         });
-    }
+    };
+    setInterval(noti, 10000);
 });
