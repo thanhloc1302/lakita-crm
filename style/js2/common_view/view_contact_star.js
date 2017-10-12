@@ -24,4 +24,4 @@ $('.tbl_name').on('click', 'span.badge-star', function (e) {
     });
 });
 
-$('.view_contact_star_modal').on('hide.bs.modal', () => $("div.replace_content_view_contact_star").html(""));
+$('.view_contact_star_modal').on('hide.bs.modal', () => setTimeout(() => $("div.replace_content_view_contact_star").html(""), 1000));

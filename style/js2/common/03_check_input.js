@@ -45,19 +45,6 @@ $(".check_all").on('click', function () {
                     $(this).parent().parent().addClass('checked');
                 }
         );
-        var numberOfChecked = $('input:checkbox:checked').length;
-        /*
-         * Lấy tổng giá
-         */
-        var sum = 0;
-        for (i = 0; i < numberOfChecked; i++) {
-            sum += parseInt($($('input:checkbox:checked')[i]).parent().parent().find('.tbl_price_purchase').text());
-        }
-        $.notify('Đã chọn: ' + numberOfChecked + '/' + numberOfChecked + ' . Tổng tiền = ' + sum.toLocaleString(), {
-            position: "top left",
-            className: 'success',
-            showDuration: 200,
-            autoHideDelay: 10000
-        });
+        show_number_selected_row();
     }
 });

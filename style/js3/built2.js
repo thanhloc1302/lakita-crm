@@ -929,7 +929,9 @@ $('.tbl_name').on('click', 'span.badge-star', function (e) {
 });
 
 $('.view_contact_star_modal').on('hide.bs.modal', function () {
-    return $("div.replace_content_view_contact_star").html("");
+    return setTimeout(function () {
+        return $("div.replace_content_view_contact_star").html("");
+    }, 1000);
 });$(document).on('click', 'a.action_view_detail_contact', function (e) {
     e.preventDefault();
     $(".checked").removeClass("checked");
@@ -1246,20 +1248,7 @@ $(".check_all").on('click', function () {
             $(this).prop("checked", true);
             $(this).parent().parent().addClass('checked');
         });
-        var numberOfChecked = $('input:checkbox:checked').length;
-        /*
-         * Lấy tổng giá
-         */
-        var sum = 0;
-        for (i = 0; i < numberOfChecked; i++) {
-            sum += parseInt($($('input:checkbox:checked')[i]).parent().parent().find('.tbl_price_purchase').text());
-        }
-        $.notify('Đã chọn: ' + numberOfChecked + '/' + numberOfChecked + ' . Tổng tiền = ' + sum.toLocaleString(), {
-            position: "top left",
-            className: 'success',
-            showDuration: 200,
-            autoHideDelay: 10000
-        });
+        show_number_selected_row();
     }
 });
 /* 
@@ -1561,6 +1550,13 @@ $(".reset_datepicker").click(function (e) {
             $(this).attr('is-hide', '1');
             $(this).html('<i class="fa fa-plus-circle" aria-hidden="true"></i>');
         }
+    });
+
+    $('#collapse-filter').on('shown.bs.collapse', function () {
+        $(this).prev().find(".fa").removeClass("fa-arrow-circle-down").addClass("fa-arrow-circle-up");
+    });
+    $('#collapse-filter').on('hidden.bs.collapse', function () {
+        $(this).prev().find(".fa").removeClass("fa-arrow-circle-up").addClass("fa-arrow-circle-down");
     });
 });
 /*

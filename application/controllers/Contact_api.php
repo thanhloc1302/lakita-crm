@@ -88,7 +88,8 @@ class Contact_api extends REST_Controller {
             /*
              * Gửi email
              */
-            if ($input['email'] != 'NO_PARAM@gmail.com' && $input['email'] != 'lakita@lakita.vn') {
+            if (!in_array($input['email'], array('NO_PARAM@gmail.com', 'lakita@lakita.vn', 'NO_PARAM@gmai.com'
+                , 'lakitavn@gmail.com', 'lakita.vn@gmail.com'))) {
                 $this->load->model('courses_model');
                 $data = array();
                 $data['e_name'] = $input['name'];

@@ -77,13 +77,20 @@ $(function () {
         let contactId = $(this).attr('contact-id');
         $("#" + contactId).toggle("slow");
         let isHide = $(this).attr('is-hide');
-        if(isHide == '1'){
+        if (isHide == '1') {
             $(this).attr('is-hide', '0');
             $(this).html('<i class="fa fa-minus-circle" aria-hidden="true"></i>');
-        }else{
+        } else {
             $(this).attr('is-hide', '1');
             $(this).html('<i class="fa fa-plus-circle" aria-hidden="true"></i>');
         }
+    });
+
+    $('#collapse-filter').on('shown.bs.collapse', function () {
+        $(this).prev().find(".fa").removeClass("fa-arrow-circle-down").addClass("fa-arrow-circle-up");
+    });
+     $('#collapse-filter').on('hidden.bs.collapse', function () {
+        $(this).prev().find(".fa").removeClass("fa-arrow-circle-up").addClass("fa-arrow-circle-down");
     });
 
 });
