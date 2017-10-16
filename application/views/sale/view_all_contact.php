@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-10 col-md-offset-1">
-        <h3 class="text-center marginbottom20"> Danh sách toàn bộ contact (<?php echo $total_contact; ?>)</h3>
+        <h3 class="text-center marginbottom20"> Danh sách toàn bộ contact <sup> <span class="badge bg-red"> <?php echo $total_contact; ?> </span> </sup></h3>
     </div>
 </div>
 <form action="<?php echo base_url(); ?>sale/transfer_contact" method="POST" id="action_contact" class="form-inline">

@@ -783,9 +783,9 @@ class Common extends MY_Controller {
 
     // <editor-fold defaultstate="collapsed" desc="listen">
     function listen() {
-//        if (!$this->input->is_ajax_request()) {
-//            redirect();
-//        }
+        if (!$this->input->is_ajax_request()) {
+            redirect();
+        }
         $this->load->helper('cookie');
         $myfile = fopen(APPPATH . "../public/last_reg.txt", "r") or die("Unable to open file!");
         $last_id_txt = fgets($myfile);

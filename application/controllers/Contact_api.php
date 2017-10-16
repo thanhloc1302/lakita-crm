@@ -117,8 +117,10 @@ class Contact_api extends REST_Controller {
              * Nếu người dùng F5 trong vòng 2 phút thì không tính là C2
              */
             $input_c2_exist = array();
+            $input_c2_exist['select'] = 'id';
             $input_c2_exist['where'] = array('link_id' => $input['link_id'], 'ip' => $input['ip'],
                 'date_rgt >=' => time() - 120);
+            $input_c2_exist['limit'] = array('1' ,'0');
             $c2_exist = $this->c2_model->load_all($input_c2_exist);
             if (empty($c2_exist)) {
                 $this->load->model('link_model');
@@ -161,6 +163,7 @@ class Contact_api extends REST_Controller {
             'is_hide' => '0'
         );
         $input['order'] = array('id', 'ASC');
+        $input['limit'] = array('1' ,'0');
         $rs = $this->contacts_model->load_all($input);
         if (count($rs) > 0) {
             $dulicate = $rs[0]['id'];

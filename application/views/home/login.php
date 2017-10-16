@@ -7,7 +7,7 @@
         <link rel="shortcut icon" href="http://crm2.lakita.vn/style/images/favicon.png" type="image/x-icon" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="<?php echo base_url(); ?>style/css/home/login.css">
+        <link rel="stylesheet" href="<?php echo base_url(); ?>style/css/home/login.css?ver=<?php echo _VER_CACHED_;?>">
     </head>
     <body>
         <div class="animated"></div>
@@ -62,6 +62,6 @@
         <?php $this->load->view("common/content/notification"); ?>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
         <script src="<?php echo base_url(); ?>style/js/home/particles.min.js"></script>
-        <script src="<?php echo base_url(); ?>style/js/home/login.min.js?<?php echo time();?>"></script>
+        <script src="<?php echo base_url(); ?>style/js/home/login.min.js?ver=<?php echo _VER_CACHED_;?>"></script>
     </body>
 </html>
