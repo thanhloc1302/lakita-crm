@@ -2052,3 +2052,10 @@ $(document).on('change', '[name="add_adset_id"]', function () {
         }
     });
 });
+
+$(document).on('change', '[name="add_landingpage_id"]', function () {
+    var landingpage_id = $(this).find(":selected").data('url');
+    var preview_iframe = '<iframe width="100%" height="500px" src="' + landingpage_id + '"></iframe>';
+    $(".modal-replace-preview-landingpage").html(preview_iframe);
+    $(".modal-preview-landingpage").modal('show');
+});

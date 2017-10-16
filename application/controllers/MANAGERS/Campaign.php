@@ -228,7 +228,7 @@ class Campaign extends MY_Table {
     function action_add_item() {
         $post = $this->input->post();
         if (!empty($post)) {
-            if ($this->{$this->model}->check_exists(array('name' => $post['add_name']))) {
+            if ($this->{$this->model}->check_exists(array('name' => $post['add_name'], 'marketer_id' => $this->user_id))) {
                 redirect_and_die('Tên chiến dịch đã tồn tại!');
             }
             $paramArr = array('name', 'channel_id', 'campaign_id_facebook', 'desc', 'active');

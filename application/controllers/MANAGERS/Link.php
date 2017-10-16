@@ -126,7 +126,7 @@ class Link extends MY_Table {
         $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Danh sách các link đã tạo';
         $data['edit_title'] = 'Sửa thông tin link';
-        $data['content'] = 'base/index';
+        $data['content'] = 'MANAGERS/link/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -369,6 +369,15 @@ class Link extends MY_Table {
                       ';
         }
         echo $xhml;
+    }
+    
+    public function PreviewUrl(){
+        $post = $this->input->post();
+        $url = $post['landingpage_url'];
+        
+        $content = file_get_contents($url);
+        
+        echo '<iframe width="100%" height="500px"> ' . $content.'</iframe>';
     }
 
 }
