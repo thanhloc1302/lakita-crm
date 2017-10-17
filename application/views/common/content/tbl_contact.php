@@ -28,13 +28,15 @@
                         contact_name="<?php echo $value['name']; ?>"
                         contact_phone="<?php echo $value['phone']; ?>">
                             <?php
+                            $idRandom = h_generateRandomString();
                             $data['value'] = $value;
+                            $data['id_random'] = $idRandom;
                             foreach ($table as $value2) {
                                 $this->load->view('common/content/table/body/' . $value2, $data);
                             }
                             ?>
                     </tr>
-                    <tr id="show-<?php echo $value['id']; ?>" class="fade in temp-hide" style="display:none">
+                    <tr id="<?php echo $idRandom; ?>" class="fade in temp-hide" style="display:none">
                         <td colspan="<?php echo count($table); ?>">
                            <?php $this->load->view('common/content/table/extra_table'); ?>
                         </td>

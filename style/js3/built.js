@@ -1575,7 +1575,7 @@ $(".reset_datepicker").click(function (e) {
 //        }
 //    });
 
-    $(".show-more-table-info").click(function (e) {
+    $(document).on('click', '.show-more-table-info', function (e) {
         e.stopPropagation();
         let contactId = $(this).attr('contact-id');
         $("#" + contactId).toggle("slow");
@@ -1587,6 +1587,7 @@ $(".reset_datepicker").click(function (e) {
             $(this).attr('is-hide', '1');
             $(this).html('<i class="fa fa-plus-circle" aria-hidden="true"></i>');
         }
+        console.log(1);
     });
 
     $('#collapse-filter').on('shown.bs.collapse', function () {
@@ -1602,7 +1603,6 @@ $(".reset_datepicker").click(function (e) {
      $('#collapse-filter').on('hidden.bs.collapse', function () {
         $(this).prev().find(".fa").removeClass("fa-arrow-circle-up").addClass("fa-arrow-circle-down");
     });
-
 });
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -1712,8 +1712,8 @@ $('li.mega-dropdown').mouseover(() => $(".black-over").css('bottom', '0%')).mous
 $('.modal').on('hide.bs.modal', function () {
     if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated btn-very-lg');
-    } else if ($(this).find(".modal-dialog").attr('class').search('btn-lg') != -1) {
-        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated btn-lg');
+    } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
+        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated modal-lg');
     } else {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated');
     }
@@ -1721,11 +1721,16 @@ $('.modal').on('hide.bs.modal', function () {
 $('.modal').on('show.bs.modal', function () {
     if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated btn-very-lg');
-    } else if ($(this).find(".modal-dialog").attr('class').search('btn-lg') != -1) {
-        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated btn-lg');
+    } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
+        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated modal-lg');
     } else {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated');
     }
+    var zIndex = 1040 + (10 * $('.modal:visible').length);
+    $(this).css('z-index', zIndex);
+    setTimeout(function () {
+        $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+    }, 0);
 });
 $("a.cancel_one_contact").on('click', function (e) {
     var del = $(this);

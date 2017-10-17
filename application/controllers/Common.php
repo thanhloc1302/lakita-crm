@@ -775,7 +775,7 @@ class Common extends MY_Controller {
         /*
          * Các trường cần hiện của bảng contact (đã có default)
          */
-        $this->table .= 'date_last_calling call_stt ordering_stt';
+        $this->table .= 'date_rgt date_last_calling call_stt ordering_stt';
         $data['table'] = explode(' ', $this->table);
         $data['controller'] = $this->input->post('controller', true);
         $this->load->view('common/modal/view_contact_star', $data);

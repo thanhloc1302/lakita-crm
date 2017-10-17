@@ -77,7 +77,9 @@ table{
         }
         &.is_hide{
             color:red;
-            text-decoration: line-through;
+            *{
+                text-decoration: line-through;
+            }
         }
         &.inactive{
             background-color: rgba(86, 83, 83, 0.18) !important;

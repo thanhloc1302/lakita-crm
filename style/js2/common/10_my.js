@@ -72,7 +72,7 @@ $(function () {
 //        }
 //    });
 
-    $(".show-more-table-info").click(function (e) {
+    $(document).on('click', '.show-more-table-info', function (e) {
         e.stopPropagation();
         let contactId = $(this).attr('contact-id');
         $("#" + contactId).toggle("slow");
@@ -84,6 +84,7 @@ $(function () {
             $(this).attr('is-hide', '1');
             $(this).html('<i class="fa fa-plus-circle" aria-hidden="true"></i>');
         }
+        console.log(1);
     });
 
     $('#collapse-filter').on('shown.bs.collapse', function () {
@@ -99,5 +100,4 @@ $(function () {
      $('#collapse-filter').on('hidden.bs.collapse', function () {
         $(this).prev().find(".fa").removeClass("fa-arrow-circle-up").addClass("fa-arrow-circle-down");
     });
-
 });
