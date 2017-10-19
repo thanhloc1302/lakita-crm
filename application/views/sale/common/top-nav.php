@@ -42,19 +42,19 @@
                             <li>
                                 <a data-filter=".97" href="<?php echo base_url(); ?>">
                                     <img src="<?php echo base_url(); ?>public/images/new.png"> 
-                                    <span> Danh sách contact mới </span>
+                                    <span> Danh sách contact mới  (<?php echo $this->L['L1'];?>) </span>
                                 </a>
                             </li>
                             <li>
                                 <a href="<?php echo base_url('tu-van-tuyen-sinh/contact-con-cuu-duoc.html'); ?>">
                                     <img src="<?php echo base_url(); ?>public/images/can-save.png"> 
-                                    <span>Danh sách contact còn cứu được  </span>
+                                    <span>Danh sách contact còn cứu được  (<?php echo $this->L['can_save'];?>) </span>
                                 </a>
                             </li>
                             <li>
                                 <a href="<?php echo base_url('tu-van-tuyen-sinh/contact-co-lich-hen.html'); ?>">
                                     <img src="<?php echo base_url(); ?>public/images/call-back.png"> 
-                                    <span> Danh sách contact có lịch hẹn gọi lại  </span>
+                                    <span> Danh sách contact có lịch hẹn gọi lại  (<?php echo $this->L['has_callback'];?>) </span>
                                 </a>
                             </li>
                         </ul>
@@ -62,7 +62,7 @@
                             <li>
                                 <a data-filter=".97" href="<?php echo base_url('tu-van-tuyen-sinh/xem-tat-ca-contact.html'); ?>">
                                     <img src="<?php echo base_url(); ?>public/images/view-all.png"> 
-                                    <span> Danh sách toàn bộ contact </span>
+                                    <span> Danh sách toàn bộ contact  (<?php echo $this->L['all'];?>) </span>
                                 </a>
                             </li>
                             <li>

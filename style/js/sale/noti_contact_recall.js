@@ -30,7 +30,7 @@ $(function () {
                 if (typeof data.sound !== 'undefined') {
                     $("#notificate_sound")[0].play();
                     notify = new Notification(
-                            'Có contact mới đăng ký',
+                            'Có contact cần gọi lại ngay bây giờ!',
                             {
                                 body: 'Click vào đây để xem ngay!',
                                 icon: $("#base_url").val() + 'public/images/logo2.png',

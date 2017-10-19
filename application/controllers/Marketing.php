@@ -13,9 +13,12 @@
  */
 class Marketing extends MY_Table {
 
+     public $L = array();
+    
     public function __construct() {
         parent::__construct();
         $this->init();
+        $this->_loadCountListContact();
     }
 
     public function init() {
@@ -234,6 +237,21 @@ class Marketing extends MY_Table {
         $data['list_title'] = 'Danh sách toàn bộ contact';
         $data['content'] = 'marketing/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
+    }
+    
+     private function _loadCountListContact() {
+        $input = array();
+        $input['select'] = 'id';
+        $input['where']['date_rgt >'] = strtotime(date('d-m-Y'));
+        $input['where']['source_id'] = '1';
+        $this->L['C3'] = count($this->contacts_model->load_all($input));
+
+
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where']['source_id'] = '1';
+        $this->L['all'] = count($this->contacts_model->load_all($input));
     }
 
 }

@@ -2,13 +2,13 @@
     <li>
         <a data-filter=".97" href="<?php echo base_url(); ?>">
             <img src="<?php echo base_url(); ?>public/images/new.png"> 
-            <span> Danh sách contact ngày hôm nay </span>
+            <span> Danh sách contact ngày hôm nay (<?php echo $this->L['C3'];?>)</span>
         </a>
     </li>
     <li>
         <a data-filter=".97" href="<?php echo base_url('marketer/view_all'); ?>">
             <img src="<?php echo base_url(); ?>public/images/view-all.png"> 
-            <span> Danh sách toàn bộ contact </span>
+            <span> Danh sách toàn bộ contact (<?php echo $this->L['all'];?>)</span>
         </a>
     </li>
     <li>

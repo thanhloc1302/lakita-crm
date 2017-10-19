@@ -15,15 +15,15 @@
                 }
                 ?>
                 <div class="right_col" role="main">
-                    <div class="alert alert-dismissable">
+<!--                    <div class="alert alert-dismissable">
                         <a href="#" class="btn btn-danger close btn-dismiss" data-dismiss="alert" aria-label="close">&times;</a>
                         <div class="panel panel-primary">
                             <div class="panel-heading text-center"> Lời nhắn của quản lý </div>
                             <div class="panel-body">
-                                <h3 class="red text-center" style="line-height: 1.42;"> <?php echo $mySlogan; ?> </h3>
+                                
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <?php
                     $this->load->view('common/alert.php');
                     $this->load->view($content);
@@ -35,6 +35,7 @@
                         $this->load->view('common/script/edit_contact');
                     }
                     ?>
+                     <h3 class="red text-center" style="line-height: 1.42;"> <?php echo $mySlogan; ?> </h3>   
                 </div>
 
                 <?php $this->load->view('common/content/notification'); ?>

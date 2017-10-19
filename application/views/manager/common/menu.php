@@ -2,13 +2,17 @@
     <li>
         <a data-filter=".97" href="<?php echo base_url(); ?>">
             <img src="<?php echo base_url(); ?>public/images/new.png"> 
-            <span> Danh sách contact mới </span>
+            <span> Danh sách contact mới (<?php echo $this->L['L1'];?>)
+<!--            <sup> <span class="badge bg-red"> <?php echo $this->L['L1'];?> </span> </sup>-->
+            </span>
         </a>
     </li>
     <li>
         <a data-filter=".97" href="<?php echo base_url('quan-ly/xem-tat-ca-contact.html'); ?>">
             <img src="<?php echo base_url(); ?>public/images/view-all.png"> 
-            <span> Danh sách toàn bộ contact </span>
+            <span> Danh sách toàn bộ contact (<?php echo $this->L['all'];?>)
+<!--<sup> <span class="badge bg-red"> <?php echo $this->L['all'];?> </span> </sup>-->
+            </span>
         </a>
     </li>
     <li>

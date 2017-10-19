@@ -13,6 +13,8 @@
  */
 class Sale extends MY_Controller {
 
+    public $L = array();
+
     public function __construct() {
         parent::__construct();
         $this->data['top_nav'] = 'sale/common/top-nav';
@@ -29,6 +31,7 @@ class Sale extends MY_Controller {
             $data['time_remaining'] = ($time_remaining < 1800) ? $time_remaining : 0;
         }
         $this->load->vars($data);
+        $this->_loadCountListContact();
     }
 
     function index($offset = 0) {
@@ -516,6 +519,37 @@ class Sale extends MY_Controller {
             'payment_method_rgt' => array(),
         );
         return array_merge($this->data, $this->_get_require_data($require_model));
+    }
+
+    private function _loadCountListContact() {
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('call_status_id' => '0', 'sale_staff_id' => $this->user_id, 'is_hide' => '0');
+        $this->L['L1'] = count($this->contacts_model->load_all($input));
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array(
+            'date_recall >' => '0',
+            'sale_staff_id' => $this->user_id,
+            'is_hide' => '0');
+        $input['where_not_in'] = array(
+            'call_status_id' => $this->_get_stop_care_call_stt(),
+            'ordering_status_id' => $this->_get_stop_care_order_stt());
+        $this->L['has_callback'] = count($this->contacts_model->load_all($input));
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where']['sale_staff_id'] = $this->user_id;
+        $input['where']['is_hide'] = '0';
+        $input['where']['(`call_status_id` = ' . _KHONG_NGHE_MAY_ . ' OR `ordering_status_id` in (' . _BAN_GOI_LAI_SAU_ . ' , ' . _CHAM_SOC_SAU_MOT_THOI_GIAN_ . ',' . _LAT_NUA_GOI_LAI_ . '))'] = 'NO-VALUE';
+        $this->L['can_save'] = count($this->contacts_model->load_all($input));
+
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('sale_staff_id' => $this->user_id, 'is_hide' => '0');
+        $this->L['all'] = count($this->contacts_model->load_all($input));
     }
 
 }

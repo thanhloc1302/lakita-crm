@@ -44,7 +44,7 @@ integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="ano
 <?php } ?>
 
 <?php if ($controller == 'sale') { ?>
-    <script src="<?php echo base_url(); ?>style/js/sale/noti_contact_recall.min.js" type="text/javascript"></script>
+    <script src="<?php echo base_url(); ?>style/js/sale/noti_contact_recall.min.js?ver=<?php echo _VER_CACHED_;?>" type="text/javascript"></script>
 <?php } ?>    
 <?php
 //if (isset($load_js) && is_array($load_js)) {

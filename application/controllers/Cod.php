@@ -8,9 +8,12 @@
  */
 class Cod extends MY_Controller {
 
+    public $L = array();
+
     public function __construct() {
         parent::__construct();
         $this->load->model('L7_check_model');
+        $this->_loadCountListContact();
     }
 
     function index($offset = 0) {
@@ -85,8 +88,8 @@ class Cod extends MY_Controller {
     function transfer($offset = 0) {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
-        $conditional['where'] = array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_, 
-          'cod_status_id' => '0',   'payment_method_rgt >' => '1', 'is_hide' => '0');
+        $conditional['where'] = array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
+            'cod_status_id' => '0', 'payment_method_rgt >' => '1', 'is_hide' => '0');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
@@ -428,6 +431,31 @@ class Cod extends MY_Controller {
         $tweets = $this->rest->get('v4/spreadsheets/18x9FB074aMpgm66PbaPMtmol6HgG6eeidl3P5wJcH6w/values/Sheet1!A1:C' . $key);
         print_r($tweets);
         die;
+    }
+
+    private function _loadCountListContact() {
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('ordering_status_id' => _DONG_Y_MUA_, 'cod_status_id' => '0',
+            'date_expect_receive_cod <' => strtotime('tomorrow'), 'payment_method_rgt' => '1', 'is_hide' => '0');
+        $this->L['L6'] = count($this->contacts_model->load_all($input));
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('cod_status_id' => _DANG_GIAO_HANG_, 'payment_method_rgt' => '1', 'is_hide' => '0');
+        $this->L['pending'] = count($this->contacts_model->load_all($input));
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
+            'cod_status_id' => '0', 'payment_method_rgt >' => '1', 'is_hide' => '0');
+        $this->L['transfer'] = count($this->contacts_model->load_all($input));
+
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('ordering_status_id' => _DONG_Y_MUA_, 'is_hide' => '0');
+        $this->L['all'] = count($this->contacts_model->load_all($input));
     }
 
 }
