@@ -30,7 +30,7 @@ $(function () {
                     notify = new Notification('Có contact cần gọi lại ngay bây giờ!', {
                         body: 'Click vào đây để xem ngay!',
                         icon: $("#base_url").val() + 'public/images/logo2.png',
-                        tag: 'http://crm2.lakita.vn/quan-ly/trang-chu.html',
+                        tag: 'https://crm2.lakita.vn/quan-ly/trang-chu.html',
                         sound: $("#base_url").val() + 'public/mp3/new-contact.mp3',
                         image: $("#base_url").val() + 'public/images/recall.jpg'
                     });
