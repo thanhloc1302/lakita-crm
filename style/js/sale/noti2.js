@@ -34,6 +34,12 @@ $(function () {
                         sound: $("#base_url").val() + 'public/mp3/new-contact.mp3',
                         image: $("#base_url").val() + 'public/images/recall.jpg'
                     });
+                    $.notify('Có một contact cần gọi lại ngay lúc này', {
+                        position: "top middle",
+                        className: 'success',
+                        showDuration: 200,
+                        autoHideDelay: 10000
+                    });
                 }
             }
         });
