@@ -1649,14 +1649,14 @@ setInterval(function () {
                         {
                             body: 'Click vào đây để xem ngay!',
                             icon: $("#base_url").val() + 'public/images/logo2.png',
-                            tag: 'http://crm2.lakita.vn/quan-ly/trang-chu.html',
+                            tag: 'https://crm2.lakita.vn/quan-ly/trang-chu.html',
                             sound: $("#base_url").val() + 'public/mp3/new-contact.mp3',
                             image: $("#base_url").val() + 'public/images/contact-us.jpg'
                         }
                 );
                 notify.onclick = function (event) {
                     event.preventDefault();
-                    window.open('http://crm2.lakita.vn/quan-ly/trang-chu.html', '_blank');
+                    window.open('https://crm2.lakita.vn/quan-ly/trang-chu.html', '_blank');
                 };
                 if (($("#input_controller").val() === 'manager' && $("#input_method").val() === 'index')
                         || $("#input_controller").val() === 'marketing' && $("#input_method").val() === 'index') {
