@@ -34,6 +34,10 @@ class Adset extends MY_Table {
                 'name_display' => 'ID adset',
                 'display' => 'none'
             ),
+            'active' => array(
+                'type' => 'binary',
+                'name_display' => 'Hoạt động'
+            ),
             'name' => array(
                 'name_display' => 'Tên adset',
                 'order' => '1'
@@ -79,11 +83,6 @@ class Adset extends MY_Table {
             'time' => array(
                 'type' => 'datetime',
                 'name_display' => 'Ngày tạo',
-                'display' => 'none'
-            ),
-            'active' => array(
-                'type' => 'custom',
-                'name_display' => 'Hoạt động',
                 'display' => 'none'
             )
         );
@@ -176,9 +175,9 @@ class Adset extends MY_Table {
         $conditional = array();
         $conditional['where']['marketer_id'] = $this->user_id;
         $get = $this->input->get();
-        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
-            $conditional['where']['active'] = 1;
-        }
+//        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
+//            $conditional['where']['active'] = 1;
+//        }
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();

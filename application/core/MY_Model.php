@@ -114,6 +114,11 @@ class MY_Model extends CI_Model {
         if (isset($input['select'])) {
             $this->db->select($input['select']);
         }
+        
+        if(isset($input['distinct'])){
+             $this->db->distinct();
+             $this->db->select($input['distinct']);
+        }
 
         // Thêm điều kiện cho câu truy vấn truyền qua biến $input['where'] 
         //(vi du: $input['where'] = array('email' => 'hocphp@gmail.com'))

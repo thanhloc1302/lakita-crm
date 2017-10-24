@@ -362,7 +362,7 @@ $(document).on('click', 'a.edit_item', function (e) {
 });/*
  * Real order
  */
-$('th[class^="order_new_"]').on('click',function () {
+$('th[class^="order_new_"]').on('click', function () {
     var myclass = $(this).attr("class");
     myclass = myclass.split(/ /);
     myclass = myclass[0];
@@ -451,6 +451,42 @@ $(document).on('scroll', function () {
 //        var offsetLeft = $(".table-head-pos").offset().left - 1;
 //        $(".fixed-table").css("left", offsetLeft + "px");
     }
+});
+
+$(document).on("change", '.toggle-input [name="edit_active"]', function () {
+    var active = ($(this).prop('checked')) ? '1' : '0';
+    var item_id = $(this).attr("item_id");
+    $.ajax({
+        type: "POST",
+        url: $("#url_edit_active").val(),
+        data: {
+            active: active,
+            item_id: item_id
+        },
+        success: function (data) {
+            if (data == '1') {
+                $.notify('Lưu thành công', {
+                    position: "top left",
+                    className: 'success',
+                    showDuration: 200,
+                    autoHideDelay: 2000
+                });
+            } else {
+                alert("Có lỗi xảy ra! Vui lòng liên hệ admin.");
+            }
+        },
+        error: function (errorThrown) {
+            alert(errorThrown);
+        }
+    });
+});
+
+$(function () {
+    $.each($(".tbl_pricepC3"), function () {
+        if (parseInt($(this).text().replace(".", "")) > 50000) {
+            $(this).addClass("bg-red");
+        };
+    });
 });$(document).on('click', 'a.delete_bill', function (e) {
     var r = confirm("Bạn có chắc chắn muốn xóa dòng đối soát này không?");
     if (r == true) {
@@ -1122,15 +1158,16 @@ $("html").on("click", function (e) {
     $(".menu-item").hide();
     /*
      * Nếu click ra ngoài bảng thì bỏ chọn các contact
-     */
+    
     if (e.target.className.indexOf("form-inline") !== -1 || e.target.className.indexOf("number_paging") !== -1)
     {
         $("input[type='checkbox']").prop('checked', false);
         $('.checked').removeClass('checked');
 
-    }
+    } */
 
 });
+
 
 shortcut.add("Ctrl+s", function () {
     $(".btn-edit-contact").click();
@@ -1201,7 +1238,7 @@ $("tr.custom_right_menu_item").on(
                 }
                 $(this).addClass('checked'); /*.find('[name="contact_id[]"]').prop('checked', true); */
             },
-            click: function () {
+           /* click: function () {
                 if ($(this).hasClass('checked')) {
                     $(this).removeClass('checked');
                 } else {
@@ -1215,7 +1252,7 @@ $("tr.custom_right_menu_item").on(
                 }
                 unselect_not_checked();
                 show_number_selected_row();
-            }
+            } */
         });
 
 
@@ -1230,7 +1267,12 @@ $("tr.custom_right_menu_item").on(
 /*
  * Khi check vào 1 item nào đó sẽ đánh dấu item đó (hiện màu xanh)
  */
-$(document).on('change', 'input[type="checkbox"]', function () {
+$(document).on('change', 'input[type="checkbox"]', function (e) {
+    var rejectShowCheckedName = ["edit_active"];
+    if (rejectShowCheckedName.indexOf($(this).attr("name")) != -1) {
+        e.stopPropagation();
+        return false;
+    }
     if (this.checked) {
         $(this).parent().parent().addClass('checked');
     } else {
@@ -1239,6 +1281,7 @@ $(document).on('change', 'input[type="checkbox"]', function () {
     /*
      * Hiển thị số lượng dòng đã check
      */
+
     var numberOfChecked = $('input:checkbox:checked').length;
     var totalCheckboxes = $('input:checkbox').length;
     $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {

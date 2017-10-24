@@ -11,14 +11,23 @@
             <span>  Contact đang giao hàng  (<?php echo $this->L['pending'];?>)</span>
         </a>
     </li>
+    
     <li>
         <a href="<?php echo base_url('cod/contact-chuyen-khoan.html'); ?>">
             <img src="<?php echo base_url(); ?>public/images/banking.png"> 
             <span> Contact chuyển khoản  (<?php echo $this->L['transfer'];?>) </span> 
         </a>
     </li>
+    
 </ul>
 <ul class="nav-list list-inline display-flex">
+    <li>
+        <a href="<?php echo base_url('cod/tracking'); ?>">
+            <img src="<?php echo base_url(); ?>public/images/tracking.png"> 
+            <span style="font-size: 15px; font-weight: bold; color: red;"> Theo dõi đơn hàng Viettel </span> 
+        </a>
+    </li>
+    
     <li>
         <a data-filter=".97" href="<?php echo base_url('cod/xem-tat-ca-contact.html'); ?>">
             <img src="<?php echo base_url(); ?>public/images/view-all.png"> 
@@ -31,14 +40,15 @@
             <span> Tải file đối soát Viettel L7   </span> 
         </a>
     </li>
-    <li>
+   
+</ul>
+<ul class="nav-list list-inline display-flex">
+     <li>
         <a href="<?php echo base_url('cod/tai-file-doi-soat-l8.html'); ?>">
             <img src="<?php echo base_url(); ?>public/images/L8.png"> 
             <span> Tải file đối soát Viettel L8 </span>
         </a>
     </li>
-</ul>
-<ul class="nav-list list-inline display-flex">
     <li>
         <a href="<?php echo base_url('cod/tai-file-doi-soat-cuoc.html'); ?>">
             <img src="<?php echo base_url(); ?>public/images/fee.png"> 
