@@ -36,6 +36,7 @@ $(document).on("click", ".view_contact_phone", () => {
         });
 });
 */
+/*
 $(document).on('click', 'a.action_view_detail_contact', function (e) {
     e.preventDefault();
     $(".checked").removeClass("checked");
@@ -49,9 +50,6 @@ $(document).on('click', 'a.action_view_detail_contact', function (e) {
             contact_id: contact_id
         },
         success: data => {
-            /*
-             * 
-             */
             $(".modal-detail-contact").remove();
             var modalViewContactDetail = "<div class='modal-detail-contact'></div>";
             $(".modal-append-to").append(modalViewContactDetail);
@@ -60,4 +58,4 @@ $(document).on('click', 'a.action_view_detail_contact', function (e) {
         complete: () => $(".modal-detail-contact .modal").modal("show")
     });
 });
-
+*/

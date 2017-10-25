@@ -54,8 +54,8 @@ uncheck_not_checked = function uncheck_not_checked() {
 };
 
 right_context_menu_display = function right_context_menu_display(controller, contact_id, contact_name, duplicate_id, contact_phone) {
-    $(".action_view_detail_contact").attr('contact_id', contact_id);
-    $("a.view_duplicate").attr("duplicate_id", duplicate_id);
+    $(".load-new-contact-id").attr('data-contact-id', contact_id);
+    // $("a.view_duplicate").attr("duplicate_id", duplicate_id);
     $("a.send_to_mobile").attr("contact_name", contact_name).attr("contact_phone", contact_phone);
     /*
      * Nếu chọn nhiều contact thì ẩn menu xem chi tiết contact 
@@ -616,30 +616,29 @@ $(".btn-modal_edit-multi-contact").on('click', function (e) {
         //$("#action_contact").submit();
     }
 });
-$(document).on('click', 'a.edit_contact', function (e) {
-    e.preventDefault();
-    $(".checked").removeClass("checked");
-    $(this).parent().parent().addClass("checked");
-    var contact_id = $(this).attr("contact_id");
-    var url = $("#base_url").val() + "common/show_edit_contact_modal";
-    $.ajax({
-        url: url,
-        type: "POST",
-        data: {
-            contact_id: contact_id
-        },
-        success: function success(data) {
-            $(".modal-view-contact").remove();
-            var modalViewContactDetail = "<div class='modal-view-contact'></div>";
-            $(".modal-append-to").append(modalViewContactDetail);
-            $(".modal-view-contact").html(data);
-        },
-        complete: function complete() {
-            return $(".edit_contact_modal").modal("show");
-        }
-    });
-});
-
+/*
+ $(document).on('click', 'a.edit_contact', function (e) {
+ e.preventDefault();
+ $(".checked").removeClass("checked");
+ $(this).parent().parent().addClass("checked");
+ var contact_id = $(this).attr("contact_id");
+ var url = $("#base_url").val() + "common/show_edit_contact_modal";
+ $.ajax({
+ url: url,
+ type: "POST",
+ data: {
+ contact_id: contact_id
+ },
+ success: data => {
+ $(".modal-view-contact").remove();
+ var modalViewContactDetail = "<div class='modal-view-contact'></div>";
+ $(".modal-append-to").append(modalViewContactDetail);
+ $(".modal-view-contact").html(data);
+ },
+ complete: () => $(".edit_contact_modal").modal("show")
+ });
+ }); 
+ */
 $(document).on('click', '.btn-edit-contact', function (e) {
     e.preventDefault();
     if (check_edit_contact() == false) {
@@ -676,6 +675,9 @@ $(document).on('click', '.btn-edit-contact', function (e) {
     });
 });
 
+/*
+ * Nếu chọn hình thức thanh toán là COD thì ẩn hình thức thanh toán BANKING, và ngược lại
+ */
 $(document).on('change', 'select.edit_payment_method_rgt', function (e) {
     if ($(this).val() == 2) {
         $(".tbl_bank").show(1000);
@@ -691,19 +693,19 @@ $(document).on('change', 'select.edit_payment_method_rgt', function (e) {
 });
 
 /*
-$('.edit_contact_modal').on('shown.bs.modal', function () {
-    $('.datetimepicker').datetimepicker(
-            {
-                format: 'DD-MM-YYYY HH:mm'
-            });
-    if ($("select.edit_payment_method_rgt").val() != 2) {
-        $(".tbl_bank").hide();
-    }
-    if ($("select.edit_payment_method_rgt").val() != 1) {
-        $(".tbl_cod").hide();
-    }
-});
-*/$(function () {
+ $('.edit_contact_modal').on('shown.bs.modal', function () {
+ $('.datetimepicker').datetimepicker(
+ {
+ format: 'DD-MM-YYYY HH:mm'
+ });
+ if ($("select.edit_payment_method_rgt").val() != 2) {
+ $(".tbl_bank").hide();
+ }
+ if ($("select.edit_payment_method_rgt").val() != 1) {
+ $(".tbl_cod").hide();
+ }
+ });
+ */$(function () {
     setTimeout(function () {
         if ($(".filter-tbl-1").height() > $(".filter-tbl-2").height()) {
             $(".filter-tbl-2").height($(".filter-tbl-1").height());
@@ -954,7 +956,7 @@ $(document).on('click', '.btn-send-banking-info', function (e) {
  * Copyright (C) 2017 Phạm Ngọc Chuyển <chuyenpn at lakita.vn>
  *
  */
-
+/*
 $('.tbl_name').on('click', 'span.badge-star', function (e) {
     e.stopPropagation();
     e.preventDefault();
@@ -971,14 +973,11 @@ $('.tbl_name').on('click', 'span.badge-star', function (e) {
             contact_course_code: contact_course_code,
             controller: controller
         },
-        success: function success(data) {
-            return $("div.replace_content_view_contact_star").html(data);
-        },
-        complete: function complete() {
-            return $(".view_contact_star_modal").modal("show");
-        }
+        success: data => $("div.replace_content_view_contact_star").html(data),
+        complete: () => $(".view_contact_star_modal").modal("show")
     });
 });
+*/
 
 $('.view_contact_star_modal').on('hide.bs.modal', function () {
     return setTimeout(function () {
@@ -1021,6 +1020,7 @@ $('.view_contact_star_modal').on('hide.bs.modal', function () {
     });
     });
     */
+/*
 $(document).on('click', 'a.action_view_detail_contact', function (e) {
     e.preventDefault();
     $(".checked").removeClass("checked");
@@ -1033,18 +1033,16 @@ $(document).on('click', 'a.action_view_detail_contact', function (e) {
         data: {
             contact_id: contact_id
         },
-        success: function success(data) {
+        success: data => {
             $(".modal-detail-contact").remove();
             var modalViewContactDetail = "<div class='modal-detail-contact'></div>";
             $(".modal-append-to").append(modalViewContactDetail);
             $(".modal-detail-contact").html(data);
         },
-        complete: function complete() {
-            return $(".view_detail_contact_modal").modal("show");
-        }
+        complete: () => $(".modal-detail-contact .modal").modal("show")
     });
 });
-
+*/
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -1589,22 +1587,9 @@ $(".reset_datepicker").click(function (e) {
      */
     $("#curr_url").val(location.href);
 
-    //    var hide = 1;
-    //    $(document).on('mousemove', function (e) {
-    //
-    //        if (e.pageX < 0.5) {
-    //            $("body").removeClass("nav-sm");
-    //            $("body").addClass("nav-md");
-    //            hide = 0;
-    //        }
-    //
-    //        if (e.pageX > 500 && hide == 0) {
-    //            $("body").removeClass("nav-md");
-    //            $("body").addClass("nav-sm");
-    //            hide = 1;
-    //        }
-    //    });
-
+    /*
+     * Nếu click vào nút filter nâng cao thì đổi icon
+     */
     $(document).on('click', '.show-more-table-info', function (e) {
         e.stopPropagation();
         var contactId = $(this).attr('contact-id');
@@ -1620,6 +1605,9 @@ $(".reset_datepicker").click(function (e) {
         console.log(1);
     });
 
+    /*
+     * Nếu filter nâng cao được mở ra thì điều chỉnh chiều cao 2 cột bằng nhau
+     */
     $('#collapse-filter').on('shown.bs.collapse', function () {
         $(this).prev().find(".fa").removeClass("fa-arrow-circle-down").addClass("fa-arrow-circle-up");
         if ($(".filter-tbl-1").height() > $(".filter-tbl-2").height()) {
@@ -1663,6 +1651,8 @@ $(".send_to_mobile").on('click', function (e) {
  * Copyright (C) 2017 Phạm Ngọc Chuyển <chuyenpn at lakita.vn>
  *
  */
+/* global Notification */
+
 var notify = '';
 Notification.requestPermission(function (p) {});
 setInterval(function () {
@@ -1772,6 +1762,9 @@ $(document).on('hide.bs.modal', '.modal', function () {
     }
 });
 $(document).on('show.bs.modal', '.modal', function () {
+    /*
+     * Nạp lại các date picker
+     */
     $('.selectpicker').selectpicker({});
     $(".datepicker").datepicker({ dateFormat: "dd-mm-yy" });
     $(".reset_datepicker").click(function (e) {
@@ -1805,6 +1798,44 @@ $(document).on('show.bs.modal', '.modal', function () {
     }, 0);
 });
 
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+$(document).on("click", ".ajax-request-modal", function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    var _this = $(this);
+    setTimeout(function () {
+        $(".checked").removeClass("checked");
+        _this.parent().parent().addClass("checked");
+
+        var contact_id = _this.attr("data-contact-id");
+        console.log(contact_id);
+        var url = $("#base_url").val() + _this.attr("data-url");
+        var modalName = _this.attr("data-modal-name");
+        var controller = _this.attr("data-controller");
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: {
+                contact_id: contact_id,
+                controller: controller
+            },
+            success: function success(data) {
+                $("." + modalName).remove();
+                var newModal = '<div class="' + modalName + '"></div>';
+                $(".modal-append-to").append(newModal);
+                $('.' + modalName).html(data);
+            },
+            complete: function complete() {
+                return $('.' + modalName + ' .modal').modal("show");
+            }
+        });
+    }, 100);
+});
 $("a.cancel_one_contact").on('click', function (e) {
     var del = $(this);
     var sale_id = $(this).attr("sale_id");

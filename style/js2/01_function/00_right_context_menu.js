@@ -59,8 +59,8 @@ uncheck_not_checked = () => {
 };
 
 right_context_menu_display = (controller, contact_id, contact_name, duplicate_id, contact_phone) => {
-    $(".action_view_detail_contact").attr('contact_id', contact_id);
-    $("a.view_duplicate").attr("duplicate_id", duplicate_id);
+    $(".load-new-contact-id").attr('data-contact-id', contact_id);
+   // $("a.view_duplicate").attr("duplicate_id", duplicate_id);
     $("a.send_to_mobile").attr("contact_name", contact_name).attr("contact_phone", contact_phone);
     /*
      * Nếu chọn nhiều contact thì ẩn menu xem chi tiết contact 

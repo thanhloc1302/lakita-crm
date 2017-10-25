@@ -751,7 +751,8 @@ class Common extends MY_Controller {
         );
         $data = array_merge($this->data, $this->_get_require_data($require_model));
 
-        $contact_phone = $this->input->post('contact_phone', true);
+        $contact_id = $this->input->post('contact_id', true);
+        $contact_phone = $this->contacts_model->get_contact_phone($contact_id);
         //$contact_course_code = $this->input->post('contact_course_code', true);
 
         $get = $this->input->get();

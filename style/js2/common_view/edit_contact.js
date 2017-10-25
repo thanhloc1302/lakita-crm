@@ -1,25 +1,26 @@
-$(document).on('click', 'a.edit_contact', function (e) {
-    e.preventDefault();
-    $(".checked").removeClass("checked");
-    $(this).parent().parent().addClass("checked");
-    var contact_id = $(this).attr("contact_id");
-    var url = $("#base_url").val() + "common/show_edit_contact_modal";
-    $.ajax({
-        url: url,
-        type: "POST",
-        data: {
-            contact_id: contact_id
-        },
-        success: data => {
-            $(".modal-view-contact").remove();
-            var modalViewContactDetail = "<div class='modal-view-contact'></div>";
-            $(".modal-append-to").append(modalViewContactDetail);
-            $(".modal-view-contact").html(data);
-        },
-        complete: () => $(".edit_contact_modal").modal("show")
-    });
-});
-
+/*
+ $(document).on('click', 'a.edit_contact', function (e) {
+ e.preventDefault();
+ $(".checked").removeClass("checked");
+ $(this).parent().parent().addClass("checked");
+ var contact_id = $(this).attr("contact_id");
+ var url = $("#base_url").val() + "common/show_edit_contact_modal";
+ $.ajax({
+ url: url,
+ type: "POST",
+ data: {
+ contact_id: contact_id
+ },
+ success: data => {
+ $(".modal-view-contact").remove();
+ var modalViewContactDetail = "<div class='modal-view-contact'></div>";
+ $(".modal-append-to").append(modalViewContactDetail);
+ $(".modal-view-contact").html(data);
+ },
+ complete: () => $(".edit_contact_modal").modal("show")
+ });
+ }); 
+ */
 $(document).on('click', '.btn-edit-contact', function (e) {
     e.preventDefault();
     if (check_edit_contact() == false) {
@@ -74,16 +75,16 @@ $(document).on('change', 'select.edit_payment_method_rgt', function (e) {
 });
 
 /*
-$('.edit_contact_modal').on('shown.bs.modal', function () {
-    $('.datetimepicker').datetimepicker(
-            {
-                format: 'DD-MM-YYYY HH:mm'
-            });
-    if ($("select.edit_payment_method_rgt").val() != 2) {
-        $(".tbl_bank").hide();
-    }
-    if ($("select.edit_payment_method_rgt").val() != 1) {
-        $(".tbl_cod").hide();
-    }
-});
-*/
+ $('.edit_contact_modal').on('shown.bs.modal', function () {
+ $('.datetimepicker').datetimepicker(
+ {
+ format: 'DD-MM-YYYY HH:mm'
+ });
+ if ($("select.edit_payment_method_rgt").val() != 2) {
+ $(".tbl_bank").hide();
+ }
+ if ($("select.edit_payment_method_rgt").val() != 1) {
+ $(".tbl_cod").hide();
+ }
+ });
+ */

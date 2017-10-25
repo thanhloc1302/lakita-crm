@@ -1,12 +1,12 @@
 <div class="detail_contact">
-    <div class="modal fade view_detail_contact_modal in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog btn-very-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Chi tiết contact</h4>
+                    <h4 class="modal-title">Chi tiết contact</h4>
                 </div>
-                <div class="modal-body replace_content_view_detail_contact">
+                <div class="modal-body">
                     <div class="tab_container">
                         <input id="tab1-view" type="radio" name="tabs" checked>
                         <label for="tab1-view"><i class="fa fa-info-circle" aria-hidden="true"></i><span>Chi tiết</span></label>
