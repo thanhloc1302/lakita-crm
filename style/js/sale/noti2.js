@@ -11,7 +11,7 @@ $(function () {
                 var content_noti = "";
                 $.each(data.contacts_noti, function () {
                     content_noti += "<li class=\"content_noti\">";
-                    content_noti += "<a href=\"#\" class=\"edit_contact\" contact_id=\"" + this.id + "\" \n                                    title=\"Ch\u0103m s\xF3c contact\"> " + this.name + "  - " + this.phone + " - Th\u1EDDi gian g\u1ECDi l\u1EA1i " + this.date_recall + " \n                                    </a>";
+                    content_noti += "<a href=\"#\"\n                                    title=\"Ch\u0103m s\xF3c contact\"\n                                    class=\"ajax-request-modal\"\n                                    data-contact-id =\"" + this.id + "\"\n                                    data-modal-name=\"edit-contact-modal\"\n                                    data-url=\"common/show_edit_contact_modal\"> " + this.name + "  - " + this.phone + " - Th\u1EDDi gian g\u1ECDi l\u1EA1i " + this.date_recall + " \n                                    </a>";
                     content_noti += "</li>";
                 });
                 $('#noti_contact_recall').html(content_noti);

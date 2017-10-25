@@ -11,8 +11,12 @@ $(function () {
                 var content_noti = ``;
                 $.each(data.contacts_noti, function () {
                     content_noti += `<li class="content_noti">`;
-                    content_noti += `<a href="#" class="edit_contact" contact_id="${this.id}" 
-                                    title="Chăm sóc contact"> ${this.name}  - ${this.phone} - Thời gian gọi lại ${this.date_recall} 
+                    content_noti += `<a href="#"
+                                    title="Chăm sóc contact"
+                                    class="ajax-request-modal"
+                                    data-contact-id ="${this.id}"
+                                    data-modal-name="edit-contact-modal"
+                                    data-url="common/show_edit_contact_modal"> ${this.name}  - ${this.phone} - Thời gian gọi lại ${this.date_recall} 
                                     </a>`;
                     content_noti += `</li>`;
                 });

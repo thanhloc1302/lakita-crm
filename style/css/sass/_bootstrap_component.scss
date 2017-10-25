@@ -22,6 +22,11 @@ and open the template in the editor.
     .modal-content{
         border-radius: 11px;
     }
+    .modal-body {
+        .pagination{
+            margin: 0px;
+        }
+    }
 }
 span.badge-star{
     background: red; 

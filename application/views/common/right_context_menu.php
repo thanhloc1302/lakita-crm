@@ -12,7 +12,7 @@
             <a href="#" 
                class="ajax-request-modal load-new-contact-id"
                data-contact-id ="0"
-               data-modal-name="view-detail-contact-modal"
+               data-modal-name="edit-contact-modal"
                data-url="common/show_edit_contact_modal">
                 <li> <i class="fa fa-pencil-square" aria-hidden="true"></i> &nbsp; &nbsp; Chăm sóc contact</li>
             </a>
@@ -30,7 +30,7 @@
             <a href="#" 
                class="ajax-request-modal load-new-contact-id"
                data-contact-id ="0"
-               data-modal-name="view-detail-contact-modal"
+               data-modal-name="edit-contact-modal"
                data-url="common/show_edit_contact_modal">
                 <li> <i class="fa fa-pencil-square" aria-hidden="true"></i> &nbsp; &nbsp; Chăm sóc contact</li>
             </a>
@@ -50,7 +50,6 @@
                 <li> <i class="fa fa-link" aria-hidden="true"></i> &nbsp; &nbsp; Xuất thành chuỗi đối soát </li>
             </a>
         <?php } ?>
-
         <a href="#" 
            class="ajax-request-modal load-new-contact-id"
            data-contact-id ="0"
@@ -60,8 +59,6 @@
                 <i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; &nbsp; Chi tiết contact 
             </li>
         </a>
-
-
     </ul>
 </div>
 <div class="menu-item">
