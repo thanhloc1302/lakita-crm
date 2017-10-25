@@ -72,8 +72,17 @@ div.tab_container{
         margin-bottom: 0px;
     }
 
-    #tab1:checked ~ #content1,
-        #tab2:checked ~ #content2,
+    #tab1-edit:checked ~ #content1-edit,
+        #tab2-edit:checked ~ #content2-edit,
+        #tab3:checked ~ #content3,
+        #tab4:checked ~ #content4,
+        #tab5:checked ~ #content5 {
+        display: block;
+        padding: 20px;
+        background: #fff;
+    }
+    #tab1-view:checked ~ #content1-view,
+        #tab2-view:checked ~ #content2-view,
         #tab3:checked ~ #content3,
         #tab4:checked ~ #content4,
         #tab5:checked ~ #content5 {

@@ -207,6 +207,28 @@ now_greater_than_input_date = date_string => {
 };
 
 
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+setEqualTableHeight = () => {
+    if ($(".table-view-1").height() > $(".table-view-2").height())
+    {
+        $(".table-view-2").height($(".table-view-1").height());
+    } else
+    {
+        $(".table-view-1").height($(".table-view-2").height());
+    }
+    if ($(".table-1").height() > $(".table-2").height())
+    {
+        $(".table-2").height($(".table-1").height());
+    } else
+    {
+        $(".table-1").height($(".table-2").height());
+    }
+};
 $(document).on('click', 'a.delete_one_contact_admin', e => {
     var r = confirm("Bạn có chắc chắn muốn xóa contact này không?");
     if (r == true) {
@@ -629,14 +651,19 @@ $(document).on('click', 'a.edit_contact', function (e) {
         data: {
             contact_id: contact_id
         },
-        success: data => $("div.replace_content").html(data),
-        complete: () =>  $(".edit_contact_modal").modal("show")
+        success: data => {
+            $(".modal-view-contact").remove();
+            var modalViewContactDetail = "<div class='modal-view-contact'></div>";
+            $(".modal-append-to").append(modalViewContactDetail);
+            $(".modal-view-contact").html(data);
+        },
+        complete: () => $(".edit_contact_modal").modal("show")
     });
 });
 
 $(document).on('click', '.btn-edit-contact', function (e) {
     e.preventDefault();
-    if(check_edit_contact() == false) {
+    if (check_edit_contact() == false) {
         return false;
     }
     var url = $(this).parents('.form_edit_contact_modal').attr("action");
@@ -656,7 +683,7 @@ $(document).on('click', '.btn-edit-contact', function (e) {
                     autoHideDelay: 5000
                 });
                 $(".edit_contact_modal").modal("hide");
-                $('tr[contact_id="'+contact_id+'"]').remove();
+                $('tr[contact_id="' + contact_id + '"]').remove();
             } else {
                 $("#send_email_error")[0].play();
                 $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
@@ -670,6 +697,9 @@ $(document).on('click', '.btn-edit-contact', function (e) {
     });
 });
 
+/*
+ * Nếu chọn hình thức thanh toán là COD thì ẩn hình thức thanh toán BANKING, và ngược lại
+ */
 $(document).on('change', 'select.edit_payment_method_rgt', function (e) {
     if ($(this).val() == 2) {
         $(".tbl_bank").show(1000);
@@ -681,20 +711,10 @@ $(document).on('change', 'select.edit_payment_method_rgt', function (e) {
     } else {
         $(".tbl_cod").hide();
     }
-    set_equal_table_height();
+    setEqualTableHeight();
 });
 
-
-function set_equal_table_height() {
-    if ($(".table-1").height() > $(".table-2").height())
-    {
-        $(".table-2").height($(".table-1").height());
-    } else
-    {
-        $(".table-1").height($(".table-2").height());
-    }
-}
-
+/*
 $('.edit_contact_modal').on('shown.bs.modal', function () {
     $('.datetimepicker').datetimepicker(
             {
@@ -706,7 +726,8 @@ $('.edit_contact_modal').on('shown.bs.modal', function () {
     if ($("select.edit_payment_method_rgt").val() != 1) {
         $(".tbl_cod").hide();
     }
-});$(function () {
+});
+*/$(function () {
     setTimeout( () => {
         if ($(".filter-tbl-1").height() > $(".filter-tbl-2").height())
         {
@@ -973,7 +994,7 @@ $('.tbl_name').on('click', 'span.badge-star', function (e) {
     });
 });
 
-$('.view_contact_star_modal').on('hide.bs.modal', () => setTimeout(() => $("div.replace_content_view_contact_star").html(""), 1000));$(document).on('click', 'a.action_view_detail_contact', function (e) {
+$('.view_contact_star_modal').on('hide.bs.modal', () => setTimeout(() => $("div.replace_content_view_contact_star").html(""), 1000));/* $(document).on('click', 'a.action_view_detail_contact', function (e) {
     e.preventDefault();
     $(".checked").removeClass("checked");
     $(this).parent().parent().addClass("checked");
@@ -1010,6 +1031,32 @@ $(document).on("click", ".view_contact_phone", () => {
             autoHideDelay: 2000
         });
 });
+*/
+$(document).on('click', 'a.action_view_detail_contact', function (e) {
+    e.preventDefault();
+    $(".checked").removeClass("checked");
+    $(this).parent().parent().addClass("checked");
+    var contact_id = $(this).attr("contact_id");
+    var url = $("#base_url").val() + "common/view_detail_contact";
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            contact_id: contact_id
+        },
+        success: data => {
+            /*
+             * 
+             */
+            $(".modal-detail-contact").remove();
+            var modalViewContactDetail = "<div class='modal-detail-contact'></div>";
+            $(".modal-append-to").append(modalViewContactDetail);
+            $(".modal-detail-contact").html(data);
+        },
+        complete: () => $(".modal-detail-contact .modal").modal("show")
+    });
+});
+
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -1560,22 +1607,7 @@ $(".reset_datepicker").click(function (e) {
     /*
      * Hiển thị datepicker và selectpicker khi modal edit item đc bật lên
      */
-    $('.modal').on('shown.bs.modal', function () {
-        $('.selectpicker').selectpicker({});
-        $(".datepicker").datepicker({dateFormat: "dd-mm-yy"});
-        $(".reset_datepicker").click(function (e) {
-            e.preventDefault();
-            $(".datepicker").val("");
-            $(".datetimepicker").val('');
-        });
-        if ($(".table-1").height() > $(".table-2").height())
-        {
-            $(".table-2").height($(".table-1").height());
-        } else
-        {
-            $(".table-1").height($(".table-2").height());
-        }
-    });
+
 
 
     /*===================================== trờ về trang trước ========================================*/
@@ -1602,22 +1634,9 @@ $(".reset_datepicker").click(function (e) {
      */
     $("#curr_url").val(location.href);
 
-//    var hide = 1;
-//    $(document).on('mousemove', function (e) {
-//
-//        if (e.pageX < 0.5) {
-//            $("body").removeClass("nav-sm");
-//            $("body").addClass("nav-md");
-//            hide = 0;
-//        }
-//
-//        if (e.pageX > 500 && hide == 0) {
-//            $("body").removeClass("nav-md");
-//            $("body").addClass("nav-sm");
-//            hide = 1;
-//        }
-//    });
-
+    /*
+     * Nếu click vào nút filter nâng cao thì đổi icon
+     */
     $(document).on('click', '.show-more-table-info', function (e) {
         e.stopPropagation();
         let contactId = $(this).attr('contact-id');
@@ -1633,6 +1652,9 @@ $(".reset_datepicker").click(function (e) {
         console.log(1);
     });
 
+    /*
+     * Nếu filter nâng cao được mở ra thì điều chỉnh chiều cao 2 cột bằng nhau
+     */
     $('#collapse-filter').on('shown.bs.collapse', function () {
         $(this).prev().find(".fa").removeClass("fa-arrow-circle-down").addClass("fa-arrow-circle-up");
         if ($(".filter-tbl-1").height() > $(".filter-tbl-2").height())
@@ -1643,7 +1665,7 @@ $(".reset_datepicker").click(function (e) {
             $(".filter-tbl-1").height($(".filter-tbl-2").height());
         }
     });
-     $('#collapse-filter').on('hidden.bs.collapse', function () {
+    $('#collapse-filter').on('hidden.bs.collapse', function () {
         $(this).prev().find(".fa").removeClass("fa-arrow-circle-up").addClass("fa-arrow-circle-down");
     });
 });
@@ -1751,8 +1773,35 @@ $('li.mega-dropdown').mouseover(() => $(".black-over").css('bottom', '0%')).mous
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+/*
+ $('.modal').on('hide.bs.modal', function () {
+ if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated btn-very-lg');
+ } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated modal-lg');
+ } else {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated');
+ }
+ });
+ $('.modal').on('show.bs.modal', function () {
+ if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated btn-very-lg');
+ } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated modal-lg');
+ } else {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated');
+ }
+ var zIndex = 1040 + (10 * $('.modal:visible').length);
+ $(this).css('z-index', zIndex);
+ setTimeout(function () {
+ $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+ }, 0);
+ });
+ */
 
-$('.modal').on('hide.bs.modal', function () {
+
+
+$(document).on('hide.bs.modal', '.modal', function () {
     if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated btn-very-lg');
     } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
@@ -1761,7 +1810,30 @@ $('.modal').on('hide.bs.modal', function () {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated');
     }
 });
-$('.modal').on('show.bs.modal', function () {
+$(document).on('show.bs.modal', '.modal', function () {
+    /*
+     * Nạp lại các date picker
+     */
+    $('.selectpicker').selectpicker({});
+    $(".datepicker").datepicker({dateFormat: "dd-mm-yy"});
+    $(".reset_datepicker").click(function (e) {
+        e.preventDefault();
+        $(".datepicker").val("");
+        $(".datetimepicker").val('');
+    });
+    $('.datetimepicker').datetimepicker(
+            {
+                format: 'DD-MM-YYYY HH:mm'
+            });
+    if ($("select.edit_payment_method_rgt").val() != 2) {
+        $(".tbl_bank").hide();
+    }
+    if ($("select.edit_payment_method_rgt").val() != 1) {
+        $(".tbl_cod").hide();
+    }
+    setTimeout(function () {
+        setEqualTableHeight();
+    }, 1000);
     if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated btn-very-lg');
     } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
@@ -1775,6 +1847,9 @@ $('.modal').on('show.bs.modal', function () {
         $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
     }, 0);
 });
+
+
+
 $("a.cancel_one_contact").on('click', function (e) {
     var del = $(this);
     var sale_id = $(this).attr("sale_id");

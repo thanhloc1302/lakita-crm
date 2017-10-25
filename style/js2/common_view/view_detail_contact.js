@@ -1,4 +1,4 @@
-$(document).on('click', 'a.action_view_detail_contact', function (e) {
+/* $(document).on('click', 'a.action_view_detail_contact', function (e) {
     e.preventDefault();
     $(".checked").removeClass("checked");
     $(this).parent().parent().addClass("checked");
@@ -35,3 +35,29 @@ $(document).on("click", ".view_contact_phone", () => {
             autoHideDelay: 2000
         });
 });
+*/
+$(document).on('click', 'a.action_view_detail_contact', function (e) {
+    e.preventDefault();
+    $(".checked").removeClass("checked");
+    $(this).parent().parent().addClass("checked");
+    var contact_id = $(this).attr("contact_id");
+    var url = $("#base_url").val() + "common/view_detail_contact";
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            contact_id: contact_id
+        },
+        success: data => {
+            /*
+             * 
+             */
+            $(".modal-detail-contact").remove();
+            var modalViewContactDetail = "<div class='modal-detail-contact'></div>";
+            $(".modal-append-to").append(modalViewContactDetail);
+            $(".modal-detail-contact").html(data);
+        },
+        complete: () => $(".modal-detail-contact .modal").modal("show")
+    });
+});
+

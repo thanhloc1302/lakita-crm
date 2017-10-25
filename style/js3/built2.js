@@ -196,6 +196,24 @@ now_greater_than_input_date = function now_greater_than_input_date(date_string) 
     return now_timestamp > input_timestamp;
 };
 
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+setEqualTableHeight = function setEqualTableHeight() {
+    if ($(".table-view-1").height() > $(".table-view-2").height()) {
+        $(".table-view-2").height($(".table-view-1").height());
+    } else {
+        $(".table-view-1").height($(".table-view-2").height());
+    }
+    if ($(".table-1").height() > $(".table-2").height()) {
+        $(".table-2").height($(".table-1").height());
+    } else {
+        $(".table-1").height($(".table-2").height());
+    }
+};
 $(document).on('click', 'a.delete_one_contact_admin', function (e) {
     var r = confirm("Bạn có chắc chắn muốn xóa contact này không?");
     if (r == true) {
@@ -611,7 +629,10 @@ $(document).on('click', 'a.edit_contact', function (e) {
             contact_id: contact_id
         },
         success: function success(data) {
-            return $("div.replace_content").html(data);
+            $(".modal-view-contact").remove();
+            var modalViewContactDetail = "<div class='modal-view-contact'></div>";
+            $(".modal-append-to").append(modalViewContactDetail);
+            $(".modal-view-contact").html(data);
         },
         complete: function complete() {
             return $(".edit_contact_modal").modal("show");
@@ -666,28 +687,23 @@ $(document).on('change', 'select.edit_payment_method_rgt', function (e) {
     } else {
         $(".tbl_cod").hide();
     }
-    set_equal_table_height();
+    setEqualTableHeight();
 });
 
-function set_equal_table_height() {
-    if ($(".table-1").height() > $(".table-2").height()) {
-        $(".table-2").height($(".table-1").height());
-    } else {
-        $(".table-1").height($(".table-2").height());
-    }
-}
-
+/*
 $('.edit_contact_modal').on('shown.bs.modal', function () {
-    $('.datetimepicker').datetimepicker({
-        format: 'DD-MM-YYYY HH:mm'
-    });
+    $('.datetimepicker').datetimepicker(
+            {
+                format: 'DD-MM-YYYY HH:mm'
+            });
     if ($("select.edit_payment_method_rgt").val() != 2) {
         $(".tbl_bank").hide();
     }
     if ($("select.edit_payment_method_rgt").val() != 1) {
         $(".tbl_cod").hide();
     }
-});$(function () {
+});
+*/$(function () {
     setTimeout(function () {
         if ($(".filter-tbl-1").height() > $(".filter-tbl-2").height()) {
             $(".filter-tbl-2").height($(".filter-tbl-1").height());
@@ -968,7 +984,7 @@ $('.view_contact_star_modal').on('hide.bs.modal', function () {
     return setTimeout(function () {
         return $("div.replace_content_view_contact_star").html("");
     }, 1000);
-});$(document).on('click', 'a.action_view_detail_contact', function (e) {
+}); /* $(document).on('click', 'a.action_view_detail_contact', function (e) {
     e.preventDefault();
     $(".checked").removeClass("checked");
     $(this).parent().parent().addClass("checked");
@@ -976,37 +992,59 @@ $('.view_contact_star_modal').on('hide.bs.modal', function () {
     var url = $("#base_url").val() + "common/view_detail_contact";
     //console.log(url);
     $.ajax({
+    url: url,
+    type: "POST",
+    data: {
+    contact_id: contact_id
+    },
+    success: data => $("div.replace_content_view_detail_contact").html(data),
+    complete: () => $(".view_detail_contact_modal").modal("show")
+    });
+    });
+    $('.view_detail_contact_modal').on('shown.bs.modal',  () => {
+    if ($(".table-view-1").height() > $(".table-view-2").height())
+    {
+    $(".table-view-2").height($(".table-view-1").height());
+    } else
+    {
+    $(".table-view-1").height($(".table-view-2").height());
+    }
+    });
+    $(document).on("click", ".view_contact_phone", () => {
+    document.querySelector("#input-copy").select();
+    document.execCommand('copy');
+    $.notify("Copy thành công vào clipboard", {
+    position: "top left",
+    className: 'success',
+    showDuration: 200,
+    autoHideDelay: 2000
+    });
+    });
+    */
+$(document).on('click', 'a.action_view_detail_contact', function (e) {
+    e.preventDefault();
+    $(".checked").removeClass("checked");
+    $(this).parent().parent().addClass("checked");
+    var contact_id = $(this).attr("contact_id");
+    var url = $("#base_url").val() + "common/view_detail_contact";
+    $.ajax({
         url: url,
         type: "POST",
         data: {
             contact_id: contact_id
         },
         success: function success(data) {
-            return $("div.replace_content_view_detail_contact").html(data);
+            $(".modal-detail-contact").remove();
+            var modalViewContactDetail = "<div class='modal-detail-contact'></div>";
+            $(".modal-append-to").append(modalViewContactDetail);
+            $(".modal-detail-contact").html(data);
         },
         complete: function complete() {
             return $(".view_detail_contact_modal").modal("show");
         }
     });
 });
-$('.view_detail_contact_modal').on('shown.bs.modal', function () {
-    if ($(".table-view-1").height() > $(".table-view-2").height()) {
-        $(".table-view-2").height($(".table-view-1").height());
-    } else {
-        $(".table-view-1").height($(".table-view-2").height());
-    }
-});
 
-$(document).on("click", ".view_contact_phone", function () {
-    document.querySelector("#input-copy").select();
-    document.execCommand('copy');
-    $.notify("Copy thành công vào clipboard", {
-        position: "top left",
-        className: 'success',
-        showDuration: 200,
-        autoHideDelay: 2000
-    });
-});
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -1527,20 +1565,6 @@ $(".reset_datepicker").click(function (e) {
     /*
      * Hiển thị datepicker và selectpicker khi modal edit item đc bật lên
      */
-    $('.modal').on('shown.bs.modal', function () {
-        $('.selectpicker').selectpicker({});
-        $(".datepicker").datepicker({ dateFormat: "dd-mm-yy" });
-        $(".reset_datepicker").click(function (e) {
-            e.preventDefault();
-            $(".datepicker").val("");
-            $(".datetimepicker").val('');
-        });
-        if ($(".table-1").height() > $(".table-2").height()) {
-            $(".table-2").height($(".table-1").height());
-        } else {
-            $(".table-1").height($(".table-2").height());
-        }
-    });
 
     /*===================================== trờ về trang trước ========================================*/
     //    $("input[name='back_location']").val(document.referrer);
@@ -1712,8 +1736,33 @@ $('li.mega-dropdown').mouseover(function () {
     * To change this template file, choose Tools | Templates
     * and open the template in the editor.
     */
+/*
+ $('.modal').on('hide.bs.modal', function () {
+ if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated btn-very-lg');
+ } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated modal-lg');
+ } else {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated');
+ }
+ });
+ $('.modal').on('show.bs.modal', function () {
+ if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated btn-very-lg');
+ } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated modal-lg');
+ } else {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated');
+ }
+ var zIndex = 1040 + (10 * $('.modal:visible').length);
+ $(this).css('z-index', zIndex);
+ setTimeout(function () {
+ $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+ }, 0);
+ });
+ */
 
-$('.modal').on('hide.bs.modal', function () {
+$(document).on('hide.bs.modal', '.modal', function () {
     if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated btn-very-lg');
     } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
@@ -1722,7 +1771,26 @@ $('.modal').on('hide.bs.modal', function () {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated');
     }
 });
-$('.modal').on('show.bs.modal', function () {
+$(document).on('show.bs.modal', '.modal', function () {
+    $('.selectpicker').selectpicker({});
+    $(".datepicker").datepicker({ dateFormat: "dd-mm-yy" });
+    $(".reset_datepicker").click(function (e) {
+        e.preventDefault();
+        $(".datepicker").val("");
+        $(".datetimepicker").val('');
+    });
+    $('.datetimepicker').datetimepicker({
+        format: 'DD-MM-YYYY HH:mm'
+    });
+    if ($("select.edit_payment_method_rgt").val() != 2) {
+        $(".tbl_bank").hide();
+    }
+    if ($("select.edit_payment_method_rgt").val() != 1) {
+        $(".tbl_cod").hide();
+    }
+    setTimeout(function () {
+        setEqualTableHeight();
+    }, 1000);
     if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated btn-very-lg');
     } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
@@ -1736,6 +1804,7 @@ $('.modal').on('show.bs.modal', function () {
         $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
     }, 0);
 });
+
 $("a.cancel_one_contact").on('click', function (e) {
     var del = $(this);
     var sale_id = $(this).attr("sale_id");

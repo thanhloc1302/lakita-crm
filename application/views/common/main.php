@@ -28,11 +28,11 @@
                     $this->load->view('common/alert.php');
                     $this->load->view($content);
                     if ($this->can_view_contact == 1) {
-                        $this->load->view('common/script/view_detail_contact');
+                      //  $this->load->view('common/script/view_detail_contact');
                         $this->load->view('common/script/view_contact_star');
                     }
                     if ($this->can_edit_contact == 1) {
-                        $this->load->view('common/script/edit_contact');
+                        //$this->load->view('common/script/edit_contact');
                     }
                     ?>
                      <h3 class="red text-center" style="line-height: 1.42;"> <?php echo $mySlogan; ?> </h3>   
