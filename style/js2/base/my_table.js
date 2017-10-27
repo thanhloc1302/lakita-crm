@@ -1,7 +1,7 @@
 /*
  * Real order
  */
-$('th[class^="order_new_"]').on('click',function () {
+$('th[class^="order_new_"]').on('click', function () {
     var myclass = $(this).attr("class");
     myclass = myclass.split(/ /);
     myclass = myclass[0];
@@ -90,4 +90,40 @@ $(document).on('scroll', function () {
 //        var offsetLeft = $(".table-head-pos").offset().left - 1;
 //        $(".fixed-table").css("left", offsetLeft + "px");
     }
+});
+
+$(document).on("change", '.toggle-input [name="edit_active"]', function () {
+    var active = ($(this).prop('checked')) ? '1' : '0';
+    var item_id = $(this).attr("item_id");
+    $.ajax({
+        type: "POST",
+        url: $("#url_edit_active").val(),
+        data: {
+            active: active,
+            item_id: item_id
+        },
+        success: function (data) {
+            if (data == '1') {
+                $.notify('Lưu thành công', {
+                    position: "top left",
+                    className: 'success',
+                    showDuration: 200,
+                    autoHideDelay: 2000
+                });
+            } else {
+                alert("Có lỗi xảy ra! Vui lòng liên hệ admin.");
+            }
+        },
+        error: function (errorThrown) {
+            alert(errorThrown);
+        }
+    });
+});
+
+$(function () {
+    $.each($(".tbl_pricepC3"), function () {
+        if (parseInt($(this).text().replace(".", "")) > 50000) {
+            $(this).addClass("bg-red");
+        };
+    });
 });

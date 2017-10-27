@@ -93,11 +93,13 @@ class MY_Table extends MY_Controller {
      * add item
      */
     public $list_add = array();
+    public $L = array(); //đếm số contact C3 hôm nay và tất cả 
 
     public function __construct() {
         parent::__construct();
         $this->limit = $this->per_page;
         $this->data['load_js'] = array('common_real_filter_contact');
+        $this->_loadCountListContact();
     }
 
     /*
@@ -208,7 +210,7 @@ class MY_Table extends MY_Controller {
         $this->load->view('base/edit_item/ajax_content', $data);
     }
 
-    function delete_item() {
+    public function delete_item() {
         $post = $this->input->post();
         if (!empty($post['item_id'])) {
             $where = array('id' => $post['item_id']);
@@ -217,7 +219,7 @@ class MY_Table extends MY_Controller {
         }
     }
 
-    function delete_multi_item() {
+    public function delete_multi_item() {
         $post = $this->input->post();
         if (!empty($post['item_id'])) {
             foreach ($post['item_id'] as $value) {
@@ -226,6 +228,16 @@ class MY_Table extends MY_Controller {
             }
         }
         show_error_and_redirect('Xóa thành công các dòng đã chọn!');
+    }
+
+    public function edit_active() {
+        $post = $this->input->post();
+        if (!empty($post['item_id'])) {
+            $where = array('id' => $post['item_id']);
+            $data = array('active' => $post['active']);
+            $this->{$this->model}->update($where, $data);
+            echo '1';
+        }
     }
 
     protected function _get_query_condition_arr($get) {
@@ -285,9 +297,8 @@ class MY_Table extends MY_Controller {
                  */
 
                 if (strpos($key, "filter_arr_multi_") !== FALSE && !empty($value)) {
-                      $column_name = substr($key, strlen("filter_arr_multi_"));
+                    $column_name = substr($key, strlen("filter_arr_multi_"));
                     $input_get['where_in'][$column_name] = $value;
-                    
                 }
 
                 /*
@@ -344,6 +355,19 @@ class MY_Table extends MY_Controller {
 
     public function set_list_view($list_view) {
         $this->list_view = $list_view;
+    }
+
+    protected function _loadCountListContact() {
+        $input = array();
+        $input['select'] = 'id';
+        $input['where']['date_rgt >'] = strtotime(date('d-m-Y'));
+        $input['where']['source_id'] = '1';
+        $this->L['C3'] = count($this->contacts_model->load_all($input));
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where']['source_id'] = '1';
+        $this->L['all'] = count($this->contacts_model->load_all($input));
     }
 
 }

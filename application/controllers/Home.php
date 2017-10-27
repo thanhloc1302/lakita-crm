@@ -21,6 +21,14 @@ class Home extends CI_Controller {
         $user_id = $this->session->userdata('user_id');
         if (isset($user_id)) {
             $role_id = $this->session->userdata('role_id');
+            $input = array();
+            $input['where'] = array('id' => $user_id);
+            $user = $this->staffs_model->load_all($input);
+            if($user[0]['active'] == 0){
+                echo 'Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản lý để đc giúp đỡ';
+                echo '<a href="'.base_url('home/logout').'"> Đăng xuất </a>';
+                die;
+            }
             switch ($role_id) {
                 case 1:
                     redirect(base_url('tu-van-tuyen-sinh/trang-chu.html'));
@@ -77,34 +85,6 @@ class Home extends CI_Controller {
                     die;
                 }
                 $redirect_page = '';
-                switch ($result[0]['role_id']) {
-                    case 1:
-                        $redirect_page ='tu-van-tuyen-sinh/trang-chu.html';
-                        break;
-
-                    case 2:
-                        $redirect_page = 'cod/trang-chu.html';
-                        break;
-
-                    case 3:
-                        $redirect_page = 'quan-ly/trang-chu.html';
-                        break;
-
-                    case 4:
-                        $redirect_page = 'admin';
-                        break;
-
-                    case 5:
-                        $redirect_page = 'marketing';
-                        break;
-                    case 6:
-                        $redirect_page = 'marketer';
-                        break;
-                    default :
-                        echo 'Có lỗi xảy ra!';
-                        die;
-                }
-
                 $alert['success'] = 1;
                 $alert['redirect_page'] = base64_encode(base_url().$redirect_page);
                 echo json_encode($alert);

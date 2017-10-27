@@ -113,3 +113,16 @@ footer.fixed{
     bottom: 0px;
     width: 100%;
 }
+sup {
+    top: -.9em;
+}
+.badge{
+    padding: 3px 5px;
+}
+.btn-dismiss, .btn-dismiss:focus, .btn-dismiss:hover{
+    opacity: 1;
+    top: 0px !important;
+    right: -5px !important;
+    color: #fff !important;
+    padding: 9px 12px;
+}

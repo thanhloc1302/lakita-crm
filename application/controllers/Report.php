@@ -219,7 +219,55 @@ class Report extends MY_Controller {
         $this->load->view('report/view_report_revenue', $data);
     }
 
-    function pending3() {
+    public function pending2() {
+        $get = $this->input->get();
+        if (empty($get) || !isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
+            die;
+        }
+        require_once APPPATH . 'libraries/simple_html_dom.php';
+        $this->load->model('viettel_log_model');
+        $input = array();
+        $input['distinct'] = 'code_cross_check';
+        $input['where'] = array('cod_status_id' => _DANG_GIAO_HANG_, 'is_hide' => '0', 'provider_id' => 1);
+        $input['order'] = array('date_print_cod' => 'DESC');
+        $contacts = $this->contacts_model->load_all($input);
+        foreach ($contacts as $contact) {
+            $html = file_get_html('https://www.viettelpost.com.vn/Tracking?KEY=' . $contact['code_cross_check']);
+            /*
+             * Cập nhật trạng thái giao hàng viettel
+             */
+            $stt = $html->find('div[id=dnn_ctr507_Main_ViewKQ_PanelItem]', 0)->find("#dnn_ctr507_Main_ViewKQ_RepeaterView_Label5_0", 0)->plaintext;
+            $where = ['code_cross_check' => $contact['code_cross_check']];
+            $data = ['viettel_tracking_status' => $stt];
+            $this->contacts_model->update($where, $data);
+            
+            /*
+             * Chèn data vào bảng log
+             */
+            $rs = $html->find('div[id=dnn_ctr507_Main_ViewKQ_PanelItem] ul', 0);
+            if (is_object($rs)) {
+                foreach ($rs->find('li') as $row) {
+                    $code_cross_check = $contact['code_cross_check'];
+                    $dateInfo = strtotime(str_replace('/', '-', $row->find('span', 0)->plaintext));
+                    $status = $row->find('span', 1)->plaintext;
+                    $destination = $row->find('span', 2)->plaintext;
+                    $insert = array(
+                        'code_cross_check' => $code_cross_check,
+                        'date_info' => $dateInfo,
+                        'status' => $status,
+                        'destination' => $destination
+                    );
+                    $input = array();
+                    $input['where'] = ['code_cross_check' => $code_cross_check, 'date_info' => $dateInfo];
+                    if (empty($this->viettel_log_model->load_all($input))) {
+                        $this->viettel_log_model->insert($insert);
+                    }
+                }
+            }
+        }
+    }
+
+    public function pending3() {
         $this->load->helper('bill_helper');
         $this->load->model('call_log_model');
         $this->load->model('L7_check_model');
@@ -294,9 +342,9 @@ class Report extends MY_Controller {
                 $input_other['where'] = array('code_cross_check' => $code_cross_check, 'call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_);
                 $contactOtherArr = $this->contacts_model->load_all($input_other);
                 foreach ($contactOtherArr as $contactOther) {
-                $contact_other[$contact_other_key] = $contactOther;
-                $contact_other[$contact_other_key]['status_viettel'] = $status;
-                $contact_other_key++;
+                    $contact_other[$contact_other_key] = $contactOther;
+                    $contact_other[$contact_other_key]['status_viettel'] = $status;
+                    $contact_other_key++;
                 }
             }
 
@@ -357,7 +405,7 @@ class Report extends MY_Controller {
         $data_load['contact_not_send'] = ReArrangeContactsByBillCheck($contact_not_send);
         $str = $this->load->view('cod/waiting_cancel_list/index', $data_load, true);
         //$emailTo = 'chuyenpn@lakita.vn';
-        $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com';
+        $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com, lakitavn@gmail.com';
         $this->load->library("email");
         $this->email->from('cskh@lakita.vn', "lakita.vn");
         $this->email->to($emailTo);

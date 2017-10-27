@@ -69,7 +69,7 @@
                                                         <div>
                                                             <ul style="list-style:none;padding:0px">
                                                                 <li style="margin-bottom:20px;color:#272727"><span style="font-weight:bold"> Anh/chị "<?php echo $name;?>" thân mến, </span></li>
-                                                                <li style="margin-bottom:20px;color:#272727">Lakita xin gửi chị thông tin thanh toán như sau:</li>
+                                                                <li style="margin-bottom:20px;color:#272727">Lakita xin gửi anh/chị thông tin thanh toán như sau:</li>
 																
 																<li style="margin-bottom:10px;color:#272727; padding-left: 40px;" >1. Ngân hàng ACB: </li>
 																<li style="margin-bottom:10px;color:#272727; padding-left: 60px;" >- Số tài khoản: 16221068 </li>
@@ -82,8 +82,8 @@
 																<li style="margin-bottom:10px;color:#272727; padding-left: 60px;" >- Số tài khoản: 0301000357860 </li>
 																<li style="margin-bottom:10px;color:#272727; padding-left: 60px;" >- Chủ tài khoản: NGUYỄN VĂN TRỊNH </li>
 																<li style="margin-bottom:20px;color:#272727; padding-left: 60px;" >- Chi nhánh: Ngân hàng Vietcombank, chi nhánh Vietcombank Hoàn Kiếm, Hà Nội </li>
-																<li style="margin-bottom:20px;color:#272727"> Tại mục ghi chú khi chuyển khoản, chị ghi rõ số điện thoại, email đăng ký, 
-																	số tiền <?php echo number_format($price_purchase,0,",",".").'VNĐ';?> để em hỗ trợ kích hoạt luôn cho mình nhé. Em cảm ơn !!! </li>
+																<li style="margin-bottom:20px;color:#272727"> Tại mục ghi chú khi chuyển khoản, anh/chị ghi rõ số điện thoại, email đăng ký, 
+																	số tiền <?php echo number_format($price_purchase,0,",",".").'VNĐ';?> để em hỗ trợ kích hoạt luôn cho mình nhé. Em cảm ơn! </li>
 																
                                                             </ul>
                                                             <hr>

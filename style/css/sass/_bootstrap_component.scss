@@ -22,6 +22,11 @@ and open the template in the editor.
     .modal-content{
         border-radius: 11px;
     }
+    .modal-body {
+        .pagination{
+            margin: 0px;
+        }
+    }
 }
 span.badge-star{
     background: red; 
@@ -72,8 +77,17 @@ div.tab_container{
         margin-bottom: 0px;
     }
 
-    #tab1:checked ~ #content1,
-        #tab2:checked ~ #content2,
+    #tab1-edit:checked ~ #content1-edit,
+        #tab2-edit:checked ~ #content2-edit,
+        #tab3:checked ~ #content3,
+        #tab4:checked ~ #content4,
+        #tab5:checked ~ #content5 {
+        display: block;
+        padding: 20px;
+        background: #fff;
+    }
+    #tab1-view:checked ~ #content1-view,
+        #tab2-view:checked ~ #content2-view,
         #tab3:checked ~ #content3,
         #tab4:checked ~ #content4,
         #tab5:checked ~ #content5 {
@@ -137,5 +151,71 @@ div.tab_container{
             transform: scale(1);
             opacity: 1;
         }
+    }
+}
+
+
+.toggle-input{
+    display: table-cell;
+    vertical-align: middle;
+    h2{
+        display: table-cell;
+        line-height: 30px; 
+    }
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+        display: table-cell;
+    }
+
+    .switch input {display:none;}
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
     }
 }

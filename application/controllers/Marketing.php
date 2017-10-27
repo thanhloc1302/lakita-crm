@@ -13,9 +13,12 @@
  */
 class Marketing extends MY_Table {
 
+   
+    
     public function __construct() {
         parent::__construct();
         $this->init();
+        
     }
 
     public function init() {
@@ -73,6 +76,10 @@ class Marketing extends MY_Table {
             ),
             'landingpage' => array(
                 'name_display' => 'Landing Page',
+                'display' => 'none'
+            ),
+            'is_hide' => array(
+                'name_display' => 'Đã xóa',
                 'display' => 'none'
             )
         );
@@ -163,6 +170,7 @@ class Marketing extends MY_Table {
         );
         $conditional = array();
         $conditional['where']['date_rgt >'] = strtotime(date('d-m-Y'));
+        $conditional['where']['source_id'] = '1';
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
@@ -220,10 +228,14 @@ class Marketing extends MY_Table {
                 ),
                 'duplicate_id' => array(
                     'type' => 'binary',
+                ),
+                'is_hide' => array(
+                    'type' => 'binary',
                 )
             )
         );
         $conditional = array();
+        $conditional['where']['source_id'] = '1';
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
@@ -233,5 +245,7 @@ class Marketing extends MY_Table {
         $data['content'] = 'marketing/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
+    
+    
 
 }

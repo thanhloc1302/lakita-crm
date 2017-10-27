@@ -9,13 +9,8 @@ $(document).on('change', 'select.select_script', function () {
             data: {
                 script_id: $(this).val()
             },
-            success: function (data) {
-                //console.log(data);
-                $("div.replace_content_script").html(data);
-            },
-            complete: function () {
-                $(".script_modal").modal("show");
-            }
+            success: data => $("div.replace_content_script").html(data),
+            complete: () =>$(".script_modal").modal("show")
         });
     }
 });

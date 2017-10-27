@@ -51,6 +51,9 @@ table{
                     &.tbl_name{
                         width: 107px;
                     }
+                    &.tbl_campaign_active, &.tbl_adset_active, &.tbl_ad_active{
+                        width: 50px;
+                    }
                 }
             }
         }
@@ -68,14 +71,14 @@ table{
                     &.tbl_selection{
                         cursor: pointer;
                     }
-                    &.tbl_C2pC1, &.tbl_C3pC2 {
+/*                    &.tbl_C2pC1, &.tbl_C3pC2 {
                         background-color: #296880;
                         color:#fff;
                     }
                     &.tbl_pricepC1, &.tbl_pricepC2, &.tbl_pricepC3{
                         background-color: #262085;
                         color:#fff;
-                    }
+                    }*/
                     &.tbl_name{
                         padding-left: 15px;
                     }
@@ -117,6 +120,10 @@ table{
             }
         }
     }
+}
+
+table.extra-table tbody tr td{
+    height: 35px;
 }
 
 /*

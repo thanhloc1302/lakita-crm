@@ -47,7 +47,7 @@
                                 }
                             }
                         },
-                        licenseKey: "Z7PN-XCI86W-2H6G6U-2N042W"
+                        licenseKey: "Z74M-XA3G16-6O0F0U-51361P"
                     });
                 });
             });

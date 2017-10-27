@@ -7,9 +7,18 @@
  */
 class Manager extends MY_Controller {
 
+    public $L = array();
+
     function __construct() {
         parent::__construct();
-        $this->load->model('');
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('call_status_id' => '0', 'sale_staff_id' => '0', 'is_hide' => '0');
+        $this->L['L1'] = count($this->contacts_model->load_all($input));
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('is_hide' => '0');
+        $this->L['all'] = count($this->contacts_model->load_all($input));
     }
 
     function index($offset = 0) {
@@ -119,7 +128,6 @@ class Manager extends MY_Controller {
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
-    
     function view_duplicate() {
         $require_model = array(
             'staffs' => array(
@@ -153,7 +161,6 @@ class Manager extends MY_Controller {
         $this->load->view('manager/modal/view_duplicate', $data);
     }
 
-  
     // <editor-fold defaultstate="collapsed" desc="hàm add contact và các hàm phụ trợ">
     /* ========================  hàm add contact và các hàm phụ trợ =========================== */
 
@@ -512,8 +519,8 @@ class Manager extends MY_Controller {
     function confirm_divide_contact_even() {
         $post = $this->input->post();
         if (isset($post['submit_ok']) && $post['submit_ok'] == 'OK') {
-            $query1 = 'UPDATE `tbl_contact` set `sale_staff_id` = `draft_sale_staff_id`, `date_handover`=' . time() 
-                    . ', `last_activity` = '. time() .' WHERE `draft_sale_staff_id` > 0';
+            $query1 = 'UPDATE `tbl_contact` set `sale_staff_id` = `draft_sale_staff_id`, `date_handover`=' . time()
+                    . ', `last_activity` = ' . time() . ' WHERE `draft_sale_staff_id` > 0';
             $query2 = 'UPDATE `tbl_contact` set `draft_sale_staff_id` = 0, `has_draft_divide` = 0 WHERE `draft_sale_staff_id` > 0';
             $total = $this->contacts_model->query($query1);
             $this->contacts_model->query($query2);
@@ -541,7 +548,7 @@ class Manager extends MY_Controller {
         $this->_check_contact_can_be_delete($post['contact_id']);
         foreach ($post['contact_id'] as $value) {
             $where = array('id' => $value);
-            $data = array('is_hide' => 1,  'last_activity' => time());
+            $data = array('is_hide' => 1, 'last_activity' => time());
             $this->contacts_model->update($where, $data);
         }
         $msg = 'Xóa thành công các contact vừa chọn!';

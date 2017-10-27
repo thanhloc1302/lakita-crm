@@ -5,54 +5,62 @@
  */
 
 
-function show_number_selected_row() {
+show_number_selected_row = () => {
     var numberOfChecked = $('input:checkbox:checked').length;
     var totalCheckboxes = $('input:checkbox').length;
-    $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
-        position: "left middle",
+    /*
+     * Lấy tổng giá
+     */
+    var sum = 0;
+    for(i = 0; i < numberOfChecked; i++){
+        sum += parseInt($($('input:checkbox:checked')[i]).parent().parent().find('.tbl_price_purchase').text());
+    }
+    sum *= 1000;
+    $.notify(`Đã chọn: ${numberOfChecked} / ${totalCheckboxes}. tổng tiền = ${sum.toLocaleString()}`, {
+        position: "top left",
         className: 'success',
         showDuration: 200,
-        autoHideDelay: 1000
+        autoHideDelay: 3000
     });
-}
+};
 
-function unselect_not_checked() {
+unselect_not_checked = () => {
     $('input[type="checkbox"]').each(
-            function () {
+             () => {
                 if (!$(this).is(":checked")) {
                     $(this).parent().parent().removeClass('checked');
                 }
             });
-}
+};
 
-function unselect_checked() {
+unselect_checked = () => {
     $('input[type="checkbox"]').each(
-            function () {
+             () => {
                 if ($(this).is(":checked")) {
                     $(this).parent().parent().removeClass('checked');
                 }
             });
-}
-function uncheck_checked() {
+};
+uncheck_checked = () => {
     $('input[type="checkbox"]').each(
-            function () {
+            () => {
                 if ($(this).is(":checked")) {
                     $(this).prop("checked", false);
                 }
             });
-}
-function uncheck_not_checked() {
+};
+uncheck_not_checked = () => {
     $('input[type="checkbox"]').each(
-            function () {
+            () => {
                 if (!$(this).is(":checked")) {
                     $(this).prop("checked", false);
                 }
             });
-}
+};
 
-function right_context_menu_display(controller, contact_id, contact_name, duplicate_id, contact_phone) {
-    $(".action_view_detail_contact").attr('contact_id', contact_id);
-    $("a.view_duplicate").attr("duplicate_id", duplicate_id);
+right_context_menu_display = (controller, contact_id, contact_name, duplicate_id, contact_phone) => {
+    $(".load-new-contact-id").attr('data-contact-id', contact_id);
+   // $("a.view_duplicate").attr("duplicate_id", duplicate_id);
     $("a.send_to_mobile").attr("contact_name", contact_name).attr("contact_phone", contact_phone);
     /*
      * Nếu chọn nhiều contact thì ẩn menu xem chi tiết contact 
@@ -98,7 +106,7 @@ function right_context_menu_display(controller, contact_id, contact_name, duplic
         $(".transfer_one_contact").attr('contact_id', contact_id);
         $(".transfer_one_contact").attr('contact_name', contact_name);
     }
-}
+};
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -106,17 +114,17 @@ function right_context_menu_display(controller, contact_id, contact_name, duplic
  * and open the template in the editor.
  */
 
-var _SO_MAY_SAI_ = 1;
-var _KHONG_NGHE_MAY_ = 2;
-var _NHAM_MAY_ = 3;
-var _DA_LIEN_LAC_DUOC_ = 4;
-var _CONTACT_CHET_ = 5;
+const _SO_MAY_SAI_ = 1;
+const _KHONG_NGHE_MAY_ = 2;
+const _NHAM_MAY_ = 3;
+const _DA_LIEN_LAC_DUOC_ = 4;
+const _CONTACT_CHET_ = 5;
 
-var _CHUA_CHAM_SOC_ = 0;
-var _TU_CHOI_MUA_ = 3;
-var _DONG_Y_MUA_ = 4;
+const _CHUA_CHAM_SOC_ = 0;
+const _TU_CHOI_MUA_ = 3;
+const _DONG_Y_MUA_ = 4;
 
-function check_edit_contact() {
+check_edit_contact = () => {
     var call_status_id = $("select[name='call_status_id']").val();
     var ordering_status_id = $("select[name='ordering_status_id']").val();
     var date_recall = $(".date_recall").val();
@@ -153,14 +161,9 @@ function check_edit_contact() {
         return false;
     }
     return true;
-}
+};
 
-
-
-
-
-
-function check_rule_call_stt(call_status_id, ordering_status_id) {
+check_rule_call_stt = (call_status_id, ordering_status_id) => {
     if (call_status_id == _SO_MAY_SAI_ || call_status_id == _KHONG_NGHE_MAY_ || call_status_id == _NHAM_MAY_) {
         if (ordering_status_id != _CHUA_CHAM_SOC_) {
             return false;
@@ -175,23 +178,23 @@ function check_rule_call_stt(call_status_id, ordering_status_id) {
 //            return false;
 //        }
     return true;
-}
+};
 
-function check_rule_call_stt_and_date_recall(call_status_id, ordering_status_id, date_recall) {
+check_rule_call_stt_and_date_recall = (call_status_id, ordering_status_id, date_recall) => {
     if (stop_care(call_status_id, ordering_status_id) && now_greater_than_input_date(date_recall)) {
         return true;
     }
     return false;
-}
+};
 
-function stop_care(call_status_id, ordering_status_id) {
+stop_care = (call_status_id, ordering_status_id) => {
     if (call_status_id == _SO_MAY_SAI_ || call_status_id == _NHAM_MAY_ || call_status_id == _KHONG_NGHE_MAY_
             || ordering_status_id == _DONG_Y_MUA_ || ordering_status_id == _TU_CHOI_MUA_ || ordering_status_id == _CONTACT_CHET_) {
         return true;
     }
     return false;
-}
-function now_greater_than_input_date(date_string) {
+};
+now_greater_than_input_date = date_string => {
     var date_arr = date_string.split(/-/);
     var year = date_arr[2];
     var month = date_arr[1];
@@ -201,22 +204,44 @@ function now_greater_than_input_date(date_string) {
     var input_timestamp = new Date(year, month - 1, day);
     input_timestamp = input_timestamp.getTime();
     return (now_timestamp > input_timestamp);
-}
+};
 
 
-$(document).on('click', 'a.delete_one_contact_admin', function (e) {
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+setEqualTableHeight = () => {
+    if ($(".table-view-1").height() > $(".table-view-2").height())
+    {
+        $(".table-view-2").height($(".table-view-1").height());
+    } else
+    {
+        $(".table-view-1").height($(".table-view-2").height());
+    }
+    if ($(".table-1").height() > $(".table-2").height())
+    {
+        $(".table-2").height($(".table-1").height());
+    } else
+    {
+        $(".table-1").height($(".table-2").height());
+    }
+};
+$(document).on('click', 'a.delete_one_contact_admin', e => {
     var r = confirm("Bạn có chắc chắn muốn xóa contact này không?");
     if (r == true) {
-        var del = $(this);
-        var contact_id = $(this).attr("contact_id");
-        e.preventDefault();
+        var del = $(e.target);
+        var contact_id = $(e.target).attr("contact_id");
         $.ajax({
             type: "POST",
             url: $("#base_url").val() + "admin/delete_one_contact",
             data: {
                 contact_id: contact_id
             },
-            success: function (data) {
+            success: data => {
+                console.log(data);
                 if (data === '1')
                 {
                     del.parent().parent().hide();
@@ -225,10 +250,9 @@ $(document).on('click', 'a.delete_one_contact_admin', function (e) {
                     alert(data);
                 }
             },
-            error: function () {
-                alert(errorThrown);
-            }
+            error: errorThrown => alert(errorThrown)
         });
+        return false;
     }
 });
 $(document).on('click', 'a.delete_forever_one_contact_admin', function (e) {
@@ -243,7 +267,7 @@ $(document).on('click', 'a.delete_forever_one_contact_admin', function (e) {
             data: {
                 contact_id: contact_id
             },
-            success: function (data) {
+            success: data => {
                 if (data === '1')
                 {
                     del.parent().parent().hide();
@@ -252,9 +276,7 @@ $(document).on('click', 'a.delete_forever_one_contact_admin', function (e) {
                     alert(data);
                 }
             },
-            error: function () {
-                alert(errorThrown);
-            }
+            error: errorThrown => alert(errorThrown)
         });
     }
 });
@@ -276,7 +298,7 @@ $(document).on('click', 'a.retrieve_contact', function (e) {
             data: {
                 contact_id: contact_id
             },
-            success: function (data) {
+            success: data => {
                 if (data === '1')
                 {
                     alert('Thu hồi thành công contact');
@@ -286,9 +308,7 @@ $(document).on('click', 'a.retrieve_contact', function (e) {
                     alert(data);
                 }
             },
-            error: function () {
-                alert(errorThrown);
-            }
+            error: errorThrown => alert(errorThrown)
         });
     }
 });
@@ -364,7 +384,7 @@ $(document).on('click', 'a.edit_item', function (e) {
 });/*
  * Real order
  */
-$('th[class^="order_new_"]').on('click',function () {
+$('th[class^="order_new_"]').on('click', function () {
     var myclass = $(this).attr("class");
     myclass = myclass.split(/ /);
     myclass = myclass[0];
@@ -453,53 +473,85 @@ $(document).on('scroll', function () {
 //        var offsetLeft = $(".table-head-pos").offset().left - 1;
 //        $(".fixed-table").css("left", offsetLeft + "px");
     }
-});    $(document).on('click', 'a.delete_bill', function (e) {
-        var r = confirm("Bạn có chắc chắn muốn xóa dòng đối soát này không?");
-        if (r == true) {
-            var del = $(this);
-            var bill_id = $(this).attr("bill_id");
-            e.preventDefault();
-            $.ajax({
-                type: "POST",
-                url: $("#base_url").val() + "CODS/check_L8/delete_bill",
-                data: {
-                    bill_id: bill_id
-                },
-                success: function (data) {
-                    console.log(data);
-                    if (data === '1')
-                    {
-                        del.parent().parent().parent().hide();
-                        //location.reload();
-                    } else {
-                        alert(data);
-                    }
-                },
-                error: function (errorThrown) {
-                    alert(errorThrown);
-                }
-            });
+});
+
+$(document).on("change", '.toggle-input [name="edit_active"]', function () {
+    var active = ($(this).prop('checked')) ? '1' : '0';
+    var item_id = $(this).attr("item_id");
+    $.ajax({
+        type: "POST",
+        url: $("#url_edit_active").val(),
+        data: {
+            active: active,
+            item_id: item_id
+        },
+        success: function (data) {
+            if (data == '1') {
+                $.notify('Lưu thành công', {
+                    position: "top left",
+                    className: 'success',
+                    showDuration: 200,
+                    autoHideDelay: 2000
+                });
+            } else {
+                alert("Có lỗi xảy ra! Vui lòng liên hệ admin.");
+            }
+        },
+        error: function (errorThrown) {
+            alert(errorThrown);
         }
     });
-    $(document).on('click', 'a.edit_bill', function (e) {
-        e.preventDefault();
+});
+
+$(function () {
+    $.each($(".tbl_pricepC3"), function () {
+        if (parseInt($(this).text().replace(".", "")) > 50000) {
+            $(this).addClass("bg-red");
+        };
+    });
+});$(document).on('click', 'a.delete_bill', function (e) {
+    var r = confirm("Bạn có chắc chắn muốn xóa dòng đối soát này không?");
+    if (r == true) {
+        var del = $(this);
         var bill_id = $(this).attr("bill_id");
-        var url = $("#base_url").val() + "CODS/check_L8/show_edit_bill";
+        e.preventDefault();
         $.ajax({
-            url: url,
             type: "POST",
+            url: $("#base_url").val() + "CODS/check_L8/delete_bill",
             data: {
                 bill_id: bill_id
             },
-            success: function (data) {
+            success: data => {
                 console.log(data);
-                $("div.replace_content_edit_bill_modal").html(data);
+                if (data === '1')
+                {
+                    del.parent().parent().parent().hide();
+                    //location.reload();
+                } else {
+                    alert(data);
+                }
             },
-            complete: function () {
-                $(".edit_bill_modal").modal("show");
-            }
+            error: errorThrown => alert(errorThrown)
         });
+    }
+});
+$(document).on('click', 'a.edit_bill', function (e) {
+    e.preventDefault();
+    var bill_id = $(this).attr("bill_id");
+    var url = $("#base_url").val() + "CODS/check_L8/show_edit_bill";
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            bill_id: bill_id
+        },
+        success: data => {
+            console.log(data);
+            $("div.replace_content_edit_bill_modal").html(data);
+        },
+        complete: () => $(".edit_bill_modal").modal("show")
     });
+});
 $(".btn-export-excel").on('click', function (e) {
     e.preventDefault();
     $("#action_contact").attr("action", $("#base_url").val() + "cod/export_for_print");
@@ -587,31 +639,32 @@ $(".btn-modal_edit-multi-contact").on('click', function (e) {
         //$("#action_contact").submit();
     }
 });
-$(document).on('click', 'a.edit_contact', function (e) {
-    e.preventDefault();
-    $(".checked").removeClass("checked");
-    $(this).parent().parent().addClass("checked");
-    var contact_id = $(this).attr("contact_id");
-    var url = $("#base_url").val() + "common/show_edit_contact_modal";
-    $.ajax({
-        url: url,
-        type: "POST",
-        data: {
-            contact_id: contact_id
-        },
-        success: function (data) {
-            // console.log(data);
-            $("div.replace_content").html(data);
-        },
-        complete: function () {
-            $(".edit_contact_modal").modal("show");
-        }
-    });
-});
-
+/*
+ $(document).on('click', 'a.edit_contact', function (e) {
+ e.preventDefault();
+ $(".checked").removeClass("checked");
+ $(this).parent().parent().addClass("checked");
+ var contact_id = $(this).attr("contact_id");
+ var url = $("#base_url").val() + "common/show_edit_contact_modal";
+ $.ajax({
+ url: url,
+ type: "POST",
+ data: {
+ contact_id: contact_id
+ },
+ success: data => {
+ $(".modal-view-contact").remove();
+ var modalViewContactDetail = "<div class='modal-view-contact'></div>";
+ $(".modal-append-to").append(modalViewContactDetail);
+ $(".modal-view-contact").html(data);
+ },
+ complete: () => $(".edit_contact_modal").modal("show")
+ });
+ }); 
+ */
 $(document).on('click', '.btn-edit-contact', function (e) {
     e.preventDefault();
-    if(check_edit_contact() == false) {
+    if (check_edit_contact() == false) {
         return false;
     }
     var url = $(this).parents('.form_edit_contact_modal').attr("action");
@@ -621,7 +674,7 @@ $(document).on('click', '.btn-edit-contact', function (e) {
         type: "POST",
         dataType: 'json',
         data: $(".form_edit_contact_modal").serialize(),
-        success: function (data) {
+        success: data => {
             if (data.success == 1) {
                 $("#send_email_sound")[0].play();
                 $.notify(data.message, {
@@ -631,7 +684,7 @@ $(document).on('click', '.btn-edit-contact', function (e) {
                     autoHideDelay: 5000
                 });
                 $(".edit_contact_modal").modal("hide");
-                $('tr[contact_id="'+contact_id+'"]').remove();
+                $('tr[contact_id="' + contact_id + '"]').remove();
             } else {
                 $("#send_email_error")[0].play();
                 $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
@@ -641,13 +694,13 @@ $(document).on('click', '.btn-edit-contact', function (e) {
                     autoHideDelay: 7000
                 });
             }
-        },
-        complete: function () {
-
         }
     });
 });
 
+/*
+ * Nếu chọn hình thức thanh toán là COD thì ẩn hình thức thanh toán BANKING, và ngược lại
+ */
 $(document).on('change', 'select.edit_payment_method_rgt', function (e) {
     if ($(this).val() == 2) {
         $(".tbl_bank").show(1000);
@@ -659,33 +712,24 @@ $(document).on('change', 'select.edit_payment_method_rgt', function (e) {
     } else {
         $(".tbl_cod").hide();
     }
-    set_equal_table_height();
+    setEqualTableHeight();
 });
 
-
-function set_equal_table_height() {
-    if ($(".table-1").height() > $(".table-2").height())
-    {
-        $(".table-2").height($(".table-1").height());
-    } else
-    {
-        $(".table-1").height($(".table-2").height());
-    }
-}
-
-$('.edit_contact_modal').on('shown.bs.modal', function () {
-    $('.datetimepicker').datetimepicker(
-            {
-                format: 'DD-MM-YYYY HH:mm'
-            });
-    if ($("select.edit_payment_method_rgt").val() != 2) {
-        $(".tbl_bank").hide();
-    }
-    if ($("select.edit_payment_method_rgt").val() != 1) {
-        $(".tbl_cod").hide();
-    }
-});$(function () {
-    setTimeout(function () {
+/*
+ $('.edit_contact_modal').on('shown.bs.modal', function () {
+ $('.datetimepicker').datetimepicker(
+ {
+ format: 'DD-MM-YYYY HH:mm'
+ });
+ if ($("select.edit_payment_method_rgt").val() != 2) {
+ $(".tbl_bank").hide();
+ }
+ if ($("select.edit_payment_method_rgt").val() != 1) {
+ $(".tbl_cod").hide();
+ }
+ });
+ */$(function () {
+    setTimeout( () => {
         if ($(".filter-tbl-1").height() > $(".filter-tbl-2").height())
         {
             $(".filter-tbl-2").height($(".filter-tbl-1").height());
@@ -721,10 +765,8 @@ $(document).on('click', '.btn-send-account-lakita', function (e) {
             contact_id: contact_id
         },
         dataType: 'json',
-        beforeSend: function () {
-            $(".popup-wrapper").show();
-        },
-        success: function (data) {
+        beforeSend: () => $(".popup-wrapper").show(),
+        success: data => {
             console.log(data.success);
             if (data.success == 0) {
                 $("#send_email_error")[0].play();
@@ -744,10 +786,8 @@ $(document).on('click', '.btn-send-account-lakita', function (e) {
                 });
             }
         },
-        complete: function () {
-            $(".popup-wrapper").hide();
-        },
-        error: function () {
+        complete: () => $(".popup-wrapper").hide(),
+        error: () => {
             $("#send_email_error")[0].play();
             $.notify('Có lỗi xảy ra trong quá trình gửi email!', {
                 position: "top left",
@@ -778,10 +818,8 @@ $(document).on('click', '.btn-send-banking-info', function (e) {
             price_purchase: $(".edit-contact-price-purchase").val()
         },
         dataType: 'json',
-        beforeSend: function () {
-            $(".popup-wrapper").show();
-        },
-        success: function (data) {
+        beforeSend: () => $(".popup-wrapper").show(),
+        success: data => {
             if (data.success == 1) {
                 $("#send_email_sound")[0].play();
                 $.notify('Gửi email thành công!', {
@@ -800,10 +838,8 @@ $(document).on('click', '.btn-send-banking-info', function (e) {
                 });
             }
         },
-        complete: function () {
-            $(".popup-wrapper").hide();
-        },
-        error: function () {
+        complete: () => $(".popup-wrapper").hide(),
+        error: () => {
             $("#send_email_error")[0].play();
             $.notify('Có lỗi xảy ra trong quá trình gửi email!', {
                 position: "top left",
@@ -937,7 +973,7 @@ $(document).on('click', '.btn-send-banking-info', function (e) {
  * Copyright (C) 2017 Phạm Ngọc Chuyển <chuyenpn at lakita.vn>
  *
  */
-
+/*
 $('.tbl_name').on('click', 'span.badge-star', function (e) {
     e.stopPropagation();
     e.preventDefault();
@@ -954,16 +990,13 @@ $('.tbl_name').on('click', 'span.badge-star', function (e) {
             contact_course_code: contact_course_code,
             controller: controller
         },
-        success: function (data) {
-            // console.log(data);
-            $("div.replace_content_view_contact_star").html(data);
-        },
-        complete: function () {
-            $(".view_contact_star_modal").modal("show");
-        }
+        success: data => $("div.replace_content_view_contact_star").html(data),
+        complete: () => $(".view_contact_star_modal").modal("show")
     });
 });
-$(document).on('click', 'a.action_view_detail_contact', function (e) {
+*/
+
+$('.view_contact_star_modal').on('hide.bs.modal', () => setTimeout(() => $("div.replace_content_view_contact_star").html(""), 1000));/* $(document).on('click', 'a.action_view_detail_contact', function (e) {
     e.preventDefault();
     $(".checked").removeClass("checked");
     $(this).parent().parent().addClass("checked");
@@ -976,16 +1009,11 @@ $(document).on('click', 'a.action_view_detail_contact', function (e) {
         data: {
             contact_id: contact_id
         },
-        success: function (data) {
-            // console.log(data);
-            $("div.replace_content_view_detail_contact").html(data);
-        },
-        complete: function () {
-            $(".view_detail_contact_modal").modal("show");
-        }
+        success: data => $("div.replace_content_view_detail_contact").html(data),
+        complete: () => $(".view_detail_contact_modal").modal("show")
     });
 });
-$('.view_detail_contact_modal').on('shown.bs.modal', function () {
+$('.view_detail_contact_modal').on('shown.bs.modal',  () => {
     if ($(".table-view-1").height() > $(".table-view-2").height())
     {
         $(".table-view-2").height($(".table-view-1").height());
@@ -994,6 +1022,41 @@ $('.view_detail_contact_modal').on('shown.bs.modal', function () {
         $(".table-view-1").height($(".table-view-2").height());
     }
 });
+
+$(document).on("click", ".view_contact_phone", () => {
+    document.querySelector("#input-copy").select();
+    document.execCommand('copy');
+    $.notify("Copy thành công vào clipboard", {
+            position: "top left",
+            className: 'success',
+            showDuration: 200,
+            autoHideDelay: 2000
+        });
+});
+*/
+/*
+$(document).on('click', 'a.action_view_detail_contact', function (e) {
+    e.preventDefault();
+    $(".checked").removeClass("checked");
+    $(this).parent().parent().addClass("checked");
+    var contact_id = $(this).attr("contact_id");
+    var url = $("#base_url").val() + "common/view_detail_contact";
+    $.ajax({
+        url: url,
+        type: "POST",
+        data: {
+            contact_id: contact_id
+        },
+        success: data => {
+            $(".modal-detail-contact").remove();
+            var modalViewContactDetail = "<div class='modal-detail-contact'></div>";
+            $(".modal-append-to").append(modalViewContactDetail);
+            $(".modal-detail-contact").html(data);
+        },
+        complete: () => $(".modal-detail-contact .modal").modal("show")
+    });
+});
+*/
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -1119,7 +1182,7 @@ $(document).on('contextmenu', 'tr.custom_right_menu', function (e) {
 /*
  * High light vào các dòng khi click trái để chọn 
  */
-$("td.tbl_name, td.tbl_address").on("click", function () {
+$(document).on("click", "td.tbl_name, td.tbl_address", function () {
     if ($(this).parent().hasClass('checked')) {
         $(this).parent().removeClass('checked');
     } else {
@@ -1142,15 +1205,16 @@ $("html").on("click", function (e) {
     $(".menu-item").hide();
     /*
      * Nếu click ra ngoài bảng thì bỏ chọn các contact
-     */
+    
     if (e.target.className.indexOf("form-inline") !== -1 || e.target.className.indexOf("number_paging") !== -1)
     {
         $("input[type='checkbox']").prop('checked', false);
         $('.checked').removeClass('checked');
 
-    }
+    } */
 
 });
+
 
 shortcut.add("Ctrl+s", function () {
     $(".btn-edit-contact").click();
@@ -1221,7 +1285,7 @@ $("tr.custom_right_menu_item").on(
                 }
                 $(this).addClass('checked'); /*.find('[name="contact_id[]"]').prop('checked', true); */
             },
-            click: function () {
+           /* click: function () {
                 if ($(this).hasClass('checked')) {
                     $(this).removeClass('checked');
                 } else {
@@ -1235,7 +1299,7 @@ $("tr.custom_right_menu_item").on(
                 }
                 unselect_not_checked();
                 show_number_selected_row();
-            }
+            } */
         });
 
 
@@ -1250,7 +1314,12 @@ $("tr.custom_right_menu_item").on(
 /*
  * Khi check vào 1 item nào đó sẽ đánh dấu item đó (hiện màu xanh)
  */
-$(document).on('change', 'input[type="checkbox"]', function () {
+$(document).on('change', 'input[type="checkbox"]', function (e) {
+    var rejectShowCheckedName = ["edit_active"];
+    if (rejectShowCheckedName.indexOf($(this).attr("name")) != -1) {
+        e.stopPropagation();
+        return false;
+    }
     if (this.checked) {
         $(this).parent().parent().addClass('checked');
     } else {
@@ -1259,10 +1328,11 @@ $(document).on('change', 'input[type="checkbox"]', function () {
     /*
      * Hiển thị số lượng dòng đã check
      */
+
     var numberOfChecked = $('input:checkbox:checked').length;
     var totalCheckboxes = $('input:checkbox').length;
-    $(this).notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
-        position: "right middle",
+    $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
+        position: "top left",
         className: 'success',
         showDuration: 200,
         autoHideDelay: 1000
@@ -1287,6 +1357,7 @@ $(".check_all").on('click', function () {
                     $(this).parent().parent().addClass('checked');
                 }
         );
+        show_number_selected_row();
     }
 });
 /* 
@@ -1299,22 +1370,56 @@ $(".check_all").on('click', function () {
 /*
  * Hiển thị tên khóa học khi click vào mã khóa học
  */
+/*
+ $(document).on('click', '.find-course-code', function () {
+ var _this = $(this);
+ $.ajax({
+ url: $("#base_url").val() + "common/find_course_name",
+ type: 'POST',
+ data: {course_code: $(this).text().trim()},
+ success: data => {
+ if (_this.parent().attr('class') === 'view_course_code') {
+ _this.notify(data, {
+ position: "top left",
+ className: 'success',
+ showDuration: 200,
+ autoHideDelay: 4000
+ });
+ } else {
+ _this.notify(data, {
+ position: "top center",
+ className: 'success',
+ showDuration: 200,
+ autoHideDelay: 4000
+ });
+ }
+ }
+ });
+ });
+ 
+ */
+
 $(document).on('click', '.find-course-code', function () {
     var _this = $(this);
     $.ajax({
-        url: $("#base_url").val() + "common/find_course_name",
-        type: 'POST',
-        data: {course_code: $(this).text().trim()},
-        success: function (data, textStatus, jqXHR) {
-            if (_this.parent().attr('class') === 'view_course_code') {
-                _this.notify(data, {
-                    position: "top left",
-                    className: 'success',
-                    showDuration: 200,
-                    autoHideDelay: 4000
-                });
-            } else {
-                _this.notify(data, {
+        url: $("#base_url").val() + "public/json/course.json",
+        type: 'GET',
+        dataType: 'json',
+        success: data => {
+            let find = 0;
+            $.each(data.course, (index, item) => {
+                if (item.course_code == _this.text().trim()) {
+                    _this.notify(item.name_course, {
+                        position: "top center",
+                        className: 'success',
+                        showDuration: 200,
+                        autoHideDelay: 4000
+                    });
+                    find = 1;
+                }
+            });
+            if (!find) {
+                _this.notify("KHÔNG TÌM THẤY MÃ KHÓA HỌC NÀY", {
                     position: "top center",
                     className: 'success',
                     showDuration: 200,
@@ -1389,7 +1494,7 @@ $(".reset_datepicker").click(function (e) {
         this.on("addedfile",
                 function () {
                     $(".popup-wrapper").show();
-                }).on("success", function (e) {
+                }).on("success", function () {
             //console.log(e);
             location.href = $("#redirect-dropzone").val();
         }).on("error", function () {
@@ -1456,66 +1561,53 @@ $(".reset_datepicker").click(function (e) {
 
     });
 });
-$(function () {
-    $(".real-search").on(
-            {'input': function () {
-                    var type = $(this).attr('type_search');
-                    $.ajax({
-                        url: $("#base_url").val() + "common/real_search",
-                        type: "POST",
-                        beforeSend: function () {
-                            $(".popup-wrapper").show();
-                        },
-                        data: {
-                            type: type,
-                            value: $(this).val()
-                        },
-                        success: function (data) {
-                            //console.log(data);
-                            $(".remove_content").html("");
-                            $(".real-search-replacement").html(data);
-                        }, complete: function () {
-                            $(".popup-wrapper").hide();
-                            $('.modal').on('shown.bs.modal', function () {
-                                $('.selectpicker').selectpicker({});
-                            });
-                        }
-                    });
-                }
-            }
-    );
-});$(function () {
+/* $(function () {
+//    $(".real-search").on(
+//            {'input': function () {
+//                    var type = $(this).attr('type_search');
+//                    $.ajax({
+//                        url: $("#base_url").val() + "common/real_search",
+//                        type: "POST",
+//                        beforeSend: function () {
+//                            $(".popup-wrapper").show();
+//                        },
+//                        data: {
+//                            type: type,
+//                            value: $(this).val()
+//                        },
+//                        success: function (data) {
+//                            //console.log(data);
+//                            $(".remove_content").html("");
+//                            $(".real-search-replacement").html(data);
+//                        }, complete: function () {
+//                            $(".popup-wrapper").hide();
+//                            $('.modal').on('shown.bs.modal', function () {
+//                                $('.selectpicker').selectpicker({});
+//                            });
+//                        }
+//                    });
+//                }
+//            }
+//    );
+//});
+
+*/$(function () {
 
     /*
      * Sửa lại link phân trang nếu có các thao tác lọc, tìm kiếm, sắp xếp
      */
-    if (location.search !== "") {
-        $(".pagination a").each(
-                function () {
-                    var curr_href = $(this).attr("href");
-                    $(this).attr('href', curr_href + location.search);
-                });
-    }
+//    if (location.search !== "") {
+//        $(".pagination a").each(
+//                function () {
+//                    var curr_href = $(this).attr("href");
+//                    $(this).attr('href', curr_href + location.search);
+//                });
+//    }
 
     /*
      * Hiển thị datepicker và selectpicker khi modal edit item đc bật lên
      */
-    $('.modal').on('shown.bs.modal', function () {
-        $('.selectpicker').selectpicker({});
-        $(".datepicker").datepicker({dateFormat: "dd-mm-yy"});
-        $(".reset_datepicker").click(function (e) {
-            e.preventDefault();
-            $(".datepicker").val("");
-            $(".datetimepicker").val('');
-        });
-        if ($(".table-1").height() > $(".table-2").height())
-        {
-            $(".table-2").height($(".table-1").height());
-        } else
-        {
-            $(".table-1").height($(".table-2").height());
-        }
-    });
+
 
 
     /*===================================== trờ về trang trước ========================================*/
@@ -1523,15 +1615,7 @@ $(function () {
 //    $(".back_location").click(function () {
 //        location.href = document.referrer;
 //    });
-    /*
-     * Chỉnh lại giao diện gốc (slide bar)
-     */
-    if ($("li.current-page").parent().hasClass("child_menu")) {
-        $("li.current-page").parent().css("display", 'none');
-    }
-    if ($("li.active").parent().hasClass("side-menu")) {
-        $(this).removeClass("active");
-    }
+
 
 
     /*
@@ -1550,22 +1634,40 @@ $(function () {
      */
     $("#curr_url").val(location.href);
 
-//    var hide = 1;
-//    $(document).on('mousemove', function (e) {
-//
-//        if (e.pageX < 0.5) {
-//            $("body").removeClass("nav-sm");
-//            $("body").addClass("nav-md");
-//            hide = 0;
-//        }
-//
-//        if (e.pageX > 500 && hide == 0) {
-//            $("body").removeClass("nav-md");
-//            $("body").addClass("nav-sm");
-//            hide = 1;
-//        }
-//    });
+    /*
+     * Nếu click vào nút filter nâng cao thì đổi icon
+     */
+    $(document).on('click', '.show-more-table-info', function (e) {
+        e.stopPropagation();
+        let contactId = $(this).attr('contact-id');
+        $("#" + contactId).toggle("slow");
+        let isHide = $(this).attr('is-hide');
+        if (isHide == '1') {
+            $(this).attr('is-hide', '0');
+            $(this).html('<i class="fa fa-minus-circle" aria-hidden="true"></i>');
+        } else {
+            $(this).attr('is-hide', '1');
+            $(this).html('<i class="fa fa-plus-circle" aria-hidden="true"></i>');
+        }
+        console.log(1);
+    });
 
+    /*
+     * Nếu filter nâng cao được mở ra thì điều chỉnh chiều cao 2 cột bằng nhau
+     */
+    $('#collapse-filter').on('shown.bs.collapse', function () {
+        $(this).prev().find(".fa").removeClass("fa-arrow-circle-down").addClass("fa-arrow-circle-up");
+        if ($(".filter-tbl-1").height() > $(".filter-tbl-2").height())
+        {
+            $(".filter-tbl-2").height($(".filter-tbl-1").height());
+        } else
+        {
+            $(".filter-tbl-1").height($(".filter-tbl-2").height());
+        }
+    });
+    $('#collapse-filter').on('hidden.bs.collapse', function () {
+        $(this).prev().find(".fa").removeClass("fa-arrow-circle-up").addClass("fa-arrow-circle-down");
+    });
 });
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -1584,7 +1686,7 @@ $(".send_to_mobile").on('click', function (e) {
             contact_phone: contact_phone,
             contact_name: contact_name
         },
-        success: function () {
+        success:  () =>  {
             $.notify('Gửi thành công đến mobile!', {
                 position: "top left",
                 className: 'success',
@@ -1594,43 +1696,45 @@ $(".send_to_mobile").on('click', function (e) {
         }
     });
 });
-/* 
+/*
  * Copyright (C) 2017 Phạm Ngọc Chuyển <chuyenpn at lakita.vn>
  *
  */
-  var notify = '';
-    Notification.requestPermission(function (p) {});
-    setInterval(function () {
-        $.ajax({
-            url: $("#base_url").val()+"common/listen",
-            success: function (data2) {
-                //console.log(data2);
-                if (data2 === '1') {
-                    $("#notificate")[0].play();
-                    notify = new Notification(
-                            'Có một contact mới đăng ký', 
-                            {
-                                body: 'Click vào đây để xem ngay!',
-                                icon: $("#base_url").val() + 'public/images/logo2.png',
-                                tag: 'http://crm2.lakita.vn/quan-ly/trang-chu.html', 
-                                sound: $("#base_url").val() +'public/mp3/new-contact.mp3',
-                                image: $("#base_url").val() + 'public/images/contact-us.jpg'
-                            }
-                    );
-                    notify.onclick = function (event) {
-                        event.preventDefault(); 
-                        window.open('http://crm2.lakita.vn/quan-ly/trang-chu.html', '_blank');
-                    };
-                    if (($("#input_controller").val() === 'manager' && $("#input_method").val() === 'index')
-                            || $("#input_controller").val() === 'marketing' && $("#input_method").val() === 'index') {
-                        setTimeout(function () {
-                            location.reload();
-                        }, 4000);
-                    }
+/* global Notification */
+
+var notify = '';
+Notification.requestPermission(function (p) {});
+setInterval(function () {
+    $.ajax({
+        url: $("#base_url").val() + "common/listen",
+        success: data2 => {
+            //console.log(data2);
+            if (data2 === '1') {
+                $("#notificate")[0].play();
+                notify = new Notification(
+                        'Có một contact mới đăng ký',
+                        {
+                            body: 'Click vào đây để xem ngay!',
+                            icon: $("#base_url").val() + 'public/images/logo2.png',
+                            tag: 'https://crm2.lakita.vn/quan-ly/trang-chu.html',
+                            sound: $("#base_url").val() + 'public/mp3/new-contact.mp3',
+                            image: $("#base_url").val() + 'public/images/contact-us.jpg'
+                        }
+                );
+                notify.onclick = function (event) {
+                    event.preventDefault();
+                    window.open('https://crm2.lakita.vn/quan-ly/trang-chu.html', '_blank');
+                };
+                if (($("#input_controller").val() === 'manager' && $("#input_method").val() === 'index')
+                        || $("#input_controller").val() === 'marketing' && $("#input_method").val() === 'index') {
+                    setTimeout(function () {
+                        location.reload();
+                    }, 4000);
                 }
             }
-        });
-    }, 3000);/* 
+        }
+    });
+}, 3000);/* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -1656,11 +1760,7 @@ $(".send_to_mobile").on('click', function (e) {
  }, 'body');
  */
 
-$('li.mega-dropdown').mouseover(function () {
-    $(".black-over").css('bottom', '0%');
-}).mouseout(function () {
-    $(".black-over").css('bottom', '100%');
-});
+$('li.mega-dropdown').mouseover(() => $(".black-over").css('bottom', '0%')).mouseout(() => $(".black-over").css('bottom', '100%'));
 
 /*
  setInterval(function(){
@@ -1675,24 +1775,118 @@ $('li.mega-dropdown').mouseover(function () {
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+/*
+ $('.modal').on('hide.bs.modal', function () {
+ if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated btn-very-lg');
+ } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated modal-lg');
+ } else {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated');
+ }
+ });
+ $('.modal').on('show.bs.modal', function () {
+ if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated btn-very-lg');
+ } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated modal-lg');
+ } else {
+ $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated');
+ }
+ var zIndex = 1040 + (10 * $('.modal:visible').length);
+ $(this).css('z-index', zIndex);
+ setTimeout(function () {
+ $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+ }, 0);
+ });
+ */
 
-$('.modal').on('hide.bs.modal', function () {
+
+
+$(document).on('hide.bs.modal', '.modal', function () {
     if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated btn-very-lg');
-    } else if ($(this).find(".modal-dialog").attr('class').search('btn-lg') != -1) {
-        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated btn-lg');
+    } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
+        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated modal-lg');
     } else {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated');
     }
 });
-$('.modal').on('show.bs.modal', function () {
+$(document).on('show.bs.modal', '.modal', function () {
+    /*
+     * Nạp lại các date picker
+     */
+    $('.selectpicker').selectpicker({});
+    $(".datepicker").datepicker({dateFormat: "dd-mm-yy"});
+    $(".reset_datepicker").click(function (e) {
+        e.preventDefault();
+        $(".datepicker").val("");
+        $(".datetimepicker").val('');
+    });
+    $('.datetimepicker').datetimepicker(
+            {
+                format: 'DD-MM-YYYY HH:mm'
+            });
+    if ($("select.edit_payment_method_rgt").val() != 2) {
+        $(".tbl_bank").hide();
+    }
+    if ($("select.edit_payment_method_rgt").val() != 1) {
+        $(".tbl_cod").hide();
+    }
+    setTimeout(function () {
+        setEqualTableHeight();
+    }, 1000);
     if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated btn-very-lg');
-    } else if ($(this).find(".modal-dialog").attr('class').search('btn-lg') != -1) {
-        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated btn-lg');
+    } else if ($(this).find(".modal-dialog").attr('class').search('modal-lg') != -1) {
+        $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated modal-lg');
     } else {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeIn animated');
     }
+    var zIndex = 1040 + (10 * $('.modal:visible').length);
+    $(this).css('z-index', zIndex);
+    setTimeout(function () {
+        $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+    }, 0);
+});
+
+
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+$(document).on("click", ".ajax-request-modal", function (e) {
+    e.stopPropagation();
+    e.preventDefault();
+    var _this = $(this);
+    setTimeout(function () {
+        $(".checked").removeClass("checked");
+        _this.parent().parent().addClass("checked");
+
+        var contact_id = _this.attr("data-contact-id");
+        console.log(contact_id);
+        var url = $("#base_url").val() + _this.attr("data-url");
+        var modalName = _this.attr("data-modal-name");
+        var controller = _this.attr("data-controller");
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: {
+                contact_id: contact_id,
+                controller: controller
+            },
+            success: data => {
+                $("." + modalName).remove();
+                var newModal = `<div class="${modalName}"></div>`;
+                $(".modal-append-to").append(newModal);
+                $(`.${modalName}`).html(data);
+            },
+            complete: () => $(`.${modalName} .modal`).modal("show")
+        });
+    }, 100);
 });
 $("a.cancel_one_contact").on('click', function (e) {
     var del = $(this);
@@ -1801,7 +1995,7 @@ $(document).on('click', '.btn-divide-one-contact', function (e) {
         type: "POST",
         dataType: 'json',
         data: $('#transfer_one_contact').serialize(),
-        success: function (data) {
+        success: data => {
             if (data.success == 1) {
                 $("#send_email_sound")[0].play();
                 $.notify(data.message, {
@@ -1821,9 +2015,6 @@ $(document).on('click', '.btn-divide-one-contact', function (e) {
                     autoHideDelay: 7000
                 });
             }
-        },
-        complete: function () {
-
         }
     });
 });
@@ -1847,7 +2038,7 @@ $(document).on('click', '.btn-divide-multi-contact', function (e) {
         type: "POST",
         dataType: 'json',
         data: $('#action_contact').serialize(),
-        success: function (data) {
+        success: data => {
             if (data.success == 1) {
                 $("#send_email_sound")[0].play();
                 $.notify(data.message, {
@@ -1869,9 +2060,6 @@ $(document).on('click', '.btn-divide-multi-contact', function (e) {
                     autoHideDelay: 7000
                 });
             }
-        },
-        complete: function () {
-
         }
     });
 });/*
@@ -1996,13 +2184,8 @@ $(document).on('change', 'select.select_script', function () {
             data: {
                 script_id: $(this).val()
             },
-            success: function (data) {
-                //console.log(data);
-                $("div.replace_content_script").html(data);
-            },
-            complete: function () {
-                $(".script_modal").modal("show");
-            }
+            success: data => $("div.replace_content_script").html(data),
+            complete: () =>$(".script_modal").modal("show")
         });
     }
 });
@@ -2075,4 +2258,10 @@ $(document).on('change', '[name="add_adset_id"]', function () {
     });
 });
 
-//# sourceMappingURL=built.js.map
+
+$(document).on('change', '[name="add_landingpage_id"]', function () {
+    var landingpage_id = $(this).find(":selected").data('url');
+    var preview_iframe = `<iframe width="100%" height="500px" src="${landingpage_id}"></iframe>`;
+    $(".modal-replace-preview-landingpage").html(preview_iframe);
+   $(".modal-preview-landingpage").modal('show');
+});

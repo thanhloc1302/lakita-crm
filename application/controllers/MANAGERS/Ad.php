@@ -34,6 +34,10 @@ class Ad extends MY_Table {
                 'name_display' => 'ID adset',
                 'display' => 'none'
             ),
+             'active' => array(
+                'type' => 'binary',
+                'name_display' => 'Hoạt động'
+            ),
             'name' => array(
                 'name_display' => 'Tên ad',
                 'order' => '1'
@@ -81,10 +85,7 @@ class Ad extends MY_Table {
                 'name_display' => 'Ngày tạo',
                 'display' => 'none'
             ),
-            'active' => array(
-                'type' => 'custom',
-                'name_display' => 'Hoạt động',
-            )
+        
         );
         $this->set_list_view($list_item);
         $this->set_model('ad_model');
@@ -152,13 +153,13 @@ class Ad extends MY_Table {
      * Ghi đè hàm xóa lớp cha
      */
 
-    function delete_item() {
-        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
-    }
-
-    function delete_multi_item() {
-        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
-    }
+//    function delete_item() {
+//        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
+//    }
+//
+//    function delete_multi_item() {
+//        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
+//    }
 
     function index($offset = 0) {
         $this->list_filter = array(
@@ -174,7 +175,11 @@ class Ad extends MY_Table {
             )
         );
         $conditional = array();
-        $conditional['where'] = array('marketer_id' => $this->user_id);
+        $conditional['where']['marketer_id'] = $this->user_id;
+        $get = $this->input->get();
+//        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
+//            $conditional['where']['active'] = 1;
+//        }
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
@@ -223,7 +228,7 @@ class Ad extends MY_Table {
     function action_add_item() {
         $post = $this->input->post();
         if (!empty($post)) {
-            if ($this->{$this->model}->check_exists(array('name' => $post['add_name']))) {
+            if ($this->{$this->model}->check_exists(array('name' => $post['add_name'], 'marketer_id' => $this->user_id))) {
                 redirect_and_die('Tên ad đã tồn tại!');
             }
             $paramArr = array('name', 'adset_id', 'ad_id_facebook', 'desc', 'active');

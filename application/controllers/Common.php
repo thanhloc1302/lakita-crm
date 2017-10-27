@@ -496,52 +496,52 @@ class Common extends MY_Controller {
                 }
             }
             //hạ cấp
-            if ($cod_status_id == 0) {
-                $this->load->model('cod_cross_check_model');
-                $where = array('contact_id' => $id);
-                $curr = $this->cod_cross_check_model->load_all(array('where' => $where));
-                if (!empty($curr)) {
-
-                    /*
-                     * Xóa contact đang xóa ở bảng tạm và cập nhật lại mã bill bằng rỗng
-                     */
-                    $this->cod_cross_check_model->delete($where);
-                    $this->contacts_model->update(array('id' => $id), array('code_cross_check' => NULL));
-                    /*
-                     * Lấy toàn bộ contact có số thứ tự lớn hơn STT contact dang xóa
-                     */
-                    $condition = array(
-                        'where' => array(
-                            'date_print_cod' => $curr[0]['date_print_cod'],
-                            'provider_id' => $curr[0]['provider_id'],
-                            'number >' => $curr[0]['number']
-                        )
-                    );
-                    $upper = $this->cod_cross_check_model->load_all($condition);
-
-                    /*
-                     * Cập nhật lại các contact đằng sau đúng số thứ tự (STT = STT - 1)
-                     */
-                    $this->load->model('providers_model');
-                    $input_provider = array();
-                    $input_provider['where'] = array('id' => $curr[0]['provider_id']);
-                    $provider = $this->providers_model->load_all($input_provider);
-                    $provider_prefix = $provider[0]['prefix'];
-                    if (!empty($upper)) {
-                        foreach ($upper as $value) {
-                            $u_num = $value['number'] - 1;
-                            if ($u_num < 10) {
-                                $u_num = '0' . $u_num;
-                            }
-                            $this->cod_cross_check_model->update(array('id' => $value['id']), array('number' => $u_num));
-                            $u_code = $provider_prefix . $value['date_print_cod'] . $u_num;
-                            $this->contacts_model->update(array('id' => $value['contact_id']), array('code_cross_check' => $u_code));
-                        }
-                    }
-                }
-                $param['code_cross_check'] = '';
-                $param['provider_id'] = '0';
-            }
+//            if ($cod_status_id == 0) {
+//                $this->load->model('cod_cross_check_model');
+//                $where = array('contact_id' => $id);
+//                $curr = $this->cod_cross_check_model->load_all(array('where' => $where));
+//                if (!empty($curr)) {
+//
+//                    /*
+//                     * Xóa contact đang xóa ở bảng tạm và cập nhật lại mã bill bằng rỗng
+//                     */
+//                    $this->cod_cross_check_model->delete($where);
+//                    $this->contacts_model->update(array('id' => $id), array('code_cross_check' => NULL));
+//                    /*
+//                     * Lấy toàn bộ contact có số thứ tự lớn hơn STT contact dang xóa
+//                     */
+//                    $condition = array(
+//                        'where' => array(
+//                            'date_print_cod' => $curr[0]['date_print_cod'],
+//                            'provider_id' => $curr[0]['provider_id'],
+//                            'number >' => $curr[0]['number']
+//                        )
+//                    );
+//                    $upper = $this->cod_cross_check_model->load_all($condition);
+//
+//                    /*
+//                     * Cập nhật lại các contact đằng sau đúng số thứ tự (STT = STT - 1)
+//                     */
+//                    $this->load->model('providers_model');
+//                    $input_provider = array();
+//                    $input_provider['where'] = array('id' => $curr[0]['provider_id']);
+//                    $provider = $this->providers_model->load_all($input_provider);
+//                    $provider_prefix = $provider[0]['prefix'];
+//                    if (!empty($upper)) {
+//                        foreach ($upper as $value) {
+//                            $u_num = $value['number'] - 1;
+//                            if ($u_num < 10) {
+//                                $u_num = '0' . $u_num;
+//                            }
+//                            $this->cod_cross_check_model->update(array('id' => $value['id']), array('number' => $u_num));
+//                            $u_code = $provider_prefix . $value['date_print_cod'] . $u_num;
+//                            $this->contacts_model->update(array('id' => $value['contact_id']), array('code_cross_check' => $u_code));
+//                        }
+//                    }
+//                }
+//                $param['code_cross_check'] = '';
+//                $param['provider_id'] = '0';
+//            }
 
             //nếu trạng thái đã thu COD, hủy đơn, đã thu Lakita thì cập nhật time
             // $receiveCOD = array();
@@ -751,7 +751,8 @@ class Common extends MY_Controller {
         );
         $data = array_merge($this->data, $this->_get_require_data($require_model));
 
-        $contact_phone = $this->input->post('contact_phone', true);
+        $contact_id = $this->input->post('contact_id', true);
+        $contact_phone = $this->contacts_model->get_contact_phone($contact_id);
         //$contact_course_code = $this->input->post('contact_course_code', true);
 
         $get = $this->input->get();
@@ -761,7 +762,7 @@ class Common extends MY_Controller {
          *
          */
         $conditional['where'] = array('phone' => $contact_phone);
-        $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, 0);
+        $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, 0, 0);
 
         /*
          * Lấy link phân trang và danh sách contacts
@@ -783,9 +784,9 @@ class Common extends MY_Controller {
 
     // <editor-fold defaultstate="collapsed" desc="listen">
     function listen() {
-//        if (!$this->input->is_ajax_request()) {
-//            redirect();
-//        }
+        if (!$this->input->is_ajax_request()) {
+            redirect();
+        }
         $this->load->helper('cookie');
         $myfile = fopen(APPPATH . "../public/last_reg.txt", "r") or die("Unable to open file!");
         $last_id_txt = fgets($myfile);

@@ -6,7 +6,7 @@ Dropzone.options.dropzoneFileUpload = {
         this.on("addedfile",
                 function () {
                     $(".popup-wrapper").show();
-                }).on("success", function (e) {
+                }).on("success", function () {
             //console.log(e);
             location.href = $("#redirect-dropzone").val();
         }).on("error", function () {

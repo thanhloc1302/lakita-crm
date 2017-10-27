@@ -41,19 +41,20 @@ class Cron extends CI_Controller {
             /*
              * Kiểm tra xem đã tồn tại giá ngày hôm nay chưa (nếu có rồi thì bỏ qua)
              */
-            $where = array('campaign_id' => $value['id'], 'time' => $today);
-            $this->campaign_cost_model->delete($where);
-
-            $url = 'https://graph.facebook.com/v2.9/' . $value['campaign_id_facebook'] .
-                    '/insights?fields=spend,reach,clicks&level=account'
-                    . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
-            $spend = get_fb_request($url);
-            $param['time'] = $today;
-            $param['campaign_id'] = $value['id'];
-            $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
-            $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
-            $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
-            $this->campaign_cost_model->insert($param);
+            if ($value['campaign_id_facebook'] != '') {
+                $where = array('campaign_id' => $value['id'], 'time' => $today);
+                $this->campaign_cost_model->delete($where);
+                $url = 'https://graph.facebook.com/v2.9/' . $value['campaign_id_facebook'] .
+                        '/insights?fields=spend,reach,clicks&level=account'
+                        . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
+                $spend = get_fb_request($url);
+                $param['time'] = $today;
+                $param['campaign_id'] = $value['id'];
+                $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
+                $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
+                $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
+                $this->campaign_cost_model->insert($param);
+            }
         }
     }
 
@@ -119,18 +120,20 @@ class Cron extends CI_Controller {
             /*
              * Kiểm tra xem đã tồn tại giá ngày hôm nay chưa (nếu có rồi thì bỏ qua)
              */
-            $where = array('adset_id' => $value['id'], 'time' => $today);
-            $this->adset_cost_model->delete($where);
-            $url = 'https://graph.facebook.com/v2.9/' . $value['adset_id_facebook'] .
-                    '/insights?fields=spend,reach,clicks&level=account'
-                    . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
-            $spend = get_fb_request($url);
-            $param['time'] = $today;
-            $param['adset_id'] = $value['id'];
-            $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
-            $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
-            $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
-            $this->adset_cost_model->insert($param);
+            if ($value['adset_id_facebook'] != '') {
+                $where = array('adset_id' => $value['id'], 'time' => $today);
+                $this->adset_cost_model->delete($where);
+                $url = 'https://graph.facebook.com/v2.9/' . $value['adset_id_facebook'] .
+                        '/insights?fields=spend,reach,clicks&level=account'
+                        . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
+                $spend = get_fb_request($url);
+                $param['time'] = $today;
+                $param['adset_id'] = $value['id'];
+                $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
+                $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
+                $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
+                $this->adset_cost_model->insert($param);
+            }
         }
     }
 
@@ -156,24 +159,25 @@ class Cron extends CI_Controller {
             /*
              * Kiểm tra xem đã tồn tại giá ngày hôm nay chưa (nếu có rồi thì bỏ qua)
              */
-            $where = array('ad_id' => $value['id'], 'time' => $today);
-            $this->ad_cost_model->delete($where);
-
-            $url = 'https://graph.facebook.com/v2.9/' . $value['ad_id_facebook'] .
-                    '/insights?fields=spend,reach,clicks&level=account'
-                    . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
-            $spend = get_fb_request($url);
-            $param['time'] = $today;
-            $param['ad_id'] = $value['id'];
-            $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
-            $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
-            $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
-            $this->ad_cost_model->insert($param);
+            if ($value['ad_id_facebook'] != '') {
+                $where = array('ad_id' => $value['id'], 'time' => $today);
+                $this->ad_cost_model->delete($where);
+                $url = 'https://graph.facebook.com/v2.9/' . $value['ad_id_facebook'] .
+                        '/insights?fields=spend,reach,clicks&level=account'
+                        . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
+                $spend = get_fb_request($url);
+                $param['time'] = $today;
+                $param['ad_id'] = $value['id'];
+                $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
+                $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
+                $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
+                $this->ad_cost_model->insert($param);
+            }
         }
     }
 
     function test_cost_campaign() {
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 10; $i++) {
             $day = "-" . $i . " days";
             $this->update_campain_cost($day);
         }
@@ -187,14 +191,14 @@ class Cron extends CI_Controller {
     }
 
     function test_cost_adset() {
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 15; $i++) {
             $day = "-" . $i . " days";
             $this->update_adset_cost($day);
         }
     }
 
     function test_cost_ads() {
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 15; $i++) {
             $day = "-" . $i . " days";
             $this->update_ad_cost($day);
         }

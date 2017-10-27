@@ -98,13 +98,9 @@ class Link extends MY_Table {
      * Ghi đè hàm xóa lớp cha
      */
 
-    function delete_item() {
-        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
-    }
-
-    function delete_multi_item() {
-        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
-    }
+//    function delete_multi_item() {
+//        show_error_and_redirect('Không thể xóa, liên hệ admin để biết thêm chi tiết', '', FALSE);
+//    }
 
     function index($offset = 0) {
         $this->list_filter = array(
@@ -117,7 +113,11 @@ class Link extends MY_Table {
             )
         );
         $conditional = array();
-        $conditional['where'] = array('marketer_id' => $this->user_id);
+        $conditional['where']['marketer_id'] = $this->user_id;
+//        $get = $this->input->get();
+//        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
+//            $conditional['where']['active'] = 1;
+//        }
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
@@ -126,7 +126,7 @@ class Link extends MY_Table {
         $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Danh sách các link đã tạo';
         $data['edit_title'] = 'Sửa thông tin link';
-        $data['content'] = 'base/index';
+        $data['content'] = 'MANAGERS/link/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -184,7 +184,6 @@ class Link extends MY_Table {
                 }
             }
             $input['where']['marketer_id'] = $this->user_id;
-
             $exist_link = $this->{$this->model}->load_all($input);
             if (!empty($exist_link)) {
                 show_error_and_redirect('Đã tồn tại link, mời bạn kiểm tra lại!', '', false);
@@ -276,7 +275,7 @@ class Link extends MY_Table {
                 ),
             ),
             'right_table' => array(
-                 'landingpage_id' => array(
+                'landingpage_id' => array(
                     'type' => 'array',
                     'value' => $landingpages
                 )
@@ -304,7 +303,7 @@ class Link extends MY_Table {
         $post = $this->input->post();
         $this->load->model('campaign_model');
         $input = array();
-        $input['where'] = array('channel_id' => $post['channel_id'], 'marketer_id' => $this->user_id);
+        $input['where'] = array('channel_id' => $post['channel_id'], 'marketer_id' => $this->user_id, 'active' => '1');
         $campaigns = $this->campaign_model->load_all($input);
         $xhml = '';
         if (!empty($campaigns)) {
@@ -328,7 +327,7 @@ class Link extends MY_Table {
         $post = $this->input->post();
         $this->load->model('adset_model');
         $input = array();
-        $input['where'] = array('campaign_id' => $post['campagin_id']);
+        $input['where'] = array('campaign_id' => $post['campagin_id'], 'active' => '1');
         $adsets = $this->adset_model->load_all($input);
         $xhml = '';
         if (!empty($adsets)) {
@@ -352,7 +351,7 @@ class Link extends MY_Table {
         $post = $this->input->post();
         $this->load->model('ad_model');
         $input = array();
-        $input['where'] = array('adset_id' => $post['adset_id']);
+        $input['where'] = array('adset_id' => $post['adset_id'], 'active' => '1');
         $ads = $this->ad_model->load_all($input);
         $xhml = '';
         if (!empty($ads)) {
@@ -370,6 +369,15 @@ class Link extends MY_Table {
                       ';
         }
         echo $xhml;
+    }
+    
+    public function PreviewUrl(){
+        $post = $this->input->post();
+        $url = $post['landingpage_url'];
+        
+        $content = file_get_contents($url);
+        
+        echo '<iframe width="100%" height="500px"> ' . $content.'</iframe>';
     }
 
 }

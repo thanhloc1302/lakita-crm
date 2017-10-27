@@ -32,6 +32,10 @@ class Landingpage extends MY_Table {
             'id' => array(
                 'name_display' => 'ID landingpage'
             ),
+             'active' => array(
+                'type' => 'binary',
+                'name_display' => 'Hoạt động'
+            ),
             'url' => array(
                  'type' => 'custom',
                 'name_display' => 'URL',
@@ -51,10 +55,6 @@ class Landingpage extends MY_Table {
                 'type' => 'currency',
                 'name_display' => 'Giá khuyến mại (giá bán)',
                 'order' => '1'
-            ),
-            'active' => array(
-                'type' => 'custom',
-                'name_display' => 'Hoạt động',
             )
         );
         $this->set_list_view($list_item);
@@ -85,6 +85,10 @@ class Landingpage extends MY_Table {
             )
         );
         $conditional = array();
+//        $get = $this->input->get();
+//         if(!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0'){
+//            $conditional['where'] = array('active' => 1);
+//        }
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();

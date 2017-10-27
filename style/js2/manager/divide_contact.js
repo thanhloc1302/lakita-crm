@@ -37,7 +37,7 @@ $(document).on('click', '.btn-divide-one-contact', function (e) {
         type: "POST",
         dataType: 'json',
         data: $('#transfer_one_contact').serialize(),
-        success: function (data) {
+        success: data => {
             if (data.success == 1) {
                 $("#send_email_sound")[0].play();
                 $.notify(data.message, {
@@ -57,9 +57,6 @@ $(document).on('click', '.btn-divide-one-contact', function (e) {
                     autoHideDelay: 7000
                 });
             }
-        },
-        complete: function () {
-
         }
     });
 });
@@ -83,7 +80,7 @@ $(document).on('click', '.btn-divide-multi-contact', function (e) {
         type: "POST",
         dataType: 'json',
         data: $('#action_contact').serialize(),
-        success: function (data) {
+        success: data => {
             if (data.success == 1) {
                 $("#send_email_sound")[0].play();
                 $.notify(data.message, {
@@ -105,9 +102,6 @@ $(document).on('click', '.btn-divide-multi-contact', function (e) {
                     autoHideDelay: 7000
                 });
             }
-        },
-        complete: function () {
-
         }
     });
 });

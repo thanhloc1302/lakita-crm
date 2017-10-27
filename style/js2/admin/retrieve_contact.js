@@ -14,7 +14,7 @@ $(document).on('click', 'a.retrieve_contact', function (e) {
             data: {
                 contact_id: contact_id
             },
-            success: function (data) {
+            success: data => {
                 if (data === '1')
                 {
                     alert('Thu hồi thành công contact');
@@ -24,9 +24,7 @@ $(document).on('click', 'a.retrieve_contact', function (e) {
                     alert(data);
                 }
             },
-            error: function () {
-                alert(errorThrown);
-            }
+            error: errorThrown => alert(errorThrown)
         });
     }
 });

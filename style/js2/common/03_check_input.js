@@ -8,7 +8,12 @@
 /*
  * Khi check vào 1 item nào đó sẽ đánh dấu item đó (hiện màu xanh)
  */
-$(document).on('change', 'input[type="checkbox"]', function () {
+$(document).on('change', 'input[type="checkbox"]', function (e) {
+    var rejectShowCheckedName = ["edit_active"];
+    if (rejectShowCheckedName.indexOf($(this).attr("name")) != -1) {
+        e.stopPropagation();
+        return false;
+    }
     if (this.checked) {
         $(this).parent().parent().addClass('checked');
     } else {
@@ -17,10 +22,11 @@ $(document).on('change', 'input[type="checkbox"]', function () {
     /*
      * Hiển thị số lượng dòng đã check
      */
+
     var numberOfChecked = $('input:checkbox:checked').length;
     var totalCheckboxes = $('input:checkbox').length;
-    $(this).notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
-        position: "right middle",
+    $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
+        position: "top left",
         className: 'success',
         showDuration: 200,
         autoHideDelay: 1000
@@ -45,5 +51,6 @@ $(".check_all").on('click', function () {
                     $(this).parent().parent().addClass('checked');
                 }
         );
+        show_number_selected_row();
     }
 });

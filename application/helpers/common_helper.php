@@ -55,6 +55,9 @@ function h_caculate_money($contact) {
 function display_money($money) {
     return number_format($money, 0, ",", ".");
 }
+function h_number_format($money) {
+    return number_format($money, 0, ",", ".");
+}
 
 function found_position_in_array($phone, $contacts) {
     $result = -1;
@@ -133,13 +136,12 @@ function h_caculate_channel_cost($channel_cost) {
     $costArr = array(
         'total_C1' => 0,
         'total_C2' => 0,
-        'total_C3' => 0,
         'spend' => 0,
     );
     foreach ($channel_cost as $value) {
         $costArr['total_C1'] += $value['total_C1'];
         $costArr['total_C2'] += $value['total_C2'];
-        $costArr['total_C3'] += $value['total_C3'];
+       // $costArr['total_C3'] += $value['total_C3'];
         $costArr['spend'] += $value['spend'];
     }
     return $costArr;
@@ -167,4 +169,47 @@ function h_phone_format($phone) {
     } else {
         return $phone;
     }
+}
+
+function h_get_row_class($value) {
+    $class = '';
+    if ($value['duplicate_id'] > 0) {
+        $class .= ' duplicate duplicate_' . $value['id'];
+    }
+    if ($value['date_transfer'] > 0) {
+        $class .= ' has_transfer';
+    }
+    $dayDiff = floor((time() - $value['date_print_cod']) / (60 * 60 * 24));
+    if ($dayDiff > 3 && $dayDiff <= 5 && $value['cod_status_id'] == _DANG_GIAO_HANG_) {
+        $class .= ' bgyellow';
+    }
+    if ($dayDiff > 5 && $dayDiff <= 30 && $value['cod_status_id'] == _DANG_GIAO_HANG_) {
+        $class .= ' bgred';
+    }
+    if ($value['weight_envelope'] > 50) {
+        $class .= ' bgred';
+    }
+    if ($value['is_hide'] == 1) {
+        $class .= ' is_hide';
+    }
+    if ($value['cod_status_id'] == _HUY_DON_ || $value['ordering_status_id'] == _TU_CHOI_MUA_ || $value['ordering_status_id'] == _CONTACT_CHET_ || $value['call_status_id'] == _SO_MAY_SAI_ || $value['call_status_id'] == _NHAM_MAY_) {
+        $class .= ' ban';
+    }
+    if ($value['cod_status_id'] == _DA_THU_COD_) {
+        $class .= ' receive-cod';
+    }
+    if ($value['cod_status_id'] == _DA_THU_LAKITA_) {
+        $class .= ' receive-lakita';
+    }
+    return $class;
+}
+
+function h_generateRandomString($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
 }

@@ -17,16 +17,18 @@ class MY_Controller extends CI_Controller {
     public $total_paging = 0;
     protected $table = '';
     protected $role_id = 0;
+    public $can_view_contact = 0;
+    public $can_edit_contact = 0;
 
     function __construct() {
         parent::__construct();
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
-       //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
-        //echo date('H:i:s d/m/Y', 1504544400);die;
+        //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
+        //echo date('H:i:s d/m/Y', 1507947420);die;
         //  echo time(). '<br>';
-        // echo strtotime('09-06-2018 20:00:00'); die;
+        // echo strtotime('01-10-2017 00:00:00'); die;
         // echo strtotime(date("d-m-Y"));die;
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
@@ -35,10 +37,13 @@ class MY_Controller extends CI_Controller {
         $this->_check_login();
         $this->_set_default_variable();
         $this->_check_permission();
+        $this->_check_permission_edit_view();
+        $this->_slogan();
         if ($this->config->item('show_profiler') === TRUE) {
             // $this->output->enable_profiler(TRUE);
         }
         $this->load->vars($this->data);
+       // phpinfo();
     }
 
     private function _check_login() {
@@ -113,6 +118,15 @@ class MY_Controller extends CI_Controller {
         $this->load->model('permission_model');
         $permissions = $this->permission_model->load_all($input);
 
+        $input = array();
+        $input['where'] = array('id' => $this->user_id);
+        $user = $this->staffs_model->load_all($input);
+        if ($user[0]['active'] == 0) {
+            echo 'Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản lý để đc giúp đỡ';
+            echo '<a href="' . base_url('home/logout') . '"> Đăng xuất </a>';
+            die;
+        }
+
         if (empty($permissions)) {
             redirect(base_url('no_access'));
             die;
@@ -136,6 +150,17 @@ class MY_Controller extends CI_Controller {
                     die;
                 }
             }
+        }
+    }
+
+    private function _check_permission_edit_view() {
+        $this->load->model('permission_edit_view');
+        $input = array();
+        $input['where'] = array('controller' => $this->controller, 'method' => $this->method);
+        $edit_view = $this->permission_edit_view->load_all($input);
+        if (!empty($edit_view)) {
+            $this->can_edit_contact = $edit_view[0]['can_edit'];
+            $this->can_view_contact = $edit_view[0]['can_view'];
         }
     }
 
@@ -166,6 +191,10 @@ class MY_Controller extends CI_Controller {
         $config = array();
         $baseURL = ($baseurl == '') ? $this->controller . '/' . $this->method : $baseurl;
         $config['base_url'] = base_url($baseURL);
+        if (count($_GET) > 0) {
+            $config['suffix'] = '?' . http_build_query($_GET, '', "&");
+        }
+        $config['first_url'] = $config['base_url'] . '?' . http_build_query($_GET);
         $config['total_rows'] = $total_contact;
         $config['per_page'] = $this->per_page;
         $config['uri_segment'] = $uri_segment;
@@ -179,7 +208,7 @@ class MY_Controller extends CI_Controller {
      * @return: mảng chứa thông tin các contact và tổng số contact thỏa điều kiện
      */
 
-    protected function _query_all_from_get($get, $condition = [], $limit = 0, $offset = 0) {
+    protected function _query_all_from_get($get, $condition = [], $limit = 0, $offset = 0, $viewContactStar = 1) {
         if (count($get)) {
             $result = array();
         }
@@ -222,17 +251,19 @@ class MY_Controller extends CI_Controller {
         /*
          * Lấy thông tin 1 contact đăng ký nhiều khóa học
          */
-
-        if ((isset($condition['select']) && strpos($condition['select'], "phone") !== FALSE) || !isset($condition['select'])) {
-            foreach ($result['data'] as &$value) {
-                $input = array();
-                $input['select'] = 'id';
-                $input['where'] = array('phone' => $value['phone'], 'is_hide' => '0');
-                $courses = $this->contacts_model->load_all($input);
-                $value['star'] = count($courses);
+        if ($viewContactStar) {
+            if ((isset($condition['select']) && strpos($condition['select'], "phone") !== FALSE) || !isset($condition['select'])) {
+                foreach ($result['data'] as &$value) {
+                    $input = array();
+                    $input['select'] = 'id';
+                    $input['where'] = array('phone' => $value['phone'], 'is_hide' => '0');
+                    $courses = $this->contacts_model->load_all($input);
+                    $value['star'] = count($courses);
+                }
+                unset($value);
             }
-            unset($value);
         }
+
 
         //lấy thông tin hiển thị contact đầu, contact cuối và tổng contact
         $this->begin_paging = ($total_row == 0) ? 0 : $offset + 1;
@@ -468,6 +499,7 @@ class MY_Controller extends CI_Controller {
             $input_get['or_like']['code_cross_check'] = $get['search_all'];
             $input_get['or_like']['email'] = $get['search_all'];
             $input_get['or_like']['address'] = $get['search_all'];
+            $input_get['or_like']['matrix'] = $get['search_all'];
             $input_get['group_end_or_like']['id'] = $get['search_all'];
         }
 
@@ -573,4 +605,27 @@ class MY_Controller extends CI_Controller {
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
+    
+    private function _slogan(){
+        $slogan = array(
+            'Không có gì là không thể với một người luôn biết cố gắng',
+            'Hãy luyện tập như thể bạn chưa bao giờ chiến thắng. Hãy hành động như thể chưa bao giờ bạn thất bại',
+            'Chỉ cần bạn không dừng lại thì việc bạn tiến chậm cũng không là vấn đề',
+            'Giữ đôi mắt của bạn hướng lên bầu trời và đôi chân trên mặt đất',
+            'Hãy không ngừng học hỏi. Nếu bạn là người thông minh nhất trong phòng thì thực sự là bạn đã ở nhầm chỗ',
+            'Không chuẩn bị nghĩa là bạn đã sẵn sàng cho việc thất bại',
+            'Không bao giờ, không bao giờ, không bao giờ từ bỏ',
+            '<img src="https://wikiphunu.vn/wp-content/uploads/2016/10/nhung-cau-noi-hay-ve-cuoc-song-hang-ngay-cho-ban-co-them-dong-luc-2.jpg" />',
+            'Chỉ cần biết rằng, khi bạn thực sự muốn thành công, bạn sẽ không bao giờ từ bỏ, dù cho mọi thứ có tồi tệ đến đâu đi chăng nữa',
+            'Hãy chịu trách nhiệm về cuộc đời mình. Nên biết rằng chính bạn chứ không ai khác sẽ là người đưa bạn tới nơi bạn muốn',
+            'Thách thức là điều làm cho cuộc sống trở nên thú vị và vượt qua thử thách chính là những gì tạo nên ý nghĩa cuộc sống',
+            'I am thankful for all of those who said NO to me. Its because of them I\'m doing it myself',
+            'Khi bạn nói "Khó quá" đồng nghĩa với việc "Tôi không đủ mạnh mẽ để đấu tranh vì nó". Hãy ngừng ngay việc kêu ca. Hãy suy nghĩ tích cực!',
+            '<img src="http://loinoihay.net/wp-content/uploads/2016/03/Nh%E1%BB%AFng-c%C3%A2u-n%C3%B3i-t%E1%BA%A1o-%C4%91%E1%BB%99ng-l%E1%BB%B1c-s%E1%BB%91ng-cho-gi%E1%BB%9Bi-tr%E1%BA%BB-t%E1%BB%AB-c%C3%A1c-t%E1%BB%89-ph%C3%BA-tr%C3%AAn-th%E1%BA%BF-gi%E1%BB%9Bi6.jpg" />'
+        );
+        $sloganNumber = rand(0, count($slogan)-1);
+        $this->data['mySlogan'] = $slogan[$sloganNumber];
+       
+    }
+    
 }

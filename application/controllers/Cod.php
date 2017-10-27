@@ -8,9 +8,12 @@
  */
 class Cod extends MY_Controller {
 
+    public $L = array();
+
     public function __construct() {
         parent::__construct();
         $this->load->model('L7_check_model');
+        $this->_loadCountListContact();
     }
 
     function index($offset = 0) {
@@ -25,7 +28,7 @@ class Cod extends MY_Controller {
         $data['total_contact'] = $data_pagination['total_row'];
         $data['left_col'] = array('sale');
         //  $data['right_col'] = array('date_confirm');
-        $this->table .= 'sale date_confirm date_expect_receive_cod note_cod';
+        $this->table .= 'date_confirm date_expect_receive_cod note_cod';
         $data['table'] = explode(' ', $this->table); //array('selection', 'contact_id');
 
         /*
@@ -54,6 +57,38 @@ class Cod extends MY_Controller {
         $data['right_col'] = array('provider');
         $this->table .= 'date_print_cod provider code_cross_check';
         $data['table'] = explode(' ', $this->table);
+        /*
+         * Các file js cần load
+         */
+        $data['load_js'] = array(
+            'common_view_detail_contact', 'common_real_filter_contact', 'common_edit_contact',
+            'c_select_provider', 'c_export_to_string', 'c_export_excel');
+        $data['content'] = 'cod/pending';
+        $this->load->view(_MAIN_LAYOUT_, $data);
+    }
+    
+     function tracking($offset = 0) {
+        $this->load->model('viettel_log_model');
+        $data = $this->_get_all_require_data();
+        $get = $this->input->get();
+        $conditional['where'] = array('payment_method_rgt' => '1', 'is_hide' => '0', 'provider_id' => 1);
+        $conditional['order'] = array('date_print_cod' => 'DESC');
+        $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
+        $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
+        $data['total_contact'] = $data_pagination['total_row'];
+        $contacts = $data_pagination['data'];
+        foreach ($contacts as &$value) {
+            $input = [];
+            $input['where'] = ['code_cross_check' => $value['code_cross_check']];
+            $input['order'] = ['date_info' => 'ASC', 'status' => 'ASC'];
+            $value['vietel_log'] = $this->viettel_log_model->load_all($input);
+        }
+        unset($value);
+        $data['contacts'] = $contacts;
+        $data['left_col'] = array('date_print_cod', 'viettel_status');
+        $data['right_col'] = array('cod_status');
+        $this->table = 'contact_info viettel_log';
+        $data['table'] = explode(' ', $this->table);
 
         /*
          * Các file js cần load
@@ -67,26 +102,11 @@ class Cod extends MY_Controller {
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
-    function pending2() {
-        $input = array();
-        $input['select'] = 'code_cross_check';
-        $input['where'] = array('cod_status_id' => _DANG_GIAO_HANG_, 'is_hide' => '0', 'provider_id' => 1);
-        $contacts = $this->contacts_model->load_all($input);
-        require_once APPPATH . 'libraries/simple_html_dom.php';
-        foreach ($contacts as $value) {
-            $html = file_get_html('https://www.viettelpost.com.vn/Tracking?KEY=' . $value['code_cross_check']);
-            $rs = $html->find('div[id=dnn_ctr507_Main_ViewKQ_PanelItem]', 0)->find('ul', 0);
-            $where = array('code_cross_check' => $value['code_cross_check']);
-            $data = array('viettel_tracking_status' => $rs);
-            $this->contacts_model->update($where, $data);
-        }
-    }
-
     function transfer($offset = 0) {
         $data = $this->_get_all_require_data();
         $get = $this->input->get();
-        $conditional['where'] = array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_, 
-          'cod_status_id' => '0',   'payment_method_rgt >' => '1', 'is_hide' => '0');
+        $conditional['where'] = array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
+            'cod_status_id' => '0', 'payment_method_rgt >' => '1', 'is_hide' => '0');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
@@ -428,6 +448,31 @@ class Cod extends MY_Controller {
         $tweets = $this->rest->get('v4/spreadsheets/18x9FB074aMpgm66PbaPMtmol6HgG6eeidl3P5wJcH6w/values/Sheet1!A1:C' . $key);
         print_r($tweets);
         die;
+    }
+
+    private function _loadCountListContact() {
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('ordering_status_id' => _DONG_Y_MUA_, 'cod_status_id' => '0',
+            'date_expect_receive_cod <' => strtotime('tomorrow'), 'payment_method_rgt' => '1', 'is_hide' => '0');
+        $this->L['L6'] = count($this->contacts_model->load_all($input));
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('cod_status_id' => _DANG_GIAO_HANG_, 'payment_method_rgt' => '1', 'is_hide' => '0');
+        $this->L['pending'] = count($this->contacts_model->load_all($input));
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
+            'cod_status_id' => '0', 'payment_method_rgt >' => '1', 'is_hide' => '0');
+        $this->L['transfer'] = count($this->contacts_model->load_all($input));
+
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('ordering_status_id' => _DONG_Y_MUA_, 'is_hide' => '0');
+        $this->L['all'] = count($this->contacts_model->load_all($input));
     }
 
 }

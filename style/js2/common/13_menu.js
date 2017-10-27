@@ -24,11 +24,7 @@
  }, 'body');
  */
 
-$('li.mega-dropdown').mouseover(function () {
-    $(".black-over").css('bottom', '0%');
-}).mouseout(function () {
-    $(".black-over").css('bottom', '100%');
-});
+$('li.mega-dropdown').mouseover(() => $(".black-over").css('bottom', '0%')).mouseout(() => $(".black-over").css('bottom', '100%'));
 
 /*
  setInterval(function(){

@@ -4,17 +4,17 @@
  * and open the template in the editor.
  */
 
-var _SO_MAY_SAI_ = 1;
-var _KHONG_NGHE_MAY_ = 2;
-var _NHAM_MAY_ = 3;
-var _DA_LIEN_LAC_DUOC_ = 4;
-var _CONTACT_CHET_ = 5;
+const _SO_MAY_SAI_ = 1;
+const _KHONG_NGHE_MAY_ = 2;
+const _NHAM_MAY_ = 3;
+const _DA_LIEN_LAC_DUOC_ = 4;
+const _CONTACT_CHET_ = 5;
 
-var _CHUA_CHAM_SOC_ = 0;
-var _TU_CHOI_MUA_ = 3;
-var _DONG_Y_MUA_ = 4;
+const _CHUA_CHAM_SOC_ = 0;
+const _TU_CHOI_MUA_ = 3;
+const _DONG_Y_MUA_ = 4;
 
-function check_edit_contact() {
+check_edit_contact = () => {
     var call_status_id = $("select[name='call_status_id']").val();
     var ordering_status_id = $("select[name='ordering_status_id']").val();
     var date_recall = $(".date_recall").val();
@@ -51,14 +51,9 @@ function check_edit_contact() {
         return false;
     }
     return true;
-}
+};
 
-
-
-
-
-
-function check_rule_call_stt(call_status_id, ordering_status_id) {
+check_rule_call_stt = (call_status_id, ordering_status_id) => {
     if (call_status_id == _SO_MAY_SAI_ || call_status_id == _KHONG_NGHE_MAY_ || call_status_id == _NHAM_MAY_) {
         if (ordering_status_id != _CHUA_CHAM_SOC_) {
             return false;
@@ -73,23 +68,23 @@ function check_rule_call_stt(call_status_id, ordering_status_id) {
 //            return false;
 //        }
     return true;
-}
+};
 
-function check_rule_call_stt_and_date_recall(call_status_id, ordering_status_id, date_recall) {
+check_rule_call_stt_and_date_recall = (call_status_id, ordering_status_id, date_recall) => {
     if (stop_care(call_status_id, ordering_status_id) && now_greater_than_input_date(date_recall)) {
         return true;
     }
     return false;
-}
+};
 
-function stop_care(call_status_id, ordering_status_id) {
+stop_care = (call_status_id, ordering_status_id) => {
     if (call_status_id == _SO_MAY_SAI_ || call_status_id == _NHAM_MAY_ || call_status_id == _KHONG_NGHE_MAY_
             || ordering_status_id == _DONG_Y_MUA_ || ordering_status_id == _TU_CHOI_MUA_ || ordering_status_id == _CONTACT_CHET_) {
         return true;
     }
     return false;
-}
-function now_greater_than_input_date(date_string) {
+};
+now_greater_than_input_date = date_string => {
     var date_arr = date_string.split(/-/);
     var year = date_arr[2];
     var month = date_arr[1];
@@ -99,6 +94,6 @@ function now_greater_than_input_date(date_string) {
     var input_timestamp = new Date(year, month - 1, day);
     input_timestamp = input_timestamp.getTime();
     return (now_timestamp > input_timestamp);
-}
+};
 
 

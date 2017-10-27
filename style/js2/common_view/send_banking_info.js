@@ -17,10 +17,8 @@ $(document).on('click', '.btn-send-banking-info', function (e) {
             price_purchase: $(".edit-contact-price-purchase").val()
         },
         dataType: 'json',
-        beforeSend: function () {
-            $(".popup-wrapper").show();
-        },
-        success: function (data) {
+        beforeSend: () => $(".popup-wrapper").show(),
+        success: data => {
             if (data.success == 1) {
                 $("#send_email_sound")[0].play();
                 $.notify('Gửi email thành công!', {
@@ -39,10 +37,8 @@ $(document).on('click', '.btn-send-banking-info', function (e) {
                 });
             }
         },
-        complete: function () {
-            $(".popup-wrapper").hide();
-        },
-        error: function () {
+        complete: () => $(".popup-wrapper").hide(),
+        error: () => {
             $("#send_email_error")[0].play();
             $.notify('Có lỗi xảy ra trong quá trình gửi email!', {
                 position: "top left",

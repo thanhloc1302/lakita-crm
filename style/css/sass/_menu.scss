@@ -203,7 +203,16 @@ Logo by Sneaker-mission.com (http://www.sneaker-mission.com/)
             margin-top: 1px;
         }
     }
-    /*    .navbar-nav>li {
-            float: right;
-        }*/
+    
+    .nav_menu{
+        nav{
+            .navbar-nav{
+                li.content_noti{
+                    a{
+                            padding: 10px 20px;
+                    }
+                }
+            }
+        }
+    }
 }
