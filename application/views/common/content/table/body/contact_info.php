@@ -11,11 +11,13 @@
                     ?>
                     <?php echo $value['name']; ?> 
                     <?php if (isset($value['star']) && $value['star'] > 1) { ?>
-                        <sup> <span class="badge badge-star" 
-                                    contact_phone="<?php echo $value['phone']; ?>"
-                                    contact_course_code ="<?php echo $value['course_code']; ?>"
-                                    controller="<?php echo $controller; ?>">
-                                        <?php echo $value['star']; ?>
+                        <sup><span 
+                                class="badge badge-star ajax-request-modal" 
+                                data-controller="<?php echo $controller; ?>"
+                                data-contact-id ="<?php echo $value['id']; ?>"
+                                data-modal-name="view-all-contact-courses-modal"
+                                data-url="common/view_contact_star">
+                                    <?php echo $value['star']; ?>
                             </span></sup>
                     <?php } ?>
                 </td>
