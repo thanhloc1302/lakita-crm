@@ -776,6 +776,10 @@ class Manager extends MY_Controller {
             $courses[$key]['L7L8'] = $courses[$key]['L7'] + $courses[$key]['L8'];
             $L7L8 += $courses[$key]['L7L8'];
         }
+      //  print_arr($courses);
+        usort($courses, function($a, $b){
+            return $a['L7L8'] - $b['L7L8'];
+        });
         $data['L7'] = $L7;
         $data['L8'] = $L8;
         $data['L7L8'] = $L7L8;

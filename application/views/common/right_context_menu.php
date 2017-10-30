@@ -43,9 +43,15 @@
             <a href="#" class="btn-export-excel"> 
                 <li> <i class="fa fa-print" aria-hidden="true"></i> &nbsp; &nbsp; Xuất file excel để in </li>
             </a>
-            <a href="#" class="btn-export-excel-for-viettel"> 
-                <li> <i class="fa fa-paper-plane" aria-hidden="true"></i> &nbsp; &nbsp; Xuất file excel để gửi cho Viettel </li>
+            <a href="#" class="change-form-submit-url jquery-confirm" 
+               data-form-id="action_contact"
+               data-action="cod/SendEmailToProvider"
+               data-method="POST">
+                <li> <i class="fa fa-envelope" aria-hidden="true"></i> &nbsp; &nbsp; Gửi mail cho Viettel các contact đã chọn </li>
             </a>
+<!--            <a href="#" class="btn-export-excel-for-viettel"> 
+                <li> <i class="fa fa-paper-plane" aria-hidden="true"></i> &nbsp; &nbsp; Xuất file excel để gửi cho Viettel </li>
+            </a>-->
             <a href="#" class="export_to_string"> 
                 <li> <i class="fa fa-link" aria-hidden="true"></i> &nbsp; &nbsp; Xuất thành chuỗi đối soát </li>
             </a>

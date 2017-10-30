@@ -609,19 +609,19 @@ class MY_Controller extends CI_Controller {
     private function _slogan(){
         $slogan = array(
             'Không có gì là không thể với một người luôn biết cố gắng',
-            'Hãy luyện tập như thể bạn chưa bao giờ chiến thắng. Hãy hành động như thể chưa bao giờ bạn thất bại',
-            'Chỉ cần bạn không dừng lại thì việc bạn tiến chậm cũng không là vấn đề',
-            'Giữ đôi mắt của bạn hướng lên bầu trời và đôi chân trên mặt đất',
-            'Hãy không ngừng học hỏi. Nếu bạn là người thông minh nhất trong phòng thì thực sự là bạn đã ở nhầm chỗ',
-            'Không chuẩn bị nghĩa là bạn đã sẵn sàng cho việc thất bại',
+//            'Hãy luyện tập như thể bạn chưa bao giờ chiến thắng. Hãy hành động như thể chưa bao giờ bạn thất bại',
+//            'Chỉ cần bạn không dừng lại thì việc bạn tiến chậm cũng không là vấn đề',
+//            'Giữ đôi mắt của bạn hướng lên bầu trời và đôi chân trên mặt đất',
+//            'Hãy không ngừng học hỏi. Nếu bạn là người thông minh nhất trong phòng thì thực sự là bạn đã ở nhầm chỗ',
+//            'Không chuẩn bị nghĩa là bạn đã sẵn sàng cho việc thất bại',
             'Không bao giờ, không bao giờ, không bao giờ từ bỏ',
-            '<img src="https://wikiphunu.vn/wp-content/uploads/2016/10/nhung-cau-noi-hay-ve-cuoc-song-hang-ngay-cho-ban-co-them-dong-luc-2.jpg" />',
-            'Chỉ cần biết rằng, khi bạn thực sự muốn thành công, bạn sẽ không bao giờ từ bỏ, dù cho mọi thứ có tồi tệ đến đâu đi chăng nữa',
-            'Hãy chịu trách nhiệm về cuộc đời mình. Nên biết rằng chính bạn chứ không ai khác sẽ là người đưa bạn tới nơi bạn muốn',
-            'Thách thức là điều làm cho cuộc sống trở nên thú vị và vượt qua thử thách chính là những gì tạo nên ý nghĩa cuộc sống',
-            'I am thankful for all of those who said NO to me. Its because of them I\'m doing it myself',
-            'Khi bạn nói "Khó quá" đồng nghĩa với việc "Tôi không đủ mạnh mẽ để đấu tranh vì nó". Hãy ngừng ngay việc kêu ca. Hãy suy nghĩ tích cực!',
-            '<img src="http://loinoihay.net/wp-content/uploads/2016/03/Nh%E1%BB%AFng-c%C3%A2u-n%C3%B3i-t%E1%BA%A1o-%C4%91%E1%BB%99ng-l%E1%BB%B1c-s%E1%BB%91ng-cho-gi%E1%BB%9Bi-tr%E1%BA%BB-t%E1%BB%AB-c%C3%A1c-t%E1%BB%89-ph%C3%BA-tr%C3%AAn-th%E1%BA%BF-gi%E1%BB%9Bi6.jpg" />'
+//            '<img src="https://wikiphunu.vn/wp-content/uploads/2016/10/nhung-cau-noi-hay-ve-cuoc-song-hang-ngay-cho-ban-co-them-dong-luc-2.jpg" />',
+//            'Chỉ cần biết rằng, khi bạn thực sự muốn thành công, bạn sẽ không bao giờ từ bỏ, dù cho mọi thứ có tồi tệ đến đâu đi chăng nữa',
+//            'Hãy chịu trách nhiệm về cuộc đời mình. Nên biết rằng chính bạn chứ không ai khác sẽ là người đưa bạn tới nơi bạn muốn',
+//            'Thách thức là điều làm cho cuộc sống trở nên thú vị và vượt qua thử thách chính là những gì tạo nên ý nghĩa cuộc sống',
+//            'I am thankful for all of those who said NO to me. Its because of them I\'m doing it myself',
+//            'Khi bạn nói "Khó quá" đồng nghĩa với việc "Tôi không đủ mạnh mẽ để đấu tranh vì nó". Hãy ngừng ngay việc kêu ca. Hãy suy nghĩ tích cực!',
+//            '<img src="http://loinoihay.net/wp-content/uploads/2016/03/Nh%E1%BB%AFng-c%C3%A2u-n%C3%B3i-t%E1%BA%A1o-%C4%91%E1%BB%99ng-l%E1%BB%B1c-s%E1%BB%91ng-cho-gi%E1%BB%9Bi-tr%E1%BA%BB-t%E1%BB%AB-c%C3%A1c-t%E1%BB%89-ph%C3%BA-tr%C3%AAn-th%E1%BA%BF-gi%E1%BB%9Bi6.jpg" />'
         );
         $sloganNumber = rand(0, count($slogan)-1);
         $this->data['mySlogan'] = $slogan[$sloganNumber];
