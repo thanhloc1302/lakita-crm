@@ -77,6 +77,15 @@ class Manager extends MY_Controller {
 
     function view_all_contact($offset = 0) {
         $data = $this->get_all_require_data();
+        /*
+         * Lấy danh sách các marketer
+         */
+        $input = array();
+        $input['where'] = array(
+            'role_id' => 6,
+            'active' => 1);
+       $data['marketers'] = $this->staffs_model->load_all($input);
+
         $get = $this->input->get();
         /*
          * Điều kiện lấy contact :
@@ -100,7 +109,7 @@ class Manager extends MY_Controller {
         /*
          * Filter ở cột trái và cột phải
          */
-        $data['left_col'] = array('tu_van', 'duplicate', 'course_code', 'sale', 'date_rgt', 'date_handover', 'payment_method_rgt');
+        $data['left_col'] = array('tu_van', 'duplicate', 'course_code', 'sale', 'marketer','channel', 'payment_method_rgt', 'date_rgt', 'date_handover');
         $data['right_col'] = array('source', 'call_status', 'ordering_status', 'cod_status', 'provider');
 
         /*
@@ -776,6 +785,10 @@ class Manager extends MY_Controller {
             $courses[$key]['L7L8'] = $courses[$key]['L7'] + $courses[$key]['L8'];
             $L7L8 += $courses[$key]['L7L8'];
         }
+        //  print_arr($courses);
+        usort($courses, function($a, $b) {
+            return $a['L7L8'] - $b['L7L8'];
+        });
         $data['L7'] = $L7;
         $data['L8'] = $L8;
         $data['L7L8'] = $L7L8;
@@ -1187,7 +1200,8 @@ class Manager extends MY_Controller {
             'cod_status' => array(),
             'providers' => array(),
             'payment_method_rgt' => array(),
-            'sources' => array()
+            'sources' => array(),
+            'channel' => array()
         );
         return array_merge($this->data, $this->_get_require_data($require_model));
     }

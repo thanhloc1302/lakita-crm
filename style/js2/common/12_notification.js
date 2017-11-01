@@ -2,6 +2,8 @@
  * Copyright (C) 2017 Phạm Ngọc Chuyển <chuyenpn at lakita.vn>
  *
  */
+/* global Notification */
+
 var notify = '';
 Notification.requestPermission(function (p) {});
 setInterval(function () {

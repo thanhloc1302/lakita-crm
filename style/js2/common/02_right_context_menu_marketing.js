@@ -55,7 +55,7 @@ $("tr.custom_right_menu_item").on(
                 }
                 $(this).addClass('checked'); /*.find('[name="contact_id[]"]').prop('checked', true); */
             },
-            click: function () {
+           /* click: function () {
                 if ($(this).hasClass('checked')) {
                     $(this).removeClass('checked');
                 } else {
@@ -69,7 +69,7 @@ $("tr.custom_right_menu_item").on(
                 }
                 unselect_not_checked();
                 show_number_selected_row();
-            }
+            } */
         });
 
 

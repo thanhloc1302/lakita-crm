@@ -2,7 +2,7 @@
  * Copyright (C) 2017 Phạm Ngọc Chuyển <chuyenpn at lakita.vn>
  *
  */
-
+/*
 $('.tbl_name').on('click', 'span.badge-star', function (e) {
     e.stopPropagation();
     e.preventDefault();
@@ -23,5 +23,6 @@ $('.tbl_name').on('click', 'span.badge-star', function (e) {
         complete: () => $(".view_contact_star_modal").modal("show")
     });
 });
+*/
 
 $('.view_contact_star_modal').on('hide.bs.modal', () => setTimeout(() => $("div.replace_content_view_contact_star").html(""), 1000));

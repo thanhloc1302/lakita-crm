@@ -136,13 +136,12 @@ function h_caculate_channel_cost($channel_cost) {
     $costArr = array(
         'total_C1' => 0,
         'total_C2' => 0,
-        'total_C3' => 0,
         'spend' => 0,
     );
     foreach ($channel_cost as $value) {
         $costArr['total_C1'] += $value['total_C1'];
         $costArr['total_C2'] += $value['total_C2'];
-        $costArr['total_C3'] += $value['total_C3'];
+       // $costArr['total_C3'] += $value['total_C3'];
         $costArr['spend'] += $value['spend'];
     }
     return $costArr;

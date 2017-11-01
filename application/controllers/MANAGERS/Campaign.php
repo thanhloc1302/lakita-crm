@@ -33,6 +33,10 @@ class Campaign extends MY_Table {
 //            'id' => array(
 //                'name_display' => 'ID Campaign',
 //            ),
+            'active' => array(
+                'type' => 'binary',
+                'name_display' => 'Hoạt động'
+            ),
             'name' => array(
                 'name_display' => 'Tên chiến dịch',
                 'order' => '1'
@@ -73,6 +77,7 @@ class Campaign extends MY_Table {
                 'name_display' => 'giá C2',
             ),
             'pricepC3' => array(
+                'type' => 'currency',
                 'name_display' => 'giá C3',
             ),
             'time' => array(
@@ -80,11 +85,7 @@ class Campaign extends MY_Table {
                 'name_display' => 'Ngày tạo',
                 'display' => 'none'
             ),
-            'active' => array(
-                'type' => 'custom',
-                'name_display' => 'Hoạt động',
-                'display' => 'none'
-            )
+            
         );
         $this->set_list_view($list_item);
         $this->set_model('campaign_model');
@@ -130,9 +131,9 @@ class Campaign extends MY_Table {
                 $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
                 $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
                 $value['spend'] = $channel_cost['spend'];
-                $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) . ' đ' : '#N/A';
-                $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) . ' đ' : '#N/A';
-                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) . ' đ' : '#N/A';
+                $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']): '#N/A';
+                $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']): '#N/A';
+                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']): '#N/A';
             } else {
                 $value['total_C1'] = '#NA';
                 $value['total_C2'] = '#NA';
@@ -176,9 +177,9 @@ class Campaign extends MY_Table {
         $conditional = array();
         $conditional['where']['marketer_id'] = $this->user_id;
          $get = $this->input->get();
-        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
-            $conditional['where']['active'] = 1;
-        }
+//        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
+//            $conditional['where']['active'] = 1;
+//        }
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();

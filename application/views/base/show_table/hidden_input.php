@@ -10,3 +10,6 @@
 <!-- URL xóa nhiều dòng -->
 <input type="hidden" value="<?php echo base_url() . $this->controller_path . '/delete_multi_item' ?>" id="url_delete_multi_item" />
 
+<!-- URL bật tắt 1 dòng -->
+<input type="hidden" value="<?php echo base_url() . $this->controller_path . '/edit_active' ?>" id="url_edit_active" />
+

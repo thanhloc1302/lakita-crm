@@ -9,7 +9,11 @@
             </a>
         <?php } ?>
         <?php if ($controller == 'sale') { ?>
-            <a href="#" class="edit_contact" contact_id="0">
+            <a href="#" 
+               class="ajax-request-modal load-new-contact-id"
+               data-contact-id ="0"
+               data-modal-name="edit-contact-modal"
+               data-url="common/show_edit_contact_modal">
                 <li> <i class="fa fa-pencil-square" aria-hidden="true"></i> &nbsp; &nbsp; Chăm sóc contact</li>
             </a>
             <a href="#" contact_id="0" contact_name="0" class="transfer_one_contact" >
@@ -23,7 +27,11 @@
             </a>
         <?php } ?>
         <?php if ($controller == 'cod') { ?>
-            <a href="#" class="edit_contact" contact_id="0"> 
+            <a href="#" 
+               class="ajax-request-modal load-new-contact-id"
+               data-contact-id ="0"
+               data-modal-name="edit-contact-modal"
+               data-url="common/show_edit_contact_modal">
                 <li> <i class="fa fa-pencil-square" aria-hidden="true"></i> &nbsp; &nbsp; Chăm sóc contact</li>
             </a>
             <a href="#" contact_name="0" contact_phone="0" class="send_to_mobile" >
@@ -35,15 +43,27 @@
             <a href="#" class="btn-export-excel"> 
                 <li> <i class="fa fa-print" aria-hidden="true"></i> &nbsp; &nbsp; Xuất file excel để in </li>
             </a>
-            <a href="#" class="btn-export-excel-for-viettel"> 
-                <li> <i class="fa fa-paper-plane" aria-hidden="true"></i> &nbsp; &nbsp; Xuất file excel để gửi cho Viettel </li>
+            <a href="#" class="change-form-submit-url jquery-confirm" 
+               data-form-id="action_contact"
+               data-action="cod/SendEmailToProvider"
+               data-method="POST">
+                <li> <i class="fa fa-envelope" aria-hidden="true"></i> &nbsp; &nbsp; Gửi mail cho Viettel các contact đã chọn </li>
             </a>
+<!--            <a href="#" class="btn-export-excel-for-viettel"> 
+                <li> <i class="fa fa-paper-plane" aria-hidden="true"></i> &nbsp; &nbsp; Xuất file excel để gửi cho Viettel </li>
+            </a>-->
             <a href="#" class="export_to_string"> 
                 <li> <i class="fa fa-link" aria-hidden="true"></i> &nbsp; &nbsp; Xuất thành chuỗi đối soát </li>
             </a>
         <?php } ?>
-        <a href="#" class="action_view_detail_contact" contact_id="0">
-            <li> <i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; &nbsp; Chi tiết contact </li>
+        <a href="#" 
+           class="ajax-request-modal load-new-contact-id"
+           data-contact-id ="0"
+           data-modal-name="view-detail-contact-modal"
+           data-url="common/view_detail_contact">
+            <li> 
+                <i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; &nbsp; Chi tiết contact 
+            </li>
         </a>
     </ul>
 </div>

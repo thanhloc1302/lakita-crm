@@ -18,9 +18,6 @@ class Send_email extends CI_Controller {
     }
 
     public function send_banking_info() {
-        
-       
-        
         $post = $this->input->post();
         $result = array('success' => 0, 'message' => '');
         if (!empty($post)) {

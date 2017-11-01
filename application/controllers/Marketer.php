@@ -267,7 +267,7 @@ class Marketer extends MY_Table {
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
-    private function _loadCountListContact() {
+    protected function _loadCountListContact() {
         $input = array();
         $input['select'] = 'id';
         $input['where']['marketer_id'] = $this->user_id;

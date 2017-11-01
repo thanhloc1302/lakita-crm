@@ -146,15 +146,16 @@ $("html").on("click", function (e) {
     $(".menu-item").hide();
     /*
      * Nếu click ra ngoài bảng thì bỏ chọn các contact
-     */
+    
     if (e.target.className.indexOf("form-inline") !== -1 || e.target.className.indexOf("number_paging") !== -1)
     {
         $("input[type='checkbox']").prop('checked', false);
         $('.checked').removeClass('checked');
 
-    }
+    } */
 
 });
+
 
 shortcut.add("Ctrl+s", function () {
     $(".btn-edit-contact").click();
