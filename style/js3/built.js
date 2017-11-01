@@ -221,6 +221,13 @@ setEqualTableHeight = () => {
     {
         $(".table-view-1").height($(".table-view-2").height());
     }
+    if ($(".table-edit-1").height() > $(".table-edit-2").height())
+    {
+        $(".table-edit-2").height($(".table-edit-1").height());
+    } else
+    {
+        $(".table-view-1").height($(".table-view-2").height());
+    }
     if ($(".table-1").height() > $(".table-2").height())
     {
         $(".table-2").height($(".table-1").height());

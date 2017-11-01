@@ -236,6 +236,7 @@ class Report extends MY_Controller {
             /*
              * Cập nhật trạng thái giao hàng viettel
              */
+             if (!is_object($html->find('div[id=dnn_ctr507_Main_ViewKQ_PanelItem]', 0))) { continue;}
             $stt = $html->find('div[id=dnn_ctr507_Main_ViewKQ_PanelItem]', 0)->find("#dnn_ctr507_Main_ViewKQ_RepeaterView_Label5_0", 0)->plaintext;
             $where = ['code_cross_check' => $contact['code_cross_check']];
             $data = ['viettel_tracking_status' => $stt];
