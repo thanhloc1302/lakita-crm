@@ -630,7 +630,8 @@ class Common extends MY_Controller {
         } else {
             //kiểm tra 1 khách hàng (cùng số đt) mua nhiều khóa học thì ko tạo mã vận đơn mới, mà dùng mã vận đơn cũ
             $input_duplicate = array();
-            $input_duplicate['where'] = array('date_print_cod' => $today, 'phone' => $this->contacts_model->get_contact_phone($id));
+            $input_duplicate['where'] = array('date_print_cod' => $today, 
+                'phone' => $this->contacts_model->get_contact_phone($id), 'provider_id' => $post['provider_id']);
             $contact_duplicate = $this->cod_cross_check_model->load_all($input_duplicate);
             if (!empty($contact_duplicate)) {
                 $code_cross_check = $contact_duplicate[0]['code'];

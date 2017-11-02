@@ -438,6 +438,10 @@ class Cod extends MY_Controller {
         $this->cod_cross_check_model->delete($where);
 
         foreach ($post['contact_id'] as $value) {
+            $where = array('date_print_cod' => $today,
+                'phone' => $this->contacts_model->get_contact_phone($value));
+            $this->cod_cross_check_model->delete($where);
+
             $where = array('id' => $value);
             $data = array('code_cross_check' => '');
             $this->contacts_model->update($where, $data);
