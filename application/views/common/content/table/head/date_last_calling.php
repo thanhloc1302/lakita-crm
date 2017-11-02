@@ -1,4 +1,4 @@
-<th class="order_date_last_calling tbl_date_last_calling">
+<th class="order_date_last_calling tbl_date_last_calling" id="th_tbl_date_last_calling">
     <input type="text" class="order_date_last_calling hidden" name="order_date_last_calling"
            value="<?php echo (isset($_GET['order_date_last_calling']) && $_GET['order_date_last_calling'] != '') ? $_GET['order_date_last_calling'] : '0'; ?>" />
     Ngày gọi gần nhất

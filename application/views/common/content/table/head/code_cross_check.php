@@ -1,4 +1,4 @@
-<th class="order_code_cross_check tbl_code_cross_check">
+<th class="order_code_cross_check tbl_code_cross_check" id="th_tbl_code_cross_check">
     <input type="text" class="order_code_cross_check hidden" name="order_code_cross_check"
            value="<?php echo (isset($_GET['order_code_cross_check'])) ? $_GET['order_code_cross_check'] : '0'; ?>" />
     Mã vận đơn 

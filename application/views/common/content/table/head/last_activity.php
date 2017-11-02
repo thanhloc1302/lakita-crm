@@ -1,4 +1,4 @@
-<th class="order_last_activity tbl_last_activity">
+<th class="order_last_activity tbl_last_activity" id="th_tbl_last_activity">
     <input type="text" class="order_last_activity hidden" name="order_last_activity"
            value="<?php echo (isset($_GET['order_last_activity']) && $_GET['order_last_activity'] != '') ? $_GET['order_last_activity'] : '0'; ?>" />
     Cập nhật lần cuối

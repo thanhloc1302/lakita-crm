@@ -1,6 +1,6 @@
 <!-- Cần tạo 2 phần body search của bảng giống y sì nhau (chỉ khác class) để nếu số dòng quá nhiều khi cuộn chuột xuống 
 thì người dùng vẫn có thể nhìn thấy các trường head là gì (dễ theo dõi) -->
-<tbody class="fixed-table" style="display: none;">
+<!--<tbody class="fixed-table" style="display: none;">
     <tr>
         <?php
         foreach ($head_tbl as $key => $value) {
@@ -17,7 +17,7 @@ thì người dùng vẫn có thể nhìn thấy các trường head là gì (d�
         <?php }
         ?>
     </tr>
-</tbody>
+</tbody>-->
 <tbody class="table-head-pos">
     <tr>
         <?php

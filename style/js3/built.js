@@ -438,8 +438,9 @@ $(document).on('scroll', function () {
     /*
      * Khi cuộn chuột quá vị trí của phần thead thì thead ẩn đi và phần thead-fixed hiện lên
      */
-    if ($(".table-head-pos").length) {
-        if ($("body").scrollTop() > ($(".table-head-pos").offset().top)) {
+
+        console.log($("html").scrollTop());
+        if ($("html").scrollTop() > ($(".table-head-pos").offset().top)) {
             $(".fixed-table").css({
                 "display": "block"
             });
@@ -448,7 +449,8 @@ $(document).on('scroll', function () {
                 "display": "none"
             });
         }
-        /*
+        
+         /*
          * Điều chỉnh lại kích cỡ của các th phần thead
          */
         $('[id^="th_"]').each(function () {
@@ -479,7 +481,8 @@ $(document).on('scroll', function () {
          */
 //        var offsetLeft = $(".table-head-pos").offset().left - 1;
 //        $(".fixed-table").css("left", offsetLeft + "px");
-    }
+       
+    
 });
 
 $(document).on("change", '.toggle-input [name="edit_active"]', function () {
@@ -2135,7 +2138,8 @@ $("a.view_duplicate").on('click', function (e) {
     });
 });
 
-*/$(document).on('scroll', function () {
+*//*
+$(document).on('scroll', function () {
     if ($(".table-head-pos").length) {
         if ($("body").scrollTop() > ($(".table-head-pos").offset().top)
                 ) {
@@ -2158,6 +2162,7 @@ $("a.view_duplicate").on('click', function (e) {
         $("table thead.fixed-table").css("left", offsetLeft + "px");
     }
 });
+*/
 
 $("input.reset_form").on('click', function (e) {
     e.preventDefault();

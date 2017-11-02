@@ -1,6 +1,6 @@
 <!-- Cần tạo 2 phần body search của bảng giống y sì nhau (chỉ khác class) để nếu số dòng quá nhiều khi cuộn chuột xuống 
 thì người dùng vẫn có thể nhìn thấy các trường head là gì (dễ theo dõi) -->
-<tbody class="fixed-table" style="display: none;">
+<!--<tbody class="fixed-table" style="display: none;">
     <tr>
         <td class="search_more" id="f_td_selection"> 
             <input type="text" class="search_more" disabled="disabled"/> 
@@ -19,11 +19,11 @@ thì người dùng vẫn có thể nhìn thấy các trường head là gì (d�
             </td>
         <?php }
         ?>
-<!--        <td class="search_more" id="f_td_action"> 
+        <td class="search_more" id="f_td_action"> 
             <input type="text" class="search_more" disabled="disabled"/> 
-        </td>-->
+        </td>
     </tr>
-</tbody>
+</tbody>-->
 <tbody class="table-head-pos">
     <tr>
         <td class="search_more" id="td_selection"> 
