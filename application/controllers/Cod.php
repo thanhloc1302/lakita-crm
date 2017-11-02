@@ -285,6 +285,9 @@ class Cod extends MY_Controller {
         //đổ dữ liệu ra file excel
         $contact_export = $this->_contact_export($post['contact_id']);
         foreach ($contact_export as $key => $value) {
+            if($value['provider_id'] != 1){
+                show_error_and_redirect('Cần chọn đúng đơn vị giao hàng Viettel!', $post['back_location'], false);
+            }
             if ($value['cb'] > 1) {
                 $course_name = 'Combo ' . $value['cb'] . ' khóa học';
             } else {
@@ -514,7 +517,7 @@ class Cod extends MY_Controller {
         $i = 0;
         foreach ($ids as $value) {
             $input = array();
-            $input['select'] = 'phone, code_cross_check, course_code, name, address, price_purchase, note_cod';
+            $input['select'] = 'phone, code_cross_check, course_code, name, address, price_purchase, note_cod, provider_id';
             $input['where'] = array('id' => $value);
             $contact = $this->contacts_model->load_all($input);
             //tìm xem số đt của contact có trong mảng contacts hay chưa, 

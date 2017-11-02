@@ -22,7 +22,7 @@ class Cron extends CI_Controller {
     public function getEmail() {
         $post = $this->input->post('email');
         $time = date('d-m-Y-h-i-s');
-        $myfile = fopen(APPPATH . "../public/get-email/".$time.".txt", "w") or die("Unable to open file!");
+        $myfile = fopen(APPPATH . "../public/get-email/" . $time . ".txt", "w") or die("Unable to open file!");
         fwrite($myfile, $post);
         fclose($myfile);
     }
@@ -209,6 +209,43 @@ class Cron extends CI_Controller {
         for ($i = 1; $i <= 15; $i++) {
             $day = "-" . $i . " days";
             $this->update_ad_cost($day);
+        }
+    }
+
+    function listen() {
+        if (!$this->input->is_ajax_request()) {
+            redirect();
+        }
+        $userID = $this->session->userdata('user_id');
+        if (!isset($userID)) {
+            $location = 'dang-nhap.html';
+            if (strpos($location, '/') !== 0 || strpos($location, '://') !== FALSE) {
+                if (!function_exists('site_url')) {
+                    $this->load->helper('url');
+                }
+                $location = site_url($location);
+            }
+            $script = "window.location='{$location}';";
+            $this->output->enable_profiler(FALSE)
+                    ->set_content_type('application/x-javascript')
+                    ->set_output($script);
+        } else {
+            $this->load->helper('cookie');
+            $myfile = fopen(APPPATH . "../public/last_reg.txt", "r") or die("Unable to open file!");
+            $last_id_txt = fgets($myfile);
+            $last_id = get_cookie('last_id');
+            if (!$last_id) {
+                set_cookie('last_id', $last_id_txt, 3600 * 48);
+                echo '0';
+                die;
+            }
+            if ($last_id != $last_id_txt) {
+                echo '1';
+                set_cookie('last_id', $last_id_txt, 3600 * 48);
+            } else {
+                echo '0';
+            }
+            fclose($myfile);
         }
     }
 

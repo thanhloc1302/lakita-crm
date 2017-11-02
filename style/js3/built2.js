@@ -1664,7 +1664,7 @@ var notify = '';
 Notification.requestPermission(function (p) {});
 setInterval(function () {
     $.ajax({
-        url: $("#base_url").val() + "common/listen",
+        url: $("#base_url").val() + "cron/listen",
         success: function success(data2) {
             //console.log(data2);
             if (data2 === '1') {
