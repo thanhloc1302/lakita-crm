@@ -285,7 +285,7 @@ class Cod extends MY_Controller {
         //đổ dữ liệu ra file excel
         $contact_export = $this->_contact_export($post['contact_id']);
         foreach ($contact_export as $key => $value) {
-            if($value['provider_id'] != 1){
+            if ($value['provider_id'] != 1) {
                 show_error_and_redirect('Cần chọn đúng đơn vị giao hàng Viettel!', $post['back_location'], false);
             }
             if ($value['cb'] > 1) {
@@ -320,7 +320,7 @@ class Cod extends MY_Controller {
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="02.Lakita_gui_danh_sach_khach_hang v' . date('Y.m.d') . '.xlsx"');
         header('Cache-Control: max-age=0');
-      //  $fileName = 'C:/xampp/htdocs/CRM2/public/upload/02.Lakita_gui_danh_sach_khach_hang v' . date('Y.m.d') . '.xlsx';
+        //  $fileName = 'C:/xampp/htdocs/CRM2/public/upload/02.Lakita_gui_danh_sach_khach_hang v' . date('Y.m.d') . '.xlsx';
         $fileName = '/home/lakita.com.vn/public_html/sub/crm2/public/upload/EmailViettel/02.Lakita_gui_danh_sach_khach_hang v' . date('Y.m.d') . '.xlsx';
         $objWriter->save($fileName);
         $config['protocol'] = 'smtp';
@@ -407,7 +407,7 @@ class Cod extends MY_Controller {
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
-    function export_to_string() {
+    public function export_to_string() {
         $post = $this->input->post();
         if (empty($post['contact_id'])) {
             $error = ('Vui lòng chọn đơn hàng!');
@@ -424,6 +424,25 @@ class Cod extends MY_Controller {
             }
         }
         echo $result;
+    }
+
+    public function ResetBillCode() {
+        $post = $this->input->post();
+        if (empty($post['contact_id'])) {
+            $error = ('Vui lòng chọn đơn hàng!');
+            show_error_and_redirect($error, '', false);
+        }
+        $this->load->model('cod_cross_check_model');
+        $today = date('dm');
+        $where = array('date_print_cod' => $today, 'provider_id' => $post['provider_id']);
+        $this->cod_cross_check_model->delete($where);
+
+        foreach ($post['contact_id'] as $value) {
+            $where = array('id' => $value);
+            $data = array('code_cross_check' => '');
+            $this->contacts_model->update($where, $data);
+        }
+        show_error_and_redirect('Đặt lại đơn hàng thành công!');
     }
 
     private function _get_all_require_data() {
@@ -533,7 +552,8 @@ class Cod extends MY_Controller {
                     'address' => $contact[0]['address'],
                     'price_purchase' => $contact[0]['price_purchase'],
                     'note_cod' => $contact[0]['note_cod'],
-                    'cb' => 1
+                    'cb' => 1,
+                    'provider_id' => $contact[0]['provider_id']
                 );
                 $i++;
             } else {
