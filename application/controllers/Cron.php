@@ -19,6 +19,14 @@ class Cron extends CI_Controller {
         ini_set('max_execution_time', 300);
     }
 
+    public function getEmail() {
+        $post = $this->input->post('email');
+        $time = date('d-m-Y-h-i-s');
+        $myfile = fopen(APPPATH . "../public/get-email/".$time.".txt", "w") or die("Unable to open file!");
+        fwrite($myfile, $post);
+        fclose($myfile);
+    }
+
     public function update_campain_cost($day = '0') {
         if ($day == '0') {
             $day = "-1 days";
