@@ -15,14 +15,8 @@ $(function () {
                     content_noti += "</li>";
                 });
                 $('#noti_contact_recall').html(content_noti);
-                var originTitle = '';
                 if (data.num_noti > 0) {
-                    if (i++ === 0) {
-                        originTitle = 'CONTACT CẦN GỌI LẠI';
-                    } else {
-                        originTitle = $("title").text().substring(3);
-                    }
-                    var title = '(' + data.num_noti + ') ' + originTitle;
+                    var title = '(' + data.num_noti + ')  CONTACT CẦN GỌI LẠI';
                     $("title").text(title);
                 }
                 if (typeof data.sound !== 'undefined') {
