@@ -88,7 +88,11 @@ class Common extends MY_Controller {
         $this->load->model('call_log_model');
         $data['call_logs'] = $this->call_log_model->load_all_call_log($input_call_log);
         $data['rows'] = $rows[0];
-        $this->load->view('common/modal/view_detail_contact', $data);
+        $result = array();
+        $result['success'] = 1;
+        $result['message'] = $this->load->view('common/modal/view_detail_contact', $data, true);
+        echo json_encode($result);
+        die;
     }
 
     function show_edit_contact_modal() {
@@ -158,18 +162,25 @@ class Common extends MY_Controller {
         $input = array();
         $input['where'] = array('id' => $post['contact_id']);
         $rows = $this->contacts_model->load_all_contacts($input);
+        $result = array();
         if (empty($rows)) {
-            echo 'Không tồn tại khách hàng này!';
+            $result['success'] = 0;
+            $result['message'] = 'Không tồn tại khách hàng này!';
+            echo json_encode($result);
             die;
         }
 
         if ($this->role_id == 1 && $rows[0]['sale_staff_id'] != $this->user_id) {
-            echo 'Contact này không được phân cho bạn! ';
+            $result['success'] = 0;
+            $result['message'] = 'Contact này không được phân cho bạn!';
+            echo json_encode($result);
             die;
         }
 
         if ($this->role_id != 1 && $this->role_id != 2) {
-            echo 'Bạn không có quyền chỉnh sửa contact này! ';
+            $result['success'] = 0;
+            $result['message'] = 'Bạn không có quyền chỉnh sửa contact này!';
+            echo json_encode($result);
             die;
         }
 
@@ -216,7 +227,10 @@ class Common extends MY_Controller {
         $data['call_logs'] = $this->call_log_model->load_all_call_log($input_call_log);
         $data['rows'] = $rows[0];
         $data['action_url'] = 'common/action_edit_contact/' . $id;
-        $this->load->view('common/modal/edit_contact', $data);
+        $result['success'] = 1;
+        $result['message'] = $this->load->view('common/modal/edit_contact', $data, true);
+        echo json_encode($result);
+        die;
     }
 
     private function _can_edit_by_sale($call_stt, $ordering_stt) {
@@ -630,7 +644,7 @@ class Common extends MY_Controller {
         } else {
             //kiểm tra 1 khách hàng (cùng số đt) mua nhiều khóa học thì ko tạo mã vận đơn mới, mà dùng mã vận đơn cũ
             $input_duplicate = array();
-            $input_duplicate['where'] = array('date_print_cod' => $today, 
+            $input_duplicate['where'] = array('date_print_cod' => $today,
                 'phone' => $this->contacts_model->get_contact_phone($id), 'provider_id' => $post['provider_id']);
             $contact_duplicate = $this->cod_cross_check_model->load_all($input_duplicate);
             if (!empty($contact_duplicate)) {
