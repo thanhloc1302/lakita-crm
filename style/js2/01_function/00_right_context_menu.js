@@ -69,12 +69,12 @@ right_context_menu_display = (controller, contact_id, contact_name, duplicate_id
     var numberOfChecked = $('input:checkbox:checked').length;
     if (numberOfChecked > 1) {
         $("a.view_duplicate, .action_view_detail_contact, .divide_one_contact_achor, "
-                + ".edit_contact, .transfer_one_contact, .send_to_mobile").addClass("hidden");
+                + ".edit-one-contact, .transfer_one_contact, .send_to_mobile").addClass("hidden");
         $(".divide_multi_contact,.transfer_contact, "
                 + ".select_provider, .btn-export-excel, .btn-export-excel-for-viettel, .export_to_string").removeClass('hidden');
     } else {
         $(".action_view_detail_contact, .divide_one_contact_achor, a.view_duplicate, "
-                + ".edit_contact, .transfer_one_contact, .send_to_mobile").removeClass("hidden");
+                + ".edit-one-contact, .transfer_one_contact, .send_to_mobile").removeClass("hidden");
         $(".divide_multi_contact, .transfer_contact, "
                 + ".select_provider, .export_to_string").addClass('hidden');
         if (duplicate_id > 0) {
@@ -102,7 +102,6 @@ right_context_menu_display = (controller, contact_id, contact_name, duplicate_id
             }
         }
     } else if (controller === 'sale' || controller === 'cod') {
-        $(".edit_contact").attr('contact_id', contact_id);
         $(".transfer_one_contact").attr('contact_id', contact_id);
         $(".transfer_one_contact").attr('contact_name', contact_name);
     }

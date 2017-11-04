@@ -788,7 +788,11 @@ class Common extends MY_Controller {
         $this->table .= 'date_rgt date_last_calling call_stt ordering_stt';
         $data['table'] = explode(' ', $this->table);
         $data['controller'] = $this->input->post('controller', true);
-        $this->load->view('common/modal/view_contact_star', $data);
+        $result = array();
+        $result['success'] = 1;
+        $result['message'] = $this->load->view('common/modal/view_contact_star', $data, true);
+        echo json_encode($result);
+        die;
     }
 
     function find_course_name() {

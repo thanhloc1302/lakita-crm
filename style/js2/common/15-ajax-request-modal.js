@@ -13,7 +13,6 @@ $(document).on("click", ".ajax-request-modal", function (e) {
         _this.parent().parent().addClass("checked");
 
         var contact_id = _this.attr("data-contact-id");
-        console.log(contact_id);
         var url = $("#base_url").val() + _this.attr("data-url");
         var modalName = _this.attr("data-modal-name");
         var controller = _this.attr("data-controller");
@@ -45,4 +44,14 @@ $(document).on("click", ".ajax-request-modal", function (e) {
             complete: () => $(`.${modalName} .modal`).modal("show")
         });
     }, 100);
+});
+
+
+var modalName = ['.edit-contact-modal', 
+                 '.view-detail-contact-modal', 
+                 '.view-all-contact-courses-modal'];
+modalName.forEach(function(item){
+    $(document).on('hide.bs.modal', item + ' .modal', function () {
+        $(item).remove();
+    });
 });

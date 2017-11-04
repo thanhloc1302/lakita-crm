@@ -9,7 +9,7 @@
             </a>
         <?php } else if ($controller == 'sale') { ?>
             <a href="#" 
-               class="ajax-request-modal load-new-contact-id"
+               class="ajax-request-modal load-new-contact-id edit-one-contact"
                data-contact-id ="0"
                data-modal-name="edit-contact-modal"
                data-url="common/show_edit_contact_modal">
@@ -26,7 +26,7 @@
             </a>
         <?php } else if ($controller == 'cod') { ?>
             <a href="#" 
-               class="ajax-request-modal load-new-contact-id edit_contact"
+               class="ajax-request-modal load-new-contact-id edit-one-contact"
                data-contact-id ="0"
                data-modal-name="edit-contact-modal"
                data-url="common/show_edit_contact_modal">

@@ -69,12 +69,12 @@ right_context_menu_display = (controller, contact_id, contact_name, duplicate_id
     var numberOfChecked = $('input:checkbox:checked').length;
     if (numberOfChecked > 1) {
         $("a.view_duplicate, .action_view_detail_contact, .divide_one_contact_achor, "
-                + ".edit_contact, .transfer_one_contact, .send_to_mobile").addClass("hidden");
+                + ".edit-one-contact, .transfer_one_contact, .send_to_mobile").addClass("hidden");
         $(".divide_multi_contact,.transfer_contact, "
                 + ".select_provider, .btn-export-excel, .btn-export-excel-for-viettel, .export_to_string").removeClass('hidden');
     } else {
         $(".action_view_detail_contact, .divide_one_contact_achor, a.view_duplicate, "
-                + ".edit_contact, .transfer_one_contact, .send_to_mobile").removeClass("hidden");
+                + ".edit-one-contact, .transfer_one_contact, .send_to_mobile").removeClass("hidden");
         $(".divide_multi_contact, .transfer_contact, "
                 + ".select_provider, .export_to_string").addClass('hidden');
         if (duplicate_id > 0) {
@@ -102,7 +102,6 @@ right_context_menu_display = (controller, contact_id, contact_name, duplicate_id
             }
         }
     } else if (controller === 'sale' || controller === 'cod') {
-        $(".edit_contact").attr('contact_id', contact_id);
         $(".transfer_one_contact").attr('contact_id', contact_id);
         $(".transfer_one_contact").attr('contact_name', contact_name);
     }
@@ -1751,7 +1750,6 @@ $(document).on("click", ".ajax-request-modal", function (e) {
         _this.parent().parent().addClass("checked");
 
         var contact_id = _this.attr("data-contact-id");
-        console.log(contact_id);
         var url = $("#base_url").val() + _this.attr("data-url");
         var modalName = _this.attr("data-modal-name");
         var controller = _this.attr("data-controller");
@@ -1784,7 +1782,16 @@ $(document).on("click", ".ajax-request-modal", function (e) {
         });
     }, 100);
 });
-/* 
+
+
+var modalName = ['.edit-contact-modal', 
+                 '.view-detail-contact-modal', 
+                 '.view-all-contact-courses-modal'];
+modalName.forEach(function(item){
+    $(document).on('hide.bs.modal', item + ' .modal', function () {
+        $(item).remove();
+    });
+});/* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
