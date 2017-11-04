@@ -7,8 +7,7 @@
             <a href="#" class="divide_contact divide_multi_contact">
                 <li> <i class="fa fa-hand-paper-o" aria-hidden="true"></i> &nbsp; &nbsp; Phân các contact đã chọn cho TVTS... </li>
             </a>
-        <?php } ?>
-        <?php if ($controller == 'sale') { ?>
+        <?php } else if ($controller == 'sale') { ?>
             <a href="#" 
                class="ajax-request-modal load-new-contact-id"
                data-contact-id ="0"
@@ -25,8 +24,7 @@
             <a href="#" class="transfer_contact">
                 <li>  <i class="fa fa-exchange" aria-hidden="true"></i>  &nbsp; &nbsp; Chuyển nhượng các contact đã chọn </li>
             </a>
-        <?php } ?>
-        <?php if ($controller == 'cod') { ?>
+        <?php } else if ($controller == 'cod') { ?>
             <a href="#" 
                class="ajax-request-modal load-new-contact-id edit_contact"
                data-contact-id ="0"
@@ -58,6 +56,20 @@
             <a href="#" class="btn-reset-provider"> 
                 <li> <i class="fa fa-paper-plane" aria-hidden="true"></i> &nbsp; &nbsp; Reset trạng thái giao hàng </li>
             </a>
+        <?php } else { //marketing ?>
+            <a href="#"
+               class="edit_item"
+               item_id="0">
+                <li>  <i class="fa fa-pencil-square" aria-hidden="true"></i> &nbsp; &nbsp; Chỉnh sửa</li>
+            </a>
+            <a href="#"
+               class="delete_item"
+               item_id="0">
+                <li>  <i class="fa fa-trash-o" aria-hidden="true"></i> &nbsp; &nbsp; Xóa dòng </li>
+            </a>
+            <a class="delete_multi_item" href="#"> 
+                <li>  <i class="fa fa-trash-o" aria-hidden="true"></i> &nbsp; &nbsp; Xóa các dòng đã chọn </li>
+            </a> 
         <?php } ?>
         <a href="#"  class="change-form-submit-url" 
            data-form-id="action_contact"
@@ -77,22 +89,5 @@
                 <i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; &nbsp; Chi tiết contact 
             </li>
         </a>
-    </ul>
-</div>
-<div class="menu-item">
-    <ul>
-        <a href="#"
-           class="edit_item"
-           item_id="0">
-            <li>  <i class="fa fa-pencil-square" aria-hidden="true"></i> &nbsp; &nbsp; Chỉnh sửa</li>
-        </a>
-        <a href="#"
-           class="delete_item"
-           item_id="0">
-            <li>  <i class="fa fa-trash-o" aria-hidden="true"></i> &nbsp; &nbsp; Xóa dòng </li>
-        </a>
-        <a class="delete_multi_item" href="#"> 
-            <li>  <i class="fa fa-trash-o" aria-hidden="true"></i> &nbsp; &nbsp; Xóa các dòng đã chọn </li>
-        </a> 
     </ul>
 </div>

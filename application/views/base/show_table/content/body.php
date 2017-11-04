@@ -1,11 +1,11 @@
 <?php
 foreach ($rows as $row) {
     ?>
-    <tr class="<?php echo (isset($row['warning_class'])) ? $row['warning_class'] : ''; ?> custom_right_menu_item"
+    <tr class="<?php echo (isset($row['warning_class'])) ? $row['warning_class'] : ''; ?> custom_right_menu"
         item_id="<?php echo $row['id']; ?>"
         >
         <td class="center tbl_selection">
-            <input type="checkbox" name="item_id[]" value="<?php echo $row['id']; ?>" />
+            <input type="checkbox" name="item_id[]" value="<?php echo $row['id']; ?>" class="tbl-item-checkbox"/>
         </td>
         <?php
         foreach ($head_tbl as $columm_name => $column_type) {

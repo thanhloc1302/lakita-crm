@@ -1,4 +1,4 @@
-<div class="edit_contact">
+<div class="edit_item">
     <div class="modal fade edit_item_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog btn-very-lg" role="document">
             <div class="modal-content">

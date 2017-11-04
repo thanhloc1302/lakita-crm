@@ -6,14 +6,14 @@
 
 
 show_number_selected_row = () => {
-    var numberOfChecked = $('input:checkbox:checked').length;
-    var totalCheckboxes = $('input:checkbox').length;
+    var numberOfChecked = $('input.tbl-item-checkbox:checked').length;
+    var totalCheckboxes = $('input.tbl-item-checkbox').length;
     /*
      * Lấy tổng giá
      */
     var sum = 0;
     for(i = 0; i < numberOfChecked; i++){
-        sum += parseInt($($('input:checkbox:checked')[i]).parent().parent().find('.tbl_price_purchase').text());
+        sum += parseInt($($('input.tbl-item-checkbox:checked')[i]).parent().parent().find('.tbl_price_purchase').text());
     }
     sum *= 1000;
     $.notify(`Đã chọn: ${numberOfChecked} / ${totalCheckboxes}. tổng tiền = ${sum.toLocaleString()}`, {
@@ -25,7 +25,7 @@ show_number_selected_row = () => {
 };
 
 unselect_not_checked = () => {
-    $('input[type="checkbox"]').each(
+    $('input.tbl-item-checkbox').each(
              () => {
                 if (!$(this).is(":checked")) {
                     $(this).parent().parent().removeClass('checked');
@@ -34,7 +34,7 @@ unselect_not_checked = () => {
 };
 
 unselect_checked = () => {
-    $('input[type="checkbox"]').each(
+    $('input.tbl-item-checkbox').each(
              () => {
                 if ($(this).is(":checked")) {
                     $(this).parent().parent().removeClass('checked');
@@ -42,7 +42,7 @@ unselect_checked = () => {
             });
 };
 uncheck_checked = () => {
-    $('input[type="checkbox"]').each(
+    $('input.tbl-item-checkbox').each(
             () => {
                 if ($(this).is(":checked")) {
                     $(this).prop("checked", false);
@@ -50,7 +50,7 @@ uncheck_checked = () => {
             });
 };
 uncheck_not_checked = () => {
-    $('input[type="checkbox"]').each(
+    $('input.tbl-item-checkbox').each(
             () => {
                 if (!$(this).is(":checked")) {
                     $(this).prop("checked", false);
@@ -1092,116 +1092,59 @@ $(document).on('click', 'a.action_view_detail_contact', function (e) {
  * Hiển thị menu chuột phải
  */
 $(document).on('contextmenu', 'tr.custom_right_menu', function (e) {
-                e.preventDefault();
-                /*
-                 * Lấy các thuộc tính của contact
-                 */
-                var contact_id = $(this).attr('contact_id');
-                var contact_name = $(this).attr('contact_name');
-                var duplicate_id = $(this).attr("duplicate_id");
-                var contact_phone = $(this).attr("contact_phone");
-                var controller = $("#input_controller").val();
-                right_context_menu_display(controller, contact_id, contact_name, duplicate_id, contact_phone);
+    e.preventDefault();
+    /*
+     * Lấy các thuộc tính của contact
+     */
+    var contact_id = $(this).attr('contact_id');
+    var contact_name = $(this).attr('contact_name');
+    var duplicate_id = $(this).attr("duplicate_id");
+    var contact_phone = $(this).attr("contact_phone");
+    var controller = $("#input_controller").val();
+    right_context_menu_display(controller, contact_id, contact_name, duplicate_id, contact_phone);
 
-                var menu = $(".menu");
-                menu.hide();
-                var pageX = e.pageX;
-                var pageY = e.pageY;
-                menu.css({top: pageY, left: pageX});
-                var mwidth = menu.width();
-                var mheight = menu.height();
-                var screenWidth = $(window).width();
-                var screenHeight = $(window).height();
-                var scrTop = $(window).scrollTop();
-                /*
-                 * Nếu "tọa độ trái chuột" + "chiều dài menu" > "chiều dài trình duyệt" 
-                 * thì hiển thị sang bên phải tọa độ click
-                 */
-                if (pageX + mwidth > screenWidth) {
-                    menu.css({left: pageX - mwidth});
-                }
-                /*
-                 * Nếu "tọa độ top chuột" + "chiều cao menu" > "chiều cao trình duyệt" + "chiều dài cuộn chuột"
-                 * thì hiển thị lên trên tọa độ click
-                 */
-                if (pageY + mheight > screenHeight + scrTop) {
-                    menu.css({top: pageY - mheight});
-                }
-                menu.show();
-                /*
-                 * Nếu dòng đó đang không chọn (đã click trái) thì bỏ chọn và bỏ check những dòng đã chọn
-                 */
-                var is_checked_input = $(this).find('input[type="checkbox"]');
-                if (!is_checked_input[0].checked) {
-                    $(".checked").removeClass("checked");
-                    uncheck_checked();
-                } else {
-                    unselect_not_checked();
-                }
-                $(this).addClass('checked'); /*.find('[name="contact_id[]"]').prop('checked', true); */
-            });
+    /* marketing */
+    var item_id = $(this).attr('item_id');
+    $(".delete_item, .edit_item").attr('item_id', item_id);
 
-//$("tr.custom_right_menu").on(
-//        {
-//            contextmenu: function (e) {
-//                e.preventDefault();
-//                /*
-//                 * Lấy các thuộc tính của contact
-//                 */
-//                var contact_id = $(this).attr('contact_id');
-//                var contact_name = $(this).attr('contact_name');
-//                var duplicate_id = $(this).attr("duplicate_id");
-//                var contact_phone = $(this).attr("contact_phone");
-//                var controller = $("#input_controller").val();
-//                right_context_menu_display(controller, contact_id, contact_name, duplicate_id, contact_phone);
-//
-//                var menu = $(".menu");
-//                menu.hide();
-//                var pageX = e.pageX;
-//                var pageY = e.pageY;
-//                menu.css({top: pageY, left: pageX});
-//                var mwidth = menu.width();
-//                var mheight = menu.height();
-//                var screenWidth = $(window).width();
-//                var screenHeight = $(window).height();
-//                var scrTop = $(window).scrollTop();
-//                /*
-//                 * Nếu "tọa độ trái chuột" + "chiều dài menu" > "chiều dài trình duyệt" 
-//                 * thì hiển thị sang bên phải tọa độ click
-//                 */
-//                if (pageX + mwidth > screenWidth) {
-//                    menu.css({left: pageX - mwidth});
-//                }
-//                /*
-//                 * Nếu "tọa độ top chuột" + "chiều cao menu" > "chiều cao trình duyệt" + "chiều dài cuộn chuột"
-//                 * thì hiển thị lên trên tọa độ click
-//                 */
-//                if (pageY + mheight > screenHeight + scrTop) {
-//                    menu.css({top: pageY - mheight});
-//                }
-//                menu.show();
-//                /*
-//                 * Nếu dòng đó đang không chọn (đã click trái) thì bỏ chọn và bỏ check những dòng đã chọn
-//                 */
-//                var is_checked_input = $(this).find('input[type="checkbox"]');
-//                if (!is_checked_input[0].checked) {
-//                    $(".checked").removeClass("checked");
-//                    uncheck_checked();
-//                } else {
-//                    unselect_not_checked();
-//                }
-//                $(this).addClass('checked'); /*.find('[name="contact_id[]"]').prop('checked', true); */
-//            },
-//            click: function () {
-//
-//            },
-//            dblclick: function (e) {
-//                var contact_id = $(this).attr('contact_id');
-//                $(".edit_contact").attr('contact_id', contact_id);
-//                e.preventDefault();
-//                $("a.edit_contact").click();
-//            }
-//        });
+    var menu = $(".menu");
+    menu.hide();
+    var pageX = e.pageX;
+    var pageY = e.pageY;
+    menu.css({top: pageY, left: pageX});
+    var mwidth = menu.width();
+    var mheight = menu.height();
+    var screenWidth = $(window).width();
+    var screenHeight = $(window).height();
+    var scrTop = $(window).scrollTop();
+    /*
+     * Nếu "tọa độ trái chuột" + "chiều dài menu" > "chiều dài trình duyệt" 
+     * thì hiển thị sang bên phải tọa độ click
+     */
+    if (pageX + mwidth > screenWidth) {
+        menu.css({left: pageX - mwidth});
+    }
+    /*
+     * Nếu "tọa độ top chuột" + "chiều cao menu" > "chiều cao trình duyệt" + "chiều dài cuộn chuột"
+     * thì hiển thị lên trên tọa độ click
+     */
+    if (pageY + mheight > screenHeight + scrTop) {
+        menu.css({top: pageY - mheight});
+    }
+    menu.show();
+    /*
+     * Nếu dòng đó đang không chọn (đã click trái) thì bỏ chọn và bỏ check những dòng đã chọn
+     */
+    var is_checked_input = $(this).find('input[type="checkbox"]');
+    if (!is_checked_input[0].checked) {
+        $(".checked").removeClass("checked");
+        uncheck_checked();
+    } else {
+        unselect_not_checked();
+    }
+    $(this).addClass('checked'); /*.find('[name="contact_id[]"]').prop('checked', true); */
+});
+
 
 /*
  * High light vào các dòng khi click trái để chọn 
@@ -1212,7 +1155,7 @@ $(document).on("click", "td.tbl_name, td.tbl_address", function () {
     } else {
         $(this).parent().addClass('checked');
     }
-    var input_checkbox = $(this).parent().find('[name="contact_id[]"]');
+    var input_checkbox = $(this).parent().find('.tbl-item-checkbox');
     if (input_checkbox.is(":checked")) {
         input_checkbox.prop('checked', false);
     } else {
@@ -1227,16 +1170,13 @@ $(document).on("click", "td.tbl_name, td.tbl_address", function () {
 $("html").on("click", function (e) {
     $(".menu").hide();
     $(".menu-item").hide();
-    /*
-     * Nếu click ra ngoài bảng thì bỏ chọn các contact
-    
-    if (e.target.className.indexOf("form-inline") !== -1 || e.target.className.indexOf("number_paging") !== -1)
+    // Nếu click ra ngoài bảng thì bỏ chọn các contact
+    if ($(e.target).closest(".custom_right_menu").length == 0 && $(e.target).closest(".custom_right_menu_item").length == 0)
     {
-        $("input[type='checkbox']").prop('checked', false);
+        $("input.tbl-item-checkbox").prop('checked', false);
         $('.checked').removeClass('checked');
 
-    } */
-
+    }
 });
 
 
@@ -1244,12 +1184,12 @@ shortcut.add("Ctrl+s", function () {
     $(".btn-edit-contact").click();
 });
 shortcut.add("Ctrl+a", function () {
-    $("input[type='checkbox']").prop('checked', true);
+    $("input.tbl-item-checkbox").prop('checked', true);
     $('.custom_right_menu').addClass('checked');
     show_number_selected_row();
 });
 shortcut.add("Esc", function () {
-    $("input[type='checkbox']").prop('checked', false);
+    $("input.tbl-item-checkbox").prop('checked', false);
     $('.checked').removeClass('checked');
     $(".menu").hide();
 });/* 
@@ -1257,74 +1197,6 @@ shortcut.add("Esc", function () {
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
-
-/*
- * Hiển thị menu chuột phải
- */
-$("tr.custom_right_menu_item").on(
-        {
-            contextmenu: function (e) {
-                e.preventDefault();
-                /*
-                 * Lấy các thuộc tính của contact
-                 */
-                var item_id = $(this).attr('item_id');
-                $(".delete_item, .edit_item").attr('item_id', item_id);
-                var menu = $(".menu-item");
-                menu.hide();
-                var pageX = e.pageX;
-                var pageY = e.pageY;
-                menu.css({top: pageY, left: pageX});
-                var mwidth = menu.width();
-                var mheight = menu.height();
-                var screenWidth = $(window).width();
-                var screenHeight = $(window).height();
-                var scrTop = $(window).scrollTop();
-                /*
-                 * Nếu "tọa độ trái chuột" + "chiều dài menu" > "chiều dài trình duyệt" 
-                 * thì hiển thị sang bên phải tọa độ click
-                 */
-                if (pageX + mwidth > screenWidth) {
-                    menu.css({left: pageX - mwidth});
-                }
-                /*
-                 * Nếu "tọa độ top chuột" + "chiều cao menu" > "chiều cao trình duyệt" + "chiều dài cuộn chuột"
-                 * thì hiển thị lên trên tọa độ click
-                 */
-                if (pageY + mheight > screenHeight + scrTop) {
-                    menu.css({top: pageY - mheight});
-                }
-                menu.show();
-                /*
-                 * Nếu dòng đó đang không chọn (đã click trái) thì bỏ chọn và bỏ check những dòng đã chọn
-                 */
-                /* var is_checked_input = $(this).find('input[type="checkbox"]');
-                if (!is_checked_input[0].checked) {
-                    $(".checked").removeClass("checked");
-                    uncheck_checked();
-                } else {
-                    unselect_not_checked();
-                }
-                $(this).addClass('checked'); *//*.find('[name="contact_id[]"]').prop('checked', true); */
-            }
-           /* click: function () {
-                if ($(this).hasClass('checked')) {
-                    $(this).removeClass('checked');
-                } else {
-                    $(this).addClass('checked');
-                }
-                var input_checkbox = $(this).find('[name="item_id[]"]');
-                if (input_checkbox.is(":checked")) {
-                    input_checkbox.prop('checked', false);
-                } else {
-                    input_checkbox.prop('checked', true);
-                }
-                unselect_not_checked();
-                show_number_selected_row();
-            } */
-        });
 
 
 
@@ -1338,23 +1210,16 @@ $("tr.custom_right_menu_item").on(
 /*
  * Khi check vào 1 item nào đó sẽ đánh dấu item đó (hiện màu xanh)
  */
-$(document).on('change', 'input[type="checkbox"]', function (e) {
-    var rejectShowCheckedName = ["edit_active"];
-    if (rejectShowCheckedName.indexOf($(this).attr("name")) != -1) {
-        e.stopPropagation();
-        return false;
-    }
+/*
+$(document).on('change', 'input.tbl-item-checkbox', function (e) {
     if (this.checked) {
         $(this).parent().parent().addClass('checked');
     } else {
         $(this).parent().parent().removeClass('checked');
     }
-    /*
-     * Hiển thị số lượng dòng đã check
-     */
-
-    var numberOfChecked = $('input:checkbox:checked').length;
-    var totalCheckboxes = $('input:checkbox').length;
+    // Hiển thị số lượng dòng đã check
+    var numberOfChecked = $('input.tbl-item-checkbox:checked').length;
+    var totalCheckboxes = $('input.tbl-item-checkbox').length;
     $.notify('Đã chọn: ' + numberOfChecked + '/' + totalCheckboxes, {
         position: "top left",
         className: 'success',
@@ -1362,20 +1227,20 @@ $(document).on('change', 'input[type="checkbox"]', function (e) {
         autoHideDelay: 1000
     });
 });
-
+*/
 /*=============================chọn tất cả  ===========================================*/
 var checked = true;
 $(".check_all").on('click', function () {
     checked = !checked;
     if (checked) {
-        $(".list_contact input[type='checkbox']").each(
+        $(".list_contact input.tbl-item-checkbox").each(
                 function () {
                     $(this).prop("checked", false);
                     $(this).parent().parent().removeClass('checked');
                 }
         );
     } else {
-        $(".list_contact input[type='checkbox']").each(
+        $(".list_contact input.tbl-item-checkbox").each(
                 function () {
                     $(this).prop("checked", true);
                     $(this).parent().parent().addClass('checked');
@@ -1961,26 +1826,54 @@ $(document).on('click', '.change-form-submit-url', function (e) {
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-$(".btn-navbar-serach").click(function(e){
+var modalName = "navbar-search-modal";
+$(".btn-navbar-search").click(function (e) {
     e.preventDefault();
-    var modalName = "navbar-search-modal";
-     $.ajax({
-            url:  $("#base_url").val() +  $("#input_controller").val() + '/search',
-            type: "GET",
-            data: {
-                search_all: $(".input-navbar-serach").val()
-            },
-            success: data => {
-                $("." + modalName).remove();
-                var newModal = `<div class="${modalName}"></div>`;
+    $.ajax({
+        url: $("#base_url").val() + $("#input_controller").val() + '/search',
+        type: "GET",
+        data: {
+            search_all: $(".input-navbar-serach").val()
+        },
+        success: data => {
+            $("." + modalName).remove();
+            var newModal = `<div class="${modalName}"></div>`;
+            if ($("#action_contact").length) {
+                $("#action_contact").append(newModal);
+            } else {
                 $(".modal-append-to").append(newModal);
-                $(`.${modalName}`).html(data);
-            },
-            complete: () => $(`.${modalName} .navbar-search-modal`).modal("show")
-        });
+            }
+            $(`.${modalName}`).html(data);
+        },
+        complete: () => $(`.${modalName} .navbar-search-modal`).modal("show")
+    });
 });
-$("a.cancel_one_contact").on('click', function (e) {
+/*     <a href="#" class="anchor-navbar-search">6899</a> */
+$(".anchor-navbar-search").click(function (e) {
+    e.preventDefault();
+    $.ajax({
+        url: $("#base_url").val() + $("#input_controller").val() + '/search',
+        type: "GET",
+        data: {
+            search_all: $.trim($(this).text())
+        },
+        success: data => {
+            $("." + modalName).remove();
+            var newModal = `<div class="${modalName}"></div>`;
+            if ($("#action_contact").length) {
+                $("#action_contact").append(newModal);
+            } else {
+                $(".modal-append-to").append(newModal);
+            }
+            $(`.${modalName}`).html(data);
+        },
+        complete: () => $(`.${modalName} .navbar-search-modal`).modal("show")
+    });
+});
+
+$(document).on('hide.bs.modal', ".navbar-search-modal", function () {
+    $("." + modalName).remove();
+}); $("a.cancel_one_contact").on('click', function (e) {
     var del = $(this);
     var sale_id = $(this).attr("sale_id");
     var total_contact_for_sale = $(".total_contact_sale_" + sale_id).text();

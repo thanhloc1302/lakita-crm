@@ -6,14 +6,14 @@
 
 
 show_number_selected_row = () => {
-    var numberOfChecked = $('input:checkbox:checked').length;
-    var totalCheckboxes = $('input:checkbox').length;
+    var numberOfChecked = $('input.tbl-item-checkbox:checked').length;
+    var totalCheckboxes = $('input.tbl-item-checkbox').length;
     /*
      * Lấy tổng giá
      */
     var sum = 0;
     for(i = 0; i < numberOfChecked; i++){
-        sum += parseInt($($('input:checkbox:checked')[i]).parent().parent().find('.tbl_price_purchase').text());
+        sum += parseInt($($('input.tbl-item-checkbox:checked')[i]).parent().parent().find('.tbl_price_purchase').text());
     }
     sum *= 1000;
     $.notify(`Đã chọn: ${numberOfChecked} / ${totalCheckboxes}. tổng tiền = ${sum.toLocaleString()}`, {
@@ -25,7 +25,7 @@ show_number_selected_row = () => {
 };
 
 unselect_not_checked = () => {
-    $('input[type="checkbox"]').each(
+    $('input.tbl-item-checkbox').each(
              () => {
                 if (!$(this).is(":checked")) {
                     $(this).parent().parent().removeClass('checked');
@@ -34,7 +34,7 @@ unselect_not_checked = () => {
 };
 
 unselect_checked = () => {
-    $('input[type="checkbox"]').each(
+    $('input.tbl-item-checkbox').each(
              () => {
                 if ($(this).is(":checked")) {
                     $(this).parent().parent().removeClass('checked');
@@ -42,7 +42,7 @@ unselect_checked = () => {
             });
 };
 uncheck_checked = () => {
-    $('input[type="checkbox"]').each(
+    $('input.tbl-item-checkbox').each(
             () => {
                 if ($(this).is(":checked")) {
                     $(this).prop("checked", false);
@@ -50,7 +50,7 @@ uncheck_checked = () => {
             });
 };
 uncheck_not_checked = () => {
-    $('input[type="checkbox"]').each(
+    $('input.tbl-item-checkbox').each(
             () => {
                 if (!$(this).is(":checked")) {
                     $(this).prop("checked", false);
