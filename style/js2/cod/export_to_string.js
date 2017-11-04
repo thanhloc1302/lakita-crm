@@ -1,21 +1,16 @@
 $('.export_to_string').on('click', function (e) {
     e.preventDefault();
-    var myCheckboxes = new Array();
-    $("input:checked").each(function () {
-        myCheckboxes.push($(this).val());
-    });
+    var modalName = 'export-to-string-modal';
     $.ajax({
         url: $("#base_url").val() + "cod/export_to_string",
         type: "POST",
-        data: {
-            contact_id: myCheckboxes
+        data: $("#action_contact").serialize(),
+        success: data => {
+            $("." + modalName).remove();
+            var newModal = `<div class="${modalName}"></div>`;
+            $(".modal-append-to").append(newModal);
+            $(`.${modalName}`).html(data);
         },
-        success: function (data) {
-            console.log(data);
-            $(".replace_content_2").text(data);
-        },
-        complete: function () {
-            $(".export_to_string_modal").modal("show");
-        }
+        complete: () => $(`.${modalName} .modal`).modal("show")
     });
 });

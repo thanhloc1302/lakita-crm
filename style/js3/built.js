@@ -574,23 +574,18 @@ $(".btn-export-excel-for-viettel").on('click',function (e) {
 });
 $('.export_to_string').on('click', function (e) {
     e.preventDefault();
-    var myCheckboxes = new Array();
-    $("input:checked").each(function () {
-        myCheckboxes.push($(this).val());
-    });
+    var modalName = 'export-to-string-modal';
     $.ajax({
         url: $("#base_url").val() + "cod/export_to_string",
         type: "POST",
-        data: {
-            contact_id: myCheckboxes
+        data: $("#action_contact").serialize(),
+        success: data => {
+            $("." + modalName).remove();
+            var newModal = `<div class="${modalName}"></div>`;
+            $(".modal-append-to").append(newModal);
+            $(`.${modalName}`).html(data);
         },
-        success: function (data) {
-            console.log(data);
-            $(".replace_content_2").text(data);
-        },
-        complete: function () {
-            $(".export_to_string_modal").modal("show");
-        }
+        complete: () => $(`.${modalName} .modal`).modal("show")
     });
 });/* 
  * To change this license header, choose License Headers in Project Properties.
@@ -1171,7 +1166,7 @@ $("html").on("click", function (e) {
     $(".menu").hide();
     $(".menu-item").hide();
     // Nếu click ra ngoài bảng thì bỏ chọn các contact
-    if ($(e.target).closest(".custom_right_menu").length == 0 && $(e.target).closest(".custom_right_menu_item").length == 0)
+    if (e.target.className.indexOf("form-inline") !== -1 || e.target.className.indexOf("number_paging") !== -1)
     {
         $("input.tbl-item-checkbox").prop('checked', false);
         $('.checked').removeClass('checked');

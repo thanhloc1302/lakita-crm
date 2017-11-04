@@ -75,7 +75,14 @@ class Sale extends MY_Controller {
             's_check_edit_contact', 's_transfer_contact', 's_show_script', 'm_view_duplicate'
         );
 
-        $data['content'] = 'sale/index';
+        $data['titleListContact'] = 'Danh sách contact mới';
+        $data['actionForm'] = 'sale/transfer_contact';
+        $informModal = 'sale/modal/transfer_multi_contact';
+        $data['informModal'] = explode(' ', $informModal);
+        $outformModal = 'sale/modal/transfer_one_contact sale/modal/show_script';
+        $data['outformModal'] = explode(' ', $outformModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -128,7 +135,15 @@ class Sale extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact', 'common_edit_contact',
             's_check_edit_contact', 's_transfer_contact', 's_show_script'
         );
-        $data['content'] = 'sale/has_callback';
+
+        $data['titleListContact'] = 'Danh sách contact có lịch hẹn gọi lại';
+        $data['actionForm'] = 'sale/transfer_contact';
+        $informModal = 'sale/modal/transfer_multi_contact';
+        $data['informModal'] = explode(' ', $informModal);
+        $outformModal = 'sale/modal/transfer_one_contact sale/modal/show_script';
+        $data['outformModal'] = explode(' ', $outformModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -168,7 +183,6 @@ class Sale extends MY_Controller {
 
         $this->table = 'selection name phone last_note course_code price_purchase date_last_calling';
         $data['table'] = explode(' ', $this->table);
-        $data['content'] = 'sale/can_save';
 
         /*
          * Các file js cần load
@@ -178,6 +192,14 @@ class Sale extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact', 'common_edit_contact',
             's_check_edit_contact', 's_transfer_contact', 's_show_script'
         );
+
+        $data['titleListContact'] = 'Danh sách contact còn cứu được';
+        $data['actionForm'] = 'sale/transfer_contact';
+        $informModal = 'sale/modal/transfer_multi_contact';
+        $data['informModal'] = explode(' ', $informModal);
+        $outformModal = 'sale/modal/transfer_one_contact sale/modal/show_script';
+        $data['outformModal'] = explode(' ', $outformModal);
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -229,7 +251,14 @@ class Sale extends MY_Controller {
             's_check_edit_contact', 's_transfer_contact', 's_show_script', 'm_view_duplicate'
         );
 
-        $data['content'] = 'sale/view_all_contact';
+        $data['titleListContact'] = 'Danh sách toàn bộ contact';
+        $data['actionForm'] = 'sale/transfer_contact';
+        $informModal = 'sale/modal/transfer_multi_contact';
+        $data['informModal'] = explode(' ', $informModal);
+        $outformModal = 'sale/modal/transfer_one_contact sale/modal/show_script';
+        $data['outformModal'] = explode(' ', $outformModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 

@@ -60,6 +60,13 @@ class Manager extends MY_Controller {
         $this->table .= 'date_rgt matrix';
         $data['table'] = explode(' ', $this->table);
 
+        $data['titleListContact'] = 'Danh sách contact mới';
+        $data['actionForm'] = 'manager/divide_contact';
+        $informModal = 'manager/modal/divide_contact';
+        $data['informModal'] = explode(' ', $informModal);
+        $outformModal = 'manager/modal/divide_one_contact';
+        $data['outformModal'] = explode(' ', $outformModal);
+
         /*
          * Các file js cần load
          */
@@ -68,10 +75,7 @@ class Manager extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact',
             'm_delete_one_contact', 'm_divide_contact', 'm_view_duplicate', 'm_delete_multi_contact'
         );
-        $data['content'] = 'manager/index';
-
-
-
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -84,7 +88,7 @@ class Manager extends MY_Controller {
         $input['where'] = array(
             'role_id' => 6,
             'active' => 1);
-       $data['marketers'] = $this->staffs_model->load_all($input);
+        $data['marketers'] = $this->staffs_model->load_all($input);
 
         $get = $this->input->get();
         /*
@@ -109,7 +113,7 @@ class Manager extends MY_Controller {
         /*
          * Filter ở cột trái và cột phải
          */
-        $data['left_col'] = array('tu_van', 'duplicate', 'course_code', 'sale', 'marketer','channel', 'payment_method_rgt', 'date_rgt', 'date_handover');
+        $data['left_col'] = array('tu_van', 'duplicate', 'course_code', 'sale', 'marketer', 'channel', 'payment_method_rgt', 'date_rgt', 'date_handover');
         $data['right_col'] = array('source', 'call_status', 'ordering_status', 'cod_status', 'provider');
 
         /*
@@ -125,7 +129,15 @@ class Manager extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact',
             'm_delete_one_contact', 'm_divide_contact', 'm_view_duplicate', 'm_delete_multi_contact'
         );
-        $data['content'] = 'manager/view_all_contact';
+
+        $data['titleListContact'] = 'Danh sách toàn bộ';
+        $data['actionForm'] = 'manager/divide_contact';
+        $informModal = 'manager/modal/divide_contact';
+        $data['informModal'] = explode(' ', $informModal);
+        $outformModal = 'manager/modal/divide_one_contact';
+        $data['outformModal'] = explode(' ', $outformModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 

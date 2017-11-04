@@ -39,7 +39,12 @@ class Cod extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact', 'common_edit_contact',
             'c_check_edit_contact', 'c_select_provider');
 
-        $data['content'] = 'cod/index';
+        $data['titleListContact'] = 'Danh sách contact chưa giao hàng';
+        $data['actionForm'] = 'common/action_edit_multi_cod_contact';
+        $informModal = 'cod/modal/edit_multi_contact';
+        $data['informModal'] = explode(' ', $informModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -63,7 +68,14 @@ class Cod extends MY_Controller {
         $data['load_js'] = array(
             'common_view_detail_contact', 'common_real_filter_contact', 'common_edit_contact',
             'c_select_provider', 'c_export_to_string', 'c_export_excel');
-        $data['content'] = 'cod/pending';
+
+
+        $data['titleListContact'] = 'Danh sách contact đang giao hàng';
+        $data['actionForm'] = 'common/action_edit_multi_cod_contact';
+        $informModal = 'cod/modal/edit_multi_contact';
+        $data['informModal'] = explode(' ', $informModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -98,7 +110,12 @@ class Cod extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact', 'common_edit_contact',
             'c_select_provider', 'c_export_to_string', 'c_export_excel');
 
-        $data['content'] = 'cod/pending';
+        $data['titleListContact'] = 'Theo dõi hành trình dơn hàng Viettel';
+        $data['actionForm'] = 'common/action_edit_multi_cod_contact';
+        $informModal = 'cod/modal/edit_multi_contact';
+        $data['informModal'] = explode(' ', $informModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -125,18 +142,13 @@ class Cod extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact', 'common_edit_contact',
             'c_check_edit_contact', 'c_select_provider', 'c_export_to_string', 'c_export_excel');
 
-        $data['content'] = 'cod/transfer';
-        $this->load->view(_MAIN_LAYOUT_, $data);
-    }
 
-    function find_contact() {
-        $get = $this->input->get();
-        $conditional = ''; //' AND `sale_staff_id` = ' . $this->user_id;
-        $data = $this->_common_find_all($get, $conditional);
-        $table = 'selection contact_id name phone address course_code price_purchase ';
-        $table .= 'date_rgt date_last_calling call_stt ordering_stt action';
-        $data['table'] = explode(' ', $table);
-        $data['content'] = 'cod/find_contact';
+        $data['titleListContact'] = 'Danh sách contact chuyển khoản';
+        $data['actionForm'] = 'common/action_edit_multi_cod_contact';
+        $informModal = 'cod/modal/edit_multi_contact';
+        $data['informModal'] = explode(' ', $informModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -403,7 +415,12 @@ class Cod extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact', 'common_edit_contact',
             'c_check_edit_contact', 'c_select_provider', 'c_export_to_string');
 
-        $data['content'] = 'cod/view_all_contact';
+        $data['titleListContact'] = 'Danh sách toàn bộ contact';
+        $data['actionForm'] = 'common/action_edit_multi_cod_contact';
+        $informModal = 'cod/modal/edit_multi_contact';
+        $data['informModal'] = explode(' ', $informModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -420,10 +437,11 @@ class Cod extends MY_Controller {
             $input['where'] = array('id' => $value);
             $contact = $this->contacts_model->load_all($input);
             if ($contact[0]['code_cross_check'] != '') {
-                $result .= $contact[0]['code_cross_check'] . ',' . PHP_EOL;
+                $result .= trim($contact[0]['code_cross_check']) . ',' . PHP_EOL;
             }
         }
-        echo $result;
+        $data['result'] = $result;
+        $this->load->view('cod/modal/export_to_string', $data);
     }
 
     public function ResetBillCode() {
