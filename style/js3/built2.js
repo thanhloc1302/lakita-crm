@@ -4,6 +4,10 @@
  * and open the template in the editor.
  */
 
+undefined.myModal = function () {
+    this.name = "Hùng";
+};
+
 show_number_selected_row = function show_number_selected_row() {
     var numberOfChecked = $('input.tbl-item-checkbox:checked').length;
     var totalCheckboxes = $('input.tbl-item-checkbox').length;
