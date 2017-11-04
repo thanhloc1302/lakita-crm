@@ -130,7 +130,7 @@ class Manager extends MY_Controller {
             'm_delete_one_contact', 'm_divide_contact', 'm_view_duplicate', 'm_delete_multi_contact'
         );
 
-        $data['titleListContact'] = 'Danh sách toàn bộ';
+        $data['titleListContact'] = 'Danh sách toàn bộ contact';
         $data['actionForm'] = 'manager/divide_contact';
         $informModal = 'manager/modal/divide_contact';
         $data['informModal'] = explode(' ', $informModal);
