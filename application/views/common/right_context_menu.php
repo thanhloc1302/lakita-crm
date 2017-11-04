@@ -28,7 +28,7 @@
         <?php } ?>
         <?php if ($controller == 'cod') { ?>
             <a href="#" 
-               class="ajax-request-modal load-new-contact-id"
+               class="ajax-request-modal load-new-contact-id edit_contact"
                data-contact-id ="0"
                data-modal-name="edit-contact-modal"
                data-url="common/show_edit_contact_modal">
@@ -55,16 +55,10 @@
             <a href="#" class="export_to_string"> 
                 <li> <i class="fa fa-link" aria-hidden="true"></i> &nbsp; &nbsp; Xuất thành chuỗi đối soát </li>
             </a>
+            <a href="#" class="btn-reset-provider"> 
+                <li> <i class="fa fa-paper-plane" aria-hidden="true"></i> &nbsp; &nbsp; Reset trạng thái giao hàng </li>
+            </a>
         <?php } ?>
-        <a href="#" 
-           class="ajax-request-modal load-new-contact-id"
-           data-contact-id ="0"
-           data-modal-name="view-detail-contact-modal"
-           data-url="common/view_detail_contact">
-            <li> 
-                <i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; &nbsp; Chi tiết contact 
-            </li>
-        </a>
         <a href="#"  class="change-form-submit-url" 
            data-form-id="action_contact"
            data-action="common/ExportToExcel"
@@ -73,6 +67,15 @@
                 <i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp; &nbsp; Xuất thành file excel
             </li>
 
+        </a>
+        <a href="#" 
+           class="ajax-request-modal load-new-contact-id"
+           data-contact-id ="0"
+           data-modal-name="view-detail-contact-modal"
+           data-url="common/view_detail_contact">
+            <li> 
+                <i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; &nbsp; Chi tiết contact 
+            </li>
         </a>
     </ul>
 </div>

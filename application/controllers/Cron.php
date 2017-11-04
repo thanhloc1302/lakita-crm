@@ -249,4 +249,21 @@ class Cron extends CI_Controller {
         }
     }
 
+    public function GetActiveCampaign() {
+        $get = $this->input->get();
+        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
+            die('token sai!');
+        }
+        $url = 'https://graph.facebook.com/v2.9/act_512062118812690/campaigns?fields=id,name,created_time,status&limit=500&access_token=' . ACCESS_TOKEN;
+        $spend = get_fb_request($url);
+        $this->load->model('campaign_model');
+        foreach ($spend->data as $value) {
+            if ($value->status != 'ACTIVE') {
+                $where = array('campaign_id_facebook' => $value->id);
+                $data = array('active' => '0');
+                $this->campaign_model->update($where, $data);
+            }
+        }
+    }
+
 }

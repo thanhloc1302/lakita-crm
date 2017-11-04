@@ -63,7 +63,6 @@ class Check_L8 extends MY_Table {
                 'type' => 'datetime',
                 'name_display' => 'Ngày tải file đối soát',
                 'order' => '1',
-                
             ),
             'duplicate_id' => array(
                 'name_display' => 'Contact bị trùng',
@@ -104,7 +103,7 @@ class Check_L8 extends MY_Table {
             if ($class != '') {
                 $value['warning_class'] = $class;
             }
-            $value['code'] = '<a href="https://www.viettelpost.com.vn/Tracking?KEY='.$value['code'].'" target="_blank"> ' .$value['code'] . '</a>';
+            $value['code'] = '<a href="https://www.viettelpost.com.vn/Tracking?KEY=' . $value['code'] . '" target="_blank"> ' . $value['code'] . '</a>';
         }
         unset($value);
     }
@@ -296,6 +295,22 @@ class Check_L8 extends MY_Table {
         }
         if (isset($post['edit_price_purchase'])) {
             $param['price_purchase'] = $post['edit_price_purchase'];
+            $input = array();
+            $input['where'] = array('id' => $id);
+            $billID = $this->{$this->model}->load_all($input);
+            if ($billID[0]['contact_id'] > 0) {
+                $where = array('id' => $billID[0]['contact_id']);
+                $data = array('price_purchase' => $post['edit_price_purchase']);
+                $this->contacts_model->update($where, $data);
+                //call log
+                $data = array();
+                $data['contact_id'] = $billID[0]['contact_id'];
+                $data['staff_id'] = $this->user_id;
+                $data['time'] = time();
+                $data['content_change'] = 'Giá tiền mua: '. $billID[0]['price_purchase'] . ' ====> ' . $post['edit_price_purchase'] . ' (sửa khi đối soát)';
+                $this->load->model('call_log_model');
+                $this->call_log_model->insert($data);
+            }
         }
         if (isset($post['edit_money']) && isset($post['edit_price_purchase']) && $post['edit_money'] == $post['edit_price_purchase']) {
             $param['is_match'] = 1;
@@ -314,7 +329,8 @@ class Check_L8 extends MY_Table {
             $okExtensions = array('xls', 'xlsx');
             $fileParts = explode('.', $fileName);
             if (!in_array(strtolower(end($fileParts)), $okExtensions)) {
-                echo 'Vui lòng chọn file đúng định dạng!';die;
+                echo 'Vui lòng chọn file đúng định dạng!';
+                die;
             }
             $targetFile = APPPATH . '../public/upload/L8/' . date('Y-m-d-H-i') . '.' . pathinfo($fileName, PATHINFO_EXTENSION);
             move_uploaded_file($tempFile, $targetFile);

@@ -175,7 +175,7 @@ class MY_Table extends MY_Controller {
             $this->conditional['limit'] = array($this->limit, $this->offset);
         }
         /*
-         * kiểm tra xem $this->conditional đã có order chưa, nếu chưa thì để mặc định là order theo id và desc
+         * kiểm tra xem $this->conditional đã có order chưa, nếu chưa thì để mặc định là order theo id desc
          */
         if (!$has_user_order) {
             $this->conditional['order'] = array('id' => 'DESC');
@@ -187,7 +187,8 @@ class MY_Table extends MY_Controller {
          */
         $base_url = ($this->sub_folder == '') ? $this->controller . '/' . $this->method : $this->sub_folder . '/' . $this->controller . '/' . $this->method;
         $this->num_segment = ($this->sub_folder == '') ? 3 : 4;
-        $this->pagination_link = $this->_create_pagination_link($base_url, $total_row, $this->num_segment);
+       
+        $this->pagination_link = $this->_create_pagination_link($total_row, $base_url, $this->num_segment);
         $this->begin_paging = ($total_row == 0) ? 0 : $this->offset + 1;
         $this->end_paging = (($this->offset + $this->limit) < $total_row) ? ($this->offset + $this->limit) : $total_row;
         $this->total_paging = $total_row;

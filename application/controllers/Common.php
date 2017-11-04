@@ -626,7 +626,7 @@ class Common extends MY_Controller {
             $code_cross_check = $provider_prefix . $today . '01';
             $this->cod_cross_check_model->insert(array('contact_id' => $id, 'date_print_cod' => $today,
                 'provider_id' => $post['provider_id'], 'number' => 1,
-                'phone' => $this->contacts_model->get_contact_phone($id), 'code' => $code_cross_check, 'time' => time()));
+                'phone' => $this->contacts_model->get_contact_phone($id), 'code' => $code_cross_check, 'time' => date('Y/m/d H:i:s', time())));
         } else {
             //kiểm tra 1 khách hàng (cùng số đt) mua nhiều khóa học thì ko tạo mã vận đơn mới, mà dùng mã vận đơn cũ
             $input_duplicate = array();
@@ -644,7 +644,7 @@ class Common extends MY_Controller {
                 $code_cross_check = $provider_prefix . $today . '' . $number;
                 $this->cod_cross_check_model->insert(array('contact_id' => $id, 'date_print_cod' => $today,
                     'provider_id' => $post['provider_id'], 'number' => $number,
-                    'phone' => $this->contacts_model->get_contact_phone($id), 'code' => $code_cross_check, 'time' => time()));
+                    'phone' => $this->contacts_model->get_contact_phone($id), 'code' => $code_cross_check, 'time' => date('Y/m/d H:i:s', time())));
             }
         }
         return $code_cross_check;

@@ -7,10 +7,10 @@
                     <img src="<?php echo base_url(); ?>style/img/logo5.png" class="logo-fix">
                 </a>
                 <form action="<?php echo base_url() . $controller; ?>/search" class="form-search" method="GET">
-                    <input type="text" class="form-control" name="search_all" placeholder="Tìm mọi thứ...." 
+                    <input type="text" class="form-control input-navbar-serach" name="search_all" placeholder="Tìm mọi thứ...." 
                            value="<?php echo isset($_GET['search_all']) ? $_GET['search_all'] : ''; ?>">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">
+                        <button class="btn btn-default btn-navbar-serach" type="submit">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </span>

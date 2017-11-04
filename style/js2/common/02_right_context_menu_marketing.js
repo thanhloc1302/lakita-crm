@@ -46,15 +46,15 @@ $("tr.custom_right_menu_item").on(
                 /*
                  * Nếu dòng đó đang không chọn (đã click trái) thì bỏ chọn và bỏ check những dòng đã chọn
                  */
-                var is_checked_input = $(this).find('input[type="checkbox"]');
+                /* var is_checked_input = $(this).find('input[type="checkbox"]');
                 if (!is_checked_input[0].checked) {
                     $(".checked").removeClass("checked");
                     uncheck_checked();
                 } else {
                     unselect_not_checked();
                 }
-                $(this).addClass('checked'); /*.find('[name="contact_id[]"]').prop('checked', true); */
-            },
+                $(this).addClass('checked'); *//*.find('[name="contact_id[]"]').prop('checked', true); */
+            }
            /* click: function () {
                 if ($(this).hasClass('checked')) {
                     $(this).removeClass('checked');

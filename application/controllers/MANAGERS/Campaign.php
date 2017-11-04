@@ -85,7 +85,11 @@ class Campaign extends MY_Table {
                 'name_display' => 'Ngày tạo',
                 'display' => 'none'
             ),
-            
+            'channel' => array(
+                'name_display' => 'Kênh',
+                'order' => '1',
+                 'display' => 'none'
+            ),
         );
         $this->set_list_view($list_item);
         $this->set_model('campaign_model');
@@ -131,9 +135,9 @@ class Campaign extends MY_Table {
                 $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
                 $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
                 $value['spend'] = $channel_cost['spend'];
-                $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']): '#N/A';
-                $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']): '#N/A';
-                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']): '#N/A';
+                $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) : '#N/A';
+                $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) : '#N/A';
+                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) : ( ($value['spend'] > 0) ? 9999999999 : '#N/A');
             } else {
                 $value['total_C1'] = '#NA';
                 $value['total_C2'] = '#NA';
@@ -147,11 +151,24 @@ class Campaign extends MY_Table {
             }
         }
         unset($value);
+        usort($this->data['rows'], function($a, $b) {
+            if (is_numeric($a['pricepC3']) && is_numeric($b['pricepC3'])) {
+                return $b['pricepC3'] - $a['pricepC3'];
+            }else if (is_numeric($a['pricepC3']) && !is_numeric($b['pricepC3'])) {
+                return -1;
+            }else if (!is_numeric($a['pricepC3']) && is_numeric($b['pricepC3'])) {
+                return +1;
+            }else{
+                return $b['active'] - $a['active'];
+            }
+        });
+        // print_arr($this->data['rows']);
     }
 
     /*
      * Ghi đè hàm xóa lớp cha
      */
+
 //
 //    function delete_item() {
 //        die('Không thể xóa, liên hệ admin để biết thêm chi tiết');
@@ -162,10 +179,19 @@ class Campaign extends MY_Table {
 //    }
 
     function index($offset = 0) {
+        $this->load->model('channel_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $channels = $this->channel_model->load_all($input);
+        $this->data['channel'] = $channels;
+        
         $this->list_filter = array(
             'left_filter' => array(
                 'date' => array(
                     'type' => 'custom',
+                ),
+                 'channel' => array(
+                    'type' => 'arr_multi'
                 ),
             ),
             'right_filter' => array(
@@ -175,8 +201,9 @@ class Campaign extends MY_Table {
             )
         );
         $conditional = array();
-        $conditional['where']['marketer_id'] = $this->user_id;
-         $get = $this->input->get();
+        if ($this->role_id != 5) {
+            $conditional['where']['marketer_id'] = $this->user_id;
+        }
 //        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
 //            $conditional['where']['active'] = 1;
 //        }

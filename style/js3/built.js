@@ -592,7 +592,21 @@ $('.export_to_string').on('click', function (e) {
             $(".export_to_string_modal").modal("show");
         }
     });
-});$(document).on('click', '.select_provider', function (e) {
+});/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+$(".btn-reset-provider").on('click', function (e) {
+    e.preventDefault();
+    $("#action_contact").removeClass("form-inline");
+    $(".reset_provider_modal").modal("show");
+});
+$(".btn-reset-provider").on('show.bs.modal', '.modal', function () {
+    $("#action_contact").addClass("form-inline");
+});
+
+$(document).on('click', '.select_provider', function (e) {
     $("#action_contact").removeClass("form-inline");
     e.preventDefault();
     $(".edit_multi_cod_contact").modal("show");
@@ -1286,15 +1300,15 @@ $("tr.custom_right_menu_item").on(
                 /*
                  * Nếu dòng đó đang không chọn (đã click trái) thì bỏ chọn và bỏ check những dòng đã chọn
                  */
-                var is_checked_input = $(this).find('input[type="checkbox"]');
+                /* var is_checked_input = $(this).find('input[type="checkbox"]');
                 if (!is_checked_input[0].checked) {
                     $(".checked").removeClass("checked");
                     uncheck_checked();
                 } else {
                     unselect_not_checked();
                 }
-                $(this).addClass('checked'); /*.find('[name="contact_id[]"]').prop('checked', true); */
-            },
+                $(this).addClass('checked'); *//*.find('[name="contact_id[]"]').prop('checked', true); */
+            }
            /* click: function () {
                 if ($(this).hasClass('checked')) {
                     $(this).removeClass('checked');
@@ -1942,6 +1956,30 @@ $(document).on('click', '.change-form-submit-url', function (e) {
 });
 
 
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+$(".btn-navbar-serach").click(function(e){
+    e.preventDefault();
+    var modalName = "navbar-search-modal";
+     $.ajax({
+            url:  $("#base_url").val() +  $("#input_controller").val() + '/search',
+            type: "GET",
+            data: {
+                search_all: $(".input-navbar-serach").val()
+            },
+            success: data => {
+                $("." + modalName).remove();
+                var newModal = `<div class="${modalName}"></div>`;
+                $(".modal-append-to").append(newModal);
+                $(`.${modalName}`).html(data);
+            },
+            complete: () => $(`.${modalName} .navbar-search-modal`).modal("show")
+        });
+});
 $("a.cancel_one_contact").on('click', function (e) {
     var del = $(this);
     var sale_id = $(this).attr("sale_id");
