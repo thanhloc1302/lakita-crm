@@ -25,9 +25,8 @@ class Home extends CI_Controller {
             $input['where'] = array('id' => $user_id);
             $user = $this->staffs_model->load_all($input);
             if($user[0]['active'] == 0){
-                echo 'Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản lý để đc giúp đỡ';
-                echo '<a href="'.base_url('home/logout').'"> Đăng xuất </a>';
-                die;
+               redirect(base_url('no_access'));
+            die;
             }
             switch ($role_id) {
                 case 1:

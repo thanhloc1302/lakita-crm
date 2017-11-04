@@ -26,7 +26,7 @@ class MY_Controller extends CI_Controller {
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
         //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
-       // echo date('H:i:s d/m/Y', 1509692829);die;
+        // echo date('H:i:s d/m/Y', 1509692829);die;
         //  echo time(). '<br>';
         // echo strtotime('01-10-2017 00:00:00'); die;
         // echo strtotime(date("d-m-Y"));die;
@@ -43,7 +43,7 @@ class MY_Controller extends CI_Controller {
             // $this->output->enable_profiler(TRUE);
         }
         $this->load->vars($this->data);
-       // phpinfo();
+        // phpinfo();
     }
 
     private function _check_login() {
@@ -122,8 +122,7 @@ class MY_Controller extends CI_Controller {
         $input['where'] = array('id' => $this->user_id);
         $user = $this->staffs_model->load_all($input);
         if ($user[0]['active'] == 0) {
-            echo 'Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản lý để đc giúp đỡ';
-            echo '<a href="' . base_url('home/logout') . '"> Đăng xuất </a>';
+            redirect(base_url('no_access'));
             die;
         }
 
@@ -606,8 +605,7 @@ class MY_Controller extends CI_Controller {
         $this->load->view('common/search_all', $data);
     }
 
-    
-    private function _slogan(){
+    private function _slogan() {
         $slogan = array(
             'Không có gì là không thể với một người luôn biết cố gắng',
 //            'Hãy luyện tập như thể bạn chưa bao giờ chiến thắng. Hãy hành động như thể chưa bao giờ bạn thất bại',
@@ -624,9 +622,8 @@ class MY_Controller extends CI_Controller {
 //            'Khi bạn nói "Khó quá" đồng nghĩa với việc "Tôi không đủ mạnh mẽ để đấu tranh vì nó". Hãy ngừng ngay việc kêu ca. Hãy suy nghĩ tích cực!',
 //            '<img src="http://loinoihay.net/wp-content/uploads/2016/03/Nh%E1%BB%AFng-c%C3%A2u-n%C3%B3i-t%E1%BA%A1o-%C4%91%E1%BB%99ng-l%E1%BB%B1c-s%E1%BB%91ng-cho-gi%E1%BB%9Bi-tr%E1%BA%BB-t%E1%BB%AB-c%C3%A1c-t%E1%BB%89-ph%C3%BA-tr%C3%AAn-th%E1%BA%BF-gi%E1%BB%9Bi6.jpg" />'
         );
-        $sloganNumber = rand(0, count($slogan)-1);
+        $sloganNumber = rand(0, count($slogan) - 1);
         $this->data['mySlogan'] = $slogan[$sloganNumber];
-       
     }
-    
+
 }

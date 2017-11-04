@@ -11,7 +11,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
         <script src="<?php echo base_url(); ?>style/js/common/jquery.min.js"></script>
-        <link href="<?php echo base_url(); ?>style/noaccess/css/style.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="<?php echo base_url(); ?>style/noaccess/css/style.css?ver=<?php echo time();?>" rel="stylesheet" type="text/css" media="all" />
     </head>
     <body>
         <!-----start-wrap--------->
@@ -21,13 +21,18 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <!-----start-logo--------->
                 <div class="logo">
                     <h1><a href="#"><img src="<?php echo base_url(); ?>style/noaccess/images/logo.jpg" width="20%"/></a></h1>
-                    <span><img src="<?php echo base_url(); ?>style/noaccess/images/signal.png"/>Bạn không có quyền truy cập vào trang này</span>
+                    <span><img src="<?php echo base_url(); ?>style/noaccess/images/signal.png"/>
+                        Bạn không có quyền truy cập vào trang này.
+                        (Nếu không thể quay lại trang chủ thì tài khoản của bạn 
+                        đã bị khóa!)
+                    </span>
                 </div>
                 <!-----end-logo--------->
                 <!-----start-search-bar-section--------->
                 <div class="buttom">
                     <div class="seach_bar">
                         <p>Trờ về  <span><a href="<?php echo base_url(); ?>">trang chủ</a></span> </p>
+                        <p style="margin: 1.6em 0em 0.9em 0em;">Hoặc  <span><a href="<?php echo base_url('home/logout'); ?>">đăng xuất</a></span> </p>
                     </div>
                 </div>
                 <!-----end-sear-bar--------->
