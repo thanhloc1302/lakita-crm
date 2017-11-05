@@ -1651,6 +1651,10 @@ $(document).on('hide.bs.modal', '.modal', function () {
     } else {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated');
     }
+    var modalName = ['.navbar-search-modal', '.view-all-contact-courses-modal'];
+    modalName.forEach(function (item) {
+        $(item).remove();
+    });
 });
 $(document).on('show.bs.modal', '.modal', function () {
     /*
