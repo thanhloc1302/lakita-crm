@@ -29,7 +29,12 @@
  });
  */
 
-
+$(document).on('hide.bs.modal', '.navbar-search-modal', function () {
+    $('.navbar-search-modal').remove();
+});
+$(document).on('hide.bs.modal', '.view-all-contact-courses-modal', function () {
+    $('.view-all-contact-courses-modal').remove();
+});
 
 $(document).on('hide.bs.modal', '.modal', function () {
     if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {

@@ -11,7 +11,7 @@
             <a href="#" 
                class="ajax-request-modal load-new-contact-id edit-one-contact"
                data-contact-id ="0"
-               data-modal-name="edit-contact-modal"
+               data-modal-name="edit-contact-div"
                data-url="common/show_edit_contact_modal">
                 <li> <i class="fa fa-pencil-square" aria-hidden="true"></i> &nbsp; &nbsp; Chăm sóc contact</li>
             </a>
@@ -28,7 +28,7 @@
             <a href="#" 
                class="ajax-request-modal load-new-contact-id edit-one-contact"
                data-contact-id ="0"
-               data-modal-name="edit-contact-modal"
+               data-modal-name="edit-contact-div"
                data-url="common/show_edit_contact_modal">
                 <li> <i class="fa fa-pencil-square" aria-hidden="true"></i> &nbsp; &nbsp; Chăm sóc contact</li>
             </a>
@@ -83,7 +83,7 @@
         <a href="#" 
            class="ajax-request-modal load-new-contact-id"
            data-contact-id ="0"
-           data-modal-name="view-detail-contact-modal"
+           data-modal-name="view-detail-contact-div"
            data-url="common/view_detail_contact">
             <li> 
                 <i class="fa fa-info-circle" aria-hidden="true"></i> &nbsp; &nbsp; Chi tiết contact 

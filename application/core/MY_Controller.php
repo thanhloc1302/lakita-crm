@@ -601,8 +601,7 @@ class MY_Controller extends CI_Controller {
             'm_delete_one_contact', 'm_divide_contact', 'm_view_duplicate', 'm_delete_multi_contact'
         );
         $data['search_all'] = $get['search_all'];
-        $data['content'] = 'common/search_all';
-        $this->load->view('common/search_all', $data);
+        $this->load->view('common/modal/search_all', $data);
     }
 
     private function _slogan() {

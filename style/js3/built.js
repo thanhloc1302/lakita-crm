@@ -1684,7 +1684,12 @@ $('li.mega-dropdown').mouseover(() => $(".black-over").css('bottom', '0%')).mous
  });
  */
 
-
+$(document).on('hide.bs.modal', '.navbar-search-modal', function () {
+    $('.navbar-search-modal').remove();
+});
+$(document).on('hide.bs.modal', '.view-all-contact-courses-modal', function () {
+    $('.view-all-contact-courses-modal').remove();
+});
 
 $(document).on('hide.bs.modal', '.modal', function () {
     if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
@@ -1784,14 +1789,7 @@ $(document).on("click", ".ajax-request-modal", function (e) {
 });
 
 
-var modalName = ['.edit-contact-modal', 
-                 '.view-detail-contact-modal', 
-                 '.view-all-contact-courses-modal'];
-modalName.forEach(function(item){
-    $(document).on('hide.bs.modal', item + ' .modal', function () {
-        $(item).remove();
-    });
-});/* 
+/* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -1894,10 +1892,11 @@ $(".anchor-navbar-search").click(function (e) {
         complete: () => $(`.${modalName} .navbar-search-modal`).modal("show")
     });
 });
-
+/*
 $(document).on('hide.bs.modal', ".navbar-search-modal", function () {
     $("." + modalName).remove();
-}); $("a.cancel_one_contact").on('click', function (e) {
+}); 
+*/$("a.cancel_one_contact").on('click', function (e) {
     var del = $(this);
     var sale_id = $(this).attr("sale_id");
     var total_contact_for_sale = $(".total_contact_sale_" + sale_id).text();

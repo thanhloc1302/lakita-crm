@@ -57,7 +57,8 @@ $(".anchor-navbar-search").click(function (e) {
         complete: () => $(`.${modalName} .navbar-search-modal`).modal("show")
     });
 });
-
+/*
 $(document).on('hide.bs.modal', ".navbar-search-modal", function () {
     $("." + modalName).remove();
 }); 
+*/

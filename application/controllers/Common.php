@@ -740,7 +740,7 @@ class Common extends MY_Controller {
         $this->load->view('common/real_search', $data);
     }
 
-    function view_contact_star() {
+    function ViewAllContactCourse() {
         $require_model = array(
             'staffs' => array(
                 'where' => array(
@@ -790,7 +790,7 @@ class Common extends MY_Controller {
         $data['controller'] = $this->input->post('controller', true);
         $result = array();
         $result['success'] = 1;
-        $result['message'] = $this->load->view('common/modal/view_contact_star', $data, true);
+        $result['message'] = $this->load->view('common/modal/view_all_contact_course', $data, true);
         echo json_encode($result);
         die;
     }

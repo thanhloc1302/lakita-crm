@@ -47,11 +47,3 @@ $(document).on("click", ".ajax-request-modal", function (e) {
 });
 
 
-var modalName = ['.edit-contact-modal', 
-                 '.view-detail-contact-modal', 
-                 '.view-all-contact-courses-modal'];
-modalName.forEach(function(item){
-    $(document).on('hide.bs.modal', item + ' .modal', function () {
-        $(item).remove();
-    });
-});
