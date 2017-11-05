@@ -4,10 +4,6 @@
  * and open the template in the editor.
  */
 
-undefined.myModal = function () {
-    this.name = "Hùng";
-};
-
 show_number_selected_row = function show_number_selected_row() {
     var numberOfChecked = $('input.tbl-item-checkbox:checked').length;
     var totalCheckboxes = $('input.tbl-item-checkbox').length;
@@ -1648,6 +1644,10 @@ $(document).on('hide.bs.modal', '.modal', function () {
     } else {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated');
     }
+    var modalName = ['.navbar-search-modal', '.view-all-contact-courses-modal'];
+    modalName.forEach(function (item) {
+        $(item).remove();
+    });
 });
 $(document).on('show.bs.modal', '.modal', function () {
     /*
@@ -1736,16 +1736,11 @@ $(document).on("click", ".ajax-request-modal", function (e) {
     }, 100);
 });
 
-var modalName = ['.edit-contact-modal', '.view-detail-contact-modal', '.view-all-contact-courses-modal'];
-modalName.forEach(function (item) {
-    $(document).on('hide.bs.modal', item + ' .modal', function () {
-        $(item).remove();
-    });
-}); /* 
-    * To change this license header, choose License Headers in Project Properties.
-    * To change this template file, choose Tools | Templates
-    * and open the template in the editor.
-    */
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
 $(".jquery-confirm").confirm({
     theme: 'supervan', // 'material', 'bootstrap',
@@ -1844,10 +1839,11 @@ $(".anchor-navbar-search").click(function (e) {
         }
     });
 });
-
+/*
 $(document).on('hide.bs.modal', ".navbar-search-modal", function () {
     $("." + modalName).remove();
-});$("a.cancel_one_contact").on('click', function (e) {
+}); 
+*/$("a.cancel_one_contact").on('click', function (e) {
     var del = $(this);
     var sale_id = $(this).attr("sale_id");
     var total_contact_for_sale = $(".total_contact_sale_" + sale_id).text();
