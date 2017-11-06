@@ -41,7 +41,7 @@
             <a href="#" class="btn-export-excel"> 
                 <li> <i class="fa fa-print" aria-hidden="true"></i> &nbsp; &nbsp; Xuất file excel để in </li>
             </a>
-            <a href="#" class="change-form-submit-url2 jquery-confirm" 
+            <a href="#" class="send-email-to-viettel" 
                data-form-id="action_contact"
                data-action="cod/SendEmailToProvider"
                data-method="POST">
@@ -55,6 +55,30 @@
             </a>
             <a href="#" class="btn-reset-provider"> 
                 <li> <i class="fa fa-paper-plane" aria-hidden="true"></i> &nbsp; &nbsp; Reset trạng thái giao hàng </li>
+            </a>
+        <?php } else if ($controller == 'admin') { ?>
+            <a href="#" 
+               class="action-contact-admin load-new-contact-id"
+               data-contact-id ="0"
+               data-answer="Thu hồi thành công contact!"
+               data-url="admin/retrieve_contact"> 
+                <li> 
+                    <i class="fa fa-retweet" aria-hidden="true"></i> &nbsp; &nbsp; Thu hồi 
+                </li>
+            </a>
+            <a href="#" class="action-contact-admin load-new-contact-id" 
+               data-contact-id ="0"
+               data-answer="Xóa contact thành công (thùng rác)!"
+               data-url="admin/delete_one_contact"> 
+                <li> 
+                    <i class="fa fa-recycle" aria-hidden="true"></i> &nbsp; &nbsp; Thùng rác 
+                </li>
+            </a>
+            <a href="#" class="action-contact-admin load-new-contact-id" 
+               data-answer="Xóa contact thành công (xóa hẳn)!"
+               data-url="admin/delete_forever_one_contact"> 
+                <li> <i class="fa fa-trash" aria-hidden="true"></i> &nbsp; &nbsp; Xóa hẳn 
+                </li> 
             </a>
         <?php } else { //marketing ?>
             <a href="#"
@@ -71,7 +95,7 @@
                 <li>  <i class="fa fa-trash-o" aria-hidden="true"></i> &nbsp; &nbsp; Xóa các dòng đã chọn </li>
             </a> 
         <?php } ?>
-        <a href="#"  class="change-form-submit-url" 
+        <a href="#"  class="export-to-excel" 
            data-form-id="action_contact"
            data-action="common/ExportToExcel"
            data-method="POST">

@@ -1,3 +1,4 @@
+/*
 $(document).on('click', 'a.delete_one_contact_admin', e => {
     var r = confirm("Bạn có chắc chắn muốn xóa contact này không?");
     if (r == true) {
@@ -51,3 +52,4 @@ $(document).on('click', 'a.delete_forever_one_contact_admin', function (e) {
 });
 
 
+*/

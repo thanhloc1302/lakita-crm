@@ -5,19 +5,8 @@
     <div class="number_paging">
         <?php echo 'Hiển thị ' . $this->begin_paging . ' - ' . $this->end_paging . ' của ' . $this->total_paging . ' contacts'; ?>
     </div>
-    <table class="table table-bordered table-expandable table-striped list_contact list_contact_2">
-        <thead class="fixed-table" style="display: none;">
-            <tr>
-                <?php
-                if (isset($table)) {
-                    foreach ($table as $value) {
-                        $this->load->view('common/content/table/f_head/' . $value);
-                    }
-                }
-                ?>
-            </tr>
-        </thead>
-        <thead class="table-head-pos">
+    <table class="table table-bordered table-expandable table-striped list_contact list_contact_2 table-fixed-head">
+        <thead>
             <tr>
                 <?php
                 if (isset($table)) {

@@ -46,16 +46,17 @@
 <?php } ?>
 <?php if ($controller == 'admin') { ?>
     <td class="text-center action">  
-        <a href="#" class="divide_one_contact_achor btn btn-success"
-           contact_id="<?php echo $value['id']; ?>"
-           contact_name="<?php echo $value['name']; ?>"> Bàn giao </a>
-<!--        <a href="#" class="edit_contact_admin btn btn-primary" 
-           contact_id="<?php echo $value['id']; ?>"> Chỉnh sửa </a>-->
-        <a href="#" class="retrieve_contact btn btn-warning" 
-           contact_id="<?php echo $value['id']; ?>"> Thu hồi </a>
-        <a href="#" class="delete_one_contact_admin btn btn-danger" 
-           contact_id="<?php echo $value['id']; ?>"> Thùng rác </a>
-         <a href="#" class="delete_forever_one_contact_admin btn btn-danger" 
-           contact_id="<?php echo $value['id']; ?>"> Xóa hẳn</a>
+        <a href="#" class="action-contact-admin btn btn-warning" 
+           data-contact-id ="<?php echo $value['id']; ?>"
+           data-answer="Thu hồi thành công contact!"
+           data-url="admin/retrieve_contact"> Thu hồi </a>
+        <a href="#" class="action-contact-admin btn btn-danger" 
+           data-contact-id ="<?php echo $value['id']; ?>"
+           data-answer="Xóa contact thành công (thùng rác)!"
+           data-url="admin/delete_one_contact"> Thùng rác </a>
+        <a href="#" class="action-contact-admin btn btn-danger" 
+           data-contact-id ="<?php echo $value['id']; ?>"
+           data-answer="Xóa contact thành công (xóa hẳn)!"
+           data-url="admin/delete_forever_one_contact"> Xóa hẳn</a>
     </td>
 <?php } ?>

@@ -121,33 +121,68 @@ check_edit_contact = function check_edit_contact() {
     var course_code = $('select.select_course_code').val();
     var price_purchase = $('[name="price_purchase"]').val();
     if ($("select.edit_payment_method_rgt").val() == 0) {
-        alert("Bạn cần cập nhật hình thức thanh toán!");
+        $.alert({
+            theme: 'modern',
+            type: 'red',
+            title: 'Có lỗi xảy ra!',
+            content: 'Bạn cần cập nhật hình thức thanh toán!'
+        });
         return false;
     }
     if (call_status_id == 0) {
-        alert("Bạn cần cập nhật trạng thái gọi!");
+        $.alert({
+            theme: 'modern',
+            type: 'red',
+            title: 'Có lỗi xảy ra!',
+            content: 'Bạn cần cập nhật trạng thái gọi!'
+        });
         return false;
     }
     if (check_rule_call_stt(call_status_id, ordering_status_id) == false) {
-        alert("Trạng thái gọi và trạng thái đơn hàng không logic!");
+        $.alert({
+            theme: 'modern',
+            type: 'red',
+            title: 'Có lỗi xảy ra!',
+            content: 'Trạng thái gọi và trạng thái đơn hàng không logic! Bạn cần cập nhật chính xác để dữ liệu của chúng ta được sạch sẽ!'
+        });
         return false;
     }
     if (date_recall != '') {
         if (now_greater_than_input_date(date_recall)) {
-            alert("Ngày gọi lại không thể là một ngày trước ngày hôm nay!");
+            $.alert({
+                theme: 'modern',
+                type: 'red',
+                title: 'Có lỗi xảy ra!',
+                content: 'Ngày gọi lại không thể là một ngày trước ngày hôm nay!'
+            });
             return false;
         }
         if (check_rule_call_stt_and_date_recall(call_status_id, ordering_status_id, date_recall)) {
-            alert("Nếu contact không liên lạc được hoặc không thể chăm sóc được nữa thì không thể có ngày gọi lại lớn hơn ngày hiện tại!");
+            $.alert({
+                theme: 'modern',
+                type: 'red',
+                title: 'Có lỗi xảy ra!',
+                content: 'Nếu contact không liên lạc được hoặc không thể chăm sóc được nữa thì không thể có ngày gọi lại lớn hơn ngày hiện tại!'
+            });
             return false;
         }
     }
     if (course_code == '0') {
-        alert("Vui lòng chọn mã khóa học!");
+        $.alert({
+            theme: 'modern',
+            type: 'red',
+            title: 'Có lỗi xảy ra!',
+            content: 'Vui lòng chọn mã khóa học!'
+        });
         return false;
     }
     if (price_purchase == '') {
-        alert("Vui lòng chọn giá tiền mua!");
+        $.alert({
+            theme: 'modern',
+            type: 'red',
+            title: 'Có lỗi xảy ra!',
+            content: 'Vui lòng chọn giá tiền mua!'
+        });
         return false;
     }
     return true;
@@ -218,7 +253,50 @@ setEqualTableHeight = function setEqualTableHeight() {
         $(".table-1").height($(".table-2").height());
     }
 };
-$(document).on('click', 'a.delete_one_contact_admin', function (e) {
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+$.fn.setFixTable = function (_tableID) {
+    var cloneHead = $($(this).children()[0]).clone();
+    $(this).prepend(cloneHead);
+    var fixedHead = $(this).children()[0];
+    var originHead = $(this).children()[1];
+    $(originHead).addClass("table-head-pos");
+    $(fixedHead).addClass("fixed-table").css("display", "none");
+    var key = 1;
+    $(".table-head-pos>tr>th").each(function () {
+        $(this).attr('id', 'th_fix_id_' + key++);
+    });
+    key = 1;
+    $(".fixed-table>tr>th").each(function () {
+        $(this).attr('id', 'f_th_fix_id_' + key++);
+    });
+
+    $(document).on('scroll', function () {
+        if ($("html").scrollTop() > $(".table-head-pos").offset().top) {
+            $(".fixed-table").css({
+                "display": "block"
+            });
+            $('[id^="th_"]').each(function () {
+                var myID = $(this).attr("id");
+                var mywidth = $(this).width();
+                var myheight = $(this).height();
+                $("#f_" + myID).width(mywidth);
+                $("#f_" + myID).height(myheight);
+            });
+        } else {
+            $(".fixed-table").css({
+                "display": "none"
+            });
+        }
+    });
+};
+
+/*
+$(document).on('click', 'a.delete_one_contact_admin', e => {
     var r = confirm("Bạn có chắc chắn muốn xóa contact này không?");
     if (r == true) {
         var del = $(e.target);
@@ -229,18 +307,17 @@ $(document).on('click', 'a.delete_one_contact_admin', function (e) {
             data: {
                 contact_id: contact_id
             },
-            success: function success(data) {
+            success: data => {
                 console.log(data);
-                if (data === '1') {
+                if (data === '1')
+                {
                     del.parent().parent().hide();
                     //location.reload();
                 } else {
                     alert(data);
                 }
             },
-            error: function error(errorThrown) {
-                return alert(errorThrown);
-            }
+            error: errorThrown => alert(errorThrown)
         });
         return false;
     }
@@ -257,53 +334,101 @@ $(document).on('click', 'a.delete_forever_one_contact_admin', function (e) {
             data: {
                 contact_id: contact_id
             },
-            success: function success(data) {
-                if (data === '1') {
+            success: data => {
+                if (data === '1')
+                {
                     del.parent().parent().hide();
                     //location.reload();
                 } else {
                     alert(data);
                 }
             },
-            error: function error(errorThrown) {
-                return alert(errorThrown);
-            }
+            error: errorThrown => alert(errorThrown)
         });
     }
 });
 
-/* 
- * Copyright (C) 2017 Phạm Ngọc Chuyển <chuyenpn at lakita.vn>
- *
+
+*/ /* 
+   * Copyright (C) 2017 Phạm Ngọc Chuyển <chuyenpn at lakita.vn>
+   *
+   */
+
+/*
+ $(document).on('click', 'a.retrieve-contact', function (e) {
+ var r = confirm("Bạn có chắc chắn muốn thu hồi contact này không?");
+ if (r == true) {
+ var del = $(this);
+ var contact_id = $(this).attr("contact_id");
+ e.preventDefault();
+ $.ajax({
+ type: "POST",
+ url: $("#base_url").val() + "admin/retrieve_contact",
+ data: {
+ contact_id: contact_id
+ },
+ success: data => {
+ if (data === '1')
+ {
+ alert('Thu hồi thành công contact');
+ //del.parent().parent().hide();
+ location.reload();
+ } else {
+ alert(data);
+ }
+ },
+ error: errorThrown => alert(errorThrown)
+ });
+ }
+ });
  */
-$(document).on('click', 'a.retrieve_contact', function (e) {
-    var r = confirm("Bạn có chắc chắn muốn thu hồi contact này không?");
-    if (r == true) {
-        var del = $(this);
-        var contact_id = $(this).attr("contact_id");
-        e.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: $("#base_url").val() + "admin/retrieve_contact",
-            data: {
-                contact_id: contact_id
-            },
-            success: function success(data) {
-                if (data === '1') {
-                    alert('Thu hồi thành công contact');
-                    //del.parent().parent().hide();
-                    location.reload();
-                } else {
-                    alert(data);
-                }
-            },
-            error: function error(errorThrown) {
-                return alert(errorThrown);
-            }
-        });
+
+$(".action-contact-admin").confirm({
+    theme: 'supervan', // 'material', 'bootstrap',
+    title: "Bạn có chắc chắn với hành động này?",
+    content: '',
+    buttons: {
+        confirm: {
+            text: 'Có',
+            action: function action() {
+                var _this = this.$target;
+                var contactID = _this.attr("data-contact-id");
+                var url = $("#base_url").val() + _this.attr("data-url");
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: {
+                        contact_id: contactID
+                    },
+                    success: function success(data) {
+                        if (data === '1') {
+                            $.alert({
+                                theme: 'modern',
+                                title: _this.attr("data-answer"),
+                                content: '',
+                                buttons: {
+                                    confirm: {
+                                        text: 'OK',
+                                        action: function action() {
+                                            location.reload();
+                                        }
+                                    }
+                                }
+                            });
+                        } else {
+                            alert(data);
+                        }
+                    },
+                    error: function error(errorThrown) {
+                        return alert(errorThrown);
+                    }
+                });
+            } },
+        cancel: {
+            text: 'Nope',
+            action: function action() {} }
     }
 });
-
 $(document).on('click', 'a.add_item', function (e) {
     e.preventDefault();
     var url = $("#url_add_item").val();
@@ -319,42 +444,78 @@ $(document).on('click', 'a.add_item', function (e) {
     });
 });
 
-$(document).on('click', 'a.delete_item', function (e) {
-    e.preventDefault();
-    var r = confirm("Bạn có chắc chắn muốn xóa dòng này không?");
-    if (r === true) {
-        var del = $(this);
-        var item_id = $(this).attr("item_id");
-        e.preventDefault();
-        $.ajax({
-            type: "POST",
-            url: $("#url_delete_item").val(),
-            data: {
-                item_id: item_id
-            },
-            success: function success(data) {
-                console.log(data);
-                if (data === '1') {
-                    location.reload();
+$("a.delete_multi_item").confirm({
+    theme: 'supervan', // 'material', 'bootstrap',
+    title: 'Bạn có chắc chắn muốn xóa các dòng đã chọn không?',
+    content: 'Hãy nhớ thứ tự xóa là xóa ad => xóa adset => xóa campaign.',
+    buttons: {
+        confirm: {
+            text: 'Xóa',
+            action: function action() {
+                if ($('input.tbl-item-checkbox:checked').length == 0) {
+                    $.alert({
+                        theme: 'modern',
+                        type: 'red',
+                        title: 'Có lỗi xảy ra!',
+                        content: 'Vui lòng chọn dòng cần xóa!'
+                    });
                 } else {
-                    alert(data);
+                    $("#form_item").attr("action", $("#url_delete_multi_item").val()).attr("method", "POST");
+                    $("#form_item").submit();
                 }
-            },
-            error: function error(errorThrown) {
-                alert('Không thể xóa do foreign-key, liên hệ admin để biết thêm chi tiết');
-            }
-        });
+            } },
+        cancel: {
+            text: 'Nope',
+            action: function action() {} },
+        somethingElse: {
+            text: 'Khác',
+            btnClass: 'btn-blue',
+            keys: ['enter', 'shift'],
+            action: function action() {}
+        }
     }
 });
-$("a.delete_multi_item").on('click', function (e) {
-    e.preventDefault();
-    var r = confirm("Bạn có chắc chắn muốn xóa các dòng đã chọn không?");
-    if (r === true) {
-        $("#form_item").attr("action", $("#url_delete_multi_item").val()).attr("method", "POST");
-        $("#form_item").submit();
+
+$("a.delete_item").confirm({
+    theme: 'supervan', // 'material', 'bootstrap',
+    title: 'Bạn có chắc chắn muốn xóa dòng này không?',
+    content: 'Hãy nhớ thứ tự xóa là xóa ad => xóa adset => xóa campaign.',
+    buttons: {
+        confirm: {
+            text: 'Xóa',
+            action: function action() {
+                var _this = this.$target;
+                var item_id = _this.attr("item_id");
+                $.ajax({
+                    type: "POST",
+                    url: $("#url_delete_item").val(),
+                    data: {
+                        item_id: item_id
+                    },
+                    success: function success(data) {
+                        console.log(data);
+                        if (data === '1') {
+                            location.reload();
+                        } else {
+                            alert(data);
+                        }
+                    },
+                    error: function error(errorThrown) {
+                        alert('Không thể xóa do foreign-key, liên hệ admin để biết thêm chi tiết');
+                    }
+                });
+            } },
+        cancel: {
+            text: 'Nope',
+            action: function action() {} },
+        somethingElse: {
+            text: 'Khác',
+            btnClass: 'btn-blue',
+            keys: ['enter', 'shift'],
+            action: function action() {}
+        }
     }
-});
-$(document).on('click', 'a.edit_item', function (e) {
+});$(document).on('click', 'a.edit_item', function (e) {
     e.preventDefault();
     var item_id = $(this).attr("item_id");
     var url = $("#url_edit_item").val();
@@ -408,54 +569,9 @@ $(".real_filter").on('change', function () {
 /*
  * Cố định thanh <thead> và phần search của table
  */
-$(document).on('scroll', function () {
-    /*
-     * Khi cuộn chuột quá vị trí của phần thead thì thead ẩn đi và phần thead-fixed hiện lên
-     */
 
-    console.log($("html").scrollTop());
-    if ($("html").scrollTop() > $(".table-head-pos").offset().top) {
-        $(".fixed-table").css({
-            "display": "block"
-        });
-    } else {
-        $(".fixed-table").css({
-            "display": "none"
-        });
-    }
-
-    /*
-    * Điều chỉnh lại kích cỡ của các th phần thead
-    */
-    $('[id^="th_"]').each(function () {
-        var myID = $(this).attr("id");
-        var mywidth = $(this).width();
-        var myheight = $(this).height();
-        $("#f_" + myID).width(mywidth);
-        $("#f_" + myID).height(myheight);
-    });
-    /*
-     * Điều chỉnh lại kích cỡ của các td phần tbody (các ô search)
-     */
-    $('[id^="td_"]').each(function () {
-        var myID = $(this).attr("id");
-        var mywidth = $(this).width();
-        var myheight = $(this).height();
-        $("#f_" + myID).width(mywidth);
-        $("#f_" + myID).height(myheight);
-    });
-    /*
-     * Căn chỉnh phần search cho khớp xuống dưới phần head 
-     * (vì cùng là position fixed nên top mặc định bằn 0 => bị đè vị trí lên nhau)
-     */
-    $("tbody.fixed-table").css("top", $("thead.fixed-table").height());
-
-    /*
-     * Căn chỉnh lại cho thẳng hàng
-     */
-    //        var offsetLeft = $(".table-head-pos").offset().left - 1;
-    //        $(".fixed-table").css("left", offsetLeft + "px");
-
+$(function () {
+    $(".table-fixed-head").setFixTable();
 });
 
 $(document).on("change", '.toggle-input [name="edit_active"]', function () {
@@ -490,7 +606,8 @@ $(function () {
     $.each($(".tbl_pricepC3"), function () {
         if (parseInt($(this).text().replace(".", "")) > 50000) {
             $(this).addClass("bg-red");
-        };
+        }
+        ;
     });
 });$(document).on('click', 'a.delete_bill', function (e) {
     var r = confirm("Bạn có chắc chắn muốn xóa dòng đối soát này không?");
@@ -633,29 +750,72 @@ $(".btn-modal_edit-multi-contact").on('click', function (e) {
         //$("#action_contact").submit();
     }
 });
-/*
- $(document).on('click', 'a.edit_contact', function (e) {
- e.preventDefault();
- $(".checked").removeClass("checked");
- $(this).parent().parent().addClass("checked");
- var contact_id = $(this).attr("contact_id");
- var url = $("#base_url").val() + "common/show_edit_contact_modal";
- $.ajax({
- url: url,
- type: "POST",
- data: {
- contact_id: contact_id
- },
- success: data => {
- $(".modal-view-contact").remove();
- var modalViewContactDetail = "<div class='modal-view-contact'></div>";
- $(".modal-append-to").append(modalViewContactDetail);
- $(".modal-view-contact").html(data);
- },
- complete: () => $(".edit_contact_modal").modal("show")
- });
- }); 
- */
+$(".send-email-to-viettel").confirm({
+    theme: 'supervan', // 'material', 'bootstrap',
+    title: 'Bạn có chắc chắn muốn gửi email cho Viettel không?',
+    content: 'Hãy đảm bảo rằng các contact được chọn đang là trạng thái "đang giao hàng"!',
+    buttons: {
+        confirm: {
+            text: 'Gửi',
+            action: function action() {
+                if ($('input.tbl-item-checkbox:checked').length == 0) {
+                    $.alert({
+                        theme: 'modern',
+                        type: 'red',
+                        title: 'Có lỗi xảy ra!',
+                        content: 'Vui lòng chọn contact cần gửi email!'
+                    });
+                } else {
+                    if ($('select[name="filter_provider_id"]').val() != 1) {
+                        $.alert({
+                            theme: 'modern',
+                            type: 'red',
+                            title: 'Có lỗi xảy ra!',
+                            content: 'Vui lòng chọn đơn vị giao hàng là Viettel!'
+                        });
+                    } else {
+                        var _this = this.$target;
+                        var form = _this.data("form-id");
+                        var action = _this.data("action");
+                        var method = _this.data("method");
+                        var url = $("#base_url").val() + action;
+                        $("#" + form).attr("action", url).attr("method", method).submit();
+                    }
+                }
+            } },
+        cancel: {
+            text: 'Nope',
+            action: function action() {} },
+        somethingElse: {
+            text: 'Khác',
+            btnClass: 'btn-blue',
+            keys: ['enter', 'shift'],
+            action: function action() {}
+        }
+    }
+}); /*
+    $(document).on('click', 'a.edit_contact', function (e) {
+    e.preventDefault();
+    $(".checked").removeClass("checked");
+    $(this).parent().parent().addClass("checked");
+    var contact_id = $(this).attr("contact_id");
+    var url = $("#base_url").val() + "common/show_edit_contact_modal";
+    $.ajax({
+    url: url,
+    type: "POST",
+    data: {
+    contact_id: contact_id
+    },
+    success: data => {
+    $(".modal-view-contact").remove();
+    var modalViewContactDetail = "<div class='modal-view-contact'></div>";
+    $(".modal-append-to").append(modalViewContactDetail);
+    $(".modal-view-contact").html(data);
+    },
+    complete: () => $(".edit_contact_modal").modal("show")
+    });
+    }); 
+    */
 $(document).on('click', '.btn-edit-contact', function (e) {
     e.preventDefault();
     if (check_edit_contact() == false) {
@@ -1635,7 +1795,6 @@ $('li.mega-dropdown').mouseover(function () {
  }, 0);
  });
  */
-
 $(document).on('hide.bs.modal', '.navbar-search-modal', function () {
     $('.navbar-search-modal').remove();
 });
@@ -1651,10 +1810,6 @@ $(document).on('hide.bs.modal', '.modal', function () {
     } else {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated');
     }
-    var modalName = ['.navbar-search-modal', '.view-all-contact-courses-modal'];
-    modalName.forEach(function (item) {
-        $(item).remove();
-    });
 });
 $(document).on('show.bs.modal', '.modal', function () {
     /*
@@ -1749,31 +1904,6 @@ $(document).on("click", ".ajax-request-modal", function (e) {
  * and open the template in the editor.
  */
 
-$(".jquery-confirm").confirm({
-    theme: 'supervan', // 'material', 'bootstrap',
-    title: 'Bạn có chắc chắn muốn gửi email cho Viettel không?',
-    content: 'Hãy đảm bảo rằng các contact được chọn đang là trạng thái "đang giao hàng"!',
-    buttons: {
-        confirm: {
-            text: 'Gửi',
-            action: function action() {
-                var form = $('.change-form-submit-url2').data("form-id");
-                var action = $('.change-form-submit-url2').data("action");
-                var method = $('.change-form-submit-url2').data("method");
-                var url = $("#base_url").val() + action;
-                $("#" + form).attr("action", url).attr("method", method).submit();
-            } },
-        cancel: {
-            text: 'Nope',
-            action: function action() {} },
-        somethingElse: {
-            text: 'Khác',
-            btnClass: 'btn-blue',
-            keys: ['enter', 'shift'],
-            action: function action() {}
-        }
-    }
-});
 $(document).on('click', '.change-form-submit-url', function (e) {
     e.preventDefault();
     var form = $(this).data("form-id");
@@ -1788,7 +1918,42 @@ $(document).on('click', '.change-form-submit-url', function (e) {
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 var modalName = "navbar-search-modal";
+$(function () {
+    var locationHash = location.hash;
+    if (locationHash.indexOf("search") > -1) {
+        if (locationHash.indexOf("&") > -1) {
+            var patt = new RegExp("(?<=search=).*(?=&)");
+            var searchStr = locationHash.match(patt);
+        } else {
+            var patt = new RegExp("(?<=search=).*");
+            var searchStr = locationHash.match(patt);
+        }
+        $(".input-navbar-search").val(searchStr);
+        $.ajax({
+            url: $("#base_url").val() + $("#input_controller").val() + '/search',
+            type: "GET",
+            data: {
+                search_all: searchStr[0]
+            },
+            success: function success(data) {
+                $("." + modalName).remove();
+                var newModal = '<div class="' + modalName + '"></div>';
+                if ($("#action_contact").length) {
+                    $("#action_contact").append(newModal);
+                } else {
+                    $(".modal-append-to").append(newModal);
+                }
+                $('.' + modalName).html(data);
+            },
+            complete: function complete() {
+                return $('.' + modalName + ' .navbar-search-modal').modal("show");
+            }
+        });
+    }
+});
+
 $(".btn-navbar-search").click(function (e) {
     e.preventDefault();
     if ($(".input-navbar-search").val() == '') {
@@ -1801,6 +1966,8 @@ $(".btn-navbar-search").click(function (e) {
         });
         return false;
     }
+    var locationOrigin = location.href.split("#");
+    location.href = locationOrigin[0] + '#search=' + $(".input-navbar-search").val();
     $.ajax({
         url: $("#base_url").val() + $("#input_controller").val() + '/search',
         type: "GET",
@@ -1846,11 +2013,31 @@ $(".anchor-navbar-search").click(function (e) {
         }
     });
 });
-/*
-$(document).on('hide.bs.modal', ".navbar-search-modal", function () {
-    $("." + modalName).remove();
-}); 
-*/$("a.cancel_one_contact").on('click', function (e) {
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+$(document).on('click', '.export-to-excel', function (e) {
+    e.preventDefault();
+    if ($('input.tbl-item-checkbox:checked').length == 0) {
+        $.alert({
+            theme: 'modern',
+            type: 'red',
+            title: 'Có lỗi xảy ra!',
+            content: 'Vui lòng chọn contact cần xuất ra file excel!'
+        });
+    } else {
+        var form = $(this).data("form-id");
+        var action = $(this).data("action");
+        var method = $(this).data("method");
+        var url = $("#base_url").val() + action;
+        $("#" + form).attr("action", url).attr("method", method).submit();
+    }
+});
+
+$("a.cancel_one_contact").on('click', function (e) {
     var del = $(this);
     var sale_id = $(this).attr("sale_id");
     var total_contact_for_sale = $(".total_contact_sale_" + sale_id).text();

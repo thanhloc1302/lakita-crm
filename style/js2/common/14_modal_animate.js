@@ -28,13 +28,13 @@
  }, 0);
  });
  */
-
 $(document).on('hide.bs.modal', '.navbar-search-modal', function () {
     $('.navbar-search-modal').remove();
 });
 $(document).on('hide.bs.modal', '.view-all-contact-courses-modal', function () {
     $('.view-all-contact-courses-modal').remove();
 });
+
 
 $(document).on('hide.bs.modal', '.modal', function () {
     if ($(this).find(".modal-dialog").attr('class').search('btn-very-lg') != -1) {
@@ -44,10 +44,6 @@ $(document).on('hide.bs.modal', '.modal', function () {
     } else {
         $(this).find(".modal-dialog").attr('class', 'modal-dialog fadeOut animated');
     }
-    var modalName = ['.navbar-search-modal', '.view-all-contact-courses-modal'];
-    modalName.forEach(function (item) {
-        $(item).remove();
-    });
 });
 $(document).on('show.bs.modal', '.modal', function () {
     /*

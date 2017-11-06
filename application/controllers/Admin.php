@@ -48,7 +48,15 @@ class Admin extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact',
             'a_delete_one_contact', 'a_retrieve_contact'
         );
-        $data['content'] = 'manager/view_all_contact';
+
+        $data['titleListContact'] = 'Danh sách contact mới';
+        $data['actionForm'] = 'manager/divide_contact';
+        $informModal = 'manager/modal/divide_contact';
+        $data['informModal'] = explode(' ', $informModal);
+        $outformModal = 'manager/modal/divide_one_contact';
+        $data['outformModal'] = explode(' ', $outformModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 

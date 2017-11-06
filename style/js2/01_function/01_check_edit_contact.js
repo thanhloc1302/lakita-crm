@@ -21,33 +21,68 @@ check_edit_contact = () => {
     var course_code = $('select.select_course_code').val();
     var price_purchase = $('[name="price_purchase"]').val();
     if ($("select.edit_payment_method_rgt").val() == 0) {
-        alert("Bạn cần cập nhật hình thức thanh toán!");
+        $.alert({
+            theme: 'modern',
+            type: 'red',
+            title: 'Có lỗi xảy ra!',
+            content: 'Bạn cần cập nhật hình thức thanh toán!'
+        });
         return false;
     }
     if (call_status_id == 0) {
-        alert("Bạn cần cập nhật trạng thái gọi!");
+        $.alert({
+            theme: 'modern',
+            type: 'red',
+            title: 'Có lỗi xảy ra!',
+            content: 'Bạn cần cập nhật trạng thái gọi!'
+        });
         return false;
     }
     if (check_rule_call_stt(call_status_id, ordering_status_id) == false) {
-        alert("Trạng thái gọi và trạng thái đơn hàng không logic!");
+        $.alert({
+            theme: 'modern',
+            type: 'red',
+            title: 'Có lỗi xảy ra!',
+            content: 'Trạng thái gọi và trạng thái đơn hàng không logic! Bạn cần cập nhật chính xác để dữ liệu của chúng ta được sạch sẽ!'
+        });
         return false;
     }
     if (date_recall != '') {
         if (now_greater_than_input_date(date_recall)) {
-            alert("Ngày gọi lại không thể là một ngày trước ngày hôm nay!");
+            $.alert({
+                theme: 'modern',
+                type: 'red',
+                title: 'Có lỗi xảy ra!',
+                content: 'Ngày gọi lại không thể là một ngày trước ngày hôm nay!'
+            });
             return false;
         }
         if (check_rule_call_stt_and_date_recall(call_status_id, ordering_status_id, date_recall)) {
-            alert("Nếu contact không liên lạc được hoặc không thể chăm sóc được nữa thì không thể có ngày gọi lại lớn hơn ngày hiện tại!");
+            $.alert({
+                theme: 'modern',
+                type: 'red',
+                title: 'Có lỗi xảy ra!',
+                content: 'Nếu contact không liên lạc được hoặc không thể chăm sóc được nữa thì không thể có ngày gọi lại lớn hơn ngày hiện tại!'
+            });
             return false;
         }
     }
     if (course_code == '0') {
-        alert("Vui lòng chọn mã khóa học!");
+        $.alert({
+            theme: 'modern',
+            type: 'red',
+            title: 'Có lỗi xảy ra!',
+            content: 'Vui lòng chọn mã khóa học!'
+        });
         return false;
     }
     if (price_purchase == '') {
-        alert("Vui lòng chọn giá tiền mua!");
+        $.alert({
+            theme: 'modern',
+            type: 'red',
+            title: 'Có lỗi xảy ra!',
+            content: 'Vui lòng chọn giá tiền mua!'
+        });
         return false;
     }
     return true;

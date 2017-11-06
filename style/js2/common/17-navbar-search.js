@@ -3,7 +3,40 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 var modalName = "navbar-search-modal";
+$(function () {
+    var locationHash = location.hash;
+    if (locationHash.indexOf("search") > -1) {
+        if (locationHash.indexOf("&") > -1) {
+            var patt = new RegExp("(?<=search=).*(?=&)");
+            var searchStr = locationHash.match(patt);
+        } else {
+            var patt = new RegExp("(?<=search=).*");
+            var searchStr = locationHash.match(patt);
+        }
+        $(".input-navbar-search").val(searchStr);
+        $.ajax({
+            url: $("#base_url").val() + $("#input_controller").val() + '/search',
+            type: "GET",
+            data: {
+                search_all: searchStr[0]
+            },
+            success: data => {
+                $("." + modalName).remove();
+                var newModal = `<div class="${modalName}"></div>`;
+                if ($("#action_contact").length) {
+                    $("#action_contact").append(newModal);
+                } else {
+                    $(".modal-append-to").append(newModal);
+                }
+                $(`.${modalName}`).html(data);
+            },
+            complete: () => $(`.${modalName} .navbar-search-modal`).modal("show")
+        });
+    }
+});
+
 $(".btn-navbar-search").click(function (e) {
     e.preventDefault();
     if ($(".input-navbar-search").val() == '') {
@@ -16,6 +49,8 @@ $(".btn-navbar-search").click(function (e) {
         });
         return false;
     }
+    var locationOrigin = location.href.split("#");
+    location.href = locationOrigin[0] + '#search=' + $(".input-navbar-search").val();
     $.ajax({
         url: $("#base_url").val() + $("#input_controller").val() + '/search',
         type: "GET",
@@ -57,8 +92,3 @@ $(".anchor-navbar-search").click(function (e) {
         complete: () => $(`.${modalName} .navbar-search-modal`).modal("show")
     });
 });
-/*
-$(document).on('hide.bs.modal', ".navbar-search-modal", function () {
-    $("." + modalName).remove();
-}); 
-*/
