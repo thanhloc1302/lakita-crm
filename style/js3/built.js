@@ -1542,6 +1542,17 @@ $(".reset_datepicker").click(function (e) {
             autoHideDelay: 2000
         });
     });
+});
+$(document).on("click", ".view_contact_phone", function () {
+    var textCopy = document.getElementById("input-copy");
+    textCopy.select();
+    document.execCommand('copy');
+    $.notify("Copy thành công vào clipboard", {
+        position: "top left",
+        className: 'success',
+        showDuration: 200,
+        autoHideDelay: 2000
+    });
 });Dropzone.options.dropzoneFileUpload = {
     dictDefaultMessage: "Thả file vào đây hoặc click vào đây để upload",
     acceptedFiles: ".xls, .xlsx",

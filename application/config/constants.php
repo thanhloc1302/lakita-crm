@@ -118,4 +118,4 @@ define('_CHUYEN_KHOAN_', 2);
 define('_LOAD_CACHED_', TRUE);
 
 
-define('_VER_CACHED_', '06.11.201714');
+define('_VER_CACHED_', '07.11.20171');
