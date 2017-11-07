@@ -21,12 +21,10 @@ class Send_email extends CI_Controller {
         $post = $this->input->post();
         $result = array('success' => 0, 'message' => '');
         if (!empty($post)) {
-            
             //$apiKey = '5b0b7d7cd362775ddb8ff7b88b920e7b'; // chuyenbka90
             $apiKey = '1893c78450021cc84200d63c2f03d822'; //chuyenbka
-            
-            $emailCheck = json_decode(file_get_contents('http://apilayer.net/api/check?access_key='.$apiKey.'&email='.$post['email'].'&smtp=1&format=1'));
-            if($emailCheck->smtp_check == false){
+            $emailCheck = json_decode(file_get_contents('http://apilayer.net/api/check?access_key=' . $apiKey . '&email=' . $post['email'] . '&smtp=1&format=1'));
+            if ($emailCheck->smtp_check == false) {
                 $result['message'] = 'Không tồn tại email này!';
                 echo json_encode($result);
                 die;
@@ -41,12 +39,16 @@ class Send_email extends CI_Controller {
             $this->email->send();
 
             //cập nhật đã gửi mail
-            $where = array('id' => $post['contact_id']);
+            if (isset($post['contact_id'])) {
+                $where = array('id' => $post['contact_id']);
+            }else{
+                $where = array('email' => $post['email']);
+            }
             $data = array('send_banking_info' => 1);
             $this->contacts_model->update($where, $data);
             $result['success'] = 1;
         }
-          echo json_encode($result);
+        echo json_encode($result);
     }
 
     public function send_account_lakita() {

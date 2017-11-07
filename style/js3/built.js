@@ -65,17 +65,19 @@ right_context_menu_display = (controller, contact_id, contact_name, duplicate_id
      * Nếu chọn nhiều contact thì ẩn menu xem chi tiết contact 
      * và phân 1 contact
      */
-    var numberOfChecked = $('input:checkbox:checked').length;
+    var numberOfChecked = $('input.tbl-item-checkbox:checked').length;
+    console.log(numberOfChecked);
     if (numberOfChecked > 1) {
         $("a.view_duplicate, .action_view_detail_contact, .divide_one_contact_achor, "
                 + ".edit-one-contact, .transfer_one_contact, .send_to_mobile").addClass("hidden");
         $(".divide_multi_contact,.transfer_contact, "
-                + ".select_provider, .btn-export-excel, .btn-export-excel-for-viettel, .export_to_string").removeClass('hidden');
+                + ".select_provider, .btn-export-excel, .btn-export-excel-for-viettel, "+
+                    + ".export_to_string, .send-banking-info-multi-course").removeClass('hidden');
     } else {
         $(".action_view_detail_contact, .divide_one_contact_achor, a.view_duplicate, "
                 + ".edit-one-contact, .transfer_one_contact, .send_to_mobile").removeClass("hidden");
         $(".divide_multi_contact, .transfer_contact, "
-                + ".select_provider, .export_to_string").addClass('hidden');
+                + ".select_provider, .export_to_string, .send-banking-info-multi-course").addClass('hidden');
         if (duplicate_id > 0) {
             $("a.view_duplicate").removeClass("hidden");
         } else {
@@ -313,7 +315,20 @@ $.fn.setFixTable = function (_tableID) {
 
 
 
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 /*
+ * loại bỏ phần tử trùng trong mảng
+ */
+Array.prototype.unique = function () {
+    return this.filter(function (elem, index, self) {
+        return index == self.indexOf(elem); // lấy chỉ số đầu tiên
+    });
+};/*
 $(document).on('click', 'a.delete_one_contact_admin', e => {
     var r = confirm("Bạn có chắc chắn muốn xóa contact này không?");
     if (r == true) {
@@ -906,6 +921,11 @@ $(document).on('change', 'select.edit_payment_method_rgt', function (e) {
     setEqualTableHeight();
 });
 
+
+$(document).on('change', 'select.note-cod-sample', function(){
+    $('[name="note_cod"]').val($(this).val());
+});
+
 /*
  $('.edit_contact_modal').on('shown.bs.modal', function () {
  $('.datetimepicker').datetimepicker(
@@ -990,7 +1010,7 @@ $(document).on('click', '.btn-send-account-lakita', function (e) {
     });
 });
 
-/* 
+/*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -1042,6 +1062,151 @@ $(document).on('click', '.btn-send-banking-info', function (e) {
     });
 });
 
+
+$(document).on('click', '.send-banking-info-multi-course', function (e) {
+    e.preventDefault();
+    var url = $('#base_url').val() + "send_email/send_banking_info";
+    if ($('input.tbl-item-checkbox:checked').length == 0) {
+        $.alert({
+            theme: 'modern',
+            type: 'red',
+            title: 'Có lỗi xảy ra!',
+            content: 'Vui lòng chọn contact cần gửi email!'
+        });
+    } else {
+        /*
+         * 
+         * Lấy số tiền
+         */
+        var numberOfChecked = $('input.tbl-item-checkbox:checked').length;
+        var sum = 0;
+        for (i = 0; i < numberOfChecked; i++) {
+            sum += parseInt($($('input.tbl-item-checkbox:checked')[i]).parent().parent().find('.tbl_price_purchase').text());
+        }
+        sum *= 1000;
+        var emailArr = [];
+        var contactName = '';
+        $('input.tbl-item-checkbox:checked').each(function () {
+            var contactId = $(this).parent().parent().find('.show-more-table-info').attr("contact-id");
+            contactName = $(this).parent().parent().find('.tbl_name').text();
+            emailArr.push($.trim($("#" + contactId).find(".extra-view-contact-email").text()));
+        });
+        contactName = $.trim(contactName);
+        contactName = contactName.substring(0, contactName.length - 1);
+        var emailUnique = emailArr.unique();
+        if (emailUnique.length > 1) {
+            $.alert({
+                theme: 'modern',
+                type: 'red',
+                title: 'Có lỗi xảy ra!',
+                content: 'Các contact đã chọn không có cùng địa chỉ email. \n\
+                Bạn cần sửa lại email để đảm bảo cùng là 1 người!'
+            });
+        } else if (emailUnique.length == 1 && emailUnique[0] == '') {
+            $.alert({
+                theme: 'modern',
+                type: 'red',
+                title: 'Có lỗi xảy ra!',
+                content: 'Email rỗng. Vui lòng kiểm tra lại!'
+            });
+        } else {
+            $.confirm({
+                theme: 'supervan',
+                title: 'Kiểm tra thông tin gửi email',
+                content: 'Họ tên: ' + contactName + ', email: ' + emailUnique[0] + ', số tiền: '
+                        + sum.toLocaleString() + '. Combo ' + numberOfChecked + ' khóa học',
+                buttons: {
+                    confirm: {
+                        text: 'Look good!',
+                        action: function () {
+                            $.ajax({
+                                url: url,
+                                type: "POST",
+                                dataType: 'json',
+                                data: {
+                                    name: contactName,
+                                    email: emailUnique[0],
+                                    price_purchase: sum,
+                                    number_of_course: numberOfChecked
+                                },
+                                beforeSend: () => $(".popup-wrapper").show(),
+                                success: data => {
+                                    if (data.success == 1) {
+                                        $("#send_email_sound")[0].play();
+                                        $.notify(data.message, {
+                                            position: "top left",
+                                            className: 'success',
+                                            showDuration: 200,
+                                            autoHideDelay: 5000
+                                        });
+                                    } else {
+                                        $("#send_email_error")[0].play();
+                                        $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
+                                            position: "top left",
+                                            className: 'error',
+                                            showDuration: 200,
+                                            autoHideDelay: 7000
+                                        });
+                                    }
+                                },
+                                complete: () => $(".popup-wrapper").hide(),
+                                error: () => {
+                                    $("#send_email_error")[0].play();
+                                    $.notify('Có lỗi xảy ra trong quá trình gửi email!', {
+                                        position: "top left",
+                                        className: 'error',
+                                        showDuration: 200,
+                                        autoHideDelay: 3000
+                                    });
+                                }
+                            });
+                        }},
+                    cancel: {
+                        text: 'Cancel',
+                        action: function () {
+                        }},
+                    somethingElse: {
+                        text: 'Khác',
+                        btnClass: 'btn-blue',
+                        keys: ['enter', 'shift'],
+                        action: function () {
+
+                        }
+                    }
+                }
+            });
+        }
+        console.log(emailArr.unique());
+        //show-more-table-info
+        /*
+         $.ajax({
+         url: url,
+         type: "POST",
+         dataType: 'json',
+         data: $('#action_contact').serialize(),
+         success: data => {
+         if (data.success == 1) {
+         $("#send_email_sound")[0].play();
+         $.notify(data.message, {
+         position: "top left",
+         className: 'success',
+         showDuration: 200,
+         autoHideDelay: 5000
+         });
+         } else {
+         $("#send_email_error")[0].play();
+         $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
+         position: "top left",
+         className: 'error',
+         showDuration: 200,
+         autoHideDelay: 7000
+         });
+         }
+         }
+         });
+         */
+    }
+});
 /* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -1999,19 +2164,15 @@ var modalName = "navbar-search-modal";
 $(function () {
     var locationHash = location.hash;
     if (locationHash.indexOf("search") > -1) {
-        if (locationHash.indexOf("&") > -1) {
-            var patt = new RegExp("(?<=search=).*(?=&)");
-            var searchStr = locationHash.match(patt);
-        } else {
-            var patt = new RegExp("(?<=search=).*");
-            var searchStr = locationHash.match(patt);
-        }
+        var hashSearch = locationHash.substring(1);
+        var searchArr = hashSearch.split("=");
+        var searchStr = searchArr[1];
         $(".input-navbar-search").val(searchStr);
         $.ajax({
             url: $("#base_url").val() + $("#input_controller").val() + '/search',
             type: "GET",
             data: {
-                search_all: searchStr[0]
+                search_all: searchStr
             },
             success: data => {
                 $("." + modalName).remove();

@@ -65,17 +65,19 @@ right_context_menu_display = (controller, contact_id, contact_name, duplicate_id
      * Nếu chọn nhiều contact thì ẩn menu xem chi tiết contact 
      * và phân 1 contact
      */
-    var numberOfChecked = $('input:checkbox:checked').length;
+    var numberOfChecked = $('input.tbl-item-checkbox:checked').length;
+    console.log(numberOfChecked);
     if (numberOfChecked > 1) {
         $("a.view_duplicate, .action_view_detail_contact, .divide_one_contact_achor, "
                 + ".edit-one-contact, .transfer_one_contact, .send_to_mobile").addClass("hidden");
         $(".divide_multi_contact,.transfer_contact, "
-                + ".select_provider, .btn-export-excel, .btn-export-excel-for-viettel, .export_to_string").removeClass('hidden');
+                + ".select_provider, .btn-export-excel, .btn-export-excel-for-viettel, "+
+                    + ".export_to_string, .send-banking-info-multi-course").removeClass('hidden');
     } else {
         $(".action_view_detail_contact, .divide_one_contact_achor, a.view_duplicate, "
                 + ".edit-one-contact, .transfer_one_contact, .send_to_mobile").removeClass("hidden");
         $(".divide_multi_contact, .transfer_contact, "
-                + ".select_provider, .export_to_string").addClass('hidden');
+                + ".select_provider, .export_to_string, .send-banking-info-multi-course").addClass('hidden');
         if (duplicate_id > 0) {
             $("a.view_duplicate").removeClass("hidden");
         } else {

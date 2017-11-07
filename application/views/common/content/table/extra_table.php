@@ -4,11 +4,11 @@
             <tbody>
                 <tr class="<?php echo h_get_row_class($value); ?>">
                     <td class="text-right">  Email </td>
-                    <td>  <?php echo $value['email']; ?> </td>
+                    <td class="extra-view-contact-email">  <?php echo $value['email']; ?> </td>
                 </tr>
                 <tr class="<?php echo h_get_row_class($value); ?>">
                     <td class="text-right"> Ngày đăng ký </td>
-                    <td class="view_contact_phone">  
+                    <td class="extra_view_contact_phone">  
                         <?php echo date('d/m/Y H:i:s', $value['date_rgt']); ?>
                     </td>
                 </tr>
@@ -18,14 +18,14 @@
                         if ($value['matrix'] != '') {
                             echo $value['matrix'];
                         } else {
-                            echo $value['marketer_name'];
+                            echo isset($value['marketer_name']) ? $value['marketer_name'] : '';
                         }
                         ?> 
                     </td>
                 </tr>
                  <tr class="<?php echo h_get_row_class($value); ?>">
                     <td class="text-right">  TVTS </td>
-                    <td class="view_course_code">  <?php
+                    <td class="extra_view_course_code">  <?php
                         foreach ($staffs as $key2 => $value2) {
                             if ($value2['id'] == $value['sale_staff_id']) {
                                 echo $value2['name'];

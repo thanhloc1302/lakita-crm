@@ -15,6 +15,9 @@
                data-url="common/show_edit_contact_modal">
                 <li> <i class="fa fa-pencil-square" aria-hidden="true"></i> &nbsp; &nbsp; Chăm sóc contact</li>
             </a>
+            <a href="#" contact_name="0" contact_phone="0" class="send-banking-info-multi-course" >
+                <li> <i class="fa fa-credit-card-alt" aria-hidden="true"></i> &nbsp; &nbsp;  Gửi email combo cho các contact đã chọn </li>
+            </a>
             <a href="#" contact_id="0" contact_name="0" class="transfer_one_contact" >
                 <li> <i class="fa fa-exchange" aria-hidden="true"></i>  &nbsp; &nbsp; Chuyển nhượng </li>
             </a>

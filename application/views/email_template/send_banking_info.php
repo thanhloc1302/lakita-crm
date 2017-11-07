@@ -83,7 +83,7 @@
 																<li style="margin-bottom:10px;color:#272727; padding-left: 60px;" >- Chủ tài khoản: NGUYỄN VĂN TRỊNH </li>
 																<li style="margin-bottom:20px;color:#272727; padding-left: 60px;" >- Chi nhánh: Ngân hàng Vietcombank, chi nhánh Vietcombank Hoàn Kiếm, Hà Nội </li>
 																<li style="margin-bottom:20px;color:#272727"> Tại mục ghi chú khi chuyển khoản, anh/chị ghi rõ số điện thoại, email đăng ký, 
-																	số tiền <?php echo number_format($price_purchase,0,",",".").'VNĐ';?> để em hỗ trợ kích hoạt luôn cho mình nhé. Em cảm ơn! </li>
+                                                                                                                                    số tiền <?php echo number_format($price_purchase,0,",",".").'VNĐ';?> để em hỗ trợ kích hoạt <?php if(isset($number_of_course)) echo $number_of_course. ' khóa học '; ?> luôn cho mình nhé. Em cảm ơn! </li>
 																
                                                             </ul>
                                                             <hr>

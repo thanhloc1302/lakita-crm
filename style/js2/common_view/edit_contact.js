@@ -74,6 +74,11 @@ $(document).on('change', 'select.edit_payment_method_rgt', function (e) {
     setEqualTableHeight();
 });
 
+
+$(document).on('change', 'select.note-cod-sample', function(){
+    $('[name="note_cod"]').val($(this).val());
+});
+
 /*
  $('.edit_contact_modal').on('shown.bs.modal', function () {
  $('.datetimepicker').datetimepicker(
