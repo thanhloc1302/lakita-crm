@@ -78,18 +78,26 @@ class Contact_api extends REST_Controller {
 
             $this->contacts_model->insert_from_mol($param);
 
-            $myfile = fopen(APPPATH . "../public/last_reg.txt", "w") or die("Unable to open file!");
-            fwrite($myfile, time());
-            fclose($myfile);
+//            $myfile = fopen(APPPATH . "../public/last_reg.txt", "w") or die("Unable to open file!");
+//            fwrite($myfile, time());
+//            fclose($myfile);
 
-//            $this->load->model('last_contact_id_model');
-//            $this->last_contact_id_model->update(array(), array('id' => time()));
+            require_once APPPATH . 'libraries/Pusher.php';
+            $options = array(
+                'cluster' => 'ap1',
+                'encrypted' => true
+            );
+            $pusher = new Pusher(
+                    'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
+            );
 
+            $data['message'] = 'hello world';
+            $pusher->trigger('my-channel', 'notice', $data);
             /*
              * Gửi email
              */
             if (!in_array($input['email'], array('NO_PARAM@gmail.com', 'lakita@lakita.vn', 'NO_PARAM@gmai.com'
-                , 'lakitavn@gmail.com', 'lakita.vn@gmail.com'))) {
+                        , 'lakitavn@gmail.com', 'lakita.vn@gmail.com'))) {
                 $this->load->model('courses_model');
                 $data = array();
                 $data['e_name'] = $input['name'];
@@ -120,7 +128,7 @@ class Contact_api extends REST_Controller {
             $input_c2_exist['select'] = 'id';
             $input_c2_exist['where'] = array('link_id' => $input['link_id'], 'ip' => $input['ip'],
                 'date_rgt >=' => time() - 120);
-            $input_c2_exist['limit'] = array('1' ,'0');
+            $input_c2_exist['limit'] = array('1', '0');
             $c2_exist = $this->c2_model->load_all($input_c2_exist);
             if (empty($c2_exist)) {
                 $this->load->model('link_model');
@@ -163,7 +171,7 @@ class Contact_api extends REST_Controller {
             'is_hide' => '0'
         );
         $input['order'] = array('id', 'ASC');
-        $input['limit'] = array('1' ,'0');
+        $input['limit'] = array('1', '0');
         $rs = $this->contacts_model->load_all($input);
         if (count($rs) > 0) {
             $dulicate = $rs[0]['id'];

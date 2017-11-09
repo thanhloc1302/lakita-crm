@@ -14,6 +14,8 @@ $(document).on('click', '.export-to-excel', function (e) {
             content: 'Vui lòng chọn contact cần xuất ra file excel!'
         });
     } else {
+        $(".popup-wrapper").show();
+        setTimeout(function(){ $(".popup-wrapper").hide();}, 3000);
         var form = $(this).data("form-id");
         var action = $(this).data("action");
         var method = $(this).data("method");

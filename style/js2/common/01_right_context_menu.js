@@ -100,7 +100,7 @@ $("html").on("click", function (e) {
 shortcut.add("Ctrl+s", function () {
     $(".btn-edit-contact").click();
 });
-shortcut.add("Ctrl+a", function () {
+shortcut.add("Ctrl+Shift+a", function () {
     $("input.tbl-item-checkbox").prop('checked', true);
     $('.custom_right_menu').addClass('checked');
     show_number_selected_row();

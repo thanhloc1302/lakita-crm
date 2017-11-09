@@ -8,7 +8,7 @@
 if (ENVIRONMENT == 'development') {
     $config['template_file_print'] = 'C:/xampp/htdocs/CRM2/public/upload/01Templatever3.xlsx';
 } else {
-    $config['template_file_print'] = '/home/lakita.com.vn/public_html/sub/crm2/public/upload/01Templatever3.xlsx';
+    $config['template_file_print'] = '/home/lakita.com.vn/public_html/sub/crm2/public/upload/01Templatever4.xlsx';
 }
 
 

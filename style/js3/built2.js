@@ -1476,7 +1476,7 @@ $("html").on("click", function (e) {
 shortcut.add("Ctrl+s", function () {
     $(".btn-edit-contact").click();
 });
-shortcut.add("Ctrl+a", function () {
+shortcut.add("Ctrl+Shift+a", function () {
     $("input.tbl-item-checkbox").prop('checked', true);
     $('.custom_right_menu').addClass('checked');
     show_number_selected_row();
@@ -1868,40 +1868,66 @@ $(".send_to_mobile").on('click', function (e) {
  *
  */
 /* global Notification */
-
-var notify = '';
-Notification.requestPermission(function (p) {});
-setInterval(function () {
-    $.ajax({
-        url: $("#base_url").val() + "cron/listen",
-        success: function success(data2) {
-            //console.log(data2);
-            if (data2 === '1') {
-                $("#notificate")[0].play();
-                notify = new Notification('Có một contact mới đăng ký', {
-                    body: 'Click vào đây để xem ngay!',
-                    icon: $("#base_url").val() + 'public/images/logo2.png',
-                    tag: 'https://crm2.lakita.vn/quan-ly/trang-chu.html',
-                    sound: $("#base_url").val() + 'public/mp3/new-contact.mp3',
-                    image: $("#base_url").val() + 'public/images/contact-us.jpg'
-                });
-                notify.onclick = function (event) {
-                    event.preventDefault();
-                    window.open('https://crm2.lakita.vn/quan-ly/trang-chu.html', '_blank');
-                };
-                if ($("#input_controller").val() === 'manager' && $("#input_method").val() === 'index' || $("#input_controller").val() === 'marketing' && $("#input_method").val() === 'index') {
-                    setTimeout(function () {
-                        location.reload();
-                    }, 4000);
-                }
-            }
-        }
+/*
+ var notify = '';
+ Notification.requestPermission(function (p) {});
+ setInterval(function () {
+ $.ajax({
+ url: $("#base_url").val() + "cron/listen",
+ success: data2 => {
+ //console.log(data2);
+ if (data2 === '1') {
+ $("#notificate")[0].play();
+ notify = new Notification(
+ 'Có một contact mới đăng ký',
+ {
+ body: 'Click vào đây để xem ngay!',
+ icon: $("#base_url").val() + 'public/images/logo2.png',
+ tag: 'https://crm2.lakita.vn/quan-ly/trang-chu.html',
+ sound: $("#base_url").val() + 'public/mp3/new-contact.mp3',
+ image: $("#base_url").val() + 'public/images/contact-us.jpg'
+ }
+ );
+ notify.onclick = function (event) {
+ event.preventDefault();
+ window.open('https://crm2.lakita.vn/quan-ly/trang-chu.html', '_blank');
+ };
+ if (($("#input_controller").val() === 'manager' && $("#input_method").val() === 'index')
+ || $("#input_controller").val() === 'marketing' && $("#input_method").val() === 'index') {
+ setTimeout(function () {
+ location.reload();
+ }, 4000);
+ }
+ }
+ }
+ });
+ }, 3000);
+ */
+Pusher.logToConsole = true;
+var pusher = new Pusher('e37045ff133e03de137a', {
+    cluster: 'ap1',
+    encrypted: true
+});
+var channel = pusher.subscribe('my-channel');
+channel.bind('notice', function () {
+    $("#notificate")[0].play();
+    n = new Notification('Có một contact mới đăng ký', {
+        body: 'Click vào đây để xem ngay!',
+        icon: $("#base_url").val() + 'public/images/logo2.png',
+        tag: 'https://crm2.lakita.vn/quan-ly/trang-chu.html',
+        sound: $("#base_url").val() + 'public/mp3/new-contact.mp3',
+        image: $("#base_url").val() + 'public/images/contact-us.jpg'
     });
-}, 3000); /* 
-          * To change this license header, choose License Headers in Project Properties.
-          * To change this template file, choose Tools | Templates
-          * and open the template in the editor.
-          */
+    if ($("#input_controller").val() === 'manager' && $("#input_method").val() === 'index' || $("#input_controller").val() === 'marketing' && $("#input_method").val() === 'index') {
+        setTimeout(function () {
+            location.reload();
+        }, 4000);
+    }
+}); /* 
+    * To change this license header, choose License Headers in Project Properties.
+    * To change this template file, choose Tools | Templates
+    * and open the template in the editor.
+    */
 /*
  $(document).on({
  mousemove: function () {
@@ -2197,6 +2223,10 @@ $(document).on('click', '.export-to-excel', function (e) {
             content: 'Vui lòng chọn contact cần xuất ra file excel!'
         });
     } else {
+        $(".popup-wrapper").show();
+        setTimeout(function () {
+            $(".popup-wrapper").hide();
+        }, 3000);
         var form = $(this).data("form-id");
         var action = $(this).data("action");
         var method = $(this).data("method");

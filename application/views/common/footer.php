@@ -35,19 +35,20 @@ integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="ano
 <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.1.1/min/dropzone.min.js"></script>
+<script src="https://js.pusher.com/4.1/pusher.min.js"></script>
 <!--<script src="<?php echo base_url(); ?>style/js/dropzone/dropzone.min.js"></script>-->
 <script src="<?php echo base_url(); ?>style/js/common/shortcut.min.js" type="text/javascript"></script>
 <!--<script src="<?php echo base_url(); ?>style/js/common_view/filter_tbl_set_equal_height.min.js" type="text/javascript"></script>-->
 <!--<script src="<?php echo base_url(); ?>vendors/build/js/custom.min.js" type="text/javascript"></script>-->
 <!--<script src="<?php echo base_url(); ?>style/js/common_view/view_contact_star.min.js" type="text/javascript"></script>-->
 <?php if (ENVIRONMENT == 'production') { ?>
-    <script src="<?php echo base_url(); ?>style/js3/built_obfuscated.min.js?ver=<?php echo _VER_CACHED_;?>" type="text/javascript"></script>
+    <script src="<?php echo base_url(); ?>style/js3/built_obfuscated.min.js?ver=<?php echo _VER_CACHED_; ?>" type="text/javascript"></script>
 <?php } else { ?>
     <script src="<?php echo base_url(); ?>style/js3/built.js?<?php echo time(); ?>" type="text/javascript"></script>
 <?php } ?>
 
 <?php if ($controller == 'sale') { ?>
-    <script src="<?php echo base_url(); ?>style/js/sale/noti_contact_recall.min.js?ver=<?php echo _VER_CACHED_;?>" type="text/javascript"></script>
+    <script src="<?php echo base_url(); ?>style/js/sale/noti_contact_recall.min.js?ver=<?php echo _VER_CACHED_; ?>" type="text/javascript"></script>
 <?php } ?>    
 <?php
 //if (isset($load_js) && is_array($load_js)) {
@@ -69,3 +70,4 @@ integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="ano
         </script>
     <?php } ?>
 <?php } ?>
+

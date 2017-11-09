@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="clearfix"></div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-success btn-lg btn-edit-contact">Lưu Lại</button>
+                                    <button type="submit" class="btn btn-success btn-lg btn-edit-contact"> <i class="fa fa-floppy-o" aria-hidden="true"></i> &nbsp; Lưu Lại</button>
                                 </div>
                             </div>
                             <?php
