@@ -33,6 +33,7 @@ $(document).on('click', '.btn-edit-contact', function (e) {
         type: "POST",
         dataType: 'json',
         data: $(".form_edit_contact_modal").serialize(),
+        beforeSend: () => $(".popup-wrapper").show(),
         success: data => {
             if (data.success == 1) {
                 $("#send_email_sound")[0].play();
@@ -53,7 +54,8 @@ $(document).on('click', '.btn-edit-contact', function (e) {
                     autoHideDelay: 7000
                 });
             }
-        }
+        },
+        complete: () => $(".popup-wrapper").hide()
     });
 });
 
@@ -75,7 +77,7 @@ $(document).on('change', 'select.edit_payment_method_rgt', function (e) {
 });
 
 
-$(document).on('change', 'select.note-cod-sample', function(){
+$(document).on('change', 'select.note-cod-sample', function () {
     $('[name="note_cod"]').val($(this).val());
 });
 

@@ -40,5 +40,16 @@ class Staffs_model extends MY_Model {
         }
         return $name;
     }
+    
+     public function GetStaffImage($id) {
+        $name = '';
+        $input2 = array();
+        $input2['where'] = array('id' => $id);
+        $staffs = $this->load_all($input2);
+        if (!empty($staffs)) {
+            $name = $staffs[0]['image'];
+        }
+        return $name;
+    }
 
 }

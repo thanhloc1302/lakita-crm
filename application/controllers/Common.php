@@ -396,6 +396,20 @@ class Common extends MY_Controller {
             $result['success'] = 1;
             $result['message'] = 'Chăm sóc thành công contact!';
             echo json_encode($result);
+
+           
+            $options = array(
+                'cluster' => 'ap1',
+                'encrypted' => true
+            );
+            $pusher = new Pusher(
+                    'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
+            );
+
+            $data['message'] = $this->staffs_model->find_staff_name($this->user_id) . ' đã cập nhật cuộc gọi';
+            $data['image'] =  $this->staffs_model->GetStaffImage($this->user_id);
+            $pusher->trigger('my-channel', 'callLog', $data);
+
             die;
         }
     }

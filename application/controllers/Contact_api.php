@@ -92,6 +92,8 @@ class Contact_api extends REST_Controller {
             );
 
             $data['message'] = 'hello world';
+            $marketerId = isset($param['marketer_id']) ? $param['marketer_id'] : 0;
+            $data['image'] =  $this->staffs_model->GetStaffImage($marketerId);
             $pusher->trigger('my-channel', 'notice', $data);
             /*
              * Gửi email

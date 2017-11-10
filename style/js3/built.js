@@ -880,6 +880,7 @@ $(document).on('click', '.btn-edit-contact', function (e) {
         type: "POST",
         dataType: 'json',
         data: $(".form_edit_contact_modal").serialize(),
+        beforeSend: () => $(".popup-wrapper").show(),
         success: data => {
             if (data.success == 1) {
                 $("#send_email_sound")[0].play();
@@ -900,7 +901,8 @@ $(document).on('click', '.btn-edit-contact', function (e) {
                     autoHideDelay: 7000
                 });
             }
-        }
+        },
+        complete: () => $(".popup-wrapper").hide()
     });
 });
 
@@ -922,7 +924,7 @@ $(document).on('change', 'select.edit_payment_method_rgt', function (e) {
 });
 
 
-$(document).on('change', 'select.note-cod-sample', function(){
+$(document).on('change', 'select.note-cod-sample', function () {
     $('[name="note_cod"]').val($(this).val());
 });
 
@@ -1974,7 +1976,7 @@ var pusher = new Pusher('e37045ff133e03de137a', {
     encrypted: true
 });
 var channel = pusher.subscribe('my-channel');
-channel.bind('notice', function () {
+channel.bind('notice', function (data) {
     $("#notificate")[0].play();
     n = new Notification(
             'Có một contact mới đăng ký',
@@ -1983,14 +1985,62 @@ channel.bind('notice', function () {
                 icon: $("#base_url").val() + 'public/images/logo2.png',
                 tag: 'https://crm2.lakita.vn/quan-ly/trang-chu.html',
                 sound: $("#base_url").val() + 'public/mp3/new-contact.mp3',
-                image: $("#base_url").val() + 'public/images/contact-us.jpg'
+                image: data.image
             });
+
+    var append = ` <div style="position: fixed; top:10px; left: 10px; z-index: 999999999; 
+         background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" id="my-notify">
+        <div style="float:left; width: 35%; padding: 2%">
+            <img src="https://crm2.lakita.vn/public/images/logo2.png" style="width: 70%"/>
+        </div>
+        <div style="float:left; width:65%; padding: 2%">
+            <h4> Có một contact mới đăng ký </h4>
+            <div>
+                <img src="${data.image}" style="width: 90%"/>
+            </div>
+        </div>
+    </div>`;
+
+    $('body').append(append);
+    setTimeout(function(){
+        $("#my-notify").remove();
+    }, 2000);
+
     if (($("#input_controller").val() === 'manager' && $("#input_method").val() === 'index')
             || $("#input_controller").val() === 'marketing' && $("#input_method").val() === 'index') {
         setTimeout(function () {
             location.reload();
         }, 4000);
     }
+});
+
+channel.bind('callLog', function (data) {
+    n = new Notification(
+            'Lịch sử trang web (beta)',
+            {
+                body: data.message,
+                icon: $("#base_url").val() + 'public/images/logo2.png',
+                tag: 'https://crm2.lakita.vn/quan-ly/trang-chu.html',
+                image: data.image
+            });
+
+       var append = ` <div style="position: fixed; top:10px; left: 10px; z-index: 999999999; 
+         background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" id="my-notify">
+        <div style="float:left; width: 35%; padding: 2%">
+            <img src="https://crm2.lakita.vn/public/images/logo2.png" style="width: 70%"/>
+        </div>
+        <div style="float:left; width:65%; padding: 2%">
+            <h4> ${data.message} </h4>
+            <div>
+                <img src="${data.image}" style="width: 90%"/>
+            </div>
+        </div>
+    </div>`;
+
+    $('body').append(append);
+    setTimeout(function(){
+        $("#my-notify").remove();
+    }, 2000);
 });/* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
