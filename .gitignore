@@ -35,3 +35,5 @@ nbdist/
 
 
 style/node_modules
+vendor/
+application/vendor/

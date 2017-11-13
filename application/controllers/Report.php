@@ -12,15 +12,23 @@
  */
 class Report extends MY_Controller {
 
+    public function __construct() {
+        parent::__construct();
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        ini_set('max_execution_time', 300);
+        if (!$this->input->is_cli_request()) {
+            show_error('Access denied', 403);
+        } else {
+            echo '1';
+        }
+    }
+
     function send_report_sale_daily() {
+        $get = [];
         $require_model = array(
             'courses' => array()
         );
         $data = $this->_get_require_data($require_model);
-        $get = $this->input->get();
-        if (empty($get) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die;
-        }
         $input = array();
         $input['where'] = array('role_id' => 1);
         $staffs = $this->staffs_model->load_all($input);
@@ -157,10 +165,7 @@ class Report extends MY_Controller {
 
     function send_report_revenue_daily() {
         $this->load->helper('manager_helper');
-        $get = $this->input->get();
-        if (empty($get) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die;
-        }
+
         $input = array();
         $this->load->model('courses_model');
         $courses = $this->courses_model->load_all($input);
@@ -220,10 +225,7 @@ class Report extends MY_Controller {
     }
 
     public function pending2() {
-        $get = $this->input->get();
-        if (empty($get) || !isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die;
-        }
+
         require_once APPPATH . 'libraries/simple_html_dom.php';
         $this->load->model('viettel_log_model');
         $input = array();
@@ -236,12 +238,14 @@ class Report extends MY_Controller {
             /*
              * Cập nhật trạng thái giao hàng viettel
              */
-             if (!is_object($html->find('div[id=dnn_ctr507_Main_ViewKQ_PanelItem]', 0))) { continue;}
+            if (!is_object($html->find('div[id=dnn_ctr507_Main_ViewKQ_PanelItem]', 0))) {
+                continue;
+            }
             $stt = $html->find('div[id=dnn_ctr507_Main_ViewKQ_PanelItem]', 0)->find("#dnn_ctr507_Main_ViewKQ_RepeaterView_Label5_0", 0)->plaintext;
             $where = ['code_cross_check' => $contact['code_cross_check']];
             $data = ['viettel_tracking_status' => $stt];
             $this->contacts_model->update($where, $data);
-            
+
             /*
              * Chèn data vào bảng log
              */
@@ -272,10 +276,7 @@ class Report extends MY_Controller {
         $this->load->helper('bill_helper');
         $this->load->model('call_log_model');
         $this->load->model('L7_check_model');
-        $get = $this->input->get();
-        if (empty($get) || !isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die;
-        }
+
 
         $input = array();
         $input['select'] = 'code_cross_check';
@@ -416,10 +417,7 @@ class Report extends MY_Controller {
     }
 
     function send_report_product_daily() {
-        $get = $this->input->get();
-        if (empty($get) || !isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die;
-        }
+        $get = [];
         $input = array();
         $this->load->model('courses_model');
         $courses = $this->courses_model->load_all($input);
@@ -490,10 +488,7 @@ class Report extends MY_Controller {
         $input = array();
         $this->load->model('courses_model');
         $courses = $this->courses_model->load_all($input);
-        $get = $this->input->get();
-        if (empty($get) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die;
-        }
+        $get = [];
         $conditionArr = array(
             'L1_td' => array(
                 'where' => array('date_handover >=' => strtotime(date("d-m-Y"))),
@@ -587,8 +582,7 @@ class Report extends MY_Controller {
         $this->load->library("email");
         $this->email->from('cskh@lakita.vn', "lakita.vn");
         //$emailTo = 'chuyenbka@gmail.com';
-        $emailTo = 'chuyenbka@gmail.com, ngoccongtt1@gmail.com, '
-                . 'trinhnv@bkindex.com, tund@bkindex.com';
+        $emailTo = 'chuyenbka@gmail.com, ngoccongtt1@gmail.com, trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com, lakitavn@gmail.com';
         $this->email->to($emailTo);
         $this->email->subject('Báo cáo tổng hợp ngày ' . date('d-m-Y') . ' (by cron job)');
         $this->email->message($str);

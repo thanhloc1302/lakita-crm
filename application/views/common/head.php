@@ -16,8 +16,8 @@
         <!--        <link href="<?php echo base_url(); ?>vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">-->
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <link href="https://cdnjs.cloudflare.com/ajax/libs/flipclock/0.7.8/flipclock.min.css" type="text/css" rel="stylesheet" />
-        <link href="<?php echo base_url(); ?>style/build/css/custom.min.css?ver=<?php echo _VER_CACHED_;?>" rel="stylesheet">
-        <link href="<?php echo base_url(); ?>style/css/style.css?ver=<?php echo _VER_CACHED_;?>" rel="stylesheet" type="text/css" />
+        <link href="<?php echo base_url(); ?>style/build/css/custom.min.css?ver=<?php echo _VER_CACHED_; ?>" rel="stylesheet">
+        <link href="<?php echo base_url(); ?>style/css/style.css?ver=<?php echo _VER_CACHED_; ?>" rel="stylesheet" type="text/css" />
 <!--        <link rel="stylesheet" href="<?php echo base_url(); ?>style/jquery-ui-1.12.1.custom/jquery-ui.min.css">-->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
 <!--        <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>style/js/common/daterangepicker.min.css" />-->
@@ -38,4 +38,17 @@
                 transform: translate(0);
             }
         </style>
+        <script type="text/javascript">
+            (function (p, u, s, h) {
+                p._pcq = p._pcq || [];
+                p._pcq.push(['_currentTime', Date.now()]);
+                s = u.createElement('script');
+                s.type = 'text/javascript';
+                s.async = true;
+                s.src = 'https://cdn.pushcrew.com/js/42d3963a092f7239329a7355e48b5db1.js';
+                h = u.getElementsByTagName('script')[0];
+                h.parentNode.insertBefore(s, h);
+            })(window, document);
+        </script>
     </head>
+    

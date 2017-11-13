@@ -1526,7 +1526,7 @@ $(document).on('change', 'input.tbl-item-checkbox', function (e) {
 */
 /*=============================chọn tất cả  ===========================================*/
 var checked = true;
-$(".check_all").on('click', function () {
+$(document).on('click', '.check_all', function () {
     checked = !checked;
     if (checked) {
         $(".list_contact input.tbl-item-checkbox").each(function () {
@@ -1930,7 +1930,7 @@ channel.bind('notice', function (data) {
     $('body').append(append);
     setTimeout(function () {
         $("#my-notify").remove();
-    }, 2000);
+    }, 3000);
 
     if ($("#input_controller").val() === 'manager' && $("#input_method").val() === 'index' || $("#input_controller").val() === 'marketing' && $("#input_method").val() === 'index') {
         setTimeout(function () {
@@ -1952,7 +1952,9 @@ channel.bind('callLog', function (data) {
     $('body').append(append);
     setTimeout(function () {
         $("#my-notify").remove();
-    }, 2000);
+    }, 3000);
+
+    $("#call-log-sound")[0].play();
 }); /* 
     * To change this license header, choose License Headers in Project Properties.
     * To change this template file, choose Tools | Templates

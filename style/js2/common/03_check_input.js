@@ -28,7 +28,7 @@ $(document).on('change', 'input.tbl-item-checkbox', function (e) {
 */
 /*=============================chọn tất cả  ===========================================*/
 var checked = true;
-$(".check_all").on('click', function () {
+$(document).on('click', '.check_all', function () {
     checked = !checked;
     if (checked) {
         $(".list_contact input.tbl-item-checkbox").each(
