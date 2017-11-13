@@ -17,6 +17,16 @@ class Cron extends CI_Controller {
         parent::__construct();
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         ini_set('max_execution_time', 300);
+         if (!$this->input->is_cli_request()) {
+            show_error('Access denied', 403);
+        } else {
+            echo '1';
+        }
+    }
+
+    public function index() {
+        echo 'yes';
+       
     }
 
 
@@ -25,10 +35,7 @@ class Cron extends CI_Controller {
         if ($day == '0') {
             $day = "-1 days";
         }
-        $get = $this->input->get();
-        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die('token sai!');
-        }
+        
         $this->load->model('campaign_cost_model');
         $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
         $today_fb_format = date('Y-m-d', strtotime($day));
@@ -46,9 +53,10 @@ class Cron extends CI_Controller {
             if ($value['campaign_id_facebook'] != '') {
                 $where = array('campaign_id' => $value['id'], 'time' => $today);
                 $this->campaign_cost_model->delete($where);
-                $url = 'https://graph.facebook.com/v2.9/' . $value['campaign_id_facebook'] .
-                        '/insights?fields=spend,reach,clicks&level=account'
-                        . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
+                echo $url = 'https://graph.facebook.com/v2.9/' . $value['campaign_id_facebook'] .
+                '/insights?fields=spend,reach,clicks&level=account'
+                . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
+                die;
                 $spend = get_fb_request($url);
                 $param['time'] = $today;
                 $param['campaign_id'] = $value['id'];
@@ -64,10 +72,7 @@ class Cron extends CI_Controller {
         if ($day == '0') {
             $day = "-1 days";
         }
-        $get = $this->input->get();
-        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die('token sai!');
-        }
+       
         $this->load->model('channel_cost_model');
         $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
         $today_fb_format = date('Y-m-d', strtotime($day));
@@ -104,10 +109,7 @@ class Cron extends CI_Controller {
         if ($day == '0') {
             $day = "-1 days";
         }
-        $get = $this->input->get();
-        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die('token sai!');
-        }
+        
         $this->load->model('adset_cost_model');
         $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
         $today_fb_format = date('Y-m-d', strtotime($day));
@@ -143,10 +145,7 @@ class Cron extends CI_Controller {
         if ($day == '0') {
             $day = "-1 days";
         }
-        $get = $this->input->get();
-        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die('token sai!');
-        }
+       
         $this->load->model('ad_cost_model');
         $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
         $today_fb_format = date('Y-m-d', strtotime($day));
@@ -244,10 +243,6 @@ class Cron extends CI_Controller {
     }
 
     public function GetActiveCampaign() {
-        $get = $this->input->get();
-        if (!isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die('token sai!');
-        }
         $url = 'https://graph.facebook.com/v2.9/act_512062118812690/campaigns?fields=id,name,created_time,status&limit=500&access_token=' . ACCESS_TOKEN;
         $spend = get_fb_request($url);
         $this->load->model('campaign_model');

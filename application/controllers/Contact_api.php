@@ -71,6 +71,9 @@ class Contact_api extends REST_Controller {
                     $param['link_id'] = $links[0]['id'];
                 }
             }
+            if (isset($input['type-combo'])) {
+                $param['course_code'] = $input['type-combo'];
+            }
 
             $param['date_rgt'] = time();
             $param['last_activity'] = time();
@@ -82,19 +85,7 @@ class Contact_api extends REST_Controller {
 //            fwrite($myfile, time());
 //            fclose($myfile);
 
-            require_once APPPATH . 'libraries/Pusher.php';
-            $options = array(
-                'cluster' => 'ap1',
-                'encrypted' => true
-            );
-            $pusher = new Pusher(
-                    'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
-            );
 
-            $data['message'] = 'hello world';
-            $marketerId = isset($param['marketer_id']) ? $param['marketer_id'] : 0;
-            $data['image'] =  $this->staffs_model->GetStaffImage($marketerId);
-            $pusher->trigger('my-channel', 'notice', $data);
             /*
              * Gửi email
              */
@@ -115,6 +106,63 @@ class Contact_api extends REST_Controller {
                 $this->email->subject('Lakita.vn Thông tin khóa học đã đăng ký.');
                 $this->email->message($content);
                 $this->email->send();
+            }
+
+
+            require_once APPPATH . 'libraries/Pusher.php';
+            $options = array(
+                'cluster' => 'ap1',
+                'encrypted' => true
+            );
+            $pusher = new Pusher(
+                    'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
+            );
+
+            $data['message'] = 'hello world';
+            $marketerId = isset($param['marketer_id']) ? $param['marketer_id'] : '0';
+            $data['image'] = $this->staffs_model->GetStaffImage($marketerId);
+            $pusher->trigger('my-channel', 'notice', $data);
+
+            $title = 'Có 1 contact mới đăng ký';
+            $message = 'Click để xem ngay';
+            $url = 'https://crm2.lakita.vn';
+
+            $apiToken = 'a7ea7dd9fe04ee2fe9745bc930e15213';
+
+            $curlUrl = 'https://pushcrew.com/api/v1/send/all';
+
+            //set POST variables
+            $fields = array(
+                'title' => $title,
+                'message' => $message,
+                'url' => $url
+            );
+
+            $httpHeadersArray = Array();
+            $httpHeadersArray[] = 'Authorization: key=' . $apiToken;
+
+            //open connection
+            $ch = curl_init();
+
+            //set the url, number of POST vars, POST data
+            curl_setopt($ch, CURLOPT_URL, $curlUrl);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($fields));
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeadersArray);
+
+            //execute post
+            $result = curl_exec($ch);
+
+            $resultArray = json_decode($result, true);
+
+            if ($resultArray['status'] == 'success') {
+                //success
+                //echo $resultArray['request_id']; //ID of Notification Request
+            } else if ($resultArray['status'] == 'failure') {
+                //failure
+            } else {
+                //failure
             }
         }
     }
