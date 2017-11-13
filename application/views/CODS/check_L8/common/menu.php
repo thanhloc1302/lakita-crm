@@ -25,4 +25,10 @@
             <span> Danh sách KQ đối soát ngày hôm nay </span>
         </a>
     </li>
+    <li>
+        <a href="<?php echo base_url(); ?>">
+            <img src="<?php echo base_url(); ?>public/images/home.png"> 
+            <span> Quay lại trang chủ </span>
+        </a>
+    </li>
 </ul>
