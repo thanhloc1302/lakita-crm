@@ -337,7 +337,7 @@ class Campaign extends MY_Table {
 
     public function AddItemFetch() {
         $accountFBADS = [
-            'Lakita_cu' => '512062118812690',
+            'Lakita_cũ' => '512062118812690',
             'Lakita_3.0' => '600208190140429',
             'Lakita_K3' => '817360198425226'];
         $campaigns = [];
