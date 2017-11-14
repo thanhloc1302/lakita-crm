@@ -13,3 +13,6 @@
 <!-- URL bật tắt 1 dòng -->
 <input type="hidden" value="<?php echo base_url() . $this->controller_path . '/edit_active' ?>" id="url_edit_active" />
 
+<!-- Add item fetch -->
+<input type="hidden" value="<?php echo base_url() . $this->controller_path . '/AddItemFetch' ?>" id="url-add-item-fetch" />
+

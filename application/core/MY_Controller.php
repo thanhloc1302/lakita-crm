@@ -26,7 +26,7 @@ class MY_Controller extends CI_Controller {
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
         //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
-        // echo date('H:i:s d/m/Y', 1509692829);die;
+        //echo date('H:i:s d/m/Y', 1509642000);die;
         //  echo time(). '<br>';
         // echo strtotime('01-10-2017 00:00:00'); die;
         // echo strtotime(date("d-m-Y"));die;
@@ -45,8 +45,6 @@ class MY_Controller extends CI_Controller {
         $this->load->vars($this->data);
         // phpinfo();
         require_once APPPATH . 'libraries/Pusher.php';
-
-        
     }
 
     private function _check_login() {

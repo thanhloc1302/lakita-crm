@@ -17,8 +17,8 @@ class Cron extends CI_Controller {
         parent::__construct();
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         ini_set('max_execution_time', 300);
-         if (!$this->input->is_cli_request()) {
-            show_error('Access denied', 403);
+        if (!$this->input->is_cli_request()) {
+            die('Bạn không có quyền truy cập vào trang web này');
         } else {
             echo '1';
         }
@@ -26,16 +26,13 @@ class Cron extends CI_Controller {
 
     public function index() {
         echo 'yes';
-       
     }
-
-
 
     public function update_campain_cost($day = '0') {
         if ($day == '0') {
             $day = "-1 days";
         }
-        
+
         $this->load->model('campaign_cost_model');
         $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
         $today_fb_format = date('Y-m-d', strtotime($day));
@@ -53,10 +50,9 @@ class Cron extends CI_Controller {
             if ($value['campaign_id_facebook'] != '') {
                 $where = array('campaign_id' => $value['id'], 'time' => $today);
                 $this->campaign_cost_model->delete($where);
-                echo $url = 'https://graph.facebook.com/v2.9/' . $value['campaign_id_facebook'] .
-                '/insights?fields=spend,reach,clicks&level=account'
-                . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
-                die;
+                $url = 'https://graph.facebook.com/v2.9/' . $value['campaign_id_facebook'] .
+                        '/insights?fields=spend,reach,clicks&level=account'
+                        . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
                 $spend = get_fb_request($url);
                 $param['time'] = $today;
                 $param['campaign_id'] = $value['id'];
@@ -72,44 +68,51 @@ class Cron extends CI_Controller {
         if ($day == '0') {
             $day = "-1 days";
         }
-       
+
         $this->load->model('channel_cost_model');
         $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
         $today_fb_format = date('Y-m-d', strtotime($day));
-        /*
-         * Lấy danh sách tất cả campain đang hoạt động
-         */
+    
         $this->load->model('channel_model');
-        $input = array();
-        $input['where'] = array('active' => 1);
-        $channels = $this->channel_model->load_all($input);
-        foreach ($channels as $value) {
+//        $input = array();
+//        $input['where'] = array('active' => 1);
+//        $channels = $this->channel_model->load_all($input);
+     
             //Kênh facebook
-            if ($value['id'] == 2) {
+           
                 /*
                  * Kiểm tra xem đã tồn tại giá ngày hôm nay chưa (nếu có rồi thì bỏ qua)
                  */
-                $where = array('channel_id' => $value['id'], 'time' => $today);
+                $where = array('channel_id' => 2, 'time' => $today);
                 $this->channel_cost_model->delete($where);
-                $url = 'https://graph.facebook.com/v2.9/act_512062118812690/' .
-                        'insights?fields=spend,reach,clicks&level=account'
-                        . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
-                $spend = get_fb_request($url);
+                $accountFBADS = [
+                    'Lakita_cu' => '512062118812690',
+                    'Lakita_3.0' => '600208190140429',
+                    'Lakita_K3' => '817360198425226'];
+                $param['spend'] = 0;
+                $param['total_C1'] = 0;
+                $param['total_C2'] = 0;
+
+                foreach ($accountFBADS as $value2) {
+                    $url = 'https://graph.facebook.com/v2.9/act_'.$value2.'/' .
+                            'insights?fields=spend,reach,clicks&level=account'
+                            . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
+                    $spend = get_fb_request($url);
+                    $param['spend'] += isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
+                    $param['total_C1'] += isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
+                    $param['total_C2'] += isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
+                }
                 $param['time'] = $today;
-                $param['channel_id'] = $value['id'];
-                $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
-                $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
-                $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
+                $param['channel_id'] = 2;
                 $this->channel_cost_model->insert($param);
-            }
-        }
+          
     }
 
     public function update_adset_cost($day = '0') {
         if ($day == '0') {
             $day = "-1 days";
         }
-        
+
         $this->load->model('adset_cost_model');
         $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
         $today_fb_format = date('Y-m-d', strtotime($day));
@@ -145,7 +148,7 @@ class Cron extends CI_Controller {
         if ($day == '0') {
             $day = "-1 days";
         }
-       
+
         $this->load->model('ad_cost_model');
         $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
         $today_fb_format = date('Y-m-d', strtotime($day));
@@ -253,6 +256,7 @@ class Cron extends CI_Controller {
                 $this->campaign_model->update($where, $data);
             }
         }
+       
     }
 
 }

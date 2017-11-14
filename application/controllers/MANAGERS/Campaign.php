@@ -88,7 +88,7 @@ class Campaign extends MY_Table {
             'channel' => array(
                 'name_display' => 'Kênh',
                 'order' => '1',
-                 'display' => 'none'
+                'display' => 'none'
             ),
         );
         $this->set_list_view($list_item);
@@ -154,11 +154,11 @@ class Campaign extends MY_Table {
         usort($this->data['rows'], function($a, $b) {
             if (is_numeric($a['pricepC3']) && is_numeric($b['pricepC3'])) {
                 return $b['pricepC3'] - $a['pricepC3'];
-            }else if (is_numeric($a['pricepC3']) && !is_numeric($b['pricepC3'])) {
+            } else if (is_numeric($a['pricepC3']) && !is_numeric($b['pricepC3'])) {
                 return -1;
-            }else if (!is_numeric($a['pricepC3']) && is_numeric($b['pricepC3'])) {
+            } else if (!is_numeric($a['pricepC3']) && is_numeric($b['pricepC3'])) {
                 return +1;
-            }else{
+            } else {
                 return $b['active'] - $a['active'];
             }
         });
@@ -184,13 +184,13 @@ class Campaign extends MY_Table {
         $input['where'] = array('active' => '1');
         $channels = $this->channel_model->load_all($input);
         $this->data['channel'] = $channels;
-        
+
         $this->list_filter = array(
             'left_filter' => array(
                 'date' => array(
                     'type' => 'custom',
                 ),
-                 'channel' => array(
+                'channel' => array(
                     'type' => 'arr_multi'
                 ),
             ),
@@ -216,7 +216,7 @@ class Campaign extends MY_Table {
         $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Danh sách chiến dịch (tính theo giờ Mỹ)';
         $data['edit_title'] = 'Sửa thông tin chiến dịch';
-        $data['content'] = 'base/index';
+        $data['content'] = 'MANAGERS/campaign/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -318,6 +318,45 @@ class Campaign extends MY_Table {
             $this->{$this->model}->update($input['where'], $param);
         }
         show_error_and_redirect('Sửa chiến dịch thành công!');
+    }
+
+    public function AddItemFetch() {
+        $accountFBADS = [
+            'Lakita_cu' => '512062118812690',
+            'Lakita_3.0' => '600208190140429',
+            'Lakita_K3' => '817360198425226'];
+        $campaigns = [];
+        foreach ($accountFBADS as $key => $value2) {
+            $url = 'https://graph.facebook.com/v2.9/act_' . $value2 . '/' .
+                    'campaigns?limit=1000&fields=status&access_token=' . ACCESS_TOKEN;
+            $spend = get_fb_request($url);
+            //print_arr($spend);
+            //$spend->data[0]->spend
+            $campaigns[$key] = json_decode(json_encode($spend->data), true);
+        }
+        foreach ($campaigns as $key => $value) {
+            foreach ($value as $key2 => $campaign) {
+                $input = array();
+                $input['where'] = array('campaign_id_facebook' => $campaign['id']);
+                $campaigns[$key][$key2]['detail'] = $this->{$this->model}->load_all($input);
+            }
+        }
+       
+        $newCampaign = [];
+        $i = 0;
+        foreach ($campaigns as $key => $value) {
+            foreach ($value as $value2) {
+                //print_arr($value2);
+                if ($value2['status'] == 'ACTIVE') {
+                    $newCampaign[$i] = $value2;
+                    $newCampaign[$i]['name'] = $key;
+                }
+                $i++;
+            }
+        }
+    $data['campaigns'] = $newCampaign;
+        print_arr($newCampaign);
+        $this->load->view('MANAGERS/campaign/fetch-campaign', $data, TRUE);
     }
 
 }
