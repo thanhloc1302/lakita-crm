@@ -50,7 +50,7 @@ class Cron extends CI_Controller {
             if ($value['campaign_id_facebook'] != '') {
                 $where = array('campaign_id' => $value['id'], 'time' => $today);
                 $this->campaign_cost_model->delete($where);
-                $url = 'https://graph.facebook.com/v2.9/' . $value['campaign_id_facebook'] .
+                $url = 'https://graph.facebook.com/v2.11/' . $value['campaign_id_facebook'] .
                         '/insights?fields=spend,reach,clicks&level=account'
                         . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
                 $spend = get_fb_request($url);
@@ -94,7 +94,7 @@ class Cron extends CI_Controller {
                 $param['total_C2'] = 0;
 
                 foreach ($accountFBADS as $value2) {
-                    $url = 'https://graph.facebook.com/v2.9/act_'.$value2.'/' .
+                    $url = 'https://graph.facebook.com/v2.11/act_'.$value2.'/' .
                             'insights?fields=spend,reach,clicks&level=account'
                             . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
                     $spend = get_fb_request($url);
@@ -130,7 +130,7 @@ class Cron extends CI_Controller {
             if ($value['adset_id_facebook'] != '') {
                 $where = array('adset_id' => $value['id'], 'time' => $today);
                 $this->adset_cost_model->delete($where);
-                $url = 'https://graph.facebook.com/v2.9/' . $value['adset_id_facebook'] .
+                $url = 'https://graph.facebook.com/v2.11/' . $value['adset_id_facebook'] .
                         '/insights?fields=spend,reach,clicks&level=account'
                         . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
                 $spend = get_fb_request($url);
@@ -166,7 +166,7 @@ class Cron extends CI_Controller {
             if ($value['ad_id_facebook'] != '') {
                 $where = array('ad_id' => $value['id'], 'time' => $today);
                 $this->ad_cost_model->delete($where);
-                $url = 'https://graph.facebook.com/v2.9/' . $value['ad_id_facebook'] .
+                $url = 'https://graph.facebook.com/v2.11/' . $value['ad_id_facebook'] .
                         '/insights?fields=spend,reach,clicks&level=account'
                         . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
                 $spend = get_fb_request($url);
@@ -246,7 +246,7 @@ class Cron extends CI_Controller {
     }
 
     public function GetActiveCampaign() {
-        $url = 'https://graph.facebook.com/v2.9/act_512062118812690/campaigns?fields=id,name,created_time,status&limit=500&access_token=' . ACCESS_TOKEN;
+        $url = 'https://graph.facebook.com/v2.11/act_512062118812690/campaigns?fields=id,name,created_time,status&limit=500&access_token=' . ACCESS_TOKEN;
         $spend = get_fb_request($url);
         $this->load->model('campaign_model');
         foreach ($spend->data as $value) {

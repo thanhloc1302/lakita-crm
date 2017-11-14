@@ -26,4 +26,12 @@ setEqualTableHeight = () => {
     {
         $(".table-1").height($(".table-2").height());
     }
+    
+     if ($(".table-add-1").height() > $(".table-add-2").height())
+    {
+        $(".table-add-2").height($(".table-add-1").height());
+    } else
+    {
+        $(".table-add-1").height($(".table-add-2").height());
+    }
 };

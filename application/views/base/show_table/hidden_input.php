@@ -16,3 +16,6 @@
 <!-- Add item fetch -->
 <input type="hidden" value="<?php echo base_url() . $this->controller_path . '/AddItemFetch' ?>" id="url-add-item-fetch" />
 
+<!-- Add item from fb -->
+<input type="hidden" value="<?php echo base_url() . $this->controller_path . '/AddItemFromFb' ?>" id="url-add-item-from-fb" />
+

@@ -324,7 +324,8 @@ class Common extends MY_Controller {
             $dataPush = [];
             $dataPush['title'] = 'Lịch sử trang web (beta)';
             $dataPush['message'] = $this->staffs_model->find_staff_name($this->user_id) . ' đã cập nhật cuộc gọi';
-
+            $dataPush['success'] = '0';
+            
             $post = $this->input->post();
             $param = array();
             $post_arr = array('name', 'email', 'address', 'course_code',
@@ -402,6 +403,9 @@ class Common extends MY_Controller {
                 if ($totalL6 > $thisSale[0]['targets']) {
                     $dataPush['message'] = "Xin chúc mừng, bạn đã vượt mục tiêu hôm nay. Cố gắng phát huy bạn nhé <3 <3 <3";
                 }
+                
+                $dataPush['success'] = '1';
+                
             } else {
                 $param['date_confirm'] = 0;
             }

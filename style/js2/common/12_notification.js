@@ -56,7 +56,7 @@ channel.bind('notice', function (data) {
                 image: data.image
             });
 
-    var append = ` <div style="position: fixed; top:10px; left: 10px; z-index: 999999999; 
+    var append = ` <div style="position: fixed; right:10px; bottom: 10px; z-index: 999999999; 
          background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" id="my-notify">
         <div style="float:left; width: 35%; padding: 2%">
             <img src="https://crm2.lakita.vn/public/images/logo2.png" style="width: 70%"/>
@@ -110,7 +110,11 @@ channel.bind('callLog', function (data) {
     $('body').append(append);
     setTimeout(function () {
         $("#my-notify").remove();
-    }, 3000);
+    }, 10000);
 
-    $("#call-log-sound")[0].play();
+    if (data.success == '1') {
+        $("#call-log-L6-sound")[0].play();
+    } else {
+        $("#call-log-sound")[0].play();
+    }
 });

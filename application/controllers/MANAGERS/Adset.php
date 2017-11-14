@@ -174,7 +174,7 @@ class Adset extends MY_Table {
         );
         $conditional = array();
         $conditional['where']['marketer_id'] = $this->user_id;
-        $get = $this->input->get();
+        //$get = $this->input->get();
 //        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
 //            $conditional['where']['active'] = 1;
 //        }
@@ -186,7 +186,7 @@ class Adset extends MY_Table {
         $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Danh sách các adset (tính theo giờ Mỹ)';
         $data['edit_title'] = 'Sửa thông tin adset';
-        $data['content'] = 'base/index';
+        $data['content'] = 'MANAGERS/adset/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -228,6 +228,9 @@ class Adset extends MY_Table {
         if (!empty($post)) {
             if ($this->{$this->model}->check_exists(array('name' => $post['add_name'], 'marketer_id' => $this->user_id))) {
                 redirect_and_die('Tên adset đã tồn tại!');
+            }
+            if ($this->{$this->model}->check_exists(array('adset_id_facebook' => $post['add_adset_id_facebook']))) {
+                redirect_and_die('Adset này đã được tạo từ Campaign FB!');
             }
             $paramArr = array('name', 'campaign_id', 'adset_id_facebook', 'desc', 'active');
             foreach ($paramArr as $value) {
@@ -288,6 +291,65 @@ class Adset extends MY_Table {
             $this->{$this->model}->update($input['where'], $param);
         }
         show_error_and_redirect('Sửa adset thành công!');
+    }
+
+    public function AddItemFetch() {
+        $input = [];
+        $input['where'] = array('active' => '1', 'marketer_id' => $this->user_id);
+        $this->load->model('campaign_model');
+        $campaigns = $this->campaign_model->load_all($input);
+
+        foreach ($campaigns as $key => $value2) {
+            if ($value2['campaign_id_facebook'] != '') {
+                $url = 'https://graph.facebook.com/v2.11/' . $value2['campaign_id_facebook'] . '/' .
+                        'adsets?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
+                $spend = get_fb_request($url);
+                //  print_arr($spend);
+                //print_arr($spend);
+                //$spend->data[0]->spend
+                if ($spend->data) {
+                    $campaigns[$key]['adsets'] = json_decode(json_encode($spend->data), true);
+                } else {
+                    $campaigns[$key]['adsets'] = [];
+                }
+            }
+        }
+        $newAdsets = [];
+        $i = 0;
+        foreach ($campaigns as $key => $value) {
+            if (!empty($value['adsets'])) {
+                foreach ($value['adsets'] as $value2) {
+                    if ($value2['status'] == 'ACTIVE') {
+                        $newAdsets[$i] = $value2;
+                        $input = [];
+                        $input['where'] = array('adset_id_facebook' => $value2['id']);
+                        $existAdset = $this->{$this->model}->load_all($input);
+                        if (empty($existAdset)) {
+                            $newAdsets[$i]['exist'] = 0;
+                        } else {
+                            $newAdsets[$i]['exist'] = 1;
+                        }
+                        $newAdsets[$i]['campaign_crm_id'] = $campaigns[$key]['id'];
+                        $newAdsets[$i]['campaign_name_facebook'] = $campaigns[$key]['name'];
+                    }
+                    $i++;
+                }
+            }
+        }
+
+        /*
+         * Lấy danh sách các marketer
+         */
+        $input = [];
+        $input['where'] = array('role_id' => 6, 'active' => '1');
+        $marketerArr = $this->staffs_model->load_all($input);
+        foreach ($marketerArr as $value) {
+            $marketers[$value['id']] = $value['name'];
+        }
+        $data['marketers'] = $marketers;
+        $data['adsets'] = $newAdsets;
+        //print_arr($newCampaign);
+        echo $this->load->view('MANAGERS/adset/fetch-adset', $data, TRUE);
     }
 
 }

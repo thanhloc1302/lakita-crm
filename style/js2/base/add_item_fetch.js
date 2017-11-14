@@ -6,10 +6,10 @@ $(document).on('click', 'a.add-item-fetch', function (e) {
         type: "POST",
         beforeSend: () => $(".popup-wrapper").show(),
         success: function (data) {
-            $("div.replace_content_add_item_modal").html(data);
+            $("div.replace_content_add_item_fetch_modal").html(data);
         },
         complete: function () {
-            $(".add_item_modal").modal("show");
+            $(".add_item_modal_fetch").modal("show");
             $(".popup-wrapper").hide();
         }
     });

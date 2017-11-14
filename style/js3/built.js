@@ -270,6 +270,14 @@ setEqualTableHeight = () => {
     {
         $(".table-1").height($(".table-2").height());
     }
+    
+     if ($(".table-add-1").height() > $(".table-add-2").height())
+    {
+        $(".table-add-2").height($(".table-add-1").height());
+    } else
+    {
+        $(".table-add-1").height($(".table-add-2").height());
+    }
 };
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -462,6 +470,17 @@ $(".action-contact-admin").confirm({
             }}
     }
 });
+$(document).on('click', '.create-adset-from-fb', function (e) {
+    e.preventDefault();
+    $(".add-name-from-fb").val($(this).attr("adset-name"));
+    $(".add-adset-id-from-fb").val($(this).attr("id-fb"));
+    $campaignOption = ' <select class="form-control selectpicker" name="add_campaign_id" tabindex="-98"> ' +
+            '<option value="'+ $(this).attr("campaign-crm-id") +'" selected="selected"> '+ $(this).attr("campaign-name-facebook") +'</option>' +
+            '</select>';
+    $(".select-campign-fetch").append($campaignOption);
+    console.log($(this).attr("id-fb"));
+    $(".add_item_from_fb_modal").modal("show");
+});
 $(document).on('click', 'a.add-item-fetch', function (e) {
     e.preventDefault();
     var url = $("#url-add-item-fetch").val();
@@ -470,15 +489,22 @@ $(document).on('click', 'a.add-item-fetch', function (e) {
         type: "POST",
         beforeSend: () => $(".popup-wrapper").show(),
         success: function (data) {
-            $("div.replace_content_add_item_modal").html(data);
+            $("div.replace_content_add_item_fetch_modal").html(data);
         },
         complete: function () {
-            $(".add_item_modal").modal("show");
+            $(".add_item_modal_fetch").modal("show");
             $(".popup-wrapper").hide();
         }
     });
 });
 
+$(document).on('click', '.create-campaign-from-fb', function (e) {
+    e.preventDefault();
+    $(".add-name-from-fb").val($(this).attr("campaign-name"));
+    $(".add-campaign-id-from-fb").val($(this).attr("id-fb"));
+    console.log($(this).attr("id-fb"));
+    $(".add_item_from_fb_modal").modal("show");
+});
 $(document).on('click', 'a.add_item', function (e) {
     e.preventDefault();
     var url = $("#url_add_item").val();
@@ -2005,7 +2031,7 @@ channel.bind('notice', function (data) {
                 image: data.image
             });
 
-    var append = ` <div style="position: fixed; top:10px; left: 10px; z-index: 999999999; 
+    var append = ` <div style="position: fixed; right:10px; bottom: 10px; z-index: 999999999; 
          background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" id="my-notify">
         <div style="float:left; width: 35%; padding: 2%">
             <img src="https://crm2.lakita.vn/public/images/logo2.png" style="width: 70%"/>
@@ -2059,9 +2085,13 @@ channel.bind('callLog', function (data) {
     $('body').append(append);
     setTimeout(function () {
         $("#my-notify").remove();
-    }, 3000);
+    }, 10000);
 
-    $("#call-log-sound")[0].play();
+    if (data.success == '1') {
+        $("#call-log-L6-sound")[0].play();
+    } else {
+        $("#call-log-sound")[0].play();
+    }
 });/* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates

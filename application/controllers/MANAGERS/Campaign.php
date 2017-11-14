@@ -259,6 +259,9 @@ class Campaign extends MY_Table {
             if ($this->{$this->model}->check_exists(array('name' => $post['add_name'], 'marketer_id' => $this->user_id))) {
                 redirect_and_die('Tên chiến dịch đã tồn tại!');
             }
+            if ($this->{$this->model}->check_exists(array('campaign_id_facebook' => $post['add_campaign_id_facebook']))) {
+                redirect_and_die('Chiến dịch này đã được tạo từ Campaign FB!');
+            }
             $paramArr = array('name', 'channel_id', 'campaign_id_facebook', 'desc', 'active');
             foreach ($paramArr as $value) {
                 if (isset($post['add_' . $value])) {
@@ -268,7 +271,19 @@ class Campaign extends MY_Table {
             $param['time'] = time();
             $param['marketer_id'] = $this->user_id;
             $this->{$this->model}->insert($param);
-            show_error_and_redirect('Thêm chiến dịch thành công!');
+
+//            $url = 'https://graph.facebook.com/v2.11/' . $post['add_campaign_id_facebook'] . '/' .
+//                    'adsets?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
+//            $spend = get_fb_request($url);
+//            $adsets = json_decode(json_encode($spend->data), true);
+//            if (!empty($adsets)) {
+//                $this->load->model('adset_model');
+//                foreach ($adsets as $adset) {
+//                    $data = [];
+//                }
+//            }
+//            print_arr($adsets);
+            show_error_and_redirect('Thêm chiến dịch và các adset con thành công!');
         }
     }
 
@@ -327,9 +342,10 @@ class Campaign extends MY_Table {
             'Lakita_K3' => '817360198425226'];
         $campaigns = [];
         foreach ($accountFBADS as $key => $value2) {
-            $url = 'https://graph.facebook.com/v2.9/act_' . $value2 . '/' .
-                    'campaigns?limit=1000&fields=status&access_token=' . ACCESS_TOKEN;
+            $url = 'https://graph.facebook.com/v2.11/act_' . $value2 . '/' .
+                    'campaigns?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
             $spend = get_fb_request($url);
+            //  print_arr($spend);
             //print_arr($spend);
             //$spend->data[0]->spend
             $campaigns[$key] = json_decode(json_encode($spend->data), true);
@@ -341,7 +357,7 @@ class Campaign extends MY_Table {
                 $campaigns[$key][$key2]['detail'] = $this->{$this->model}->load_all($input);
             }
         }
-       
+
         $newCampaign = [];
         $i = 0;
         foreach ($campaigns as $key => $value) {
@@ -349,14 +365,29 @@ class Campaign extends MY_Table {
                 //print_arr($value2);
                 if ($value2['status'] == 'ACTIVE') {
                     $newCampaign[$i] = $value2;
-                    $newCampaign[$i]['name'] = $key;
+                    $newCampaign[$i]['name_account'] = $key;
                 }
                 $i++;
             }
         }
-    $data['campaigns'] = $newCampaign;
-        print_arr($newCampaign);
-        $this->load->view('MANAGERS/campaign/fetch-campaign', $data, TRUE);
+
+        /*
+         * Lấy danh sách các marketer
+         */
+        $input = [];
+        $input['where'] = array('role_id' => 6, 'active' => '1');
+        $marketerArr = $this->staffs_model->load_all($input);
+        foreach ($marketerArr as $value) {
+            $marketers[$value['id']] = $value['name'];
+        }
+        $data['marketers'] = $marketers;
+        $data['campaigns'] = $newCampaign;
+        //print_arr($newCampaign);
+        echo $this->load->view('MANAGERS/campaign/fetch-campaign', $data, TRUE);
+    }
+
+    public function AddItemFromFb() {
+        
     }
 
 }

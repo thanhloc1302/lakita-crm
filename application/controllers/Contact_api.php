@@ -78,38 +78,11 @@ class Contact_api extends REST_Controller {
             $param['date_rgt'] = time();
             $param['last_activity'] = time();
             $param['duplicate_id'] = $this->_find_dupliacte_contact($input['phone'], $input['course_code']);
-
             $this->contacts_model->insert_from_mol($param);
 
 //            $myfile = fopen(APPPATH . "../public/last_reg.txt", "w") or die("Unable to open file!");
 //            fwrite($myfile, time());
 //            fclose($myfile);
-
-
-            /*
-             * Gửi email
-             */
-            if (!in_array($input['email'], array('NO_PARAM@gmail.com', 'lakita@lakita.vn', 'NO_PARAM@gmai.com'
-                        , 'lakitavn@gmail.com', 'lakita.vn@gmail.com'))) {
-                $this->load->model('courses_model');
-                $data = array();
-                $data['e_name'] = $input['name'];
-                $data['e_phone'] = $input['phone'];
-                $data['e_address'] = $address;
-                $data['e_price_sale'] = $input['price_purchase'];
-                $data['e_course_name'] = $this->courses_model->find_course_name($input['course_code']);
-                $data['e_price_root'] = $this->courses_model->find_course_price_root($input['course_code']);
-                $content = $this->load->view('email', $data, TRUE);
-                $this->load->library("email");
-                $this->email->from('cskh@lakita.vn', "Hệ thống học trực tuyến lakita.vn");
-                $this->email->to($input['email']);
-                $this->email->subject('Lakita.vn Thông tin khóa học đã đăng ký.');
-                $this->email->message($content);
-                $this->email->send();
-            }
-
-
-
             $marketerId = isset($param['marketer_id']) ? $param['marketer_id'] : '0';
             $data2 = [];
 
@@ -140,52 +113,65 @@ class Contact_api extends REST_Controller {
 
                 if ($totalC3 < $marketer[0]['targets']) {
                     $data2['message'] = "Bạn còn " . ($marketer[0]['targets'] - $totalC3) . " C3 nữa là đạt mục tiêu hôm nay!";
-                    
-                }else if ($totalC3 == $marketer[0]['targets']) {
+                } else if ($totalC3 == $marketer[0]['targets']) {
                     $data2['message'] = "Xin chúc mừng, bạn đã đạt mục tiêu hôm nay. Cố gắng phát huy bạn nhé <3 <3 <3";
-                }else{
+                } else {
                     $data2['message'] = "Xin chúc mừng, bạn đã vượt mục tiêu hôm nay. Cố gắng phát huy bạn nhé <3 <3 <3";
                 }
-                $title =  $data2['title'];
+                $title = $data2['title'];
                 $message = $data2['message'];
-               
             } else {
                 $data2['title'] = 'Có contact mới đăng ký';
                 $data2['message'] = 'Click để xem ngay';
             }
-
             $data2['image'] = $this->staffs_model->GetStaffImage($marketerId);
             $pusher->trigger('my-channel', 'notice', $data2);
 
 
             $url = 'https://crm2.lakita.vn';
-
             $apiToken = 'a7ea7dd9fe04ee2fe9745bc930e15213';
-
             $curlUrl = 'https://pushcrew.com/api/v1/send/all';
-
             //set POST variables
             $fields = array(
                 'title' => $title,
                 'message' => $message,
                 'url' => $url
             );
-
             $httpHeadersArray = Array();
             $httpHeadersArray[] = 'Authorization: key=' . $apiToken;
-
             //open connection
             $ch = curl_init();
-
             //set the url, number of POST vars, POST data
             curl_setopt($ch, CURLOPT_URL, $curlUrl);
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($fields));
             curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeadersArray);
-
             //execute post
-           curl_exec($ch);
+            curl_exec($ch);
+
+
+            /*
+             * Gửi email
+             */
+            if (!in_array($input['email'], array('NO_PARAM@gmail.com', 'lakita@lakita.vn', 'NO_PARAM@gmai.com'
+                        , 'lakitavn@gmail.com', 'lakita.vn@gmail.com'))) {
+                $this->load->model('courses_model');
+                $data = array();
+                $data['e_name'] = $input['name'];
+                $data['e_phone'] = $input['phone'];
+                $data['e_address'] = $address;
+                $data['e_price_sale'] = $input['price_purchase'];
+                $data['e_course_name'] = $this->courses_model->find_course_name($input['course_code']);
+                $data['e_price_root'] = $this->courses_model->find_course_price_root($input['course_code']);
+                $content = $this->load->view('email', $data, TRUE);
+                $this->load->library("email");
+                $this->email->from('cskh@lakita.vn', "Hệ thống học trực tuyến lakita.vn");
+                $this->email->to($input['email']);
+                $this->email->subject('Lakita.vn Thông tin khóa học đã đăng ký.');
+                $this->email->message($content);
+                $this->email->send();
+            }
         }
     }
 
