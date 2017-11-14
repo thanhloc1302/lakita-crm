@@ -317,6 +317,14 @@ class Common extends MY_Controller {
             die;
         }
         if (!empty($this->input->post())) {
+
+            /*
+             * Thông báo số L6 gọi đc
+             */
+            $dataPush = [];
+            $dataPush['title'] = 'Lịch sử trang web (beta)';
+            $dataPush['message'] = $this->staffs_model->find_staff_name($this->user_id) . ' đã cập nhật cuộc gọi';
+
             $post = $this->input->post();
             $param = array();
             $post_arr = array('name', 'email', 'address', 'course_code',
@@ -375,6 +383,25 @@ class Common extends MY_Controller {
                     echo json_encode($result);
                     die;
                 }
+
+                $input = [];
+                $input['where'] = array('id' => $this->user_id);
+                $thisSale = $this->staffs_model->load_all($input);
+
+                $inputPush = [];
+                $inputPush['select'] = 'id';
+                $inputPush['where'] = array('sale_staff_id' => $this->user_id, 'date_confirm >' => strtotime(date('d-m-Y')), 'is_hide' => '0');
+                $today = $this->contacts_model->load_all($inputPush);
+                $totalL6 = count($today) + 1;
+
+                $dataPush['title'] = "L6 số " . $totalL6 . " của " . $thisSale[0]['short_name'] . " hôm nay";
+
+                if ($totalL6 < $thisSale[0]['targets']) {
+                    $dataPush['message'] = "Bạn còn " . ($thisSale[0]['targets'] - $totalL6) . " L6 nữa là đạt mục tiêu hôm nay!";
+                }
+                if ($totalL6 > $thisSale[0]['targets']) {
+                    $dataPush['message'] = "Xin chúc mừng, bạn đã vượt mục tiêu hôm nay. Cố gắng phát huy bạn nhé <3 <3 <3";
+                }
             } else {
                 $param['date_confirm'] = 0;
             }
@@ -397,7 +424,7 @@ class Common extends MY_Controller {
             $result['message'] = 'Chăm sóc thành công contact!';
             echo json_encode($result);
 
-           
+
             $options = array(
                 'cluster' => 'ap1',
                 'encrypted' => true
@@ -406,9 +433,8 @@ class Common extends MY_Controller {
                     'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
             );
 
-            $data['message'] = $this->staffs_model->find_staff_name($this->user_id) . ' đã cập nhật cuộc gọi';
-            $data['image'] =  $this->staffs_model->GetStaffImage($this->user_id);
-            $pusher->trigger('my-channel', 'callLog', $data);
+            $dataPush['image'] = $this->staffs_model->GetStaffImage($this->user_id);
+            $pusher->trigger('my-channel', 'callLog', $dataPush);
 
             die;
         }

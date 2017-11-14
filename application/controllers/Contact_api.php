@@ -109,6 +109,13 @@ class Contact_api extends REST_Controller {
             }
 
 
+
+            $marketerId = isset($param['marketer_id']) ? $param['marketer_id'] : '0';
+            $data2 = [];
+
+            $title = 'Có 1 contact mới đăng ký';
+            $message = 'Click để xem ngay';
+
             require_once APPPATH . 'libraries/Pusher.php';
             $options = array(
                 'cluster' => 'ap1',
@@ -118,13 +125,39 @@ class Contact_api extends REST_Controller {
                     'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
             );
 
-            $data['message'] = 'hello world';
-            $marketerId = isset($param['marketer_id']) ? $param['marketer_id'] : '0';
-            $data['image'] = $this->staffs_model->GetStaffImage($marketerId);
-            $pusher->trigger('my-channel', 'notice', $data);
+            $input = [];
+            $input['where'] = array('id' => $marketerId);
+            $marketer = $this->staffs_model->load_all($input);
 
-            $title = 'Có 1 contact mới đăng ký';
-            $message = 'Click để xem ngay';
+            if ($marketer[0]['targets'] != '') {
+                $input = [];
+                $input['select'] = 'id';
+                $input['where'] = array('marketer_id' => $marketerId, 'date_rgt >' => strtotime(date('d-m-Y')), 'is_hide' => '0');
+                $today = $this->contacts_model->load_all($input);
+                $totalC3 = count($today);
+
+                $data2['title'] = "C3 số " . $totalC3 . " của " . $marketer[0]['short_name'] . " hôm nay";
+
+                if ($totalC3 < $marketer[0]['targets']) {
+                    $data2['message'] = "Bạn còn " . ($marketer[0]['targets'] - $totalC3) . " C3 nữa là đạt mục tiêu hôm nay!";
+                    
+                }else if ($totalC3 == $marketer[0]['targets']) {
+                    $data2['message'] = "Xin chúc mừng, bạn đã đạt mục tiêu hôm nay. Cố gắng phát huy bạn nhé <3 <3 <3";
+                }else{
+                    $data2['message'] = "Xin chúc mừng, bạn đã vượt mục tiêu hôm nay. Cố gắng phát huy bạn nhé <3 <3 <3";
+                }
+                $title =  $data2['title'];
+                $message = $data2['message'];
+               
+            } else {
+                $data2['title'] = 'Có contact mới đăng ký';
+                $data2['message'] = 'Click để xem ngay';
+            }
+
+            $data2['image'] = $this->staffs_model->GetStaffImage($marketerId);
+            $pusher->trigger('my-channel', 'notice', $data2);
+
+
             $url = 'https://crm2.lakita.vn';
 
             $apiToken = 'a7ea7dd9fe04ee2fe9745bc930e15213';
@@ -152,18 +185,7 @@ class Contact_api extends REST_Controller {
             curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeadersArray);
 
             //execute post
-            $result = curl_exec($ch);
-
-            $resultArray = json_decode($result, true);
-
-            if ($resultArray['status'] == 'success') {
-                //success
-                //echo $resultArray['request_id']; //ID of Notification Request
-            } else if ($resultArray['status'] == 'failure') {
-                //failure
-            } else {
-                //failure
-            }
+           curl_exec($ch);
         }
     }
 

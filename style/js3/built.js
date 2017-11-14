@@ -1996,9 +1996,9 @@ var channel = pusher.subscribe('my-channel');
 channel.bind('notice', function (data) {
     $("#notificate")[0].play();
     n = new Notification(
-            'Có một contact mới đăng ký',
+            data.title,
             {
-                body: 'Click vào đây để xem ngay!',
+                body: data.message,
                 icon: $("#base_url").val() + 'public/images/logo2.png',
                 tag: 'https://crm2.lakita.vn/quan-ly/trang-chu.html',
                 sound: $("#base_url").val() + 'public/mp3/new-contact.mp3',
@@ -2011,7 +2011,8 @@ channel.bind('notice', function (data) {
             <img src="https://crm2.lakita.vn/public/images/logo2.png" style="width: 70%"/>
         </div>
         <div style="float:left; width:65%; padding: 2%">
-            <h4> Có một contact mới đăng ký </h4>
+            <h4> ${data.title} </h4>
+            <p> ${data.message} </p>
             <div>
                 <img src="${data.image}" style="width: 90%"/>
             </div>
@@ -2019,9 +2020,9 @@ channel.bind('notice', function (data) {
     </div>`;
 
     $('body').append(append);
-    setTimeout(function(){
+    setTimeout(function () {
         $("#my-notify").remove();
-    }, 3000);
+    }, 10000);
 
     if (($("#input_controller").val() === 'manager' && $("#input_method").val() === 'index')
             || $("#input_controller").val() === 'marketing' && $("#input_method").val() === 'index') {
@@ -2033,7 +2034,7 @@ channel.bind('notice', function (data) {
 
 channel.bind('callLog', function (data) {
     n = new Notification(
-            'Lịch sử trang web (beta)',
+            data.title,
             {
                 body: data.message,
                 icon: $("#base_url").val() + 'public/images/logo2.png',
@@ -2041,13 +2042,14 @@ channel.bind('callLog', function (data) {
                 image: data.image
             });
 
-       var append = ` <div style="position: fixed; top:10px; left: 10px; z-index: 999999999; 
+    var append = ` <div style="position: fixed; right:10px; bottom: 10px; z-index: 999999999; 
          background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" id="my-notify">
         <div style="float:left; width: 35%; padding: 2%">
             <img src="https://crm2.lakita.vn/public/images/logo2.png" style="width: 70%"/>
         </div>
         <div style="float:left; width:65%; padding: 2%">
-            <h4> ${data.message} </h4>
+            <h4> ${data.title} </h4>
+            <p> ${data.message} </p>
             <div>
                 <img src="${data.image}" style="width: 90%"/>
             </div>
@@ -2055,10 +2057,10 @@ channel.bind('callLog', function (data) {
     </div>`;
 
     $('body').append(append);
-    setTimeout(function(){
+    setTimeout(function () {
         $("#my-notify").remove();
     }, 3000);
-    
+
     $("#call-log-sound")[0].play();
 });/* 
  * To change this license header, choose License Headers in Project Properties.

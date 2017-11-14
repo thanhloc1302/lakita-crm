@@ -442,6 +442,25 @@ $(".action-contact-admin").confirm({
             action: function action() {} }
     }
 });
+$(document).on('click', 'a.add-item-fetch', function (e) {
+    e.preventDefault();
+    var url = $("#url-add-item-fetch").val();
+    $.ajax({
+        url: url,
+        type: "POST",
+        beforeSend: function beforeSend() {
+            return $(".popup-wrapper").show();
+        },
+        success: function success(data) {
+            $("div.replace_content_add_item_modal").html(data);
+        },
+        complete: function complete() {
+            $(".add_item_modal").modal("show");
+            $(".popup-wrapper").hide();
+        }
+    });
+});
+
 $(document).on('click', 'a.add_item', function (e) {
     e.preventDefault();
     var url = $("#url_add_item").val();
@@ -1917,20 +1936,20 @@ var pusher = new Pusher('e37045ff133e03de137a', {
 var channel = pusher.subscribe('my-channel');
 channel.bind('notice', function (data) {
     $("#notificate")[0].play();
-    n = new Notification('Có một contact mới đăng ký', {
-        body: 'Click vào đây để xem ngay!',
+    n = new Notification(data.title, {
+        body: data.message,
         icon: $("#base_url").val() + 'public/images/logo2.png',
         tag: 'https://crm2.lakita.vn/quan-ly/trang-chu.html',
         sound: $("#base_url").val() + 'public/mp3/new-contact.mp3',
         image: data.image
     });
 
-    var append = ' <div style="position: fixed; top:10px; left: 10px; z-index: 999999999; \n         background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" id="my-notify">\n        <div style="float:left; width: 35%; padding: 2%">\n            <img src="https://crm2.lakita.vn/public/images/logo2.png" style="width: 70%"/>\n        </div>\n        <div style="float:left; width:65%; padding: 2%">\n            <h4> C\xF3 m\u1ED9t contact m\u1EDBi \u0111\u0103ng k\xFD </h4>\n            <div>\n                <img src="' + data.image + '" style="width: 90%"/>\n            </div>\n        </div>\n    </div>';
+    var append = ' <div style="position: fixed; top:10px; left: 10px; z-index: 999999999; \n         background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" id="my-notify">\n        <div style="float:left; width: 35%; padding: 2%">\n            <img src="https://crm2.lakita.vn/public/images/logo2.png" style="width: 70%"/>\n        </div>\n        <div style="float:left; width:65%; padding: 2%">\n            <h4> ' + data.title + ' </h4>\n            <p> ' + data.message + ' </p>\n            <div>\n                <img src="' + data.image + '" style="width: 90%"/>\n            </div>\n        </div>\n    </div>';
 
     $('body').append(append);
     setTimeout(function () {
         $("#my-notify").remove();
-    }, 3000);
+    }, 10000);
 
     if ($("#input_controller").val() === 'manager' && $("#input_method").val() === 'index' || $("#input_controller").val() === 'marketing' && $("#input_method").val() === 'index') {
         setTimeout(function () {
@@ -1940,14 +1959,14 @@ channel.bind('notice', function (data) {
 });
 
 channel.bind('callLog', function (data) {
-    n = new Notification('Lịch sử trang web (beta)', {
+    n = new Notification(data.title, {
         body: data.message,
         icon: $("#base_url").val() + 'public/images/logo2.png',
         tag: 'https://crm2.lakita.vn/quan-ly/trang-chu.html',
         image: data.image
     });
 
-    var append = ' <div style="position: fixed; top:10px; left: 10px; z-index: 999999999; \n         background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" id="my-notify">\n        <div style="float:left; width: 35%; padding: 2%">\n            <img src="https://crm2.lakita.vn/public/images/logo2.png" style="width: 70%"/>\n        </div>\n        <div style="float:left; width:65%; padding: 2%">\n            <h4> ' + data.message + ' </h4>\n            <div>\n                <img src="' + data.image + '" style="width: 90%"/>\n            </div>\n        </div>\n    </div>';
+    var append = ' <div style="position: fixed; right:10px; bottom: 10px; z-index: 999999999; \n         background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" id="my-notify">\n        <div style="float:left; width: 35%; padding: 2%">\n            <img src="https://crm2.lakita.vn/public/images/logo2.png" style="width: 70%"/>\n        </div>\n        <div style="float:left; width:65%; padding: 2%">\n            <h4> ' + data.title + ' </h4>\n            <p> ' + data.message + ' </p>\n            <div>\n                <img src="' + data.image + '" style="width: 90%"/>\n            </div>\n        </div>\n    </div>';
 
     $('body').append(append);
     setTimeout(function () {
