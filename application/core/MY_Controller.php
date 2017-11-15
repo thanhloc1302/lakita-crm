@@ -45,6 +45,7 @@ class MY_Controller extends CI_Controller {
         $this->load->vars($this->data);
         // phpinfo();
         require_once APPPATH . 'libraries/Pusher.php';
+        //phpinfo();
     }
 
     private function _check_login() {

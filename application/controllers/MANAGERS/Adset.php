@@ -300,19 +300,24 @@ class Adset extends MY_Table {
         $campaigns = $this->campaign_model->load_all($input);
 
         foreach ($campaigns as $key => $value2) {
-            if ($value2['campaign_id_facebook'] != '') {
-                $url = 'https://graph.facebook.com/v2.11/' . $value2['campaign_id_facebook'] . '/' .
-                        'adsets?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
-                $spend = get_fb_request($url);
-                //  print_arr($spend);
-                //print_arr($spend);
-                //$spend->data[0]->spend
-                if ($spend->data) {
-                    $campaigns[$key]['adsets'] = json_decode(json_encode($spend->data), true);
-                } else {
-                    $campaigns[$key]['adsets'] = [];
+            $input = [];
+            $input['where'] = array('campaign_id' => $value2['id']);
+            $existAdset = $this->{$this->model}->load_all($input);
+         
+                if ($value2['campaign_id_facebook'] != '') {
+                    $url = 'https://graph.facebook.com/v2.11/' . $value2['campaign_id_facebook'] . '/' .
+                            'adsets?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
+                    $spend = get_fb_request($url);
+                    //  print_arr($spend);
+                    //print_arr($spend);
+                    //$spend->data[0]->spend
+                    if ($spend->data) {
+                        $campaigns[$key]['adsets'] = json_decode(json_encode($spend->data), true);
+                    } else {
+                        $campaigns[$key]['adsets'] = [];
+                    }
                 }
-            }
+            
         }
         $newAdsets = [];
         $i = 0;

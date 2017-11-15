@@ -336,39 +336,57 @@ class Campaign extends MY_Table {
     }
 
     public function AddItemFetch() {
-        $accountFBADS = [
-            'Lakita_cũ' => '512062118812690',
-            'Lakita_3.0' => '600208190140429',
-            'Lakita_K3' => '817360198425226'];
+        $this->load->model('campaign_fb_model');
+        $this->load->model('campaign_fb_model');
+        $input = [];
+        $input['where'] = array('date_fetch >' => time() - 3600);
+        $fetchNew = $this->campaign_fb_model->load_all($input);
         $campaigns = [];
-        foreach ($accountFBADS as $key => $value2) {
-            $url = 'https://graph.facebook.com/v2.11/act_' . $value2 . '/' .
-                    'campaigns?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
-            $spend = get_fb_request($url);
-            //  print_arr($spend);
-            //print_arr($spend);
-            //$spend->data[0]->spend
-            $campaigns[$key] = json_decode(json_encode($spend->data), true);
-        }
-        foreach ($campaigns as $key => $value) {
-            foreach ($value as $key2 => $campaign) {
-                $input = array();
-                $input['where'] = array('campaign_id_facebook' => $campaign['id']);
-                $campaigns[$key][$key2]['detail'] = $this->{$this->model}->load_all($input);
+        if (!empty($fetchNew)) {
+            $accountFBADS = [
+                'Lakita_cũ' => '512062118812690',
+                'Lakita_3.0' => '600208190140429',
+                'Lakita_K3' => '817360198425226'];
+//            $input = [];
+//            $input['where'] = array('date_fetch <' => time() - 3600);
+//            $accountFBADS = $this->campaign_fb_model->load_all($input);
+
+
+            foreach ($accountFBADS as $key => $value2) {
+                $url = 'https://graph.facebook.com/v2.11/act_' . $value2 . '/' .
+                        'campaigns?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
+                $spend = get_fb_request($url);
+                //  print_arr($spend);
+                //print_arr($spend);
+                //$spend->data[0]->spend
+                $campaigns[$key] = json_decode(json_encode($spend->data), true);
             }
+
+            foreach ($campaigns as $key => $value) {
+                foreach ($value as $value2) {
+                    if ($value2['status'] == 'ACTIVE') {
+                        $data = [];
+                        $data['account'] = $key;
+                        $data['name'] = $value2['name'];
+                        $data['fb_id'] = $value2['id'];
+                        $data['date_fetch'] = time();
+                        $this->campaign_fb_model->insert($data);
+                    }
+                }
+            }
+            $input = [];
+            $input['where'] = array('date_fetch >' => time() - 3600);
+            $campaigns = $this->campaign_fb_model->load_all($input);
+        } else {
+            $input = [];
+            $input['where'] = array('date_fetch >' => time() - 3600);
+            $campaigns = $fetchNew;
         }
 
-        $newCampaign = [];
-        $i = 0;
         foreach ($campaigns as $key => $value) {
-            foreach ($value as $value2) {
-                //print_arr($value2);
-                if ($value2['status'] == 'ACTIVE') {
-                    $newCampaign[$i] = $value2;
-                    $newCampaign[$i]['name_account'] = $key;
-                }
-                $i++;
-            }
+            $input = array();
+            $input['where'] = array('campaign_id_facebook' => $value['fb_id']);
+            $campaigns[$key]['detail'] = $this->{$this->model}->load_all($input);
         }
 
         /*
@@ -381,7 +399,7 @@ class Campaign extends MY_Table {
             $marketers[$value['id']] = $value['name'];
         }
         $data['marketers'] = $marketers;
-        $data['campaigns'] = $newCampaign;
+        $data['campaigns'] = $campaigns;
         //print_arr($newCampaign);
         echo $this->load->view('MANAGERS/campaign/fetch-campaign', $data, TRUE);
     }

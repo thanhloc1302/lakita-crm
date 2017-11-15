@@ -73,6 +73,10 @@ class MY_Model extends CI_Model {
         }
         return $result;
     }
+    
+     function delete_all() {
+        $this->db->empty_table($this->table);
+    }
 
     /**
      * Thực hiện câu lệnh query

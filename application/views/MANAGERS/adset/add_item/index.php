@@ -44,8 +44,8 @@
                                             <td class="text-right">
                                                 Chọn chiến dịch
                                             </td>
-                                            <td class="select-campign-fetch">
-                                                
+                                            <td class="select-campaign-fetch">
+
                                             </td>
                                         </tr>
                                         <tr>
