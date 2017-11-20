@@ -13,12 +13,9 @@
  */
 class Marketing extends MY_Table {
 
-   
-    
     public function __construct() {
         parent::__construct();
         $this->init();
-        
     }
 
     public function init() {
@@ -176,6 +173,11 @@ class Marketing extends MY_Table {
         $this->show_table();
         //echoQuery();
         $data = $this->data;
+        $progress = $this->GetProccessMarketerToday();
+        $data['marketers'] = $progress['marketers'];
+        $data['C3Team'] = $progress['C3Team'];
+        $data['C3Total'] = 38;
+        $data['progressType'] = 'Tiến độ của team hôm nay';
         $data['list_title'] = 'Danh sách contact ngày hôm nay';
         $data['content'] = 'marketing/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
@@ -241,11 +243,14 @@ class Marketing extends MY_Table {
         $this->show_table();
         //echoQuery();
         $data = $this->data;
+        $progress = $this->GetProccessMarketerThisMonth();
+        $data['marketers'] = $progress['marketers'];
+        $data['C3Team'] = $progress['C3Team'];
+        $data['C3Total'] = 38*30;
+        $data['progressType'] = 'Tiến độ của team tháng này';
         $data['list_title'] = 'Danh sách toàn bộ contact';
         $data['content'] = 'marketing/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
-    
-    
 
 }

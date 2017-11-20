@@ -187,7 +187,7 @@ class MY_Table extends MY_Controller {
          */
         $base_url = ($this->sub_folder == '') ? $this->controller . '/' . $this->method : $this->sub_folder . '/' . $this->controller . '/' . $this->method;
         $this->num_segment = ($this->sub_folder == '') ? 3 : 4;
-       
+
         $this->pagination_link = $this->_create_pagination_link($total_row, $base_url, $this->num_segment);
         $this->begin_paging = ($total_row == 0) ? 0 : $this->offset + 1;
         $this->end_paging = (($this->offset + $this->limit) < $total_row) ? ($this->offset + $this->limit) : $total_row;
@@ -369,6 +369,63 @@ class MY_Table extends MY_Controller {
         $input['select'] = 'id';
         $input['where']['source_id'] = '1';
         $this->L['all'] = count($this->contacts_model->load_all($input));
+    }
+
+    protected function GetProccessMarketerToday() {
+        $marketers = $this->staffs_model->GetActiveMarketers();
+
+        foreach ($marketers as $key => &$marketer) {
+            if ($marketer['username'] == 'trinhnv2' || $marketer['username'] == 'congnn2') {
+                unset($marketers[$key]);
+                continue;
+            }
+            $inputContact = array();
+            $inputContact['select'] = 'id';
+            $inputContact['where'] = array('marketer_id' => $marketer['id'], 'date_rgt >' => strtotime(date('d-m-Y')), 'is_hide' => '0');
+            $today = $this->contacts_model->load_all($inputContact);
+            $marketer['totalC3'] = count($today);
+            $marketer['progress'] = ($marketer['targets'] > 0) ?  round(($marketer['totalC3'] / $marketer['targets']) * 100, 2) : 'N/A';
+        }
+        unset($marketer);
+
+        usort($marketers, function($a, $b) {
+            return -$a['totalC3'] + $b['totalC3'];
+        });
+        $inputContact = array();
+        $inputContact['select'] = 'id';
+        $inputContact['where'] = array('date_rgt >' => strtotime(date('d-m-Y')), 'is_hide' => '0');
+        $today = $this->contacts_model->load_all($inputContact);
+        $C3Team = count($today);
+        // print_arr($marketers);
+        return array('marketers' => $marketers, 'C3Team' => $C3Team);
+    }
+
+    protected function GetProccessMarketerThisMonth() {
+        $marketers = $this->staffs_model->GetActiveMarketers();
+        foreach ($marketers as $key => &$marketer) {
+            if ($marketer['username'] == 'trinhnv2' || $marketer['username'] == 'congnn2') {
+                unset($marketers[$key]);
+                continue;
+            }
+            $inputContact = array();
+            $inputContact['select'] = 'id';
+            $inputContact['where'] = array('marketer_id' => $marketer['id'], 'date_rgt >' => strtotime(date('01-m-Y')), 'is_hide' => '0');
+            $today = $this->contacts_model->load_all($inputContact);
+            $marketer['totalC3'] = count($today);
+            $marketer['targets'] = $marketer['targets'] * 30;
+            $marketer['progress'] = ($marketer['targets'] > 0) ? round(($marketer['totalC3'] / $marketer['targets']) * 100, 2) : 'N/A';
+        }
+        unset($marketer);
+        usort($marketers, function($a, $b) {
+            return -$a['totalC3'] + $b['totalC3'];
+        });
+        $inputContact = array();
+        $inputContact['select'] = 'id';
+        $inputContact['where'] = array('date_rgt >' => strtotime(date('01-m-Y')), 'is_hide' => '0');
+        $today = $this->contacts_model->load_all($inputContact);
+        $C3Team = count($today);
+        // print_arr($marketers);
+        return array('marketers' => $marketers, 'C3Team' => $C3Team);
     }
 
 }

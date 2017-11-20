@@ -219,3 +219,27 @@ div.tab_container{
         border-radius: 50%;
     }
 }
+
+
+
+/*============= progress bar ==========================*/
+.progress {
+    height: 35px;
+
+}
+.progress .skill {
+    line-height: 35px;
+    padding: 0;
+    margin: 0 0 0 20px;
+    text-transform: uppercase;
+}
+.progress .skill .val {
+    float: right;
+    font-style: normal;
+    margin: 0 20px 0 0;
+}
+
+.progress-bar {
+    text-align: left;
+    transition-duration: 3s;
+}

@@ -7,3 +7,16 @@
  */
 
 $config['show_profiler'] = TRUE;
+
+
+/*
+ * Đường dẫn tuyệt đối đến file in cod
+ */
+
+
+if (ENVIRONMENT == 'development') {
+    $config['template_file_print'] = FCPATH . 'public/upload/01Templatever3.xlsx';
+} else {
+    $config['template_file_print'] = FCPATH. 'public/upload/01Templatever4.xlsx';
+}
+

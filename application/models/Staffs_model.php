@@ -40,8 +40,8 @@ class Staffs_model extends MY_Model {
         }
         return $name;
     }
-    
-     public function GetStaffImage($id) {
+
+    public function GetStaffImage($id) {
         $name = '';
         $input2 = array();
         $input2['where'] = array('id' => $id);
@@ -50,6 +50,12 @@ class Staffs_model extends MY_Model {
             $name = $staffs[0]['image'];
         }
         return $name;
+    }
+
+    public function GetActiveMarketers() {
+        $input2 = array();
+        $input2['where'] = array('role_id' => MARKETER_ROLE_ID, 'active' => '1');
+        return $staffs = $this->load_all($input2);
     }
 
 }

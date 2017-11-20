@@ -213,3 +213,17 @@ function h_generateRandomString($length = 10) {
     }
     return $randomString;
 }
+
+function getProgressBarClass($percent){
+    $class = "";
+    if($percent >= 90){
+        $class = "progress-bar-success";
+    }else if($percent >= 70 && $percent < 90){
+        $class = "progress-bar-info";
+    }else if($percent >= 50 && $percent< 70){
+        $class = "progress-bar-warning";
+    }else{
+        $class = "progress-bar-danger";
+    }
+    return $class;
+}

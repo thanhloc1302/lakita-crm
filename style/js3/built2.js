@@ -664,7 +664,12 @@ $(function () {
         }
         ;
     });
-});$(document).on('click', 'a.delete_bill', function (e) {
+    $('.progress .progress-bar').css("width", function () {
+        return $(this).attr("aria-valuenow") + "%";
+    });
+});
+
+$(document).on('click', 'a.delete_bill', function (e) {
     var r = confirm("Bạn có chắc chắn muốn xóa dòng đối soát này không?");
     if (r == true) {
         var del = $(this);

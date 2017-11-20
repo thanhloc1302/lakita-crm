@@ -117,5 +117,10 @@ define('_CHUYEN_KHOAN_', 2);
 
 define('_LOAD_CACHED_', TRUE);
 
+/*
+ * Định nghĩa role id của người dùng
+ */
+define('MARKETER_ROLE_ID', 6);
 
-define('_VER_CACHED_', '15.11.20172');
+
+define('_VER_CACHED_', '20.11.2017');

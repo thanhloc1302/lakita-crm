@@ -365,7 +365,6 @@ class Cod extends MY_Controller {
         $this->load->library('PHPExcel');
         $objPHPExcel = new PHPExcel();
         $objPHPExcel = PHPExcel_IOFactory::createReader('Excel2007');
-        $this->load->config('my_config');
         $template_file_print = $this->config->item('template_file_print');
         $objPHPExcel = $objPHPExcel->load($template_file_print); // Empty Sheet
         $objPHPExcel->setActiveSheetIndex(0);
