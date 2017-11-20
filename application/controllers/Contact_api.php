@@ -77,7 +77,7 @@ class Contact_api extends REST_Controller {
 
             $param['date_rgt'] = time();
             $param['last_activity'] = time();
-            $param['duplicate_id'] = $this->_find_dupliacte_contact($input['phone'], $input['course_code']);
+            $param['duplicate_id'] = $this->_find_dupliacte_contact($param['phone'], $param['course_code']);
             $this->contacts_model->insert_from_mol($param);
 
 //            $myfile = fopen(APPPATH . "../public/last_reg.txt", "w") or die("Unable to open file!");

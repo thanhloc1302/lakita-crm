@@ -274,12 +274,40 @@
                     "price": "895000",
                     "active": "0"
                 },
-    {  
+                {  
                     "id": "40",
                     "course_code": "CB110",
                     "name_course": "COMBO KẾ TOÁN EXCEL TIN HỌC VĂN PHÒNG SIÊU KHUYẾN MÃI",
                     "price": "1290000",
                     "active": "0"
-                }        
-    ]
+                }, 
+                  {  
+                    "id": "41",
+                    "course_code": "CB120",
+                    "name_course": "COMBO KẾ TOÁN EXCEL TIN HỌC VĂN PHÒNG SIÊU KHUYẾN MÃI",
+                    "price": "1290000",
+                    "active": "0"
+                },  
+                  {  
+                    "id": "42",
+                    "course_code": "CB130",
+                    "name_course": "COMBO KẾ TOÁN EXCEL TIN HỌC VĂN PHÒNG SIÊU KHUYẾN MÃI",
+                    "price": "1290000",
+                    "active": "0"
+                },  
+                  {  
+                    "id": "40",
+                    "course_code": "CB140",
+                    "name_course": "COMBO KẾ TOÁN EXCEL TIN HỌC VĂN PHÒNG SIÊU KHUYẾN MÃI",
+                    "price": "1290000",
+                    "active": "0"
+                },  
+                  {  
+                    "id": "40",
+                    "course_code": "CB150",
+                    "name_course": "COMBO KẾ TOÁN EXCEL TIN HỌC VĂN PHÒNG SIÊU KHUYẾN MÃI",
+                    "price": "1290000",
+                    "active": "0"
+                }  
+            ]
 }

@@ -41,7 +41,7 @@ class Cod extends MY_Controller {
 
         $data['titleListContact'] = 'Danh sách contact chưa giao hàng';
         $data['actionForm'] = 'common/action_edit_multi_cod_contact';
-        $informModal = 'cod/modal/edit_multi_contact';
+        $informModal = 'cod/modal/edit_multi_contact cod/modal/reset_provider';
         $data['informModal'] = explode(' ', $informModal);
 
         $data['content'] = 'common/list_contact';
@@ -452,7 +452,7 @@ class Cod extends MY_Controller {
         }
         $this->load->model('cod_cross_check_model');
         $today = date('dm');
-        $where = array('date_print_cod' => $today, 'provider_id' => $post['provider_id']);
+        $where = array('date_print_cod' => $today, 'provider_id' => $post['provider_id_reset']);
         $this->cod_cross_check_model->delete($where);
 
         foreach ($post['contact_id'] as $value) {

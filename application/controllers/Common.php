@@ -523,7 +523,7 @@ class Common extends MY_Controller {
             $post = $this->input->post();
             $param = array();
             $post_arr = array('address', 'payment_method_rgt', 'provider_id', 'cod_status_id', 'code_cross_check',
-                'note_cod', 'weight_envelope', 'cod_fee', 'fee_resend');
+                'note_cod', 'weight_envelope', 'cod_fee', 'fee_resend', 'date_expect_receive_cod');
             foreach ($post_arr as $value) {
                 if (isset($post[$value])) {
                     $param[$value] = $post[$value];

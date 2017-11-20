@@ -14,7 +14,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <select class="form-control selectpicker" name="provider_id">
+                    <select class="form-control selectpicker" name="provider_id_reset">
                         <option value="0"> Chọn đơn vị giao hàng </option>
                         <?php
                         foreach ($providers as $key => $value) {

@@ -259,7 +259,7 @@ class Campaign extends MY_Table {
             if ($this->{$this->model}->check_exists(array('name' => $post['add_name'], 'marketer_id' => $this->user_id))) {
                 redirect_and_die('Tên chiến dịch đã tồn tại!');
             }
-            if ($this->{$this->model}->check_exists(array('campaign_id_facebook' => $post['add_campaign_id_facebook']))) {
+            if ($post['add_campaign_id_facebook'] != '' && $this->{$this->model}->check_exists(array('campaign_id_facebook' => $post['add_campaign_id_facebook']))) {
                 redirect_and_die('Chiến dịch này đã được tạo từ Campaign FB!');
             }
             $paramArr = array('name', 'channel_id', 'campaign_id_facebook', 'desc', 'active');
@@ -337,12 +337,6 @@ class Campaign extends MY_Table {
 
     public function AddItemFetch() {
         $this->load->model('campaign_fb_model');
-        $this->load->model('campaign_fb_model');
-        $input = [];
-        $input['where'] = array('date_fetch >' => time() - 3600);
-        $fetchNew = $this->campaign_fb_model->load_all($input);
-        $campaigns = [];
-        if (!empty($fetchNew)) {
             $accountFBADS = [
                 'Lakita_cũ' => '512062118812690',
                 'Lakita_3.0' => '600208190140429',
@@ -350,8 +344,6 @@ class Campaign extends MY_Table {
 //            $input = [];
 //            $input['where'] = array('date_fetch <' => time() - 3600);
 //            $accountFBADS = $this->campaign_fb_model->load_all($input);
-
-
             foreach ($accountFBADS as $key => $value2) {
                 $url = 'https://graph.facebook.com/v2.11/act_' . $value2 . '/' .
                         'campaigns?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
@@ -377,11 +369,7 @@ class Campaign extends MY_Table {
             $input = [];
             $input['where'] = array('date_fetch >' => time() - 3600);
             $campaigns = $this->campaign_fb_model->load_all($input);
-        } else {
-            $input = [];
-            $input['where'] = array('date_fetch >' => time() - 3600);
-            $campaigns = $fetchNew;
-        }
+       
 
         foreach ($campaigns as $key => $value) {
             $input = array();
@@ -402,6 +390,127 @@ class Campaign extends MY_Table {
         $data['campaigns'] = $campaigns;
         //print_arr($newCampaign);
         echo $this->load->view('MANAGERS/campaign/fetch-campaign', $data, TRUE);
+    }
+
+    public function AddItemFetch2() {
+        $this->load->model('adset_model');
+        $this->load->model('ad_model');
+        $accountFBADS = [
+            'Lakita_cũ' => '512062118812690',
+            'Lakita_3.0' => '600208190140429',
+            'Lakita_K3' => '817360198425226'];
+//            $input = [];
+//            $input['where'] = array('date_fetch <' => time() - 3600);
+//            $accountFBADS = $this->campaign_fb_model->load_all($input);
+        foreach ($accountFBADS as $key => $value2) {
+            $url = 'https://graph.facebook.com/v2.11/act_' . $value2 . '/' .
+                    'campaigns?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
+            $spend = get_fb_request($url);
+            $campaigns[$key] = json_decode(json_encode($spend->data), true);
+        }
+
+        /*
+         * Chỉ lấy các campaign đang active, và chưa ai tạo ở CRM
+         */
+        $campaignActive = [];
+        $i = 0;
+        foreach ($campaigns as $key => $value) {
+            foreach ($value as $value2) {
+                if ($value2['status'] == 'ACTIVE') {
+                    $input = array();
+                    $input['select'] = 'id';
+                    $input['where'] = array('campaign_id_facebook' => $value2['id']);
+                    $existCampaign = $this->{$this->model}->load_all($input);
+                    if (empty($existCampaign)) {
+                        $campaignActive[$i]['account'] = $key;
+                        $campaignActive[$i]['fb_campaign_id'] = $value2['id'];
+                        $campaignActive[$i]['fb_campaign_name'] = $value2['name'];
+                        $i++;
+                    }
+                }
+            }
+        }
+
+        /*
+         * Lấy danh sách các marketer
+         */
+//        $input = [];
+//        $input['where'] = array('role_id' => 6, 'active' => '1');
+//        $marketerArr = $this->staffs_model->load_all($input);
+//        foreach ($marketerArr as $value) {
+//            $marketers[$value['id']] = $value['name'];
+//        }
+//        $data['marketers'] = $marketers;
+
+        foreach ($campaignActive as $key => $value) {
+            $url = 'https://graph.facebook.com/v2.11/' . $value['fb_campaign_id'] . '/' .
+                    'adsets?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
+            $spend = get_fb_request($url);
+            $adsets = json_decode(json_encode($spend->data), true);
+            if (!empty($adsets)) {
+                foreach ($adsets as $adset) {
+                    if ($adset['status'] == 'ACTIVE') {
+                        $input = array();
+                        $input['select'] = 'id';
+                        $input['where'] = array('adset_id_facebook' => $adset['id']);
+                        $existAdset = $this->adset_model->load_all($input);
+                        if (empty($existAdset)) {
+                            $campaignActive[$key]['adset'][] = ['fb_adset_id' => $adset['id'],
+                                'fb_adset_name' => $adset['name']];
+                        }
+                    }
+                }
+            }
+        }
+        foreach ($campaignActive as $keyCampaign => $campaign) {
+            if (!empty($campaign['adset'])) {
+                foreach ($campaign['adset'] as $keyAdset => $adset) {
+                    $url = 'https://graph.facebook.com/v2.11/' . $adset['fb_adset_id'] . '/' .
+                            'ads?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
+                    $spend = get_fb_request($url);
+                    $ads = json_decode(json_encode($spend->data), true);
+                    if (!empty($ads)) {
+                        foreach ($ads as $ad) {
+                            if ($ad['status'] == 'ACTIVE') {
+                                $input = array();
+                                $input['select'] = 'id';
+                                $input['where'] = array('ad_id_facebook' => $ad['id']);
+                                $existAd = $this->ad_model->load_all($input);
+                                if (empty($existAd)) {
+                                    $campaignActive[$keyCampaign]['adset'][$keyAdset]['ad'][] = 
+                                            ['fb_ad_id' => $ad['id'],
+                                        'fb_ad_name' => $ad['name']];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $newCampaign = [];
+        $i = 0;
+        foreach ($campaignActive as $keyCampaign => $campaign) {
+            if (!empty($campaign['adset'])) {
+                foreach ($campaign['adset'] as $keyAdset => $adset) {
+                    if (!empty($adset['ad'])) {
+                        foreach ($adset['ad'] as $keyAd => $ad) {
+                            $newCampaign[$i]['account'] = $campaign['account'];
+                            $newCampaign[$i]['fb_campaign_id'] = $campaign['fb_campaign_id'];
+                            $newCampaign[$i]['fb_campaign_name'] = $campaign['fb_campaign_name'];
+                            $newCampaign[$i]['fb_adset_id'] = $adset['fb_adset_id'];
+                            $newCampaign[$i]['fb_adset_name'] = $adset['fb_adset_name'];
+                            $newCampaign[$i]['fb_ad_id'] = $ad['fb_ad_id'];
+                            $newCampaign[$i]['fb_ad_name'] = $ad['fb_ad_name'];
+                            $i++;
+                        }
+                    }
+                }
+            }
+        }
+
+        $data['campaigns'] = $newCampaign;
+        //print_arr($newCampaign);
+        echo $this->load->view('MANAGERS/campaign/fetch-campaign-2', $data, TRUE);
     }
 
     public function AddItemFromFb() {

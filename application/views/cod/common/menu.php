@@ -24,7 +24,7 @@
     <li>
         <a href="<?php echo base_url('cod/tracking'); ?>">
             <img src="<?php echo base_url(); ?>public/images/tracking.png"> 
-            <span style="font-size: 15px; font-weight: bold; color: red;"> Theo dõi đơn hàng Viettel </span> 
+            <span> Theo dõi đơn hàng Viettel </span> 
         </a>
     </li>
     

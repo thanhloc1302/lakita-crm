@@ -57,7 +57,7 @@
                 <li> <i class="fa fa-link" aria-hidden="true"></i> &nbsp; &nbsp; Xuất thành chuỗi đối soát </li>
             </a>
             <a href="#" class="btn-reset-provider"> 
-                <li> <i class="fa fa-paper-plane" aria-hidden="true"></i> &nbsp; &nbsp; Reset trạng thái giao hàng </li>
+                <li> <i class="fa fa-refresh" aria-hidden="true"></i> &nbsp; &nbsp; Reset trạng thái giao hàng </li>
             </a>
         <?php } else if ($controller == 'admin') { ?>
             <a href="#" 
@@ -98,15 +98,18 @@
                 <li>  <i class="fa fa-trash-o" aria-hidden="true"></i> &nbsp; &nbsp; Xóa các dòng đã chọn </li>
             </a> 
         <?php } ?>
-        <a href="#"  class="export-to-excel" 
-           data-form-id="action_contact"
-           data-action="common/ExportToExcel"
-           data-method="POST">
-            <li> 
-                <i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp; &nbsp; Xuất thành file excel
-            </li>
 
-        </a>
+        <?php if ($controller != 'cod') { ?>
+            <a href="#"  class="export-to-excel" 
+               data-form-id="action_contact"
+               data-action="common/ExportToExcel"
+               data-method="POST">
+                <li> 
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp; &nbsp; Xuất thành file excel
+                </li>
+
+            </a>
+        <?php } ?>
         <a href="#" 
            class="ajax-request-modal load-new-contact-id"
            data-contact-id ="0"
