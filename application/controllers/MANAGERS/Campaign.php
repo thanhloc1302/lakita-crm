@@ -335,41 +335,41 @@ class Campaign extends MY_Table {
         show_error_and_redirect('Sửa chiến dịch thành công!');
     }
 
-    public function AddItemFetch() {
+    public function AddItemFetch2() {
         $this->load->model('campaign_fb_model');
-            $accountFBADS = [
-                'Lakita_cũ' => '512062118812690',
-                'Lakita_3.0' => '600208190140429',
-                'Lakita_K3' => '817360198425226'];
+        $accountFBADS = [
+            'Lakita_cũ' => '512062118812690',
+            'Lakita_3.0' => '600208190140429',
+            'Lakita_K3' => '817360198425226'];
 //            $input = [];
 //            $input['where'] = array('date_fetch <' => time() - 3600);
 //            $accountFBADS = $this->campaign_fb_model->load_all($input);
-            foreach ($accountFBADS as $key => $value2) {
-                $url = 'https://graph.facebook.com/v2.11/act_' . $value2 . '/' .
-                        'campaigns?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
-                $spend = get_fb_request($url);
-                //  print_arr($spend);
-                //print_arr($spend);
-                //$spend->data[0]->spend
-                $campaigns[$key] = json_decode(json_encode($spend->data), true);
-            }
+        foreach ($accountFBADS as $key => $value2) {
+            $url = 'https://graph.facebook.com/v2.11/act_' . $value2 . '/' .
+                    'campaigns?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
+            $spend = get_fb_request($url);
+            //  print_arr($spend);
+            //print_arr($spend);
+            //$spend->data[0]->spend
+            $campaigns[$key] = json_decode(json_encode($spend->data), true);
+        }
 
-            foreach ($campaigns as $key => $value) {
-                foreach ($value as $value2) {
-                    if ($value2['status'] == 'ACTIVE') {
-                        $data = [];
-                        $data['account'] = $key;
-                        $data['name'] = $value2['name'];
-                        $data['fb_id'] = $value2['id'];
-                        $data['date_fetch'] = time();
-                        $this->campaign_fb_model->insert($data);
-                    }
+        foreach ($campaigns as $key => $value) {
+            foreach ($value as $value2) {
+                if ($value2['status'] == 'ACTIVE') {
+                    $data = [];
+                    $data['account'] = $key;
+                    $data['name'] = $value2['name'];
+                    $data['fb_id'] = $value2['id'];
+                    $data['date_fetch'] = time();
+                    $this->campaign_fb_model->insert($data);
                 }
             }
-            $input = [];
-            $input['where'] = array('date_fetch >' => time() - 3600);
-            $campaigns = $this->campaign_fb_model->load_all($input);
-       
+        }
+        $input = [];
+        $input['where'] = array('date_fetch >' => time() - 3600);
+        $campaigns = $this->campaign_fb_model->load_all($input);
+
 
         foreach ($campaigns as $key => $value) {
             $input = array();
@@ -392,7 +392,7 @@ class Campaign extends MY_Table {
         echo $this->load->view('MANAGERS/campaign/fetch-campaign', $data, TRUE);
     }
 
-    public function AddItemFetch2() {
+    public function AddItemFetch() {
         $this->load->model('adset_model');
         $this->load->model('ad_model');
         $accountFBADS = [
@@ -417,30 +417,13 @@ class Campaign extends MY_Table {
         foreach ($campaigns as $key => $value) {
             foreach ($value as $value2) {
                 if ($value2['status'] == 'ACTIVE') {
-                    $input = array();
-                    $input['select'] = 'id';
-                    $input['where'] = array('campaign_id_facebook' => $value2['id']);
-                    $existCampaign = $this->{$this->model}->load_all($input);
-                    if (empty($existCampaign)) {
-                        $campaignActive[$i]['account'] = $key;
-                        $campaignActive[$i]['fb_campaign_id'] = $value2['id'];
-                        $campaignActive[$i]['fb_campaign_name'] = $value2['name'];
-                        $i++;
-                    }
+                    $campaignActive[$i]['account'] = $key;
+                    $campaignActive[$i]['fb_campaign_id'] = $value2['id'];
+                    $campaignActive[$i]['fb_campaign_name'] = $value2['name'];
+                    $i++;
                 }
             }
         }
-
-        /*
-         * Lấy danh sách các marketer
-         */
-//        $input = [];
-//        $input['where'] = array('role_id' => 6, 'active' => '1');
-//        $marketerArr = $this->staffs_model->load_all($input);
-//        foreach ($marketerArr as $value) {
-//            $marketers[$value['id']] = $value['name'];
-//        }
-//        $data['marketers'] = $marketers;
 
         foreach ($campaignActive as $key => $value) {
             $url = 'https://graph.facebook.com/v2.11/' . $value['fb_campaign_id'] . '/' .
@@ -450,14 +433,8 @@ class Campaign extends MY_Table {
             if (!empty($adsets)) {
                 foreach ($adsets as $adset) {
                     if ($adset['status'] == 'ACTIVE') {
-                        $input = array();
-                        $input['select'] = 'id';
-                        $input['where'] = array('adset_id_facebook' => $adset['id']);
-                        $existAdset = $this->adset_model->load_all($input);
-                        if (empty($existAdset)) {
-                            $campaignActive[$key]['adset'][] = ['fb_adset_id' => $adset['id'],
-                                'fb_adset_name' => $adset['name']];
-                        }
+                        $campaignActive[$key]['adset'][] = ['fb_adset_id' => $adset['id'],
+                            'fb_adset_name' => $adset['name']];
                     }
                 }
             }
@@ -477,8 +454,7 @@ class Campaign extends MY_Table {
                                 $input['where'] = array('ad_id_facebook' => $ad['id']);
                                 $existAd = $this->ad_model->load_all($input);
                                 if (empty($existAd)) {
-                                    $campaignActive[$keyCampaign]['adset'][$keyAdset]['ad'][] = 
-                                            ['fb_ad_id' => $ad['id'],
+                                    $campaignActive[$keyCampaign]['adset'][$keyAdset]['ad'][] = ['fb_ad_id' => $ad['id'],
                                         'fb_ad_name' => $ad['name']];
                                 }
                             }
@@ -508,13 +484,110 @@ class Campaign extends MY_Table {
             }
         }
 
+
+        $this->load->model('landingpage_model');
+        $input = array();
+        $input['where'] = array('active' => 1);
+        $landingpages = $this->landingpage_model->load_all($input);
+        $data['landingpages'] = $landingpages;
         $data['campaigns'] = $newCampaign;
         //print_arr($newCampaign);
         echo $this->load->view('MANAGERS/campaign/fetch-campaign-2', $data, TRUE);
     }
 
-    public function AddItemFromFb() {
+    public function AddItemFromFb2() {
+        $message = '';
+        $post = $this->input->post();
+        $this->load->model('adset_model');
+        $this->load->model('ad_model');
+        $this->load->model('link_model');
         
+        $campaignId = 0;
+        $inputCampaign = array();
+        $inputCampaign['select'] = 'id';
+        $inputCampaign['where'] = array('campaign_id_facebook' => $post['fb_campaign_id']);
+        $existCampaign = $this->{$this->model}->load_all($inputCampaign);
+        if (empty($existCampaign)) {
+            $param = [];
+            $param['name'] = $post['fb_campaign_name'];
+            $param['channel_id'] = 2;
+            $param['campaign_id_facebook'] = $post['fb_campaign_id'];
+            $param['desc'] = $post['fb_campaign_name'];
+            $param['active'] = 1;
+            $param['time'] = time();
+            $param['marketer_id'] = $this->user_id;
+            $campaignId = $this->{$this->model}->insert_return_id($param, 'id');
+            $message .= 'Tạo campaign mới thành công' . '<br>';
+        }else{
+            $campaignId = $existCampaign[0]['id'];
+        }
+
+        
+        $adsetId = 0;
+        $inputAdset = array();
+        $inputAdset['select'] = 'id';
+        $inputAdset['where'] = array('adset_id_facebook' => $post['fb_adset_id']);
+        $existAdset = $this->adset_model->load_all($inputAdset);
+        if (empty($existAdset)) {
+            $param = [];
+            $param['name'] = $post['fb_adset_name'];
+            $param['adset_id_facebook'] = $post['fb_adset_id'];
+            $param['desc'] = $post['fb_adset_name'];
+            $param['active'] = 1;
+            $param['time'] = time();
+            $param['marketer_id'] = $this->user_id;
+            $adsetId = $this->adset_model->insert_return_id($param, 'id');
+            $message .= 'Tạo adset mới thành công' . '<br>';
+        }else{
+            $adsetId = $existAdset[0]['id'];
+        }
+
+
+        $adId = 0;
+        $inputAd = array();
+        $inputAd['select'] = 'id';
+        $inputAd['where'] = array('ad_id_facebook' => $post['fb_ad_id']);
+        $existAd = $this->ad_model->load_all($inputAd);
+        if (empty($existAd)) {
+            $param = [];
+            $param['name'] = $post['fb_ad_name'];
+            $param['ad_id_facebook'] = $post['fb_ad_id'];
+            $param['desc'] = $post['fb_ad_name'];
+            $param['active'] = 1;
+            $param['time'] = time();
+            $param['marketer_id'] = $this->user_id;
+            $adId = $this->ad_model->insert_return_id($param, 'id');
+            $message .= 'Tạo ad mới thành công' . '<br>';
+        }else{
+            $adId = $existAd[0]['id'];
+        }
+
+        //  $paramArr = array('channel_id', 'campaign_id', 'adset_id', 'ad_id', 'landingpage_id');
+
+        $param = [];
+        $param['channel_id'] = 2;
+        $param['campaign_id'] = $campaignId;
+        $param['adset_id'] = $adsetId;
+        $param['ad_id'] = $adId;
+        $param['landingpage_id'] = $post['landing_page_id'];
+        $param['time'] = time();
+        $param['marketer_id'] = $this->user_id;
+        $link_id = $this->link_model->insert_return_id($param, 'id');
+
+
+        $input_ld = array();
+        $input_ld['where'] = array('id' => $post['landing_page_id']);
+        $this->load->model('landingpage_model');
+        $lds = $this->landingpage_model->load_all($input_ld);
+
+        $url = $lds[0]['url'] . '?link=' . $link_id;
+        /*
+         * Cập nhật lại url
+         */
+        $where = array('id' => $link_id);
+        $data = array('url' => $url);
+        $this->link_model->update($where, $data);
+        echo ('Link vừa tạo là ' . $url);
     }
 
 }

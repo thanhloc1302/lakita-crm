@@ -19,3 +19,7 @@
 <!-- Add item from fb -->
 <input type="hidden" value="<?php echo base_url() . $this->controller_path . '/AddItemFromFb' ?>" id="url-add-item-from-fb" />
 
+<!-- Add item from fb 2 -->
+<input type="hidden" value="<?php echo base_url() . $this->controller_path . '/AddItemFromFb2' ?>" id="url-add-item-from-fb-2" />
+
+

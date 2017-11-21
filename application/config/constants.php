@@ -123,4 +123,4 @@ define('_LOAD_CACHED_', TRUE);
 define('MARKETER_ROLE_ID', 6);
 
 
-define('_VER_CACHED_', '20.11.2017');
+define('_VER_CACHED_', '21.11.2017');

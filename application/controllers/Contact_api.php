@@ -98,15 +98,15 @@ class Contact_api extends REST_Controller {
                     'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
             );
 
-            $input = [];
-            $input['where'] = array('id' => $marketerId);
-            $marketer = $this->staffs_model->load_all($input);
+            $inputMkt = [];
+            $inputMkt['where'] = array('id' => $marketerId);
+            $marketer = $this->staffs_model->load_all($inputMkt);
 
             if ($marketer[0]['targets'] != '') {
-                $input = [];
-                $input['select'] = 'id';
-                $input['where'] = array('marketer_id' => $marketerId, 'date_rgt >' => strtotime(date('d-m-Y')), 'is_hide' => '0');
-                $today = $this->contacts_model->load_all($input);
+                $inputToday = [];
+                $inputToday['select'] = 'id';
+                $inputToday['where'] = array('marketer_id' => $marketerId, 'date_rgt >' => strtotime(date('d-m-Y')), 'is_hide' => '0');
+                $today = $this->contacts_model->load_all($inputToday);
                 $totalC3 = count($today);
 
                 $data2['title'] = "C3 số " . $totalC3 . " của " . $marketer[0]['short_name'] . " hôm nay";

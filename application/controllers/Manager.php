@@ -227,10 +227,20 @@ class Manager extends MY_Controller {
                     $this->load->model('notes_model');
                     $this->notes_model->insert($param2);
                 }
-                /* cập nhật để báo notificaton */
-                $myfile = fopen(APPPATH . "../public/last_reg.txt", "w") or die("Unable to open file!");
-                fwrite($myfile, time());
-                fclose($myfile);
+                $data2 = [];
+
+                $data2['title'] = 'Có 1 contact mới đăng ký';
+                $data2['message'] = 'Click để xem ngay';
+
+                require_once APPPATH . 'libraries/Pusher.php';
+                $options = array(
+                    'cluster' => 'ap1',
+                    'encrypted' => true
+                );
+                $pusher = new Pusher(
+                        'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
+                );
+                $pusher->trigger('my-channel', 'notice', $data2);
                 show_error_and_redirect('Thêm thành công contact', $input['back_location']);
             }
         } else {
