@@ -501,7 +501,7 @@ class Campaign extends MY_Table {
         $this->load->model('adset_model');
         $this->load->model('ad_model');
         $this->load->model('link_model');
-        
+
         $campaignId = 0;
         $inputCampaign = array();
         $inputCampaign['select'] = 'id';
@@ -518,11 +518,11 @@ class Campaign extends MY_Table {
             $param['marketer_id'] = $this->user_id;
             $campaignId = $this->{$this->model}->insert_return_id($param, 'id');
             $message .= 'Tạo campaign mới thành công' . '<br>';
-        }else{
+        } else {
             $campaignId = $existCampaign[0]['id'];
         }
 
-        
+
         $adsetId = 0;
         $inputAdset = array();
         $inputAdset['select'] = 'id';
@@ -531,6 +531,7 @@ class Campaign extends MY_Table {
         if (empty($existAdset)) {
             $param = [];
             $param['name'] = $post['fb_adset_name'];
+            $param['campaign_id'] = $campaignId;
             $param['adset_id_facebook'] = $post['fb_adset_id'];
             $param['desc'] = $post['fb_adset_name'];
             $param['active'] = 1;
@@ -538,7 +539,7 @@ class Campaign extends MY_Table {
             $param['marketer_id'] = $this->user_id;
             $adsetId = $this->adset_model->insert_return_id($param, 'id');
             $message .= 'Tạo adset mới thành công' . '<br>';
-        }else{
+        } else {
             $adsetId = $existAdset[0]['id'];
         }
 
@@ -551,6 +552,7 @@ class Campaign extends MY_Table {
         if (empty($existAd)) {
             $param = [];
             $param['name'] = $post['fb_ad_name'];
+            $param['adset_id'] = $adsetId;
             $param['ad_id_facebook'] = $post['fb_ad_id'];
             $param['desc'] = $post['fb_ad_name'];
             $param['active'] = 1;
@@ -558,20 +560,29 @@ class Campaign extends MY_Table {
             $param['marketer_id'] = $this->user_id;
             $adId = $this->ad_model->insert_return_id($param, 'id');
             $message .= 'Tạo ad mới thành công' . '<br>';
-        }else{
+        } else {
             $adId = $existAd[0]['id'];
         }
 
-        //  $paramArr = array('channel_id', 'campaign_id', 'adset_id', 'ad_id', 'landingpage_id');
-
-        $param = [];
-        $param['channel_id'] = 2;
-        $param['campaign_id'] = $campaignId;
-        $param['adset_id'] = $adsetId;
-        $param['ad_id'] = $adId;
-        $param['landingpage_id'] = $post['landing_page_id'];
+        /*
+         * Kiểm tra link đã đc tạo chưa
+         */
+        $inputLinkExist = array();
+        $inputLinkExist['select'] = 'id';
+        $inputLinkExist['where'] = array(
+            'channel_id' => 2,
+            'campaign_id' => $campaignId,
+            'adset_id' => $adsetId,
+            'ad_id' => $adId,
+            'landingpage_id' => $post['landing_page_id'],
+            'marketer_id' => $this->user_id
+        );
+        $existLink = $this->link_model->load_all($inputLinkExist);
+        if (!empty($existLink)) {
+            die('Link đã tồn tại, vui lòng kiểm tra lại');
+        }
+        $param = $inputLinkExist['where'];
         $param['time'] = time();
-        $param['marketer_id'] = $this->user_id;
         $link_id = $this->link_model->insert_return_id($param, 'id');
 
 

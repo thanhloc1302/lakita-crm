@@ -1,5 +1,4 @@
-
-<div class="row" style="margin-right: 5px; margin-left: 5px;">
+<div class="row add-campaign-fb-fetch" style="margin-right: 5px; margin-left: 5px;">
     <div class="col-md-12">
         <table class="table table-striped table-bordered table-hover table-1 table-view-1 heavyTable" style="height: 193px;">
             <thead>

@@ -176,7 +176,7 @@ class Marketing extends MY_Table {
         $progress = $this->GetProccessMarketerToday();
         $data['marketers'] = $progress['marketers'];
         $data['C3Team'] = $progress['C3Team'];
-        $data['C3Total'] = 38;
+        $data['C3Total'] = MARKETING_KPI_PER_DAY;
         $data['progressType'] = 'Tiến độ của team hôm nay';
         $data['list_title'] = 'Danh sách contact ngày hôm nay';
         $data['content'] = 'marketing/index';

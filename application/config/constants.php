@@ -121,6 +121,7 @@ define('_LOAD_CACHED_', TRUE);
  * Định nghĩa role id của người dùng
  */
 define('MARKETER_ROLE_ID', 6);
+define('MARKETING_KPI_PER_DAY', 48);
+define('TVTS_KPI_PER_DAY', 23);
 
-
-define('_VER_CACHED_', '21.11.2017');
+define('_VER_CACHED_', '21.11.20173');

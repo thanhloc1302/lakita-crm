@@ -1362,7 +1362,7 @@ class Manager extends MY_Controller {
         $today = $this->contacts_model->load_all($inputContact);
         $progress['marketing'] = array(
             'count' => count($today),
-            'kpi' => 38,
+            'kpi' => MARKETING_KPI_PER_DAY,
             'name' => 'Marketing',
             'type' => 'C3');
         $progress['marketing']['progress'] = round($progress['marketing']['count'] / $progress['marketing']['kpi'] * 100, 2);
