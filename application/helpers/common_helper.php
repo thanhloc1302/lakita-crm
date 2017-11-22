@@ -227,3 +227,12 @@ function getProgressBarClass($percent){
     }
     return $class;
 }
+
+function hGetTimeRange($startDate, $endDate) {
+    $dateArray = array();
+    for ($i = $startDate; $i <= $endDate; $i += 3600 * 24) {
+        $date = date('d', $i);
+        $dateArray[$date] = $i;
+    }
+    return $dateArray;
+}

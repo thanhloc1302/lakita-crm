@@ -302,7 +302,7 @@ $.fn.setFixTable = function (_tableID) {
     });
 
     $(document).on('scroll', function () {
-        if ($("html").scrollTop() > ($(".table-head-pos").offset().top)) {
+        if ($(".table-head-pos").length && $("html").scrollTop() > ($(".table-head-pos").offset().top)) {
             $(".fixed-table").css({
                 "display": "block"
             });

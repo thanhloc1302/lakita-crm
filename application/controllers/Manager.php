@@ -1373,7 +1373,7 @@ class Manager extends MY_Controller {
         $today = $this->contacts_model->load_all($inputContact);
         $progress['sale'] = array(
             'count' => count($today),
-            'kpi' => 23,
+            'kpi' => TVTS_KPI_PER_DAY,
             'name' => 'TVTS',
             'type' => 'L6');
         $progress['sale']['progress'] = round($progress['sale']['count'] / $progress['sale']['kpi'] * 100, 2);

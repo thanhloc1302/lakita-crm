@@ -56,7 +56,7 @@
                         </a>
                     </td>
                     <td>
-                        <?php echo $value['status_viettel']; ?>
+                        <?php echo isset($value['status_viettel']) ? $value['status_viettel'] : ''; ?>
                     </td>
                 </tr>
                 <?php

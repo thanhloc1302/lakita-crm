@@ -10,7 +10,7 @@
  *
  * @author Phạm Ngọc Chuyển <chuyenpn at lakita.vn>
  */
-class Report extends MY_Controller {
+class Report extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -25,10 +25,7 @@ class Report extends MY_Controller {
 
     function send_report_sale_daily() {
         $get = [];
-        $require_model = array(
-            'courses' => array()
-        );
-        $data = $this->_get_require_data($require_model);
+        $data =[];
         $input = array();
         $input['where'] = array('role_id' => 1);
         $staffs = $this->staffs_model->load_all($input);
@@ -411,7 +408,7 @@ class Report extends MY_Controller {
         $this->load->library("email");
         $this->email->from('cskh@lakita.vn', "lakita.vn");
         $this->email->to($emailTo);
-        $this->email->subject('Các contact chờ duyệt chuyển hoàn (nguy cơ hủy đơn) ngày ' . date('d-m-Y') . ' (by cron job)');
+        $this->email->subject('BÁO CÁO COD NGÀY ' . date('d-m-Y') . ' (BY CLI & CRON JOB)');
         $this->email->message($str);
         $this->email->send();
     }
@@ -658,5 +655,6 @@ class Report extends MY_Controller {
     function view_pivot_table() {
         $this->load->view('pivot_table');
     }
+  
 
 }
