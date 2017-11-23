@@ -118,6 +118,7 @@ class Common extends MY_Controller {
                 'script' => 'edit',
                 'call_stt' => 'edit',
                 'ordering_stt' => 'edit',
+               // 'provider' => 'edit',
                 'date_recall' => 'edit',
                 'date_expect_receive_cod' => 'edit',
                 'send_banking_info' => 'edit',
@@ -125,7 +126,7 @@ class Common extends MY_Controller {
                 'note_cod' => 'edit'
             );
         }
-        if ($this->role_id == 2) {
+        if ($this->role_id == 2) { //cod
             $left_edit = array(
                 'contact_id' => 'view',
                 'name' => 'view',
@@ -325,7 +326,7 @@ class Common extends MY_Controller {
             $dataPush['title'] = 'Lịch sử trang web (beta)';
             $dataPush['message'] = $this->staffs_model->find_staff_name($this->user_id) . ' đã cập nhật cuộc gọi';
             $dataPush['success'] = '0';
-            
+
             $post = $this->input->post();
             $param = array();
             $post_arr = array('name', 'email', 'address', 'course_code',
@@ -366,6 +367,21 @@ class Common extends MY_Controller {
                 echo json_encode($result);
                 die;
             }
+//            if (isset($post['provider_id'])) {
+//                if ($post['provider_id'] > 0 && $post['ordering_status_id'] != _DONG_Y_MUA_) {
+//                    $result['success'] = 0;
+//                    $result['message'] = 'Chỉ contact đồng ý mua mới có đơn vị giao hàng!';
+//                    echo json_encode($result);
+//                    die;
+//                } else if ($post['provider_id'] == 0 && $post['ordering_status_id'] == _DONG_Y_MUA_) {
+//                    $result['success'] = 0;
+//                    $result['message'] = 'Bạn cần chọn đơn vị giao hàng!';
+//                    echo json_encode($result);
+//                    die;
+//                } else {
+//                    $param['provider_id'] = $post['provider_id'];
+//                }
+//            }
 
             $check_rule = $this->_check_rule($param['call_status_id'], $param['ordering_status_id'], $param['date_recall']);
 
@@ -403,9 +419,8 @@ class Common extends MY_Controller {
                 if ($totalL6 > $thisSale[0]['targets']) {
                     $dataPush['message'] = "Xin chúc mừng, bạn đã vượt mục tiêu hôm nay. Cố gắng phát huy bạn nhé <3 <3 <3";
                 }
-                
+
                 $dataPush['success'] = '1';
-                
             } else {
                 $param['date_confirm'] = 0;
             }
@@ -673,7 +688,7 @@ class Common extends MY_Controller {
         $provider_prefix = $provider[0]['prefix'];
 
         $this->load->model('cod_cross_check_model');
-        $today = date('dm'); //lấy định dạng ngày_tháng để ghép vào mã bill
+        $today = date('dmy'); //lấy định dạng ngày_tháng để ghép vào mã bill
         $input_cod_cross_check = array();
         $input_cod_cross_check['where'] = array('date_print_cod' => $today, 'provider_id' => $post['provider_id']);
         $input_cod_cross_check['order'] = array('id' => 'DESC');

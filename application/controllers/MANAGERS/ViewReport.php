@@ -33,9 +33,44 @@ class ViewReport extends MY_Controller {
         foreach ($period as $dayName => $dayTimeStamp) {
             $input = array();
             $input['select'] = 'id';
-            $input['where'] = array('date_rgt >=' => $dayTimeStamp, 'date_rgt <=' => $dayTimeStamp + 24 * 3600 - 1);
+            $input['where'] = array('date_rgt >=' => $dayTimeStamp,
+                'date_rgt <=' => $dayTimeStamp + 24 * 3600 - 1, 'is_hide' => '0');
             $period2[$dayName] = count($this->contacts_model->load_all($input));
         }
+
+        $startDate = strtotime(date('Y-m-01'));
+        $i = 1;
+        $luyKe = [];
+        foreach ($period as $dayName => $dayTimeStamp) {
+            $input = array();
+            $input['select'] = 'id';
+            $input['where'] = array('date_rgt >=' => $startDate,
+                'date_rgt <=' => $dayTimeStamp + 24 * 3600 - 1, 'is_hide' => '0');
+            $luyKe[$dayName]['C3'] = count($this->contacts_model->load_all($input));
+            $luyKe[$dayName]['KPI'] = 38 * $i++;
+        }
+
+        $marketers = $this->staffs_model->GetActiveMarketers();
+        foreach ($marketers as $key => $marketer) {
+            $i = 1;
+            foreach ($period as $dayName => $dayTimeStamp) {
+                $input = array();
+                $input['select'] = 'id';
+                $input['where'] = array('date_rgt >=' => $startDate,
+                    'date_rgt <=' => $dayTimeStamp + 24 * 3600 - 1, 'is_hide' => '0',
+                    'marketer_id' => $marketer['id']);
+                $marketers[$key]['Number'][$dayName]['C3'] = count($this->contacts_model->load_all($input));
+                $marketers[$key]['Number'][$dayName]['KPI'] = $marketer['targets'] * $i++;
+            }
+        }
+        uasort($marketers, function($a, $b){
+            $length = count($a['Number']) - 1;
+            return -$a['Number'][$length]['C3'] + $b['Number'][$length]['C3'];
+        });
+
+        // print_arr($marketers);
+        $data['marketers'] = $marketers;
+        $data['luyKe'] = $luyKe;
         $data['period'] = $period2;
         $data['slide_menu'] = 'manager/common/menu';
         $data['top_nav'] = 'manager/common/top-nav';

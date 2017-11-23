@@ -26,7 +26,7 @@ class Cod extends MY_Controller {
         $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
-        $data['left_col'] = array('sale');
+        $data['left_col'] = array('sale', 'provider');
         //  $data['right_col'] = array('date_confirm');
         $this->table .= 'date_confirm date_expect_receive_cod note_cod';
         $data['table'] = explode(' ', $this->table); //array('selection', 'contact_id');

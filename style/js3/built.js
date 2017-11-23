@@ -2116,7 +2116,10 @@ channel.bind('notice', function (data) {
             });
 
     var append = ` <div style="position: fixed; right:10px; bottom: 10px; z-index: 999999999; 
-         background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" id="my-notify">
+         background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" class="my-notify">
+        <div style="position:absolute; right: 5px; top:5px; cursor: pointer" class="close-notify"> 
+            <i class="fa fa-times-circle" style="font-size: 18px;" aria-hidden="true"></i> 
+        </div>    
         <div style="float:left; width: 35%; padding: 2%">
             <img src="https://crm2.lakita.vn/public/images/logo2.png" style="width: 70%"/>
         </div>
@@ -2131,7 +2134,7 @@ channel.bind('notice', function (data) {
 
     $('body').append(append);
     setTimeout(function () {
-        $("#my-notify").remove();
+        $(".my-notify").remove();
     }, 10000);
 
     if (($("#input_controller").val() === 'manager' && $("#input_method").val() === 'index')
@@ -2153,8 +2156,11 @@ channel.bind('callLog', function (data) {
             });
 
     var append = ` <div style="position: fixed; right:10px; bottom: 10px; z-index: 999999999; 
-         background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" id="my-notify">
-        <div style="float:left; width: 35%; padding: 2%">
+         background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" class="my-notify">
+         <div style="position:absolute; right: 5px; top:5px; cursor: pointer" class="close-notify"> 
+                <i class="fa fa-times-circle" style="font-size: 18px;" aria-hidden="true"></i> 
+         </div>       
+         <div style="float:left; width: 35%; padding: 2%">
             <img src="https://crm2.lakita.vn/public/images/logo2.png" style="width: 70%"/>
         </div>
         <div style="float:left; width:65%; padding: 2%">
@@ -2168,7 +2174,7 @@ channel.bind('callLog', function (data) {
 
     $('body').append(append);
     setTimeout(function () {
-        $("#my-notify").remove();
+        $(".my-notify").remove();
     }, 10000);
 
     if (data.success == '1') {
@@ -2176,6 +2182,10 @@ channel.bind('callLog', function (data) {
     } else {
         $("#call-log-sound")[0].play();
     }
+});
+
+$(document).on("click", ".close-notify", function(){
+    $(".my-notify").remove();
 });/* 
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates

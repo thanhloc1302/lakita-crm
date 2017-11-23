@@ -43,6 +43,12 @@
     </li>
 </ul>
 <ul class="nav-list list-inline display-flex">
+     <li>
+        <a href="<?php echo base_url('MANAGERS/ViewReport/ViewGeneralReport'); ?>">
+            <img src="<?php echo base_url(); ?>public/images/view-general-report.png"> 
+            <span> Xem báo cáo tổng hợp  </span>
+        </a>
+    </li>
     <li>
         <a href="<?php echo base_url('home/logout'); ?>">
             <img src="<?php echo base_url(); ?>public/images/logout.png"> 

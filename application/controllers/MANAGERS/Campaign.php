@@ -417,10 +417,18 @@ class Campaign extends MY_Table {
         foreach ($campaigns as $key => $value) {
             foreach ($value as $value2) {
                 if ($value2['status'] == 'ACTIVE') {
-                    $campaignActive[$i]['account'] = $key;
-                    $campaignActive[$i]['fb_campaign_id'] = $value2['id'];
-                    $campaignActive[$i]['fb_campaign_name'] = $value2['name'];
-                    $i++;
+                    $input = array();
+                    $input['select'] = 'id, marketer_id';
+                    $input['where'] = array('campaign_id_facebook' => $value2['id']);
+                    $existCampaign = $this->{$this->model}->load_all($input);
+                    if (!empty($existCampaign) && $existCampaign[0]['marketer_id'] != $this->user_id) {
+                        continue;
+                    } else {
+                        $campaignActive[$i]['account'] = $key;
+                        $campaignActive[$i]['fb_campaign_id'] = $value2['id'];
+                        $campaignActive[$i]['fb_campaign_name'] = $value2['name'];
+                        $i++;
+                    }
                 }
             }
         }
@@ -433,8 +441,17 @@ class Campaign extends MY_Table {
             if (!empty($adsets)) {
                 foreach ($adsets as $adset) {
                     if ($adset['status'] == 'ACTIVE') {
-                        $campaignActive[$key]['adset'][] = ['fb_adset_id' => $adset['id'],
-                            'fb_adset_name' => $adset['name']];
+                        $input = array();
+                        $input['select'] = 'id, marketer_id';
+                        $input['where'] = array('adset_id_facebook' => $adset['id']);
+                        $existAdset = $this->adset_model->load_all($input);
+                        if (!empty($existAdset) && $existAdset[0]['marketer_id'] != $this->user_id) {
+                            continue;
+                        } else {
+                            $campaignActive[$key]['adset'][] = [
+                                'fb_adset_id' => $adset['id'],
+                                'fb_adset_name' => $adset['name']];
+                        }
                     }
                 }
             }

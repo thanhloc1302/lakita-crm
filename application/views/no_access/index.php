@@ -22,9 +22,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="logo">
                     <h1><a href="#"><img src="<?php echo base_url(); ?>style/noaccess/images/logo.jpg" width="20%"/></a></h1>
                     <span><img src="<?php echo base_url(); ?>style/noaccess/images/signal.png"/>
-                        Bạn không có quyền truy cập vào trang này.
-                        (Nếu không thể quay lại trang chủ thì tài khoản của bạn 
-                        đã bị khóa!)
+                        Bạn không có quyền truy cập vào trang này. Vui lòng quay lại trang chủ. Nếu không thể quay lại trang chủ thì tài khoản của bạn 
+                        đã bị khóa!
                     </span>
                 </div>
                 <!-----end-logo--------->
