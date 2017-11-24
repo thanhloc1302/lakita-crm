@@ -366,13 +366,17 @@ class Manager extends MY_Controller {
         $this->load->model('Staffs_model');
         foreach ($contact_ids as $value) {
             $input = array();
-            $input['select'] = 'sale_staff_id, id, duplicate_id';
+            $input['select'] = 'sale_staff_id, id, duplicate_id, is_hide';
             $input['where'] = array('id' => $value);
             $rows = $this->contacts_model->load_all($input);
 
             if (empty($rows)) {
                 $result['success'] = 0;
                 $result['message'] = "Không tồn tại khách hàng này! Mã lỗi : 30203";
+            }
+            if ($rows[0]['is_hide'] == '1') {
+                $result['success'] = 0;
+                $result['message'] = "Contact này đã bị xóa, vì vậy không thể phân contact này được!";
             }
 
             if ($rows[0]['sale_staff_id'] > 0) {

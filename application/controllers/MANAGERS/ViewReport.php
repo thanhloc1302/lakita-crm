@@ -64,8 +64,9 @@ class ViewReport extends MY_Controller {
             }
         }
         uasort($marketers, function($a, $b){
-            $length = count($a['Number']) - 1;
-            return -$a['Number'][$length]['C3'] + $b['Number'][$length]['C3'];
+            $length = count($a['Number']);
+            $last = ($length < 10) ? '0'.$length : $length;
+            return -$a['Number'][$last]['C3'] + $b['Number'][$last]['C3'];
         });
 
         // print_arr($marketers);

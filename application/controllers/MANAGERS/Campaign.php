@@ -152,14 +152,20 @@ class Campaign extends MY_Table {
         }
         unset($value);
         usort($this->data['rows'], function($a, $b) {
-            if (is_numeric($a['pricepC3']) && is_numeric($b['pricepC3'])) {
-                return $b['pricepC3'] - $a['pricepC3'];
-            } else if (is_numeric($a['pricepC3']) && !is_numeric($b['pricepC3'])) {
-                return -1;
-            } else if (!is_numeric($a['pricepC3']) && is_numeric($b['pricepC3'])) {
+            if ($a['active'] == '0' && $b['active'] == '1') {
                 return +1;
+            } else if ($a['active'] == '1' && $b['active'] == '0') {
+                return -1;
+            } else if ($a['active'] == '0' && $b['active'] == '0') {
+                return 0;
             } else {
-                return $b['active'] - $a['active'];
+                if (is_numeric($a['pricepC3']) && is_numeric($b['pricepC3'])) {
+                    return $b['pricepC3'] - $a['pricepC3'];
+                } else if (is_numeric($a['pricepC3']) && !is_numeric($b['pricepC3'])) {
+                    return -1;
+                } else if (!is_numeric($a['pricepC3']) && is_numeric($b['pricepC3'])) {
+                    return +1;
+                }
             }
         });
         // print_arr($this->data['rows']);
@@ -424,6 +430,11 @@ class Campaign extends MY_Table {
                     if (!empty($existCampaign) && $existCampaign[0]['marketer_id'] != $this->user_id) {
                         continue;
                     } else {
+                        $url = 'https://graph.facebook.com/v2.11/' . $value2['id'] . '?fields=stop_time&access_token=' . ACCESS_TOKEN;
+                        $stopTime = get_fb_request($url);
+                        if (property_exists($stopTime, 'stop_time')) {
+                            continue;
+                        }
                         $campaignActive[$i]['account'] = $key;
                         $campaignActive[$i]['fb_campaign_id'] = $value2['id'];
                         $campaignActive[$i]['fb_campaign_name'] = $value2['name'];

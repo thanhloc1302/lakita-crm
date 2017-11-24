@@ -255,7 +255,6 @@ class Cron extends CI_Controller {
         foreach ($accountFBADS as $account) {
             $url = 'https://graph.facebook.com/v2.11/act_' . $account . '/campaigns?fields=id,name,created_time,status&limit=500&access_token=' . ACCESS_TOKEN;
             $spend = get_fb_request($url);
-
             foreach ($spend->data as $value) {
                 if ($value->status != 'ACTIVE') {
                     $where = array('campaign_id_facebook' => $value->id);
@@ -269,7 +268,24 @@ class Cron extends CI_Controller {
                             $this->ad_model->update(['adset_id' => $adset['id']], ['active' => '0']);
                         }
                     }
-                }
+                } 
+//                else {
+//                    $url = 'https://graph.facebook.com/v2.11/' . $value->id . '/insights?level=account&date_preset=last_3d&access_token=' . ACCESS_TOKEN;
+//                    $spend = get_fb_request($url);
+//                    if (empty($spend->data)) {
+//                        $where = array('campaign_id_facebook' => $value->id);
+//                        $data = array('active' => '0');
+//                        $this->campaign_model->update($where, $data);
+//                        $campaignInactives = $this->campaign_model->load_all(array('where' => $where));
+//                        foreach ($campaignInactives as $campaign) {
+//                            $this->adset_model->update(['campaign_id' => $campaign['id']], ['active' => '0']);
+//                            $adsetInactive = $this->adset_model->load_all(array('where' => ['campaign_id' => $campaign['id']]));
+//                            foreach ($adsetInactive as $adset) {
+//                                $this->ad_model->update(['adset_id' => $adset['id']], ['active' => '0']);
+//                            }
+//                        }
+//                    }
+//                }
             }
         }
     }

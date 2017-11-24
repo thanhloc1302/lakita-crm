@@ -21,11 +21,11 @@ foreach ($marketers as $marketer) {
     function drawChart() {
         var data = google.visualization.arrayToDataTable
                 ([['X', 'Thực đạt', 'KPI'],
-<?php
-foreach ($period as $dayName => $C3) {
-    echo "['$dayName', $C3, 38],";
-}
-?>
+                    <?php
+                    foreach ($period as $dayName => $C3) {
+                        echo "['$dayName', $C3, 38],";
+                    }
+                    ?>
                 ]);
         var view = new google.visualization.DataView(data);
         view.setColumns([0, 1,
@@ -51,11 +51,11 @@ foreach ($period as $dayName => $C3) {
     function drawChartLuyKe() {
         var data = google.visualization.arrayToDataTable
                 ([['X', 'Thực đạt', 'KPI'],
-<?php
-foreach ($luyKe as $dayName => $number) {
-    echo "['$dayName', " . $number['C3'] . ", " . $number['KPI'] . "],";
-}
-?>
+                    <?php
+                    foreach ($luyKe as $dayName => $number) {
+                        echo "['$dayName', " . $number['C3'] . ", " . $number['KPI'] . "],";
+                    }
+                    ?>
                 ]);
         var view = new google.visualization.DataView(data);
         view.setColumns([0, 1,
@@ -83,11 +83,11 @@ foreach ($luyKe as $dayName => $number) {
         function drawChart<?php echo $marketer['username']; ?>() {
             var data = google.visualization.arrayToDataTable
                     ([['X', 'Thực đạt', 'KPI'],
-    <?php
-    foreach ($marketer['Number'] as $dayName => $number) {
-        echo "['$dayName', " . $number['C3'] . ", " . $number['KPI'] . "],";
-    }
-    ?>
+                        <?php
+                        foreach ($marketer['Number'] as $dayName => $number) {
+                            echo "['$dayName', " . $number['C3'] . ", " . $number['KPI'] . "],";
+                        }
+                        ?>
                     ]);
             var view = new google.visualization.DataView(data);
             view.setColumns([0, 1,
@@ -97,7 +97,7 @@ foreach ($luyKe as $dayName => $number) {
                     role: "annotation"},
                 2]);
             var options = {
-                title: 'BÁO CÁO MARKETING <?php echo $marketer['name']?>',
+                title: 'BÁO CÁO MARKETING <?php echo mb_strtoupper(html_entity_decode($marketer['name'])); ?>',
                 vAxis: {title: 'Số C3'},
                 hAxis: {title: 'Ngày trong tháng'},
                 series: {
@@ -106,7 +106,7 @@ foreach ($luyKe as $dayName => $number) {
                 }
             };
 
-            var chart = new google.visualization.LineChart(document.getElementById('chart-div-<?php echo $marketer['username']?>'));
+            var chart = new google.visualization.LineChart(document.getElementById('chart-div-<?php echo $marketer['username'] ?>'));
             chart.draw(view, options);
         }
 

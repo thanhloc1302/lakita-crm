@@ -55,9 +55,9 @@ class Link extends MY_Table {
                 'order' => '1'
             ),
             'time' => array(
+                'order' => '1',
                 'type' => 'datetime',
-                'name_display' => 'Ngày tạo',
-                'display' => 'none'
+                'name_display' => 'Ngày tạo'
             )
         );
         $this->set_list_view($list_item);
@@ -370,14 +370,14 @@ class Link extends MY_Table {
         }
         echo $xhml;
     }
-    
-    public function PreviewUrl(){
+
+    public function PreviewUrl() {
         $post = $this->input->post();
         $url = $post['landingpage_url'];
-        
+
         $content = file_get_contents($url);
-        
-        echo '<iframe width="100%" height="500px"> ' . $content.'</iframe>';
+
+        echo '<iframe width="100%" height="500px"> ' . $content . '</iframe>';
     }
 
 }
