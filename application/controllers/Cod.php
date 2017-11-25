@@ -26,8 +26,8 @@ class Cod extends MY_Controller {
         $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
-        $data['left_col'] = array('sale', 'provider');
-        //  $data['right_col'] = array('date_confirm');
+        $data['left_col'] = array('sale', 'date_confirm');
+        $data['right_col'] = array('provider');
         $this->table .= 'date_confirm date_expect_receive_cod note_cod';
         $data['table'] = explode(' ', $this->table); //array('selection', 'contact_id');
 
@@ -587,15 +587,16 @@ class Cod extends MY_Controller {
     }
 
     public function test() {
-        $this->load->library('rest');
-        $config = array('server' => 'https://sheets.googleapis.com/',
-            'api_key' => 'AIzaSyCdjll4ib79ZGtUEEEAxksl6zff2NkLCII',
-            'api_name' => 'key');
-        $this->rest->initialize($config);
-        $key = '?key=AIzaSyCdjll4ib79ZGtUEEEAxksl6zff2NkLCII';
-        $tweets = $this->rest->get('v4/spreadsheets/18x9FB074aMpgm66PbaPMtmol6HgG6eeidl3P5wJcH6w/values/Sheet1!A1:C' . $key);
-        print_r($tweets);
-        die;
+//        $param = 'hih';
+//        if ($param != 1) {
+//            throw new Exception("$param should be an Foo instance.");
+//        }
+       // throw new Exception('Tự xác ở đây...');
+        require_once APPPATH . "vendor/autoload.php";
+        $client = new GuzzleHttp\Client(['base_uri' => 'https://sheets.googleapis.com/v4/spreadsheets/18x9FB074aMpgm66PbaPMtmol6HgG6eeidl3P5wJcH6w/values/Sheet1!A1:C?key=AIzaSyCdjll4ib79ZGtUEEEAxksl6zff2NkLCII']);
+        $response = $client->request('GET');
+        $body = $response->getBody();
+        print_arr(GuzzleHttp\json_decode($body));
     }
 
     private function _loadCountListContact() {

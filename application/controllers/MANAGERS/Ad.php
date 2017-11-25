@@ -248,7 +248,7 @@ class Ad extends MY_Table {
      * Hiển thị modal sửa item
      */
 
-    function show_edit_item() {
+    function show_edit_item($inputData =[]) {
         /*
          * type mặc định là text nên nếu là text sẽ không cần khai báo
          */
@@ -274,7 +274,8 @@ class Ad extends MY_Table {
                 'active' => array()
             ),
         );
-        parent::show_edit_item();
+        $inputData['edit_title'] = 'Sửa thông tin ad';
+        parent::show_edit_item($inputData);
     }
 
     function action_edit_item($id) {

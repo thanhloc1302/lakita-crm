@@ -55,7 +55,7 @@ $(document).on("change", '.toggle-input [name="edit_active"]', function () {
     var item_id = $(this).attr("item_id");
     $.ajax({
         type: "POST",
-        url: $("#url_edit_active").val(),
+        url:  $(this).attr("data-url"),
         data: {
             active: active,
             item_id: item_id

@@ -1,9 +1,9 @@
 <div class="row">
-    <div id="chart_div" style="width: 1200px; height: 500px;"></div>
-    <div id="chart-div-luy-ke" style="width: 1300px; height: 500px;"></div>
+    <div id="chart_div" style="width: 100%; height: 500px;"></div>
+    <div id="chart-div-luy-ke" style="width: 100%; height: 500px;"></div>
     <?php
     foreach ($marketers as $marketer) {
-        echo '<div id="chart-div-' . $marketer['username'] . '" style="width: 1300px; height: 500px;"></div>';
+        echo '<div id="chart-div-' . $marketer['username'] . '" style="width: 100%; height: 500px;"></div>';
     }
     ?>
 

@@ -118,7 +118,7 @@ class Common extends MY_Controller {
                 'script' => 'edit',
                 'call_stt' => 'edit',
                 'ordering_stt' => 'edit',
-               // 'provider' => 'edit',
+                // 'provider' => 'edit',
                 'date_recall' => 'edit',
                 'date_expect_receive_cod' => 'edit',
                 'send_banking_info' => 'edit',
@@ -147,6 +147,7 @@ class Common extends MY_Controller {
                 'code_cross_check' => 'edit',
                 'provider' => 'edit',
                 'cod_status' => 'edit',
+                'date_recall' => 'edit',
                 'weight_envelope' => 'edit',
                 'cod_fee' => 'edit',
                 'fee_resend' => 'edit',
@@ -544,7 +545,7 @@ class Common extends MY_Controller {
                     $param[$value] = $post[$value];
                 }
             }
-
+            $param['date_recall'] = (isset($post['date_recall']) && $post['date_recall'] != '') ? strtotime($post['date_recall']) : 0;
             if (isset($post['date_expect_receive_cod']) && $post['date_expect_receive_cod'] != '') {
                 $param['date_expect_receive_cod'] = strtotime($post['date_expect_receive_cod']);
             }
@@ -754,6 +755,15 @@ class Common extends MY_Controller {
                     $strDiff .= $key . $rows[0][$value] . ' ===> ' . $post[$value];
                 }
             }
+        }
+        if (isset($post['cod_fee']) && $post['cod_fee'] !== $rows[0]['cod_fee']) {
+            $strDiff .= 'Cước vận đơn:' . $rows[0]['cod_fee'] . ' ===> ' . $post['cod_fee'];
+        }
+        if (isset($post['fee_resend']) && $post['fee_resend'] !== $rows[0]['fee_resend']) {
+            $strDiff .= 'Cước chuyển hoàn:' . $rows[0]['cod_fee'] . ' ===> ' . $post['cod_fee'];
+        }
+        if (isset($post['weight_envelope']) && $post['weight_envelope'] !== $rows[0]['weight_envelope']) {
+            $strDiff .= 'Khối lượng đơn hàng:' . $rows[0]['cod_fee'] . ' ===> ' . $post['cod_fee'];
         }
         $data['content_change'] = $strDiff;
         $this->load->model('call_log_model');

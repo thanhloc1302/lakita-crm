@@ -407,7 +407,7 @@ class Sale extends MY_Controller {
 
     function noti_contact_recall() {
         $input['select'] = 'id, name, phone, date_recall, sale_staff_id';
-        $input['where']['sale_staff_id'] = $this->user_id;
+        //$input['where']['sale_staff_id'] = $this->user_id;
         $input['where']['date_recall >'] = '0';
         $input['where']['date_recall <='] = time();
         $input['order']['date_recall'] = 'DESC';

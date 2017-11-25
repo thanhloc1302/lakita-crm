@@ -50,9 +50,9 @@
                data-method="POST">
                 <li> <i class="fa fa-envelope" aria-hidden="true"></i> &nbsp; &nbsp; Gửi mail cho Viettel các contact đã chọn </li>
             </a>
-            <!--            <a href="#" class="btn-export-excel-for-viettel"> 
-                            <li> <i class="fa fa-paper-plane" aria-hidden="true"></i> &nbsp; &nbsp; Xuất file excel để gửi cho Viettel </li>
-                        </a>-->
+            <a href="#" class="btn-export-excel-for-viettel"> 
+                <li> <i class="fa fa-paper-plane" aria-hidden="true"></i> &nbsp; &nbsp; Xuất file excel để gửi cho Viettel </li>
+            </a>
             <a href="#" class="export_to_string"> 
                 <li> <i class="fa fa-link" aria-hidden="true"></i> &nbsp; &nbsp; Xuất thành chuỗi đối soát </li>
             </a>
@@ -86,6 +86,8 @@
         <?php } else { //marketing ?>
             <a href="#"
                class="edit_item"
+               edit-url=""
+               data-modal-name="edit-item-modal"
                item_id="0">
                 <li>  <i class="fa fa-pencil-square" aria-hidden="true"></i> &nbsp; &nbsp; Chỉnh sửa</li>
             </a>

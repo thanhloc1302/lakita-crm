@@ -572,6 +572,62 @@ $(document).on('click', 'a.add_item', function (e) {
     });
 });
 
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+$(document).on('click', '.adset-detail', function (e) {
+    e.preventDefault();
+    var url = $(this).attr("data-url");
+    var modalName = $(this).attr("data-modal-name");
+    $.ajax({
+        url: url,
+        type: "GET",
+        data: {
+            adsetId: $(this).attr("adset-id"),
+            adsetName: $(this).text()
+        },
+        success: function success(data) {
+            $("." + modalName).remove();
+            var newModal = '<div class="' + modalName + '"></div>';
+            $(".modal-append-to").append(newModal);
+            $('.' + modalName).html(data);
+        },
+        complete: function complete() {
+            $('.' + modalName + ' .modal').modal("show");
+        }
+    });
+});
+
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+$(document).on('click', '.campaign-detail', function (e) {
+    e.preventDefault();
+    var url = $(this).attr("data-url");
+    var modalName = $(this).attr("data-modal-name");
+    $.ajax({
+        url: url,
+        type: "GET",
+        data: {
+            campaignId: $(this).attr("campaign-id"),
+            campaignName: $(this).text()
+        },
+        success: function success(data) {
+            $("." + modalName).remove();
+            var newModal = '<div class="' + modalName + '"></div>';
+            $(".modal-append-to").append(newModal);
+            $('.' + modalName).html(data);
+        },
+        complete: function complete() {
+            $('.' + modalName + ' .modal').modal("show");
+        }
+    });
+});
+
 $("a.delete_multi_item").confirm({
     theme: 'supervan', // 'material', 'bootstrap',
     title: 'Bạn có chắc chắn muốn xóa các dòng đã chọn không?',
@@ -646,7 +702,8 @@ $("a.delete_item").confirm({
 });$(document).on('click', 'a.edit_item', function (e) {
     e.preventDefault();
     var item_id = $(this).attr("item_id");
-    var url = $("#url_edit_item").val();
+    var url = $(this).attr("edit-url");
+    var modalName = $(this).attr("data-modal-name");
     $.ajax({
         url: url,
         type: "POST",
@@ -654,10 +711,13 @@ $("a.delete_item").confirm({
             item_id: item_id
         },
         success: function success(data) {
-            $("div.replace_content_edit_item_modal").html(data);
+            $("." + modalName).remove();
+            var newModal = '<div class="' + modalName + '"></div>';
+            $(".modal-append-to").append(newModal);
+            $('.' + modalName).html(data);
         },
         complete: function complete() {
-            $(".edit_item_modal").modal("show");
+            $('.' + modalName + ' .modal').modal("show");
         }
     });
 }); /*
@@ -707,7 +767,7 @@ $(document).on("change", '.toggle-input [name="edit_active"]', function () {
     var item_id = $(this).attr("item_id");
     $.ajax({
         type: "POST",
-        url: $("#url_edit_active").val(),
+        url: $(this).attr("data-url"),
         data: {
             active: active,
             item_id: item_id
@@ -1531,6 +1591,8 @@ $(document).on('contextmenu', 'tr.custom_right_menu', function (e) {
     /* marketing */
     var item_id = $(this).attr('item_id');
     $(".delete_item, .edit_item").attr('item_id', item_id);
+    var editURL = $(this).attr('edit-url');
+    $(".delete_item, .edit_item").attr('edit-url', editURL);
 
     var menu = $(".menu");
     menu.hide();

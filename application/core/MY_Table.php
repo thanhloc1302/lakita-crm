@@ -198,7 +198,8 @@ class MY_Table extends MY_Controller {
         $this->load->view('base/add_item/ajax_content');
     }
 
-    function show_edit_item() {
+    function show_edit_item($inputData = []) {
+        $data = $inputData;
         $post = $this->input->post();
         $input = array();
         $input['where'] = array('id' => $post['item_id']);
@@ -384,7 +385,7 @@ class MY_Table extends MY_Controller {
             $inputContact['where'] = array('marketer_id' => $marketer['id'], 'date_rgt >' => strtotime(date('d-m-Y')), 'is_hide' => '0');
             $today = $this->contacts_model->load_all($inputContact);
             $marketer['totalC3'] = count($today);
-            $marketer['progress'] = ($marketer['targets'] > 0) ?  round(($marketer['totalC3'] / $marketer['targets']) * 100, 2) : 'N/A';
+            $marketer['progress'] = ($marketer['targets'] > 0) ? round(($marketer['totalC3'] / $marketer['targets']) * 100, 2) : 'N/A';
         }
         unset($marketer);
 

@@ -249,7 +249,7 @@ class Adset extends MY_Table {
      * Hiển thị modal sửa item
      */
 
-    function show_edit_item() {
+    function show_edit_item($inputData =[]) {
         /*
          * type mặc định là text nên nếu là text sẽ không cần khai báo
          */
@@ -275,7 +275,8 @@ class Adset extends MY_Table {
                 'active' => array()
             ),
         );
-        parent::show_edit_item();
+        $inputData['edit_title'] = 'Sửa thông tin adset';
+        parent::show_edit_item($inputData);
     }
 
     function action_edit_item($id) {
@@ -303,21 +304,20 @@ class Adset extends MY_Table {
             $input = [];
             $input['where'] = array('campaign_id' => $value2['id']);
             $existAdset = $this->{$this->model}->load_all($input);
-         
-                if ($value2['campaign_id_facebook'] != '') {
-                    $url = 'https://graph.facebook.com/v2.11/' . $value2['campaign_id_facebook'] . '/' .
-                            'adsets?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
-                    $spend = get_fb_request($url);
-                    //  print_arr($spend);
-                    //print_arr($spend);
-                    //$spend->data[0]->spend
-                    if ($spend->data) {
-                        $campaigns[$key]['adsets'] = json_decode(json_encode($spend->data), true);
-                    } else {
-                        $campaigns[$key]['adsets'] = [];
-                    }
+
+            if ($value2['campaign_id_facebook'] != '') {
+                $url = 'https://graph.facebook.com/v2.11/' . $value2['campaign_id_facebook'] . '/' .
+                        'adsets?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
+                $spend = get_fb_request($url);
+                //  print_arr($spend);
+                //print_arr($spend);
+                //$spend->data[0]->spend
+                if ($spend->data) {
+                    $campaigns[$key]['adsets'] = json_decode(json_encode($spend->data), true);
+                } else {
+                    $campaigns[$key]['adsets'] = [];
                 }
-            
+            }
         }
         $newAdsets = [];
         $i = 0;
@@ -355,6 +355,73 @@ class Adset extends MY_Table {
         $data['adsets'] = $newAdsets;
         //print_arr($newCampaign);
         echo $this->load->view('MANAGERS/adset/fetch-adset', $data, TRUE);
+    }
+
+    public function GetAdsModal() {
+        $this->load->model('ad_cost_model');
+        $this->load->model('ad_model');
+        $get = $this->input->get();
+        $adsetId = $get['adsetId'];
+        $input = [];
+        $input['where'] = array('adset_id' => $adsetId);
+        $ads = $this->ad_model->load_all($input);
+
+
+        $date_form = '';
+        $date_end = '';
+        /*
+         * Nếu không có lọc ngày tháng từ người dùng thì chọn mặc định là hôm qua
+         */
+        if (!isset($get['date_from']) && !isset($get['date_end'])) {
+            $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
+            $date_end = strtotime(date('d-m-Y', strtotime("-1 days")));
+        } else {
+            $date_form = strtotime($get['date_from']);
+            $date_end = strtotime($get['date_end']);
+        }
+        foreach ($ads as &$value) {
+            /*
+             * Lấy số C3 & số tiền tiêu
+             */
+
+            $total_c3 = array();
+            $total_c3['select'] = 'id';
+            $total_c3['where'] = array(
+                'ad_id' => $value['id'],
+                'date_rgt >=' => $date_form + 14 * 3600,
+                'date_rgt <=' => $date_end + 3600 * 38);
+            $value['total_C3'] = count($this->contacts_model->load_all($total_c3));
+
+            $input = array();
+            $input['where'] = array('ad_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
+            $ad_cost = $this->ad_cost_model->load_all($input);
+            $ad_cost = h_caculate_channel_cost($ad_cost);
+            if (!empty($ad_cost)) {
+                $value['total_C1'] = $ad_cost['total_C1'];
+                $value['total_C2'] = $ad_cost['total_C2'];
+                $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
+                $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
+                $value['spend'] = $ad_cost['spend'];
+                $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) . ' đ' : '#N/A';
+                $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) . ' đ' : '#N/A';
+                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) . ' đ' : '#N/A';
+            } else {
+                $value['total_C1'] = '#NA';
+                $value['total_C2'] = '#NA';
+                $value['total_C3'] = '#NA';
+                $value['C2pC1'] = '#NA';
+                $value['C3pC2'] = '#NA';
+                $value['spend'] = '#NA';
+                $value['pricepC1'] = '#NA';
+                $value['pricepC2'] = '#NA';
+                $value['pricepC3'] = '#NA';
+            }
+        }
+        unset($value);
+
+        $data['ads'] = $ads;
+        $data['adsetName'] = $get['adsetName'];
+        $this->load->view('MANAGERS/adset/modal/show-adset-ad', $data);
     }
 
 }

@@ -39,7 +39,8 @@ class Campaign extends MY_Table {
             ),
             'name' => array(
                 'name_display' => 'Tên chiến dịch',
-                'order' => '1'
+                'order' => '1',
+                'type' => 'custom'
             ),
             'campaign_id_facebook' => array(
                 'name_display' => 'Campaign ID Facebook',
@@ -297,7 +298,7 @@ class Campaign extends MY_Table {
      * Hiển thị modal sửa item
      */
 
-    function show_edit_item() {
+    function show_edit_item($inputData =[]) {
         /*
          * type mặc định là text nên nếu là text sẽ không cần khai báo
          */
@@ -323,7 +324,8 @@ class Campaign extends MY_Table {
                 'active' => array()
             ),
         );
-        parent::show_edit_item();
+        $inputData['edit_title'] = 'Sửa thông tin chiến dịch';
+        parent::show_edit_item($inputData);
     }
 
     function action_edit_item($id) {
@@ -627,6 +629,72 @@ class Campaign extends MY_Table {
         $data = array('url' => $url);
         $this->link_model->update($where, $data);
         echo ('Link vừa tạo là ' . $url);
+    }
+
+    public function GetAdsetsModal() {
+        $this->load->model('adset_cost_model');
+        $this->load->model('adset_model');
+        $get = $this->input->get();
+        $campaignId = $get['campaignId'];
+        $input = [];
+        $input['where'] = array('campaign_id' => $campaignId);
+        $adsets = $this->adset_model->load_all($input);
+
+
+        $date_form = '';
+        $date_end = '';
+        /*
+         * Nếu không có lọc ngày tháng từ người dùng thì chọn mặc định là hôm qua
+         */
+        if (!isset($get['date_from']) && !isset($get['date_end'])) {
+            $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
+            $date_end = strtotime(date('d-m-Y', strtotime("-1 days")));
+        } else {
+            $date_form = strtotime($get['date_from']);
+            $date_end = strtotime($get['date_end']);
+        }
+        foreach ($adsets as &$value) {
+            /*
+             * Lấy số C3 & số tiền tiêu
+             */
+            $total_c3 = array();
+            $total_c3['select'] = 'id';
+            $total_c3['where'] = array(
+                'adset_id' => $value['id'],
+                'date_rgt >=' => $date_form + 14 * 3600,
+                'date_rgt <=' => $date_end + 3600 * 38);
+            $value['total_C3'] = count($this->contacts_model->load_all($total_c3));
+
+            $input = array();
+            $input['where'] = array('adset_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
+            $adset_cost = $this->adset_cost_model->load_all($input);
+            $adset_cost = h_caculate_channel_cost($adset_cost);
+            if (!empty($adset_cost)) {
+                $value['total_C1'] = $adset_cost['total_C1'];
+                $value['total_C2'] = $adset_cost['total_C2'];
+                $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
+                $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
+                $value['spend'] = $adset_cost['spend'];
+                $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) . ' đ' : '#N/A';
+                $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) . ' đ' : '#N/A';
+                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) . ' đ' : '#N/A';
+            } else {
+                $value['total_C1'] = '#NA';
+                $value['total_C2'] = '#NA';
+                $value['total_C3'] = '#NA';
+                $value['C2pC1'] = '#NA';
+                $value['C3pC2'] = '#NA';
+                $value['spend'] = '#NA';
+                $value['pricepC1'] = '#NA';
+                $value['pricepC2'] = '#NA';
+                $value['pricepC3'] = '#NA';
+            }
+        }
+        unset($value);
+
+        $data['adsets'] = $adsets;
+        $data['campaignName'] = $get['campaignName'];
+        $this->load->view('MANAGERS/campaign/modal/show-campaign-adset', $data);
     }
 
 }

@@ -23,6 +23,8 @@ $(document).on('contextmenu', 'tr.custom_right_menu', function (e) {
     /* marketing */
     var item_id = $(this).attr('item_id');
     $(".delete_item, .edit_item").attr('item_id', item_id);
+    var editURL = $(this).attr('edit-url');
+    $(".delete_item, .edit_item").attr('edit-url', editURL);
 
     var menu = $(".menu");
     menu.hide();
