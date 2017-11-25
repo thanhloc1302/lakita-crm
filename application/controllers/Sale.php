@@ -406,8 +406,13 @@ class Sale extends MY_Controller {
     }
 
     function noti_contact_recall() {
-        $input['select'] = 'id, name, phone, date_recall, sale_staff_id';
-        //$input['where']['sale_staff_id'] = $this->user_id;
+        $input['select'] = 'id, name, phone, date_recall, sale_staff_id, cod_status_id';
+//        if ($this->role_id == 1) {
+//            $input['where']['sale_staff_id'] = $this->user_id;
+//        }
+          if ($this->role_id == 2) {
+            $input['where']['cod_status_id >'] = '0';
+        }
         $input['where']['date_recall >'] = '0';
         $input['where']['date_recall <='] = time();
         $input['order']['date_recall'] = 'DESC';
@@ -416,12 +421,20 @@ class Sale extends MY_Controller {
             $result = array();
             if (time() - $noti_contact[0]['date_recall'] < 30) {
                 $result['sound'] = 1;
+                if ($noti_contact[0]['cod_status_id'] == 0) {
+                    $result['image'] = base_url('public/images/recall.jpg');
+                    $result['message'] = 'Có contact (sale) cần gọi lại ngay bây giờ!';
+                } else {
+                    $result['image'] = base_url('public/images/ship.png');
+                    $result['message'] = 'Có contact (cod) cần gọi lại ngay bây giờ!';
+                }
             }
             foreach ($noti_contact as &$value) {
                 $value['date_recall'] = date('H:i j/n/Y', $value['date_recall']);
             }
             unset($value);
             $num_noti_contact = count($noti_contact);
+
             $result['num_noti'] = $num_noti_contact;
             $result['contacts_noti'] = $noti_contact;
             $this->renderJSON($result);

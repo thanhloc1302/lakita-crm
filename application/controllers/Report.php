@@ -10,7 +10,7 @@
  *
  * @author Phạm Ngọc Chuyển <chuyenpn at lakita.vn>
  */
-class Report extends CI_Controller {
+class Report extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
@@ -25,7 +25,7 @@ class Report extends CI_Controller {
 
     function send_report_sale_daily() {
         $get = [];
-        $data =[];
+        $data = [];
         $input = array();
         $input['where'] = array('role_id' => 1);
         $staffs = $this->staffs_model->load_all($input);
@@ -655,6 +655,31 @@ class Report extends CI_Controller {
     function view_pivot_table() {
         $this->load->view('pivot_table');
     }
-  
+
+    public function GetContactReceiveCodTomorrow() {
+        $this->load->model('cod_status_model');
+        $input = [];
+        $data_load['cod_status'] = $this->cod_status_model->load_all($input);
+        $tomorrow = strtotime(date('d-m-Y'));
+        $input = array();
+        $input['select'] = 'id, name, phone, address, cod_status_id, date_expect_receive_cod, code_cross_check';
+        $input['where'] = array(
+            'date_expect_receive_cod >=' => $tomorrow,
+            'date_expect_receive_cod <=' => $tomorrow + 24 * 3600 - 1,
+            'is_hide' => '0');
+        $contacts = $this->contacts_model->load_all($input);
+        $data_load['total_contacts'] = count($contacts);
+        $data_load['contacts'] = $contacts;
+        $str = $this->load->view('CODS/contact-expect-receive-cod/index', $data_load, true);
+        if (!empty($contacts)) {
+            $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, trinhnv@lakita.vn, lakitavn@gmail.com';
+            $this->load->library("email");
+            $this->email->from('cskh@lakita.vn', "lakita.vn");
+            $this->email->to($emailTo);
+            $this->email->subject('CONTACT DỰ KIẾN GIAO HÀNG VÀ YÊU CẦU PHÁT LẠI VÀO HÔM NAY (BY CLI & CRON JOB)');
+            $this->email->message($str);
+            $this->email->send();
+        }
+    }
 
 }

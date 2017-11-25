@@ -143,11 +143,11 @@ class Common extends MY_Controller {
                 'sale' => 'view',
                 'date_confirm' => 'view',
                 'payment_method_rgt' => 'edit',
-                'date_expect_receive_cod' => 'edit',
                 'code_cross_check' => 'edit',
                 'provider' => 'edit',
                 'cod_status' => 'edit',
                 'date_recall' => 'edit',
+                'date_expect_receive_cod' => 'edit',
                 'weight_envelope' => 'edit',
                 'cod_fee' => 'edit',
                 'fee_resend' => 'edit',
@@ -215,7 +215,8 @@ class Common extends MY_Controller {
         $data['view_edit_right'] = $right_edit;
 
         if ($this->role_id == 1) {
-            $edited_contact = ( $this->_can_edit_by_sale($rows[0]['call_status_id'], $rows[0]['ordering_status_id']) && $this->_can_edit_by_cod($rows[0]['cod_status_id']));
+            $edited_contact = ( $this->_can_edit_by_sale($rows[0]['call_status_id'], $rows[0]['ordering_status_id'], $rows[0]['cod_status_id']) 
+                    && $this->_can_edit_by_cod($rows[0]['cod_status_id']));
         }
         if ($this->role_id == 2) {
             $edited_contact = $this->_can_edit_by_cod($rows[0]['cod_status_id']);
@@ -235,7 +236,7 @@ class Common extends MY_Controller {
         die;
     }
 
-    private function _can_edit_by_sale($call_stt, $ordering_stt) {
+    private function _can_edit_by_sale($call_stt, $ordering_stt, $cod_stt) {
         $this->load->model("call_status_model");
         $stop_care_call_stt_where = array();
         $stop_care_call_stt_where['where'] = array('stop_care' => 1);
@@ -247,6 +248,7 @@ class Common extends MY_Controller {
                 }
             }
         }
+       
 
         $stop_care_call_order_id = array(_TU_CHOI_MUA_, _CONTACT_CHET_);
         if (!empty($stop_care_call_order_id)) {
@@ -255,6 +257,10 @@ class Common extends MY_Controller {
                     return false;
                 }
             }
+        }
+        
+        if($ordering_stt == _DONG_Y_MUA_ && $cod_stt > 0){
+             return false;
         }
         return true;
     }
@@ -538,6 +544,7 @@ class Common extends MY_Controller {
         if (!empty($this->input->post())) {
             $post = $this->input->post();
             $param = array();
+            $param['cod_staff_id'] = $this->user_id;
             $post_arr = array('address', 'payment_method_rgt', 'provider_id', 'cod_status_id', 'code_cross_check',
                 'note_cod', 'weight_envelope', 'cod_fee', 'fee_resend', 'date_expect_receive_cod');
             foreach ($post_arr as $value) {

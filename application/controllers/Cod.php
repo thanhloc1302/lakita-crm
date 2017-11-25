@@ -12,6 +12,23 @@ class Cod extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
+        
+        $this->data['top_nav'] = 'cod/common/top-nav';
+        $data['time_remaining'] = 0;
+        $input = array();
+        $input['select'] = 'date_recall';
+        $input['where']['date_recall >'] = time();
+        $input['where']['cod_status_id >'] = '0';
+        $input['order']['date_recall'] = 'ASC';
+        $input['limit'] = array('1', '0');
+        $noti_contact = $this->contacts_model->load_all($input);
+        if (!empty($noti_contact)) {
+            $time_remaining = $noti_contact[0]['date_recall'] - time();
+            $data['time_remaining'] = ($time_remaining < 3600*3) ? $time_remaining : 0;
+        }
+        $this->load->vars($data);
+        
+        
         $this->load->model('L7_check_model');
         $this->_loadCountListContact();
     }

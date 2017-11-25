@@ -1076,7 +1076,7 @@ $(document).on('click', '.btn-edit-contact', function (e) {
             if (data.success == 1) {
                 $("#send_email_sound")[0].play();
                 $.notify(data.message, {
-                    position: "top left",
+                    position: "bottom left",
                     className: 'success',
                     showDuration: 200,
                     autoHideDelay: 5000
@@ -1892,23 +1892,13 @@ $(".daterangepicker").daterangepicker({
 $(".reset_datepicker").click(function (e) {
     e.preventDefault();
     $("#datepicker").val("");
-});$(function () {
-    var clipboard = new Clipboard('.btn-copy');
-    clipboard.on('success', function () {
-        $.notify("Copy thành công vào clipboard", {
-            position: "top left",
-            className: 'success',
-            showDuration: 200,
-            autoHideDelay: 2000
-        });
-    });
-});
-$(document).on("click", ".view_contact_phone", function () {
-    var textCopy = document.getElementById("input-copy");
+});$(document).on("click", ".view_contact_phone", function () {
+    var textCopy = document.getElementById("input-copy-"+$(this).attr('id-copy'));
+    console.log(textCopy);
     textCopy.select();
     document.execCommand('copy');
     $.notify("Copy thành công vào clipboard", {
-        position: "top left",
+        position: "bottom left",
         className: 'success',
         showDuration: 200,
         autoHideDelay: 2000

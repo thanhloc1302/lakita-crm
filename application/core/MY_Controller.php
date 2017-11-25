@@ -494,14 +494,15 @@ class MY_Controller extends CI_Controller {
 
         /* search every where */
 
-        if (isset($get['search_all']) && $get['search_all'] != '') {
-            $input_get['group_start_like']['phone'] = $get['search_all'];
-            $input_get['or_like']['name'] = $get['search_all'];
-            $input_get['or_like']['code_cross_check'] = $get['search_all'];
-            $input_get['or_like']['email'] = $get['search_all'];
-            $input_get['or_like']['address'] = $get['search_all'];
-            $input_get['or_like']['matrix'] = $get['search_all'];
-            $input_get['group_end_or_like']['id'] = $get['search_all'];
+        if (isset($get['search_all']) && trim($get['search_all']) != '') {
+            $searchStr = trim($get['search_all']);
+            $input_get['group_start_like']['phone'] = $searchStr;
+            $input_get['or_like']['name'] = $searchStr;
+            $input_get['or_like']['code_cross_check'] = $searchStr;
+            $input_get['or_like']['email'] = $searchStr;
+            $input_get['or_like']['address'] = $searchStr;
+            $input_get['or_like']['matrix'] = $searchStr;
+            $input_get['group_end_or_like']['id'] = $searchStr;
         }
 
         return array(
