@@ -56,22 +56,21 @@ class Common extends MY_Controller {
             'address' => 'view',
             'course_code' => 'view',
             'price_purchase' => 'view',
-            'date_rgt' => 'view',
-            'matrix' => 'view',
             'sale' => 'view',
+            'source' => 'view',
+            'date_rgt' => 'view',
             'date_handover' => 'view',
-            'source' => 'view'
+            'date_last_calling' => 'view',
+            'date_confirm' => 'view',
+            'date_print_cod' => 'view',
+            'date_recall' => 'view',
         );
         $right_view = array(
             'transfer_log' => 'view',
-            'date_last_calling' => 'view',
             'call_stt' => 'view',
-            'date_recall' => 'view',
             'ordering_stt' => 'view',
-            'date_confirm' => 'view',
-            'payment_method_rgt' => 'view',
             'cod_status' => 'view',
-            'date_print_cod' => 'view',
+            'payment_method_rgt' => 'view',
             'weight_envelope' => 'view',
             'cod_fee' => 'view',
             'fee_resend' => 'view',
@@ -107,13 +106,12 @@ class Common extends MY_Controller {
                 'course_code' => 'edit',
                 'price_purchase' => 'edit',
                 'date_rgt' => 'view',
-                'matrix' => 'view',
                 'date_handover' => 'view',
+                'date_last_calling' => 'view',
+                'date_confirm' => 'view',
             );
             $right_edit = array(
                 'transfer_log' => 'view',
-                'date_last_calling' => 'view',
-                'date_confirm' => 'view',
                 'payment_method_rgt' => 'edit',
                 'script' => 'edit',
                 'call_stt' => 'edit',
@@ -136,12 +134,11 @@ class Common extends MY_Controller {
                 'course_code' => 'view',
                 'price_purchase' => 'view',
                 'date_rgt' => 'view',
-                'matrix' => 'view',
                 'date_handover' => 'view',
+                 'date_confirm' => 'view',
             );
             $right_edit = array(
                 'sale' => 'view',
-                'date_confirm' => 'view',
                 'payment_method_rgt' => 'edit',
                 'code_cross_check' => 'edit',
                 'provider' => 'edit',
@@ -215,11 +212,10 @@ class Common extends MY_Controller {
         $data['view_edit_right'] = $right_edit;
 
         if ($this->role_id == 1) {
-            $edited_contact = ( $this->_can_edit_by_sale($rows[0]['call_status_id'], $rows[0]['ordering_status_id'], $rows[0]['cod_status_id']) 
-                    && $this->_can_edit_by_cod($rows[0]['cod_status_id']));
+            $edited_contact = ( $this->_can_edit_by_sale($rows[0]['call_status_id'], $rows[0]['ordering_status_id'], $rows[0]['cod_status_id']) && $this->_can_edit_by_cod($rows[0]['cod_status_id']));
         }
         if ($this->role_id == 2) {
-            $edited_contact = $this->_can_edit_by_cod($rows[0]['cod_status_id']);
+            $edited_contact = $this->_can_edit_by_cod($rows[0]['call_status_id'], $rows[0]['ordering_status_id'], $rows[0]['cod_status_id']);
         }
         $data['contact_id'] = $id;
         $data['edited_contact'] = $edited_contact;
@@ -248,7 +244,7 @@ class Common extends MY_Controller {
                 }
             }
         }
-       
+
 
         $stop_care_call_order_id = array(_TU_CHOI_MUA_, _CONTACT_CHET_);
         if (!empty($stop_care_call_order_id)) {
@@ -258,14 +254,14 @@ class Common extends MY_Controller {
                 }
             }
         }
-        
-        if($ordering_stt == _DONG_Y_MUA_ && $cod_stt > 0){
-             return false;
+
+        if ($ordering_stt == _DONG_Y_MUA_ && $cod_stt > 0) {
+            return false;
         }
         return true;
     }
 
-    protected function _can_edit_by_cod($cod_status_id) {
+    protected function _can_edit_by_cod($call_status_id, $ordering_status_id, $cod_status_id) {
         $this->load->model("cod_status_model");
         $stop_care_cod_stt_where = array();
         $stop_care_cod_stt_where['where'] = array('stop_care' => 1);
@@ -627,17 +623,19 @@ class Common extends MY_Controller {
             // $receiveCOD = array();
             if ($cod_status_id > 1) {
                 switch ($cod_status_id) {
-                    case 2: {
-                            //$receiveCOD[] = $rows[0]['contact_id'];
-                            $param['date_receive_cod'] = time();
-                            break;
-                        }
-                    case 3: {
-                            // $receiveCOD[] = $rows[0]['contact_id'];
-                            $param['date_receive_lakita'] = time();
-                            break;
-                        }
-                    case 4: $param['date_receive_cancel_cod'] = time();
+                    case 2:
+                        //$receiveCOD[] = $rows[0]['contact_id'];
+                        $param['date_receive_cod'] = time();
+                        $param['date_expect_receive_cod'] = '0';
+                        break;
+                    case 3:
+                        // $receiveCOD[] = $rows[0]['contact_id'];
+                        $param['date_receive_lakita'] = time();
+                        $param['date_expect_receive_cod'] = '0';
+                        break;
+                    case 4:
+                        $param['date_receive_cancel_cod'] = time();
+                        $param['date_expect_receive_cod'] = '0';
                         break;
                 }
             } else {

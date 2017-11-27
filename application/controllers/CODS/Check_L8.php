@@ -489,8 +489,11 @@ class Check_L8 extends MY_Table {
              */
             $date_deliver_success = strtotime(str_replace('/', '-', $code_cross[0]['date_deliver_success']));
             $where = array('code_cross_check' => $code_cross[0]['code']);
-            $data = array('date_receive_lakita' => time(), 'cod_status_id' => _DA_THU_LAKITA_,
-                'last_activity' => time(), 'date_deliver_success' => $date_deliver_success);
+            $data = array('date_receive_lakita' => time(), 
+                'cod_status_id' => _DA_THU_LAKITA_,
+                'last_activity' => time(), 
+                'date_deliver_success' => $date_deliver_success,
+                'date_expect_receive_cod' => '0');
             $this->contacts_model->update($where, $data);
 
             /*

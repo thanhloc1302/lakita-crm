@@ -2013,6 +2013,17 @@ $(".reset_datepicker").click(function (e) {
     $('#collapse-filter').on('hidden.bs.collapse', function () {
         $(this).prev().find(".fa").removeClass("fa-arrow-circle-up").addClass("fa-arrow-circle-down");
     });
+    /*
+     * Kiểm tra xem có biến search là view_detail_contact không, nếu có sẽ hiển thị chi tiết contact
+     */
+    var searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.has('view_detail_contact')) {
+        var contatctID = searchParams.get('view_detail_contact');
+        $(".view-detail-contact-by-get-url").remove();
+        $('body').append('<a href="#" \n                               class="ajax-request-modal view-detail-contact-by-get-url"\n                               data-contact-id ="' + contatctID + '"\n                               data-modal-name="view-detail-contact-div"\n                               data-url="common/view_detail_contact">');
+        $(".view-detail-contact-by-get-url").click();
+        $(".view-detail-contact-by-get-url").remove();
+    }
 });
 /*
  * To change this license header, choose License Headers in Project Properties.

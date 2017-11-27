@@ -73,8 +73,8 @@ class MY_Model extends CI_Model {
         }
         return $result;
     }
-    
-     function delete_all() {
+
+    function delete_all() {
         $this->db->empty_table($this->table);
     }
 
@@ -118,10 +118,17 @@ class MY_Model extends CI_Model {
         if (isset($input['select'])) {
             $this->db->select($input['select']);
         }
-        
-        if(isset($input['distinct'])){
-             $this->db->distinct();
-             $this->db->select($input['distinct']);
+
+        if (isset($input['distinct'])) {
+            $this->db->distinct();
+            $this->db->select($input['distinct']);
+        }
+
+        if (isset($input['group_start_where']) && !empty($input['group_start_where'])) {
+            $this->db->group_start();
+//            foreach ($input['group_start_where'] as $key => $value) {
+//                $this->db->where($key, $value);
+//            }
         }
 
         // Thêm điều kiện cho câu truy vấn truyền qua biến $input['where'] 
@@ -137,13 +144,6 @@ class MY_Model extends CI_Model {
             }
         }
 
-        if (isset($input['group_start_where']) && !empty($input['group_start_where'])) {
-            $this->db->group_start();
-            foreach ($input['where'] as $key => $value) {
-                $this->db->where($key, $value);
-            }
-        }
-
         if (isset($input['or_where']) && !empty($input['or_where'])) {
             foreach ($input['or_where'] as $key => $value) {
                 $this->db->or_where($key, $value);
@@ -151,9 +151,9 @@ class MY_Model extends CI_Model {
         }
 
         if (isset($input['group_end_or_where']) && !empty($input['group_end_or_where'])) {
-            foreach ($input['or_where'] as $key => $value) {
-                $this->db->or_where($key, $value);
-            }
+//            foreach ($input['group_end_or_where'] as $key => $value) {
+//                $this->db->or_where($key, $value);
+//            }
             $this->db->group_end();
         }
 

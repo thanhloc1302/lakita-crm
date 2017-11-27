@@ -68,5 +68,5 @@ integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="ano
             });
         </script>
     <?php } ?>
-<?php } ?>
+<?php } 
 

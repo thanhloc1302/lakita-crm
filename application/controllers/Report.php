@@ -307,7 +307,7 @@ class Report extends MY_Controller {
             $viettel_code_cross_check[] = $code_cross_check;
             if ($status == 'Thanh cong - phat thanh cong' || $status == 'Phát thành công') {
                 $where = array('code_cross_check' => $code_cross_check);
-                $data = array('cod_status_id' => _DA_THU_COD_, 'date_receive_cod' => time(), 'last_activity' => time());
+                $data = array('cod_status_id' => _DA_THU_COD_, 'date_receive_cod' => time(), 'date_expect_receive_cod' => '0', 'last_activity' => time());
                 $this->contacts_model->update($where, $data);
                 $input_success = array();
                 $input_success['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
@@ -318,7 +318,7 @@ class Report extends MY_Controller {
                 }
             } else if ($status == 'Thanh cong chuyen tra nguoi gui' || $status == 'CHuyển trả người gửi') {
                 $where = array('code_cross_check' => $code_cross_check);
-                $data = array('cod_status_id' => _HUY_DON_, 'date_receive_cancel_cod' => time(), 'last_activity' => time());
+                $data = array('cod_status_id' => _HUY_DON_, 'date_expect_receive_cod' => '0', 'date_receive_cancel_cod' => time(), 'last_activity' => time());
                 $this->contacts_model->update($where, $data);
                 $input_cancel = array();
                 $input_cancel['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
@@ -579,7 +579,7 @@ class Report extends MY_Controller {
         $this->load->library("email");
         $this->email->from('cskh@lakita.vn', "lakita.vn");
         //$emailTo = 'chuyenbka@gmail.com';
-        $emailTo = 'chuyenbka@gmail.com, ngoccongtt1@gmail.com, trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com, lakitavn@gmail.com';
+        $emailTo = 'chuyenbka@gmail.com, ngoccongtt1@gmail.com, trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com';
         $this->email->to($emailTo);
         $this->email->subject('Báo cáo tổng hợp ngày ' . date('d-m-Y') . ' (by cron job)');
         $this->email->message($str);
@@ -660,17 +660,33 @@ class Report extends MY_Controller {
         $this->load->model('cod_status_model');
         $input = [];
         $data_load['cod_status'] = $this->cod_status_model->load_all($input);
-        $tomorrow = strtotime(date('d-m-Y'));
+        $today = strtotime(date('d-m-Y'));
+        $tomorrow = $today + 24 * 3600 - 1;
         $input = array();
-        $input['select'] = 'id, name, phone, address, cod_status_id, date_expect_receive_cod, code_cross_check';
-        $input['where'] = array(
-            'date_expect_receive_cod >=' => $tomorrow,
-            'date_expect_receive_cod <=' => $tomorrow + 24 * 3600 - 1,
-            'is_hide' => '0');
+        $input['select'] = 'id, name, phone, address, course_code, cod_status_id, date_expect_receive_cod, code_cross_check';
+        $input['where'] = array("((`date_expect_receive_cod` >= $today AND `date_expect_receive_cod` <= $tomorrow AND `cod_status_id` = '0') "
+            . "OR (`date_expect_receive_cod` > 0 AND `date_expect_receive_cod` <= $tomorrow AND `cod_status_id` = '1'))" => 'NO-VALUE');
         $contacts = $this->contacts_model->load_all($input);
+        $this->load->model('notes_model');
+        foreach ($contacts as &$value) {
+            $input = array();
+            $input['where'] = array('contact_code' => $value['phone'] . '_' . $value['course_code']);
+            $input['order'] = array('id' => 'DESC');
+            $last_note = $this->notes_model->load_all($input);
+            $notes = '';
+            if (!empty($last_note)) {
+                foreach ($last_note as $value2) {
+                    $notes .= '<p>' . date('d/m/Y', $value2['time']) . ' ==> ' . $value2['content'] . '</p>';
+                }
+                $value['last_note'] = $notes;
+            } else {
+                $value['last_note'] = $notes;
+            }
+        }
+        unset($value);
         $data_load['total_contacts'] = count($contacts);
         $data_load['contacts'] = $contacts;
-        $str = $this->load->view('CODS/contact-expect-receive-cod/index', $data_load, true);
+        $str = $this->load->view('CODS/contact-expect-receive-cod/index', $data_load, true); 
         if (!empty($contacts)) {
             $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, trinhnv@lakita.vn, lakitavn@gmail.com';
             $this->load->library("email");

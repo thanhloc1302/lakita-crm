@@ -406,7 +406,9 @@ class Check_L7 extends MY_Table {
              * Cập nhật trạng thái đã thu COD hoặc hủy đơn
              */
             $where = array('code_cross_check' => $code_cross[0]['code']);
-            $data = array('date_receive_cod' => time(), 'cod_status_id' => $code_cross[0]['cod_status_id'],
+            $data = array('date_receive_cod' => time(),
+                'cod_status_id' => $code_cross[0]['cod_status_id'],
+                'date_expect_receive_cod' => '0',
                 'last_activity' => time());
             $this->contacts_model->update($where, $data);
 

@@ -34,7 +34,7 @@ class Ad extends MY_Table {
                 'name_display' => 'ID adset',
                 'display' => 'none'
             ),
-             'active' => array(
+            'active' => array(
                 'type' => 'binary',
                 'name_display' => 'Hoạt động'
             ),
@@ -44,7 +44,6 @@ class Ad extends MY_Table {
             ),
             'ad_id_facebook' => array(
                 'name_display' => 'Ad ID Facebook',
-                'display' => 'none'
             ),
             'desc' => array(
                 'name_display' => 'Mô tả',
@@ -76,16 +75,17 @@ class Ad extends MY_Table {
             ),
             'pricepC2' => array(
                 'name_display' => 'giá C2',
+                 'type' => 'currency',
             ),
             'pricepC3' => array(
                 'name_display' => 'giá C3',
+                 'type' => 'currency',
             ),
             'time' => array(
                 'type' => 'datetime',
                 'name_display' => 'Ngày tạo',
                 'display' => 'none'
             ),
-        
         );
         $this->set_list_view($list_item);
         $this->set_model('ad_model');
@@ -133,7 +133,7 @@ class Ad extends MY_Table {
                 $value['spend'] = $ad_cost['spend'];
                 $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) . ' đ' : '#N/A';
                 $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) . ' đ' : '#N/A';
-                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) . ' đ' : '#N/A';
+                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) : '#N/A';
             } else {
                 $value['total_C1'] = '#NA';
                 $value['total_C2'] = '#NA';
@@ -147,6 +147,29 @@ class Ad extends MY_Table {
             }
         }
         unset($value);
+        usort($this->data['rows'], function($a, $b) {
+            if ($a['active'] == '0' && $b['active'] == '1') {
+                return +1;
+            } else if ($a['active'] == '1' && $b['active'] == '0') {
+                return -1;
+            } else if ($a['active'] == '0' && $b['active'] == '0') {
+                if (is_numeric($a['pricepC3']) && is_numeric($b['pricepC3'])) {
+                    return $b['pricepC3'] - $a['pricepC3'];
+                } else if (is_numeric($a['pricepC3']) && !is_numeric($b['pricepC3'])) {
+                    return -1;
+                } else if (!is_numeric($a['pricepC3']) && is_numeric($b['pricepC3'])) {
+                    return +1;
+                }
+            } else {
+                if (is_numeric($a['pricepC3']) && is_numeric($b['pricepC3'])) {
+                    return $b['pricepC3'] - $a['pricepC3'];
+                } else if (is_numeric($a['pricepC3']) && !is_numeric($b['pricepC3'])) {
+                    return -1;
+                } else if (!is_numeric($a['pricepC3']) && is_numeric($b['pricepC3'])) {
+                    return +1;
+                }
+            }
+        });
     }
 
     /*
@@ -248,7 +271,7 @@ class Ad extends MY_Table {
      * Hiển thị modal sửa item
      */
 
-    function show_edit_item($inputData =[]) {
+    function show_edit_item($inputData = []) {
         /*
          * type mặc định là text nên nếu là text sẽ không cần khai báo
          */

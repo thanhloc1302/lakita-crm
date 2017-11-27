@@ -28,6 +28,7 @@
                             <div class="label">Mật khẩu</div>
                             <input type="password" class="form-control" name="password" placeholder="Mật khẩu"/>
                         </div>
+                        <input type="hidden" id="get-url-variable" value="<?php echo $this->initGetVariable ?>" />
                         <div align="center">
                             <button class="btn btn-orange btn-login">Đăng nhập</button>
                         </div>
