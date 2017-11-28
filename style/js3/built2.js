@@ -511,6 +511,7 @@ $(document).on('click', '.create-campaign-from-fb-2', function (e) {
                                 return $(".popup-wrapper").show();
                             },
                             data: {
+                                fb_account_id: _this.attr('fb-account-id'),
                                 fb_campaign_id: _this.attr('fb-campaign-id'),
                                 fb_campaign_name: _this.attr('fb-campaign-name'),
                                 fb_adset_id: _this.attr('fb-adset-id'),
@@ -2018,7 +2019,7 @@ $(".reset_datepicker").click(function (e) {
      */
     var searchParams = new URLSearchParams(window.location.search);
     if (searchParams.has('view_detail_contact')) {
-        var contatctID = searchParams.get('view_detail_contact');
+        var contatctID = $.trim(searchParams.get('view_detail_contact'));
         $(".view-detail-contact-by-get-url").remove();
         $('body').append('<a href="#" \n                               class="ajax-request-modal view-detail-contact-by-get-url"\n                               data-contact-id ="' + contatctID + '"\n                               data-modal-name="view-detail-contact-div"\n                               data-url="common/view_detail_contact">');
         $(".view-detail-contact-by-get-url").click();
@@ -2280,8 +2281,8 @@ $(document).on("click", ".ajax-request-modal", function (e) {
     e.preventDefault();
     var _this = $(this);
     setTimeout(function () {
-        $(".checked").removeClass("checked");
-        _this.parent().parent().addClass("checked");
+        if ($(".checked").length) $(".checked").removeClass("checked");
+        /*   _this.parent().parent().addClass("checked"); */
 
         var contact_id = _this.attr("data-contact-id");
         var url = $("#base_url").val() + _this.attr("data-url");

@@ -12,7 +12,7 @@
             <tbody>
                 <?php foreach ($campaigns as $value) { ?>
                     <tr>
-                        <td> <?php echo $value['account']; ?></td>
+                        <td> <?php echo $accountFB[$value['account']]; ?></td>
                         <td> <?php echo $value['fb_campaign_name']; ?> </td>
                         <td> <?php echo $value['fb_adset_name']; ?> </td>
                         <td> <?php echo $value['fb_ad_name']; ?> </td>
@@ -29,6 +29,7 @@
                         </td>
                         <td>  <?php
                             echo '<button class="create-campaign-from-fb-2 btn btn-success" '
+                            . 'fb-account-id="' . $value['account'] . '" '
                             . 'fb-campaign-id="' . $value['fb_campaign_id'] . '" fb-campaign-name="' . $value['fb_campaign_name'] . '" '
                             . 'fb-adset-id="' . $value['fb_adset_id'] . '" fb-adset-name="' . $value['fb_adset_name'] . '" '
                             . 'fb-ad-id="' . $value['fb_ad_id'] . '" fb-ad-name="' . $value['fb_ad_name'] . '"> '

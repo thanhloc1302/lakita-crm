@@ -127,7 +127,7 @@ class Common extends MY_Controller {
         if ($this->role_id == 2) { //cod
             $left_edit = array(
                 'contact_id' => 'view',
-                'name' => 'view',
+                'name' => 'edit',
                 'email' => 'view',
                 'phone' => 'view',
                 'address' => 'edit',
@@ -159,7 +159,7 @@ class Common extends MY_Controller {
 
     protected function _common_edit_contact($post, $left_edit, $right_edit) {
         $input = array();
-        $input['where'] = array('id' => $post['contact_id']);
+        $input['where'] = array('id' => trim($post['contact_id']));
         $rows = $this->contacts_model->load_all_contacts($input);
         $result = array();
         if (empty($rows)) {
@@ -183,7 +183,7 @@ class Common extends MY_Controller {
             die;
         }
 
-        $id = $post['contact_id'];
+        $id = trim($post['contact_id']);
         $contact_code = $rows[0]['phone'] . '_' . $rows[0]['course_code'];
         $require_model = array(
             'staffs' => array(),
@@ -276,10 +276,10 @@ class Common extends MY_Controller {
         return true;
     }
 
-    function action_edit_contact($id) {
+    function action_edit_contact($id=0) {
         $result = array();
         $input = array();
-        $input['where'] = array('id' => $id);
+        $input['where'] = array('id' => trim($id));
         $rows = $this->contacts_model->load_all($input);
         if (empty($rows)) {
             $result['success'] = 0;
@@ -294,7 +294,7 @@ class Common extends MY_Controller {
                 echo json_encode($result);
                 die;
             }
-            $this->_action_edit_by_sale($id, $rows);
+            $this->_action_edit_by_sale(trim($id), $rows);
         } else if ($this->role_id == 2) {
             if ($rows[0]['ordering_status_id'] != _DONG_Y_MUA_ || $rows[0]['call_status_id'] != _DA_LIEN_LAC_DUOC_) {
                 $result['success'] = 0;
@@ -302,7 +302,7 @@ class Common extends MY_Controller {
                 echo json_encode($result);
                 die;
             }
-            $this->_action_edit_by_cod($id, $rows);
+            $this->_action_edit_by_cod(trim($id), $rows);
         } else {
             $result['success'] = 0;
             $result['message'] = "Bạn không có quyền chỉnh sửa contact";

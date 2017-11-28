@@ -16,11 +16,11 @@ class Report extends MY_Controller {
         parent::__construct();
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         ini_set('max_execution_time', 300);
-        if (!$this->input->is_cli_request()) {
-            show_error('Access denied', 403);
-        } else {
-            echo '1';
-        }
+//        if (!$this->input->is_cli_request()) {
+//            show_error('Access denied', 403);
+//        } else {
+//            echo '1';
+//        }
     }
 
     function send_report_sale_daily() {
@@ -483,6 +483,7 @@ class Report extends MY_Controller {
     function view_general_report() {
         $this->load->helper('manager_helper');
         $input = array();
+        $input['where'] = array('active' => '1');
         $this->load->model('courses_model');
         $courses = $this->courses_model->load_all($input);
         $get = [];
@@ -570,11 +571,21 @@ class Report extends MY_Controller {
             $data[$key] = $value['sum'];
         }
         $data['sumL8'] = $sumL8;
-        $data['courses'] = $courses;
+
         $data['content'] = 'report/view_general_report';
 
         // $this->load->view('report/view_general_report', $data);
 
+        usort($courses, function($a, $b) {
+            return $a['L1'] - $b['L1'];
+        });
+
+        foreach ($courses as $key => $course) {
+            if ($course['L1'] == 0) {
+                unset($courses[$key]);
+            }
+        }
+        $data['courses'] = $courses;
         $str = $this->load->view('report/view_general_report', $data, true);
         $this->load->library("email");
         $this->email->from('cskh@lakita.vn', "lakita.vn");
@@ -686,7 +697,7 @@ class Report extends MY_Controller {
         unset($value);
         $data_load['total_contacts'] = count($contacts);
         $data_load['contacts'] = $contacts;
-        $str = $this->load->view('CODS/contact-expect-receive-cod/index', $data_load, true); 
+        $str = $this->load->view('CODS/contact-expect-receive-cod/index', $data_load, true);
         if (!empty($contacts)) {
             $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, trinhnv@lakita.vn, lakitavn@gmail.com';
             $this->load->library("email");
@@ -695,6 +706,20 @@ class Report extends MY_Controller {
             $this->email->subject('CONTACT DỰ KIẾN GIAO HÀNG VÀ YÊU CẦU PHÁT LẠI VÀO HÔM NAY (BY CLI & CRON JOB)');
             $this->email->message($str);
             $this->email->send();
+        }
+    }
+
+    public function UpdateCampaignAccountFb() {
+        $this->load->model('campaign_model');
+        $input = [];
+        $input['where'] = ['active' => '1'];
+        $campaigns = $this->campaign_model->load_all($input);
+        foreach ($campaigns as $campaign) {
+            if($campaign['campaign_id_facebook'] != ''){
+           echo $url = 'https://graph.facebook.com/v2.11/' . $campaign['campaign_id_facebook'] . '?fields=account_id&access_token=' . ACCESS_TOKEN;
+            $spend = get_fb_request($url);
+            print_arr($spend);
+            }
         }
     }
 

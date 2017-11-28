@@ -410,18 +410,13 @@ class Campaign extends MY_Table {
     public function AddItemFetch() {
         $this->load->model('adset_model');
         $this->load->model('ad_model');
-        $accountFBADS = [
-            'Lakita_cũ' => '512062118812690',
-            'Lakita_3.0' => '600208190140429',
-            'Lakita_K3' => '817360198425226'];
-//            $input = [];
-//            $input['where'] = array('date_fetch <' => time() - 3600);
-//            $accountFBADS = $this->campaign_fb_model->load_all($input);
+        $this->load->model('account_fb_model');
+        $accountFBADS = $this->account_fb_model->load_all([]);
         foreach ($accountFBADS as $key => $value2) {
-            $url = 'https://graph.facebook.com/v2.11/act_' . $value2 . '/' .
+            $url = 'https://graph.facebook.com/v2.11/act_' . $value2['fb_id_account'] . '/' .
                     'campaigns?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
             $spend = get_fb_request($url);
-            $campaigns[$key] = json_decode(json_encode($spend->data), true);
+            $campaigns[$value2['fb_id_account']] = json_decode(json_encode($spend->data), true);
         }
 
         /*
@@ -520,12 +515,16 @@ class Campaign extends MY_Table {
                 }
             }
         }
-
-
         $this->load->model('landingpage_model');
         $input = array();
         $input['where'] = array('active' => 1);
         $landingpages = $this->landingpage_model->load_all($input);
+            
+        $accountFB = [];
+        foreach($accountFBADS as $value){
+            $accountFB[$value['fb_id_account']] = $value['name'];
+        }
+        $data['accountFB'] = $accountFB;
         $data['landingpages'] = $landingpages;
         $data['campaigns'] = $newCampaign;
         //print_arr($newCampaign);
@@ -540,6 +539,7 @@ class Campaign extends MY_Table {
         $this->load->model('link_model');
 
         $campaignId = 0;
+        $accountFbId = $post['fb_account_id'];
         $inputCampaign = array();
         $inputCampaign['select'] = 'id';
         $inputCampaign['where'] = array('campaign_id_facebook' => $post['fb_campaign_id']);
@@ -553,6 +553,7 @@ class Campaign extends MY_Table {
             $param['active'] = 1;
             $param['time'] = time();
             $param['marketer_id'] = $this->user_id;
+            $param['account_fb_id'] = $accountFbId;
             $campaignId = $this->{$this->model}->insert_return_id($param, 'id');
             $message .= 'Tạo campaign mới thành công' . '<br>';
         } else {
@@ -574,6 +575,7 @@ class Campaign extends MY_Table {
             $param['active'] = 1;
             $param['time'] = time();
             $param['marketer_id'] = $this->user_id;
+            $param['account_fb_id'] = $accountFbId;
             $adsetId = $this->adset_model->insert_return_id($param, 'id');
             $message .= 'Tạo adset mới thành công' . '<br>';
         } else {
@@ -595,6 +597,7 @@ class Campaign extends MY_Table {
             $param['active'] = 1;
             $param['time'] = time();
             $param['marketer_id'] = $this->user_id;
+            $param['account_fb_id'] = $accountFbId;
             $adId = $this->ad_model->insert_return_id($param, 'id');
             $message .= 'Tạo ad mới thành công' . '<br>';
         } else {

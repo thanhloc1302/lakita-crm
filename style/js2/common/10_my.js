@@ -80,7 +80,7 @@ $(function () {
      */
     let searchParams = new URLSearchParams(window.location.search);
     if (searchParams.has('view_detail_contact')) {
-        var contatctID = searchParams.get('view_detail_contact');
+        var contatctID = $.trim(searchParams.get('view_detail_contact'));
         $(".view-detail-contact-by-get-url").remove();
         $('body').append(`<a href="#" 
                                class="ajax-request-modal view-detail-contact-by-get-url"

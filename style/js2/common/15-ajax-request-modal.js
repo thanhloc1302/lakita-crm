@@ -9,8 +9,8 @@ $(document).on("click", ".ajax-request-modal", function (e) {
     e.preventDefault();
     var _this = $(this);
     setTimeout(function () {
-        $(".checked").removeClass("checked");
-        _this.parent().parent().addClass("checked");
+     if($(".checked").length) $(".checked").removeClass("checked");
+       /*   _this.parent().parent().addClass("checked"); */
 
         var contact_id = _this.attr("data-contact-id");
         var url = $("#base_url").val() + _this.attr("data-url");

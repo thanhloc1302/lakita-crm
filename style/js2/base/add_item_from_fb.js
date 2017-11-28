@@ -30,6 +30,7 @@ $(document).on('click', '.create-campaign-from-fb-2', function (e) {
                             type: "POST",
                             beforeSend: () => $(".popup-wrapper").show(),
                             data: {
+                                fb_account_id: _this.attr('fb-account-id'),
                                 fb_campaign_id: _this.attr('fb-campaign-id'),
                                 fb_campaign_name: _this.attr('fb-campaign-name'),
                                 fb_adset_id: _this.attr('fb-adset-id'),
