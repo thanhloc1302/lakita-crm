@@ -54,7 +54,7 @@ class Send_email extends CI_Controller {
     public function send_account_lakita() {
         $post = $this->input->post();
         if (!empty($post) && isset($post['contact_id'])) {
-            $this->db->select('name, course_code, email, phone');
+            $this->db->select('name, course_code, email, phone, payment_method_rgt');
             $contacts = $this->contacts_model->find($post['contact_id']);
             if (!empty($contacts)) {
                 $contact = $contacts[0];
@@ -62,6 +62,13 @@ class Send_email extends CI_Controller {
                     $result = [];
                     $result['success'] = 0;
                     $result['message'] = 'Contact đã chọn không có tên hoặc số đt hoặc địa chỉ!  Vui lòng cập nhật thông tin khách hàng đầy đủ.';
+                    echo json_encode($result);
+                    die;
+                }
+                if ($contact['payment_method_rgt'] == PAYMENT_METHOD_COD) {
+                    $result = [];
+                    $result['success'] = 0;
+                    $result['message'] = 'Chỉ contact mua bằng chuyển khoản mới có thể tạo tài khoản tự động!';
                     echo json_encode($result);
                     die;
                 }
@@ -107,10 +114,17 @@ class Send_email extends CI_Controller {
                  * Kiểm tra xem các contact đã cập nhật lên L8 chưa, nếu chưa thì báo lỗi
                  */
                 $input = [];
-                $input['select'] = 'cod_status_id, course_code, email, phone, name';
+                $input['select'] = 'cod_status_id, course_code, email, phone, name, payment_method_rgt';
                 $input['where'] = array('id' => $contactId);
                 $contactTmp = $this->contacts_model->load_all($input);
                 $courseCode[] = $contactTmp[0]['course_code'];
+                if ($contactTmp[0]['payment_method_rgt'] == PAYMENT_METHOD_COD) {
+                    $result['success'] = 0;
+                    $result['message'] = 'Chỉ contact mua bằng chuyển khoản mới có thể tạo tài khoản tự động!';
+                    echo json_encode($result);
+                    die;
+                }
+
                 if ($contactTmp[0]['name'] == '' || $contactTmp[0]['email'] == '' || $contactTmp[0]['phone'] == '') {
                     //$result = [];
                     $result['success'] = 0;

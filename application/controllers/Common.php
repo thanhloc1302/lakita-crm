@@ -225,7 +225,7 @@ class Common extends MY_Controller {
         $data['edited_contact'] = $edited_contact;
         $input_call_log = array();
         $input_call_log['where'] = array('contact_id' => $id);
-        $input_call_log['order'] = array('contact_id' => 'ASC');
+        $input_call_log['order'] = array('time' => 'ASC');
         $this->load->model('call_log_model');
         $data['call_logs'] = $this->call_log_model->load_all_call_log($input_call_log);
         $data['rows'] = $rows[0];
@@ -754,10 +754,16 @@ class Common extends MY_Controller {
         $data['time'] = time();
         $diffArr = array(
             '[Họ tên]: ' => 'name',
-            '[Email]:' => 'email',
+            '[Email]: ' => 'email',
             '[Địa chỉ]: ' => 'address',
-            '[Mã khóa học]:' => 'course_code',
-            '[Giá tiền mua]:' => 'price_purchase'
+            '[Mã khóa học]: ' => 'course_code',
+            '[Giá tiền mua]: ' => 'price_purchase',
+            '[Cước vận đơn]: ' => 'cod_fee',
+            '[Cước chuyển hoàn]: ' => 'cod_fee',
+            '[Cước vận đơn]: ' => 'fee_resend',
+            '[Khối lượng đơn hàng]: ' => 'weight_envelope',
+            '[Khối lượng đơn hàng]: ' => 'weight_envelope',
+            '[Mã bill]: ' => 'code_cross_check'
         );
         $strDiff = '';
         foreach ($diffArr as $key => $value) {
@@ -767,19 +773,11 @@ class Common extends MY_Controller {
                     $post[$value] = trim($post[$value]);
                 }
                 if ($post[$value] !== $rows[0][$value]) {
-                    $strDiff .= $key . $rows[0][$value] . ' ===> ' . $post[$value];
+                    $strDiff .= $key . $rows[0][$value] . ' ===> ' . $post[$value] .'<br>';
                 }
             }
         }
-        if (isset($post['cod_fee']) && $post['cod_fee'] !== $rows[0]['cod_fee']) {
-            $strDiff .= 'Cước vận đơn:' . $rows[0]['cod_fee'] . ' ===> ' . $post['cod_fee'];
-        }
-        if (isset($post['fee_resend']) && $post['fee_resend'] !== $rows[0]['fee_resend']) {
-            $strDiff .= 'Cước chuyển hoàn:' . $rows[0]['cod_fee'] . ' ===> ' . $post['cod_fee'];
-        }
-        if (isset($post['weight_envelope']) && $post['weight_envelope'] !== $rows[0]['weight_envelope']) {
-            $strDiff .= 'Khối lượng đơn hàng:' . $rows[0]['cod_fee'] . ' ===> ' . $post['cod_fee'];
-        }
+       
         $data['content_change'] = $strDiff;
         $this->load->model('call_log_model');
         $this->call_log_model->insert($data);

@@ -12,7 +12,7 @@ class Cod extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
-        
+
         $this->data['top_nav'] = 'cod/common/top-nav';
         $data['time_remaining'] = 0;
         $input = array();
@@ -24,11 +24,11 @@ class Cod extends MY_Controller {
         $noti_contact = $this->contacts_model->load_all($input);
         if (!empty($noti_contact)) {
             $time_remaining = $noti_contact[0]['date_recall'] - time();
-            $data['time_remaining'] = ($time_remaining < 3600*3) ? $time_remaining : 0;
+            $data['time_remaining'] = ($time_remaining < 3600 * 3) ? $time_remaining : 0;
         }
         $this->load->vars($data);
-        
-        
+
+
         $this->load->model('L7_check_model');
         $this->_loadCountListContact();
     }
@@ -257,6 +257,16 @@ class Cod extends MY_Controller {
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="02.Lakita_gui_danh_sach_khach_hang v' . date('Y.m.d') . '.xlsx"');
         header('Cache-Control: max-age=0');
+        $fileName = FCPATH . 'public/upload/EmailViettel/02.Lakita_gui_danh_sach_khach_hang v' . date('Y.m.d') . '.xlsx';
+        if (file_exists($fileName)) {
+            $fileName = FCPATH . 'public/upload/EmailViettel/02.Lakita_gui_danh_sach_khach_hang v' . date('Y.m.d-H.i.s') . '.xlsx';
+            $objWriter->save($fileName);
+        } else {
+            $objWriter->save($fileName);
+        }
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="02.Lakita_gui_danh_sach_khach_hang v' . date('Y.m.d') . '.xlsx"');
+        header('Cache-Control: max-age=0');
         $objWriter->save('php://output');
         die;
         /* ====================xuất file excel (end)============================== */
@@ -349,9 +359,13 @@ class Cod extends MY_Controller {
         header('Content-Type: application/vnd.ms-excel');
         header('Content-Disposition: attachment;filename="02.Lakita_gui_danh_sach_khach_hang v' . date('Y.m.d') . '.xlsx"');
         header('Cache-Control: max-age=0');
-        //  $fileName = 'C:/xampp/htdocs/CRM2/public/upload/02.Lakita_gui_danh_sach_khach_hang v' . date('Y.m.d') . '.xlsx';
-        $fileName = '/home/lakita.com.vn/public_html/sub/crm2/public/upload/EmailViettel/02.Lakita_gui_danh_sach_khach_hang v' . date('Y.m.d') . '.xlsx';
-        $objWriter->save($fileName);
+        $fileName = FCPATH . 'public/upload/EmailViettel/02.Lakita_gui_danh_sach_khach_hang v' . date('Y.m.d') . '.xlsx';
+        if (file_exists($fileName)) {
+            $fileName = FCPATH . 'public/upload/EmailViettel/02.Lakita_gui_danh_sach_khach_hang v' . date('Y.m.d-H.i.s') . '.xlsx';
+            $objWriter->save($fileName);
+        } else {
+            $objWriter->save($fileName);
+        }
         $config['protocol'] = 'smtp';
         $config['smtp_host'] = 'ssl://smtp.gmail.com';
         $config['smtp_port'] = '465';
@@ -360,8 +374,8 @@ class Cod extends MY_Controller {
         $config['smtp_pass'] = 'lakita2016';
         $config['charset'] = 'utf-8';
         $config['newline'] = "\r\n";
-        $config['mailtype'] = 'html'; // or html
-        $config['validation'] = TRUE; // bool whether to validate email or not
+        $config['mailtype'] = 'html';
+        $config['validation'] = TRUE;
         $this->load->library("email");
         $this->email->initialize($config);
         $this->email->from('cskh@lakita.vn', "lakita.vn");
@@ -370,6 +384,7 @@ class Cod extends MY_Controller {
         $this->email->message('Anh cho em gửi  danh sách COD ngày ' . date('d/m/Y') . '. Anh giúp em với ạ. Em cảm ơn ạ!');
         $this->email->attach($fileName);
         $this->email->send();
+
         show_error_and_redirect('Gửi email thành công', $post['back_location']);
     }
 
@@ -608,7 +623,7 @@ class Cod extends MY_Controller {
 //        if ($param != 1) {
 //            throw new Exception("$param should be an Foo instance.");
 //        }
-       // throw new Exception('Tự xác ở đây...');
+        // throw new Exception('Tự xác ở đây...');
         require_once APPPATH . "vendor/autoload.php";
         $client = new GuzzleHttp\Client(['base_uri' => 'https://sheets.googleapis.com/v4/spreadsheets/18x9FB074aMpgm66PbaPMtmol6HgG6eeidl3P5wJcH6w/values/Sheet1!A1:C?key=AIzaSyCdjll4ib79ZGtUEEEAxksl6zff2NkLCII']);
         $response = $client->request('GET');
