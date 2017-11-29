@@ -135,7 +135,7 @@ class Common extends MY_Controller {
                 'price_purchase' => 'view',
                 'date_rgt' => 'view',
                 'date_handover' => 'view',
-                 'date_confirm' => 'view',
+                'date_confirm' => 'view',
             );
             $right_edit = array(
                 'sale' => 'view',
@@ -215,7 +215,11 @@ class Common extends MY_Controller {
             $edited_contact = ( $this->_can_edit_by_sale($rows[0]['call_status_id'], $rows[0]['ordering_status_id'], $rows[0]['cod_status_id']) && $this->_can_edit_by_cod($rows[0]['cod_status_id']));
         }
         if ($this->role_id == 2) {
-            $edited_contact = $this->_can_edit_by_cod($rows[0]['call_status_id'], $rows[0]['ordering_status_id'], $rows[0]['cod_status_id']);
+            if ($rows[0]['call_status_id'] != _DA_LIEN_LAC_DUOC_ || $rows[0]['ordering_status_id'] != _DONG_Y_MUA_) {
+                $edited_contact = false;
+            } else {
+                $edited_contact = $this->_can_edit_by_cod($rows[0]['cod_status_id']);
+            }
         }
         $data['contact_id'] = $id;
         $data['edited_contact'] = $edited_contact;
@@ -261,7 +265,7 @@ class Common extends MY_Controller {
         return true;
     }
 
-    protected function _can_edit_by_cod($call_status_id, $ordering_status_id, $cod_status_id) {
+    protected function _can_edit_by_cod($cod_status_id) {
         $this->load->model("cod_status_model");
         $stop_care_cod_stt_where = array();
         $stop_care_cod_stt_where['where'] = array('stop_care' => 1);
@@ -276,7 +280,7 @@ class Common extends MY_Controller {
         return true;
     }
 
-    function action_edit_contact($id=0) {
+    function action_edit_contact($id = 0) {
         $result = array();
         $input = array();
         $input['where'] = array('id' => trim($id));
@@ -313,7 +317,7 @@ class Common extends MY_Controller {
 
     private function _action_edit_by_sale($id, $rows) {
         $result = array();
-        $edited_contact = $this->_can_edit_by_sale($rows[0]['call_status_id'], $rows[0]['ordering_status_id']);
+        $edited_contact = $this->_can_edit_by_sale($rows[0]['call_status_id'], $rows[0]['ordering_status_id'], $rows[0]['cod_status_id']);
         if (!$edited_contact) {
             $result['success'] = 0;
             $result['message'] = 'Contact này ở trạng thái không thể chăm sóc được nữa, vì vậy bạn không có quyền chăm sóc contact này nữa!';
@@ -345,6 +349,12 @@ class Common extends MY_Controller {
             $param['date_recall'] = (isset($post['date_recall']) && $post['date_recall'] != '') ? strtotime($post['date_recall']) : 0;
             $param['date_expect_receive_cod'] = (isset($post['date_expect_receive_cod']) && $post['date_expect_receive_cod'] != '') ? strtotime($post['date_expect_receive_cod']) : 0;
 
+            if ($param['date_expect_receive_cod'] > 0 && $param['ordering_status_id'] != _DONG_Y_MUA_) {
+                $result['success'] = 0;
+                $result['message'] = 'Contact đồng ý mua mới có ngày dự kiến giao hàng!';
+                echo json_encode($result);
+                die;
+            }
             /* Kiểm tra điều kiện các trạng thái và ngày hẹn gọi lại có logic ko */
             if (isset($post['call_status_id']) && $post['call_status_id'] == '0') {
                 $result['success'] = 0;

@@ -68,21 +68,11 @@ right_context_menu_display = (controller, contact_id, contact_name, duplicate_id
     var numberOfChecked = $('input.tbl-item-checkbox:checked').length;
     console.log(numberOfChecked);
     if (numberOfChecked > 1) {
-        $("a.view_duplicate, .action_view_detail_contact, .divide_one_contact_achor, "
-                + ".edit-one-contact, .transfer_one_contact, .send_to_mobile").addClass("hidden");
-        $(".divide_multi_contact,.transfer_contact, "
-                + ".select_provider, .btn-export-excel, .btn-export-excel-for-viettel, "+
-                    + ".export_to_string, .send-banking-info-multi-course").removeClass('hidden');
+        $(".one-item-selected").addClass("hidden");
+        $(".multi-item-selected").removeClass('hidden');
     } else {
-        $(".action_view_detail_contact, .divide_one_contact_achor, a.view_duplicate, "
-                + ".edit-one-contact, .transfer_one_contact, .send_to_mobile").removeClass("hidden");
-        $(".divide_multi_contact, .transfer_contact, "
-                + ".select_provider, .export_to_string, .send-banking-info-multi-course").addClass('hidden');
-        if (duplicate_id > 0) {
-            $("a.view_duplicate").removeClass("hidden");
-        } else {
-            $("a.view_duplicate").addClass("hidden");
-        }
+        $(".one-item-selected").removeClass("hidden");
+        $(".multi-item-selected").addClass('hidden');
     }
 
     if (controller === 'manager') {

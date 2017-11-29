@@ -45,3 +45,9 @@ $(".reset_datepicker").click(function (e) {
     e.preventDefault();
     $("#datepicker").val("");
 });
+$(document).on('focus', '.datepicker', function(){
+    $(this).addClass('zindex1');
+});
+$(document).on('blur', '.datepicker', function(){
+    $(this).removeClass('zindex1');
+});

@@ -27,7 +27,7 @@ class MY_Controller extends CI_Controller {
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
         //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
-        // echo date('H:i:s d/m/Y', 1511345095);die;
+      //  echo date('H:i:s d/m/Y', 1511867595);die;
         //  echo time(). '<br>';
         // echo strtotime('01-10-2017 00:00:00'); die;
         // echo strtotime(date("d-m-Y"));die;
