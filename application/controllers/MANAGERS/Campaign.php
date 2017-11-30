@@ -44,7 +44,10 @@ class Campaign extends MY_Table {
             ),
             'campaign_id_facebook' => array(
                 'name_display' => 'Campaign ID Facebook',
-                //'display' => 'none'
+            //'display' => 'none'
+            ),
+            'account_fb_id' => array(
+                'name_display' => 'Tài khoản'
             ),
             'desc' => array(
                 'name_display' => 'Mô tả',
@@ -76,7 +79,7 @@ class Campaign extends MY_Table {
             ),
             'pricepC2' => array(
                 'name_display' => 'giá C2',
-                 'type' => 'currency',
+                'type' => 'currency',
             ),
             'pricepC3' => array(
                 'type' => 'currency',
@@ -114,11 +117,12 @@ class Campaign extends MY_Table {
             $date_form = strtotime($get['date_from']);
             $date_end = strtotime($get['date_end']);
         }
+        $this->load->model('account_fb_model');
+        $account = $this->account_fb_model->getAccountArr();
         foreach ($this->data['rows'] as &$value) {
             /*
              * Lấy số C3 & số tiền tiêu
              */
-
             $total_c3 = array();
             $total_c3['select'] = 'id';
             $total_c3['where'] = array(
@@ -151,6 +155,7 @@ class Campaign extends MY_Table {
                 $value['pricepC2'] = '#NA';
                 $value['pricepC3'] = '#NA';
             }
+            $value['account_fb_id'] = $account[$value['account_fb_id']];
         }
         unset($value);
         usort($this->data['rows'], function($a, $b) {
@@ -228,7 +233,7 @@ class Campaign extends MY_Table {
         $data = $this->data;
         $data['slide_menu'] = 'marketer/common/slide-menu';
         $data['top_nav'] = 'manager/common/top-nav';
-        $data['list_title'] = 'Danh sách chiến dịch (tính theo giờ Mỹ)';
+        $data['list_title'] = 'Danh sách chiến dịch (mặc định tính từ 0h-24h ngày hôm qua)';
         $data['edit_title'] = 'Sửa thông tin chiến dịch';
         $data['content'] = 'MANAGERS/campaign/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
@@ -515,13 +520,14 @@ class Campaign extends MY_Table {
                 }
             }
         }
+
         $this->load->model('landingpage_model');
         $input = array();
         $input['where'] = array('active' => 1);
         $landingpages = $this->landingpage_model->load_all($input);
-            
+
         $accountFB = [];
-        foreach($accountFBADS as $value){
+        foreach ($accountFBADS as $value) {
             $accountFB[$value['fb_id_account']] = $value['name'];
         }
         $data['accountFB'] = $accountFB;
@@ -570,6 +576,7 @@ class Campaign extends MY_Table {
             $param = [];
             $param['name'] = $post['fb_adset_name'];
             $param['campaign_id'] = $campaignId;
+            $param['channel_id'] = 2;
             $param['adset_id_facebook'] = $post['fb_adset_id'];
             $param['desc'] = $post['fb_adset_name'];
             $param['active'] = 1;
@@ -592,6 +599,7 @@ class Campaign extends MY_Table {
             $param = [];
             $param['name'] = $post['fb_ad_name'];
             $param['adset_id'] = $adsetId;
+            $param['channel_id'] = 2;
             $param['ad_id_facebook'] = $post['fb_ad_id'];
             $param['desc'] = $post['fb_ad_name'];
             $param['active'] = 1;

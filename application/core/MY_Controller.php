@@ -27,13 +27,13 @@ class MY_Controller extends CI_Controller {
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
         //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
-      //  echo date('H:i:s d/m/Y', 1511867595);die;
+        // echo date('H:i:s d/m/Y', 1450837814);die;
         //  echo time(). '<br>';
-        // echo strtotime('01-10-2017 00:00:00'); die;
+        //echo strtotime('2015-12-22T18:30:14-0800'); die;
         // echo strtotime(date("d-m-Y"));die;
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
-       
+
         $this->controller = $this->router->fetch_class();
         $this->method = $this->router->fetch_method();
         $this->_check_login();
@@ -109,7 +109,7 @@ class MY_Controller extends CI_Controller {
         /*
          * Gán trường cần hiện của bảng contact
          */
-        $this->table = 'selection name phone address course_code price_purchase ';               
+        $this->table = 'selection name phone address course_code price_purchase ';
     }
 
     private function _check_permission() {

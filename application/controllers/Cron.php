@@ -28,119 +28,119 @@ class Cron extends CI_Controller {
         echo 'yes';
     }
 
-    public function update_campain_cost($day = '0') {
-        if ($day == '0') {
-            $day = "-1 days";
-        }
-
-        $this->load->model('campaign_cost_model');
-        $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
-        $today_fb_format = date('Y-m-d', strtotime($day));
-        /*
-         * Lấy danh sách tất cả campain đang hoạt động
-         */
-        $this->load->model('campaign_model');
-        $input = array();
-        $input['where'] = array('active' => 1);
-        $campaigns = $this->campaign_model->load_all($input);
-        foreach ($campaigns as $value) {
-            /*
-             * Kiểm tra xem đã tồn tại giá ngày hôm nay chưa (nếu có rồi thì bỏ qua)
-             */
-            if ($value['campaign_id_facebook'] != '') {
-                $where = array('campaign_id' => $value['id'], 'time' => $today);
-                $this->campaign_cost_model->delete($where);
-                $url = 'https://graph.facebook.com/v2.11/' . $value['campaign_id_facebook'] .
-                        '/insights?fields=spend,reach,clicks&level=account'
-                        . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
-                $spend = get_fb_request($url);
-                $param['time'] = $today;
-                $param['campaign_id'] = $value['id'];
-                $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
-                $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
-                $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
-                $this->campaign_cost_model->insert($param);
-            }
-        }
-    }
-
-    public function update_channel_cost($day = '0') {
-        if ($day == '0') {
-            $day = "-1 days";
-        }
-
-        $this->load->model('channel_cost_model');
-        $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
-        $today_fb_format = date('Y-m-d', strtotime($day));
-
-        $this->load->model('channel_model');
+//    public function update_campain_cost($day = '0') {
+//        if ($day == '0') {
+//            $day = "-1 days";
+//        }
+//
+//        $this->load->model('campaign_cost_model');
+//        $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
+//        $today_fb_format = date('Y-m-d', strtotime($day));
+//        /*
+//         * Lấy danh sách tất cả campain đang hoạt động
+//         */
+//        $this->load->model('campaign_model');
 //        $input = array();
 //        $input['where'] = array('active' => 1);
-//        $channels = $this->channel_model->load_all($input);
-        //Kênh facebook
-
-        /*
-         * Kiểm tra xem đã tồn tại giá ngày hôm nay chưa (nếu có rồi thì bỏ qua)
-         */
-        $where = array('channel_id' => 2, 'time' => $today);
-        $this->channel_cost_model->delete($where);
-        $accountFBADS = [
-            'Lakita_cu' => '512062118812690',
-            'Lakita_3.0' => '600208190140429',
-            'Lakita_K3' => '817360198425226'];
-        $param['spend'] = 0;
-        $param['total_C1'] = 0;
-        $param['total_C2'] = 0;
-
-        foreach ($accountFBADS as $value2) {
-            $url = 'https://graph.facebook.com/v2.11/act_' . $value2 . '/' .
-                    'insights?fields=spend,reach,clicks&level=account'
-                    . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
-            $spend = get_fb_request($url);
-            $param['spend'] += isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
-            $param['total_C1'] += isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
-            $param['total_C2'] += isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
-        }
-        $param['time'] = $today;
-        $param['channel_id'] = 2;
-        $this->channel_cost_model->insert($param);
-    }
-
-    public function update_adset_cost($day = '0') {
-        if ($day == '0') {
-            $day = "-1 days";
-        }
-
-        $this->load->model('adset_cost_model');
-        $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
-        $today_fb_format = date('Y-m-d', strtotime($day));
-        /*
-         * Lấy danh sách tất cả adset đang hoạt động
-         */
-        $this->load->model('adset_model');
-        $input = array();
-        $input['where'] = array('active' => 1);
-        $adsets = $this->adset_model->load_all($input);
-        foreach ($adsets as $value) {
-            /*
-             * Kiểm tra xem đã tồn tại giá ngày hôm nay chưa (nếu có rồi thì bỏ qua)
-             */
-            if ($value['adset_id_facebook'] != '') {
-                $where = array('adset_id' => $value['id'], 'time' => $today);
-                $this->adset_cost_model->delete($where);
-                $url = 'https://graph.facebook.com/v2.11/' . $value['adset_id_facebook'] .
-                        '/insights?fields=spend,reach,clicks&level=account'
-                        . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
-                $spend = get_fb_request($url);
-                $param['time'] = $today;
-                $param['adset_id'] = $value['id'];
-                $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
-                $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
-                $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
-                $this->adset_cost_model->insert($param);
-            }
-        }
-    }
+//        $campaigns = $this->campaign_model->load_all($input);
+//        foreach ($campaigns as $value) {
+//            /*
+//             * Kiểm tra xem đã tồn tại giá ngày hôm nay chưa (nếu có rồi thì bỏ qua)
+//             */
+//            if ($value['campaign_id_facebook'] != '') {
+//                $where = array('campaign_id' => $value['id'], 'time' => $today);
+//                $this->campaign_cost_model->delete($where);
+//                $url = 'https://graph.facebook.com/v2.11/' . $value['campaign_id_facebook'] .
+//                        '/insights?fields=spend,reach,clicks&level=account'
+//                        . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
+//                $spend = get_fb_request($url);
+//                $param['time'] = $today;
+//                $param['campaign_id'] = $value['id'];
+//                $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
+//                $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
+//                $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
+//                $this->campaign_cost_model->insert($param);
+//            }
+//        }
+//    }
+//
+//    public function update_channel_cost($day = '0') {
+//        if ($day == '0') {
+//            $day = "-1 days";
+//        }
+//
+//        $this->load->model('channel_cost_model');
+//        $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
+//        $today_fb_format = date('Y-m-d', strtotime($day));
+//
+//        $this->load->model('channel_model');
+////        $input = array();
+////        $input['where'] = array('active' => 1);
+////        $channels = $this->channel_model->load_all($input);
+//        //Kênh facebook
+//
+//        /*
+//         * Kiểm tra xem đã tồn tại giá ngày hôm nay chưa (nếu có rồi thì bỏ qua)
+//         */
+//        $where = array('channel_id' => 2, 'time' => $today);
+//        $this->channel_cost_model->delete($where);
+//        $accountFBADS = [
+//            'Lakita_cu' => '512062118812690',
+//            'Lakita_3.0' => '600208190140429',
+//            'Lakita_K3' => '817360198425226'];
+//        $param['spend'] = 0;
+//        $param['total_C1'] = 0;
+//        $param['total_C2'] = 0;
+//
+//        foreach ($accountFBADS as $value2) {
+//            $url = 'https://graph.facebook.com/v2.11/act_' . $value2 . '/' .
+//                    'insights?fields=spend,reach,clicks&level=account'
+//                    . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
+//            $spend = get_fb_request($url);
+//            $param['spend'] += isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
+//            $param['total_C1'] += isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
+//            $param['total_C2'] += isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
+//        }
+//        $param['time'] = $today;
+//        $param['channel_id'] = 2;
+//        $this->channel_cost_model->insert($param);
+//    }
+//
+//    public function update_adset_cost($day = '0') {
+//        if ($day == '0') {
+//            $day = "-1 days";
+//        }
+//
+//        $this->load->model('adset_cost_model');
+//        $today = strtotime(date('d-m-Y', strtotime($day))); //tính theo giờ Mỹ
+//        $today_fb_format = date('Y-m-d', strtotime($day));
+//        /*
+//         * Lấy danh sách tất cả adset đang hoạt động
+//         */
+//        $this->load->model('adset_model');
+//        $input = array();
+//        $input['where'] = array('active' => 1);
+//        $adsets = $this->adset_model->load_all($input);
+//        foreach ($adsets as $value) {
+//            /*
+//             * Kiểm tra xem đã tồn tại giá ngày hôm nay chưa (nếu có rồi thì bỏ qua)
+//             */
+//            if ($value['adset_id_facebook'] != '') {
+//                $where = array('adset_id' => $value['id'], 'time' => $today);
+//                $this->adset_cost_model->delete($where);
+//                $url = 'https://graph.facebook.com/v2.11/' . $value['adset_id_facebook'] .
+//                        '/insights?fields=spend,reach,clicks&level=account'
+//                        . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
+//                $spend = get_fb_request($url);
+//                $param['time'] = $today;
+//                $param['adset_id'] = $value['id'];
+//                $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
+//                $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
+//                $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
+//                $this->adset_cost_model->insert($param);
+//            }
+//        }
+//    }
 
     public function update_ad_cost($day = '0') {
         if ($day == '0') {
@@ -168,12 +168,14 @@ class Cron extends CI_Controller {
                         '/insights?fields=spend,reach,clicks&level=account'
                         . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
                 $spend = get_fb_request($url);
-                $param['time'] = $today;
-                $param['ad_id'] = $value['id'];
-                $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
-                $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
-                $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
-                $this->ad_cost_model->insert($param);
+                if (!empty($spend)) {
+                    $param['time'] = $today;
+                    $param['ad_id'] = $value['id'];
+                    $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
+                    $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
+                    $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
+                    $this->ad_cost_model->insert($param);
+                }
             }
         }
     }
@@ -243,9 +245,61 @@ class Cron extends CI_Controller {
         }
     }
 
-    public function GetActiveCampaign() {
+    public function SyncActiveCampaign() {
         $this->load->model('campaign_model');
+        $accountFBADS = [
+            'Lakita_cu' => '512062118812690',
+            'Lakita_3.0' => '600208190140429',
+            'Lakita_K3' => '817360198425226'
+        ];
+        foreach ($accountFBADS as $account) {
+            $url = 'https://graph.facebook.com/v2.11/act_' . $account . '/campaigns?fields=id,name,created_time,status&limit=5000&access_token=' . ACCESS_TOKEN;
+            $spend = get_fb_request($url);
+            foreach ($spend->data as $value) {
+                if ($value->status != 'ACTIVE') {
+                    $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
+                    $where = array('campaign_id_facebook' => $value->id);
+                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate);
+                    $this->campaign_model->update($where, $data);
+                }
+                if ($value->status == 'ACTIVE') {
+                    $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
+                    $where = array('campaign_id_facebook' => $value->id);
+                    $data = array('active' => '1', 'date_fb_create' => $dateFbCreate);
+                    $this->campaign_model->update($where, $data);
+                }
+            }
+        }
+    }
+
+    public function SyncActiveAdset() {
         $this->load->model('adset_model');
+        $accountFBADS = [
+            'Lakita_cu' => '512062118812690',
+            'Lakita_3.0' => '600208190140429',
+            'Lakita_K3' => '817360198425226'
+        ];
+        foreach ($accountFBADS as $account) {
+            $url = 'https://graph.facebook.com/v2.11/act_' . $account . '/adsets?fields=id,name,created_time,status&limit=5000&access_token=' . ACCESS_TOKEN;
+            $spend = get_fb_request($url);
+            foreach ($spend->data as $value) {
+                if ($value->status != 'ACTIVE') {
+                    $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
+                    $where = array('adset_id_facebook' => $value->id);
+                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate);
+                    $this->adset_model->update($where, $data);
+                }
+                if ($value->status == 'ACTIVE') {
+                    $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
+                    $where = array('adset_id_facebook' => $value->id);
+                    $data = array('active' => '1', 'date_fb_create' => $dateFbCreate);
+                    $this->adset_model->update($where, $data);
+                }
+            }
+        }
+    }
+
+    public function SyncActiveAd() {
         $this->load->model('ad_model');
         $accountFBADS = [
             'Lakita_cu' => '512062118812690',
@@ -253,41 +307,38 @@ class Cron extends CI_Controller {
             'Lakita_K3' => '817360198425226'
         ];
         foreach ($accountFBADS as $account) {
-            $url = 'https://graph.facebook.com/v2.11/act_' . $account . '/campaigns?fields=id,name,created_time,status&limit=500&access_token=' . ACCESS_TOKEN;
+            $url = 'https://graph.facebook.com/v2.11/act_' . $account . '/campaigns?fields=id,name,created_time,status&limit=5000&access_token=' . ACCESS_TOKEN;
             $spend = get_fb_request($url);
             foreach ($spend->data as $value) {
                 if ($value->status != 'ACTIVE') {
-                    $where = array('campaign_id_facebook' => $value->id);
-                    $data = array('active' => '0');
-                    $this->campaign_model->update($where, $data);
-                    $campaignInactives = $this->campaign_model->load_all(array('where' => $where));
-                    foreach ($campaignInactives as $campaign) {
-                        $this->adset_model->update(['campaign_id' => $campaign['id']], ['active' => '0']);
-                        $adsetInactive = $this->adset_model->load_all(array('where' => ['campaign_id' => $campaign['id']]));
-                        foreach ($adsetInactive as $adset) {
-                            $this->ad_model->update(['adset_id' => $adset['id']], ['active' => '0']);
-                        }
-                    }
-                } 
-//                else {
-//                    $url = 'https://graph.facebook.com/v2.11/' . $value->id . '/insights?level=account&date_preset=last_3d&access_token=' . ACCESS_TOKEN;
-//                    $spend = get_fb_request($url);
-//                    if (empty($spend->data)) {
-//                        $where = array('campaign_id_facebook' => $value->id);
-//                        $data = array('active' => '0');
-//                        $this->campaign_model->update($where, $data);
-//                        $campaignInactives = $this->campaign_model->load_all(array('where' => $where));
-//                        foreach ($campaignInactives as $campaign) {
-//                            $this->adset_model->update(['campaign_id' => $campaign['id']], ['active' => '0']);
-//                            $adsetInactive = $this->adset_model->load_all(array('where' => ['campaign_id' => $campaign['id']]));
-//                            foreach ($adsetInactive as $adset) {
-//                                $this->ad_model->update(['adset_id' => $adset['id']], ['active' => '0']);
-//                            }
-//                        }
-//                    }
-//                }
+                    $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
+                    $where = array('ad_id_facebook' => $value->id);
+                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate);
+                    $this->ad_model->update($where, $data);
+                }
+                if ($value->status == 'ACTIVE') {
+                    $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
+                    $where = array('ad_id_facebook' => $value->id);
+                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate);
+                    $this->ad_model->update($where, $data);
+                }
             }
         }
+    }
+
+    public function GetAllCampaign() {
+        $result = [];
+        $url = 'https://graph.facebook.com/v2.11/act_512062118812690/ads?fields=id,name,created_time,status&limit=5000&access_token=' . ACCESS_TOKEN;
+        $spend = get_fb_request($url);
+        if (!empty($spend)) {
+            $result = json_decode(json_encode($spend->data), true);
+            if (isset($spend->paging->next)) {
+                // $url = 'https://graph.facebook.com/v2.11/act_512062118812690/adsets?fields=id,name,created_time,status&limit=1000&access_token=' . ACCESS_TOKEN;
+                $spend2 = get_fb_request($spend->paging->next);
+                print_arr($spend2);
+            }
+        }
+        print_arr($result);
     }
 
 //    public function GetActiveAdset() {

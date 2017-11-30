@@ -222,7 +222,7 @@ class Link extends MY_Table {
      * Hiển thị modal sửa item
      */
 
-    function show_edit_item() {
+    function show_edit_item($inputData = []) {
         /*
          * type mặc định là text nên nếu là text sẽ không cần khai báo
          */
@@ -356,7 +356,7 @@ class Link extends MY_Table {
         $xhml = '';
         if (!empty($ads)) {
             $xhml .= '  <td class="text-right">
-                            Chọn adset
+                            Chọn ad
                         </td>
                         <td>
                             <select class="form-control selectpicker" name="add_ad_id">

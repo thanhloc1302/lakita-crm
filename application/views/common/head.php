@@ -5,7 +5,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="shortcut icon" href="<?php echo base_url(); ?>style/images/favicon.png" type="image/x-icon" />
+        <link rel="shortcut icon" href="<?php echo base_url(); ?>style/images/logo-icon.ico" type="image/x-icon" />
         <title>CRM LAKITA</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">

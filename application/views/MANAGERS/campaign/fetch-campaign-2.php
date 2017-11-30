@@ -21,7 +21,9 @@
                                 <option value="0"> Chọn landing page </option>
                                 <?php foreach ($landingpages as $key => $value2) {
                                     ?>
-                                    <option value="<?php echo $value2['id'] ?>" data-url="<?php echo $value2['url'] ?>"> <?php echo $value2['url'] ?></option>
+                                    <option value="<?php echo $value2['id'] ?>" data-url="<?php echo $value2['url'] ?>"> 
+                                        <?php echo $value2['course_code'] . ' - ' . $value2['url']; ?>
+                                    </option>
                                     <?php
                                 }
                                 ?>

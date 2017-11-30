@@ -75,15 +75,20 @@ class Ad extends MY_Table {
             ),
             'pricepC2' => array(
                 'name_display' => 'giá C2',
-                 'type' => 'currency',
+                'type' => 'currency',
             ),
             'pricepC3' => array(
                 'name_display' => 'giá C3',
-                 'type' => 'currency',
+                'type' => 'currency',
             ),
             'time' => array(
                 'type' => 'datetime',
                 'name_display' => 'Ngày tạo',
+                'display' => 'none'
+            ),
+            'channel' => array(
+                'name_display' => 'Kênh',
+                'order' => '1',
                 'display' => 'none'
             ),
         );
@@ -185,10 +190,19 @@ class Ad extends MY_Table {
 //    }
 
     function index($offset = 0) {
+        $this->load->model('channel_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $channels = $this->channel_model->load_all($input);
+        $this->data['channel'] = $channels;
+
         $this->list_filter = array(
             'left_filter' => array(
                 'date' => array(
                     'type' => 'custom',
+                ),
+                'channel' => array(
+                    'type' => 'arr_multi'
                 ),
             ),
             'right_filter' => array(
@@ -198,11 +212,13 @@ class Ad extends MY_Table {
             )
         );
         $conditional = array();
-        $conditional['where']['marketer_id'] = $this->user_id;
-        $get = $this->input->get();
+
 //        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
 //            $conditional['where']['active'] = 1;
 //        }
+        if ($this->role_id != 5) {
+            $conditional['where']['marketer_id'] = $this->user_id;
+        }
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
@@ -249,6 +265,7 @@ class Ad extends MY_Table {
     }
 
     function action_add_item() {
+        $this->load->model('adset_model');
         $post = $this->input->post();
         if (!empty($post)) {
             if ($this->{$this->model}->check_exists(array('name' => $post['add_name'], 'marketer_id' => $this->user_id))) {
@@ -262,6 +279,13 @@ class Ad extends MY_Table {
             }
             $param['marketer_id'] = $this->user_id;
             $param['time'] = time();
+            $input = [];
+            $input['select'] = 'channel_id';
+            $input['where'] = array('id' => $param['adset_id']);
+            $channel = $this->adset_model->load_all($input);
+            if (!empty($channel)) {
+                $param['channel_id'] = $channel[0]['channel_id'];
+            }
             $this->{$this->model}->insert($param);
             show_error_and_redirect('Thêm ads thành công!');
         }
@@ -302,6 +326,7 @@ class Ad extends MY_Table {
     }
 
     function action_edit_item($id) {
+        $this->load->model('adset_model');
         $post = $this->input->post();
         if (!empty($post)) {
             $input['where'] = array('id' => $id);
@@ -310,6 +335,13 @@ class Ad extends MY_Table {
                 if (isset($post['edit_' . $value])) {
                     $param[$value] = $post['edit_' . $value];
                 }
+            }
+            $input2 = [];
+            $input2['select'] = 'channel_id';
+            $input2['where'] = array('id' => $param['adset_id']);
+            $channel = $this->adset_model->load_all($input2);
+            if (!empty($channel)) {
+                $param['channel_id'] = $channel[0]['channel_id'];
             }
             $this->{$this->model}->update($input['where'], $param);
         }

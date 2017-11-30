@@ -16,11 +16,11 @@ class Report extends MY_Controller {
         parent::__construct();
         date_default_timezone_set('Asia/Ho_Chi_Minh');
         ini_set('max_execution_time', 300);
-//        if (!$this->input->is_cli_request()) {
-//            show_error('Access denied', 403);
-//        } else {
-//            echo '1';
-//        }
+        if (!$this->input->is_cli_request()) {
+            show_error('Access denied', 403);
+        } else {
+            echo '1';
+        }
     }
 
     function send_report_sale_daily() {
@@ -712,13 +712,86 @@ class Report extends MY_Controller {
     public function UpdateCampaignAccountFb() {
         $this->load->model('campaign_model');
         $input = [];
-        $input['where'] = ['active' => '1'];
+        // $input['where'] = ['active' => '1'];
         $campaigns = $this->campaign_model->load_all($input);
         foreach ($campaigns as $campaign) {
-            if($campaign['campaign_id_facebook'] != ''){
-           echo $url = 'https://graph.facebook.com/v2.11/' . $campaign['campaign_id_facebook'] . '?fields=account_id&access_token=' . ACCESS_TOKEN;
-            $spend = get_fb_request($url);
-            print_arr($spend);
+            if ($campaign['campaign_id_facebook'] != '') {
+                $url = 'https://graph.facebook.com/v2.11/' . $campaign['campaign_id_facebook'] . '?fields=account_id&access_token=' . ACCESS_TOKEN;
+                $spend = get_fb_request($url);
+                if (!empty($spend)) {
+                    $where = array('campaign_id_facebook' => $spend->id);
+                    $data = array('account_fb_id' => $spend->account_id);
+                    $this->campaign_model->update($where, $data);
+                }
+            }
+        }
+    }
+
+    public function UpdateAdsetAccountFb() {
+        $this->load->model('adset_model');
+        $input = [];
+        // $input['where'] = ['active' => '1'];
+        $campaigns = $this->adset_model->load_all($input);
+        foreach ($campaigns as $campaign) {
+            if ($campaign['adset_id_facebook'] != '') {
+                $url = 'https://graph.facebook.com/v2.11/' . $campaign['adset_id_facebook'] . '?fields=account_id&access_token=' . ACCESS_TOKEN;
+                $spend = get_fb_request($url);
+                if (!empty($spend)) {
+                    $where = array('adset_id_facebook' => $spend->id);
+                    $data = array('account_fb_id' => $spend->account_id);
+                    $this->adset_model->update($where, $data);
+                }
+            }
+        }
+    }
+
+    public function UpdateAdAccountFb() {
+        $this->load->model('ad_model');
+        $input = [];
+        // $input['where'] = ['active' => '1'];
+        $campaigns = $this->ad_model->load_all($input);
+        foreach ($campaigns as $campaign) {
+            if ($campaign['ad_id_facebook'] != '') {
+                $url = 'https://graph.facebook.com/v2.11/' . $campaign['ad_id_facebook'] . '?fields=account_id&access_token=' . ACCESS_TOKEN;
+                $spend = get_fb_request($url);
+                if (!empty($spend)) {
+                    $where = array('ad_id_facebook' => $spend->id);
+                    $data = array('account_fb_id' => $spend->account_id);
+                    $this->ad_model->update($where, $data);
+                }
+            }
+        }
+    }
+
+    public function UpdateCampaignChannel() {
+        $this->load->model('campaign_model');
+        $this->load->model('adset_model');
+        $input = [];
+        $campaigns = $this->campaign_model->load_all($input);
+        foreach ($campaigns as $campaign) {
+            $input = [];
+            $input['where'] = array('campaign_id' => $campaign['id']);
+            $adsets = $this->adset_model->load_all($input);
+            foreach($adsets as $adset){
+                $where = array('id' => $adset['id']);
+                $data = array('channel_id' => $campaign['channel_id']);
+                $this->adset_model->update($where, $data);
+            }
+        }
+    }
+     public function UpdateAdsetChannel() {
+        $this->load->model('adset_model');
+        $this->load->model('ad_model');
+        $input = [];
+        $adsets = $this->adset_model->load_all($input);
+        foreach ($adsets as $adset) {
+            $input = [];
+            $input['where'] = array('adset_id' => $adset['id']);
+            $ads = $this->ad_model->load_all($input);
+            foreach($ads as $ad){
+                $where = array('id' => $ad['id']);
+                $data = array('channel_id' => $adset['channel_id']);
+                $this->ad_model->update($where, $data);
             }
         }
     }

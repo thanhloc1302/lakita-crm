@@ -18,4 +18,13 @@ class Account_fb_model extends MY_Model {
         $this->table = 'account_fb';
     }
     
+    public function getAccountArr(){
+        $result = [];
+        $accounts = $this->load_all([]);
+        foreach ($accounts as $account){
+            $result[$account['fb_id_account']] = $account['name'];
+        }
+        return $result;
+    }
+    
 }
