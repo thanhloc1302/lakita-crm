@@ -770,6 +770,7 @@ class Report extends MY_Controller {
         $campaigns = $this->campaign_model->load_all($input);
         foreach ($campaigns as $campaign) {
             $input = [];
+            $input['select'] = 'id';
             $input['where'] = array('campaign_id' => $campaign['id']);
             $adsets = $this->adset_model->load_all($input);
             foreach($adsets as $adset){
@@ -786,6 +787,7 @@ class Report extends MY_Controller {
         $adsets = $this->adset_model->load_all($input);
         foreach ($adsets as $adset) {
             $input = [];
+             $input['select'] = 'id';
             $input['where'] = array('adset_id' => $adset['id']);
             $ads = $this->ad_model->load_all($input);
             foreach($ads as $ad){

@@ -45,6 +45,12 @@ class Ad extends MY_Table {
             'ad_id_facebook' => array(
                 'name_display' => 'Ad ID Facebook',
             ),
+            'marketer_id' => array(
+                'name_display' => 'Marketer',
+            ),
+            'account_fb_id' => array(
+                'name_display' => 'Tài khoản',
+            ),
             'desc' => array(
                 'name_display' => 'Mô tả',
                 'display' => 'none'
@@ -66,9 +72,11 @@ class Ad extends MY_Table {
             ),
             'C2pC1' => array(
                 'name_display' => 'C2/C1',
+                'display' => 'none'
             ),
             'C3pC2' => array(
                 'name_display' => 'C3/C2',
+                'display' => 'none'
             ),
             'pricepC1' => array(
                 'name_display' => 'giá C1',
@@ -113,19 +121,30 @@ class Ad extends MY_Table {
             $date_form = strtotime($get['date_from']);
             $date_end = strtotime($get['date_end']);
         }
+
+        $this->load->model('account_fb_model');
+        $account = $this->account_fb_model->getAccountArr();
         foreach ($this->data['rows'] as &$value) {
             /*
              * Lấy số C3 & số tiền tiêu
              */
-
             $total_c3 = array();
             $total_c3['select'] = 'id';
-            $total_c3['where'] = array(
-                'ad_id' => $value['id'],
-                'date_rgt >=' => $date_form + 14 * 3600,
-                'date_rgt <=' => $date_end + 3600 * 38);
+            /*
+             * Giờ VN
+             */
+            if ($this->account_fb_model->getAccountTimeZone($value['account_fb_id']) == 'VN') {
+                $total_c3['where'] = array(
+                    'ad_id' => $value['id'],
+                    'date_rgt >=' => $date_form,
+                    'date_rgt <=' => $date_end + 24 * 3600 - 1);
+            } else {
+                $total_c3['where'] = array(
+                    'ad_id' => $value['id'],
+                    'date_rgt >=' => $date_form + 14 * 3600,
+                    'date_rgt <=' => $date_end + 3600 * 38);
+            }
             $value['total_C3'] = count($this->contacts_model->load_all($total_c3));
-
             $input = array();
             $input['where'] = array('ad_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
             $ad_cost = $this->ad_cost_model->load_all($input);
@@ -150,6 +169,8 @@ class Ad extends MY_Table {
                 $value['pricepC2'] = '#NA';
                 $value['pricepC3'] = '#NA';
             }
+            $value['account_fb_id'] = $account[$value['account_fb_id']];
+            $value['marketer_id'] = $this->staffs_model->find_staff_name($value['marketer_id']);
         }
         unset($value);
         usort($this->data['rows'], function($a, $b) {
@@ -212,10 +233,6 @@ class Ad extends MY_Table {
             )
         );
         $conditional = array();
-
-//        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
-//            $conditional['where']['active'] = 1;
-//        }
         if ($this->role_id != 5) {
             $conditional['where']['marketer_id'] = $this->user_id;
         }
@@ -305,6 +322,9 @@ class Ad extends MY_Table {
         $adsets = $this->adset_model->load_all($input);
         $this->list_edit = array(
             'left_table' => array(
+                'id' => array(
+                    'type' => 'disable'
+                ),
                 'name' => array(
                 ),
                 'adset_id' => array(

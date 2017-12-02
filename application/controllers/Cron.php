@@ -208,42 +208,42 @@ class Cron extends CI_Controller {
         }
     }
 
-    function listen() {
-        if (!$this->input->is_ajax_request()) {
-            redirect();
-        }
-        $userID = $this->session->userdata('user_id');
-        if (!isset($userID)) {
-            $location = 'dang-nhap.html';
-            if (strpos($location, '/') !== 0 || strpos($location, '://') !== FALSE) {
-                if (!function_exists('site_url')) {
-                    $this->load->helper('url');
-                }
-                $location = site_url($location);
-            }
-            $script = "window.location='{$location}';";
-            $this->output->enable_profiler(FALSE)
-                    ->set_content_type('application/x-javascript')
-                    ->set_output($script);
-        } else {
-            $this->load->helper('cookie');
-            $myfile = fopen(APPPATH . "../public/last_reg.txt", "r") or die("Unable to open file!");
-            $last_id_txt = fgets($myfile);
-            $last_id = get_cookie('last_id');
-            if (!$last_id) {
-                set_cookie('last_id', $last_id_txt, 3600 * 48);
-                echo '0';
-                die;
-            }
-            if ($last_id != $last_id_txt) {
-                echo '1';
-                set_cookie('last_id', $last_id_txt, 3600 * 48);
-            } else {
-                echo '0';
-            }
-            fclose($myfile);
-        }
-    }
+//    function listen() {
+//        if (!$this->input->is_ajax_request()) {
+//            redirect();
+//        }
+//        $userID = $this->session->userdata('user_id');
+//        if (!isset($userID)) {
+//            $location = 'dang-nhap.html';
+//            if (strpos($location, '/') !== 0 || strpos($location, '://') !== FALSE) {
+//                if (!function_exists('site_url')) {
+//                    $this->load->helper('url');
+//                }
+//                $location = site_url($location);
+//            }
+//            $script = "window.location='{$location}';";
+//            $this->output->enable_profiler(FALSE)
+//                    ->set_content_type('application/x-javascript')
+//                    ->set_output($script);
+//        } else {
+//            $this->load->helper('cookie');
+//            $myfile = fopen(APPPATH . "../public/last_reg.txt", "r") or die("Unable to open file!");
+//            $last_id_txt = fgets($myfile);
+//            $last_id = get_cookie('last_id');
+//            if (!$last_id) {
+//                set_cookie('last_id', $last_id_txt, 3600 * 48);
+//                echo '0';
+//                die;
+//            }
+//            if ($last_id != $last_id_txt) {
+//                echo '1';
+//                set_cookie('last_id', $last_id_txt, 3600 * 48);
+//            } else {
+//                echo '0';
+//            }
+//            fclose($myfile);
+//        }
+//    }
 
     public function SyncActiveCampaign() {
         $this->load->model('campaign_model');
@@ -253,19 +253,18 @@ class Cron extends CI_Controller {
             'Lakita_K3' => '817360198425226'
         ];
         foreach ($accountFBADS as $account) {
-            $url = 'https://graph.facebook.com/v2.11/act_' . $account . '/campaigns?fields=id,name,created_time,status&limit=5000&access_token=' . ACCESS_TOKEN;
+            $url = 'https://graph.facebook.com/v2.11/act_' . $account . '/campaigns?fields=["delivery_info{start_time,status}","created_time"]&limit=5000&access_token=' . FULL_PER_ACCESS_TOKEN;
             $spend = get_fb_request($url);
             foreach ($spend->data as $value) {
-                if ($value->status != 'ACTIVE') {
-                    $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
-                    $where = array('campaign_id_facebook' => $value->id);
-                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate);
-                    $this->campaign_model->update($where, $data);
-                }
-                if ($value->status == 'ACTIVE') {
+                if ($value->delivery_info->status == 'active') {
                     $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
                     $where = array('campaign_id_facebook' => $value->id);
                     $data = array('active' => '1', 'date_fb_create' => $dateFbCreate);
+                    $this->campaign_model->update($where, $data);
+                } else {
+                    $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
+                    $where = array('campaign_id_facebook' => $value->id);
+                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate);
                     $this->campaign_model->update($where, $data);
                 }
             }
@@ -280,19 +279,18 @@ class Cron extends CI_Controller {
             'Lakita_K3' => '817360198425226'
         ];
         foreach ($accountFBADS as $account) {
-            $url = 'https://graph.facebook.com/v2.11/act_' . $account . '/adsets?fields=id,name,created_time,status&limit=5000&access_token=' . ACCESS_TOKEN;
+            $url = 'https://graph.facebook.com/v2.11/act_' . $account . '/adsets?fields=["delivery_info{start_time,status}","created_time"]&limit=5000&access_token=' . FULL_PER_ACCESS_TOKEN;
             $spend = get_fb_request($url);
             foreach ($spend->data as $value) {
-                if ($value->status != 'ACTIVE') {
-                    $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
-                    $where = array('adset_id_facebook' => $value->id);
-                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate);
-                    $this->adset_model->update($where, $data);
-                }
-                if ($value->status == 'ACTIVE') {
+                if ($value->delivery_info->status == 'active') {
                     $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
                     $where = array('adset_id_facebook' => $value->id);
                     $data = array('active' => '1', 'date_fb_create' => $dateFbCreate);
+                    $this->adset_model->update($where, $data);
+                } else {
+                    $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
+                    $where = array('adset_id_facebook' => $value->id);
+                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate);
                     $this->adset_model->update($where, $data);
                 }
             }
@@ -307,16 +305,15 @@ class Cron extends CI_Controller {
             'Lakita_K3' => '817360198425226'
         ];
         foreach ($accountFBADS as $account) {
-            $url = 'https://graph.facebook.com/v2.11/act_' . $account . '/campaigns?fields=id,name,created_time,status&limit=5000&access_token=' . ACCESS_TOKEN;
+            $url = 'https://graph.facebook.com/v2.11/act_' . $account . '/ads?fields=["delivery_info{start_time,status}","created_time"]&limit=5000&access_token=' . FULL_PER_ACCESS_TOKEN;
             $spend = get_fb_request($url);
             foreach ($spend->data as $value) {
-                if ($value->status != 'ACTIVE') {
+                if ($value->delivery_info->status == 'active') {
                     $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
                     $where = array('ad_id_facebook' => $value->id);
-                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate);
+                    $data = array('active' => '1', 'date_fb_create' => $dateFbCreate);
                     $this->ad_model->update($where, $data);
-                }
-                if ($value->status == 'ACTIVE') {
+                }else{
                     $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
                     $where = array('ad_id_facebook' => $value->id);
                     $data = array('active' => '0', 'date_fb_create' => $dateFbCreate);

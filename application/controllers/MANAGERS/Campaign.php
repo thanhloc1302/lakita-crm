@@ -104,10 +104,6 @@ class Campaign extends MY_Table {
     protected function show_table() {
         parent::show_table();
         $get = $this->input->get();
-        /*
-         * Nếu có điều kiện đặc biệt thì thêm vào $row class css đặc biệt khi hiển thị
-         * ví dụ: giá khóa học lớn hơn 4 triệu thì báo đỏ
-         */
         $date_form = '';
         $date_end = '';
         if (!isset($get['date_from']) && !isset($get['date_end'])) {
@@ -355,7 +351,7 @@ class Campaign extends MY_Table {
         show_error_and_redirect('Sửa chiến dịch thành công!');
     }
 
-    public function AddItemFetch2() {
+    public function AddItemFetch_old() {
         $this->load->model('campaign_fb_model');
         $accountFBADS = [
             'Lakita_cũ' => '512062118812690',
@@ -537,6 +533,192 @@ class Campaign extends MY_Table {
         echo $this->load->view('MANAGERS/campaign/fetch-campaign-2', $data, TRUE);
     }
 
+    public function AddItemFetch_full() {
+        $this->load->model('adset_model');
+        $this->load->model('ad_model');
+        $this->load->model('account_fb_model');
+        $accountFBADS = $this->account_fb_model->load_all([]);
+        foreach ($accountFBADS as $key => $value2) {
+            $url = 'https://graph.facebook.com/v2.11/act_' . $value2['fb_id_account'] . '/' .
+                    'campaigns?fields=["delivery_info{start_time,status}","created_time","name"]&limit=1000&access_token=' . FULL_PER_ACCESS_TOKEN;
+            $spend = get_fb_request($url);
+            $campaigns[$value2['fb_id_account']] = json_decode(json_encode($spend->data), true);
+        }
+
+        /*
+         * Chỉ lấy các campaign đang active, và chưa ai tạo ở CRM
+         */
+        $campaignActive = [];
+        $i = 0;
+        foreach ($campaigns as $key => $value) {
+            foreach ($value as $value2) {
+                if ($value2['delivery_info']['status'] == 'active') {
+                    $input = array();
+                    $input['select'] = 'id, marketer_id';
+                    $input['where'] = array('campaign_id_facebook' => $value2['id']);
+                    $existCampaign = $this->{$this->model}->load_all($input);
+                    if (!empty($existCampaign) && $existCampaign[0]['marketer_id'] != $this->user_id) {
+                        continue;
+                    } else {
+                        $campaignActive[$i]['account'] = $key;
+                        $campaignActive[$i]['fb_campaign_id'] = $value2['id'];
+                        $campaignActive[$i]['fb_campaign_name'] = $value2['name'];
+                        $i++;
+                    }
+                }
+            }
+        }
+
+        foreach ($campaignActive as $key => $value) {
+            $url = 'https://graph.facebook.com/v2.11/' . $value['fb_campaign_id'] . '/' .
+                    'adsets?limit=1000&fields=["delivery_info{start_time,status}","created_time","name"]&access_token=' . FULL_PER_ACCESS_TOKEN;
+            $spend = get_fb_request($url);
+            $adsets = json_decode(json_encode($spend->data), true);
+            if (!empty($adsets)) {
+                foreach ($adsets as $adset) {
+                    if ($adset['delivery_info']['status'] == 'active') {
+                        $input = array();
+                        $input['select'] = 'id, marketer_id';
+                        $input['where'] = array('adset_id_facebook' => $adset['id']);
+                        $existAdset = $this->adset_model->load_all($input);
+                        if (!empty($existAdset) && $existAdset[0]['marketer_id'] != $this->user_id) {
+                            continue;
+                        } else {
+                            $campaignActive[$key]['adset'][] = [
+                                'fb_adset_id' => $adset['id'],
+                                'fb_adset_name' => $adset['name']];
+                        }
+                    }
+                }
+            }
+        }
+        foreach ($campaignActive as $keyCampaign => $campaign) {
+            if (!empty($campaign['adset'])) {
+                foreach ($campaign['adset'] as $keyAdset => $adset) {
+                    $url = 'https://graph.facebook.com/v2.11/' . $adset['fb_adset_id'] . '/' .
+                            'ads?limit=1000&fields=["delivery_info{start_time,status}","created_time","name"]&access_token=' . FULL_PER_ACCESS_TOKEN;
+                    $spend = get_fb_request($url);
+                    $ads = json_decode(json_encode($spend->data), true);
+                    if (!empty($ads)) {
+                        foreach ($ads as $ad) {
+                            if ($ad['delivery_info']['status'] == 'active') {
+                                $input = array();
+                                $input['select'] = 'id';
+                                $input['where'] = array('ad_id_facebook' => $ad['id']);
+                                $existAd = $this->ad_model->load_all($input);
+                                if (empty($existAd)) {
+                                    $campaignActive[$keyCampaign]['adset'][$keyAdset]['ad'][] = ['fb_ad_id' => $ad['id'],
+                                        'fb_ad_name' => $ad['name']];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        $newCampaign = [];
+        $i = 0;
+        foreach ($campaignActive as $keyCampaign => $campaign) {
+            if (!empty($campaign['adset'])) {
+                foreach ($campaign['adset'] as $keyAdset => $adset) {
+                    if (!empty($adset['ad'])) {
+                        foreach ($adset['ad'] as $keyAd => $ad) {
+                            $newCampaign[$i]['account'] = $campaign['account'];
+                            $newCampaign[$i]['fb_campaign_id'] = $campaign['fb_campaign_id'];
+                            $newCampaign[$i]['fb_campaign_name'] = $campaign['fb_campaign_name'];
+                            $newCampaign[$i]['fb_adset_id'] = $adset['fb_adset_id'];
+                            $newCampaign[$i]['fb_adset_name'] = $adset['fb_adset_name'];
+                            $newCampaign[$i]['fb_ad_id'] = $ad['fb_ad_id'];
+                            $newCampaign[$i]['fb_ad_name'] = $ad['fb_ad_name'];
+                            $i++;
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->load->model('landingpage_model');
+        $input = array();
+        $input['where'] = array('active' => 1);
+        $landingpages = $this->landingpage_model->load_all($input);
+
+        $accountFB = [];
+        foreach ($accountFBADS as $value) {
+            $accountFB[$value['fb_id_account']] = $value['name'];
+        }
+        $data['accountFB'] = $accountFB;
+        $data['landingpages'] = $landingpages;
+        $data['campaigns'] = $newCampaign;
+        //print_arr($newCampaign);
+        echo $this->load->view('MANAGERS/campaign/fetch-campaign-2', $data, TRUE);
+    }
+
+    public function GetAdsetsModal() {
+        $this->load->model('adset_cost_model');
+        $this->load->model('adset_model');
+        $get = $this->input->get();
+        $campaignId = $get['campaignId'];
+        $input = [];
+        $input['where'] = array('campaign_id' => $campaignId);
+        $adsets = $this->adset_model->load_all($input);
+
+
+        $date_form = '';
+        $date_end = '';
+        /*
+         * Nếu không có lọc ngày tháng từ người dùng thì chọn mặc định là hôm qua
+         */
+        if (!isset($get['date_from']) && !isset($get['date_end'])) {
+            $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
+            $date_end = strtotime(date('d-m-Y', strtotime("-1 days")));
+        } else {
+            $date_form = strtotime($get['date_from']);
+            $date_end = strtotime($get['date_end']);
+        }
+        foreach ($adsets as &$value) {
+            /*
+             * Lấy số C3 & số tiền tiêu
+             */
+            $total_c3 = array();
+            $total_c3['select'] = 'id';
+            $total_c3['where'] = array(
+                'adset_id' => $value['id'],
+                'date_rgt >=' => $date_form + 14 * 3600,
+                'date_rgt <=' => $date_end + 3600 * 38);
+            $value['total_C3'] = count($this->contacts_model->load_all($total_c3));
+
+            $input = array();
+            $input['where'] = array('adset_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
+            $adset_cost = $this->adset_cost_model->load_all($input);
+            $adset_cost = h_caculate_channel_cost($adset_cost);
+            if (!empty($adset_cost)) {
+                $value['total_C1'] = $adset_cost['total_C1'];
+                $value['total_C2'] = $adset_cost['total_C2'];
+                $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
+                $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
+                $value['spend'] = $adset_cost['spend'];
+                $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) . ' đ' : '#N/A';
+                $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) . ' đ' : '#N/A';
+                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) . ' đ' : '#N/A';
+            } else {
+                $value['total_C1'] = '#NA';
+                $value['total_C2'] = '#NA';
+                $value['total_C3'] = '#NA';
+                $value['C2pC1'] = '#NA';
+                $value['C3pC2'] = '#NA';
+                $value['spend'] = '#NA';
+                $value['pricepC1'] = '#NA';
+                $value['pricepC2'] = '#NA';
+                $value['pricepC3'] = '#NA';
+            }
+        }
+        unset($value);
+
+        $data['adsets'] = $adsets;
+        $data['campaignName'] = $get['campaignName'];
+        $this->load->view('MANAGERS/campaign/modal/show-campaign-adset', $data);
+    }
+
     public function AddItemFromFb2() {
         $message = '';
         $post = $this->input->post();
@@ -647,72 +829,6 @@ class Campaign extends MY_Table {
         $data = array('url' => $url);
         $this->link_model->update($where, $data);
         echo ('Link vừa tạo là ' . $url);
-    }
-
-    public function GetAdsetsModal() {
-        $this->load->model('adset_cost_model');
-        $this->load->model('adset_model');
-        $get = $this->input->get();
-        $campaignId = $get['campaignId'];
-        $input = [];
-        $input['where'] = array('campaign_id' => $campaignId);
-        $adsets = $this->adset_model->load_all($input);
-
-
-        $date_form = '';
-        $date_end = '';
-        /*
-         * Nếu không có lọc ngày tháng từ người dùng thì chọn mặc định là hôm qua
-         */
-        if (!isset($get['date_from']) && !isset($get['date_end'])) {
-            $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
-            $date_end = strtotime(date('d-m-Y', strtotime("-1 days")));
-        } else {
-            $date_form = strtotime($get['date_from']);
-            $date_end = strtotime($get['date_end']);
-        }
-        foreach ($adsets as &$value) {
-            /*
-             * Lấy số C3 & số tiền tiêu
-             */
-            $total_c3 = array();
-            $total_c3['select'] = 'id';
-            $total_c3['where'] = array(
-                'adset_id' => $value['id'],
-                'date_rgt >=' => $date_form + 14 * 3600,
-                'date_rgt <=' => $date_end + 3600 * 38);
-            $value['total_C3'] = count($this->contacts_model->load_all($total_c3));
-
-            $input = array();
-            $input['where'] = array('adset_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
-            $adset_cost = $this->adset_cost_model->load_all($input);
-            $adset_cost = h_caculate_channel_cost($adset_cost);
-            if (!empty($adset_cost)) {
-                $value['total_C1'] = $adset_cost['total_C1'];
-                $value['total_C2'] = $adset_cost['total_C2'];
-                $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
-                $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
-                $value['spend'] = $adset_cost['spend'];
-                $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) . ' đ' : '#N/A';
-                $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) . ' đ' : '#N/A';
-                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) . ' đ' : '#N/A';
-            } else {
-                $value['total_C1'] = '#NA';
-                $value['total_C2'] = '#NA';
-                $value['total_C3'] = '#NA';
-                $value['C2pC1'] = '#NA';
-                $value['C3pC2'] = '#NA';
-                $value['spend'] = '#NA';
-                $value['pricepC1'] = '#NA';
-                $value['pricepC2'] = '#NA';
-                $value['pricepC3'] = '#NA';
-            }
-        }
-        unset($value);
-
-        $data['adsets'] = $adsets;
-        $data['campaignName'] = $get['campaignName'];
-        $this->load->view('MANAGERS/campaign/modal/show-campaign-adset', $data);
     }
 
 }

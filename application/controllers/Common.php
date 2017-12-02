@@ -560,8 +560,17 @@ class Common extends MY_Controller {
             }
             $param['date_recall'] = (isset($post['date_recall']) && $post['date_recall'] != '') ? strtotime($post['date_recall']) : 0;
             if (isset($post['date_expect_receive_cod']) && $post['date_expect_receive_cod'] != '') {
-                $param['date_expect_receive_cod'] = strtotime($post['date_expect_receive_cod']);
+                if (strtotime($post['date_expect_receive_cod']) < time()) {
+                    $result['success'] = 0;
+                    $result['message'] = 'Ngày dự kiến giao hàng không thể là quá khứ!';
+                    echo json_encode($result);
+                    die;
+                } else {
+                    $param['date_expect_receive_cod'] = strtotime($post['date_expect_receive_cod']);
+                }
             }
+
+
 
             $cur_cod_status_id = $rows[0]['cod_status_id'];
             $cod_status_id = $post['cod_status_id'];
@@ -773,11 +782,11 @@ class Common extends MY_Controller {
                     $post[$value] = trim($post[$value]);
                 }
                 if ($post[$value] !== $rows[0][$value]) {
-                    $strDiff .= $key . $rows[0][$value] . ' ===> ' . $post[$value] .'<br>';
+                    $strDiff .= $key . $rows[0][$value] . ' ===> ' . $post[$value] . '<br>';
                 }
             }
         }
-       
+
         $data['content_change'] = $strDiff;
         $this->load->model('call_log_model');
         $this->call_log_model->insert($data);

@@ -483,7 +483,7 @@ $(document).on('click', 'a.add-item-fetch', function (e) {
             $("div.replace_content_add_item_fetch_modal").html(data);
         },
         complete: function () {
-            $(".add_item_modal_fetch").modal("show");
+            $(".add_item_modal_fetch").modal({backdrop: 'static', keyboard: false});
             $(".popup-wrapper").hide();
         }
     });

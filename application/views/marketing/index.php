@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
-            <h1 class="text-center text-uppercase red margintop20"> <?php echo $progressType?> <?php echo round($C3Team/$C3Total * 100, 1) ?>% (<?php echo $C3Team .'/'.$C3Total ?>)</h1>
+            <h1 class="text-center text-uppercase red margintop20"> <?php echo $progressType ?> <?php echo round($C3Team / $C3Total * 100, 1) ?>% (<?php echo $C3Team . '/' . $C3Total ?>)</h1>
             <!-- Skill Bars -->
             <?php foreach ($marketers as $marketer) { ?>
                 <div class="row">
@@ -14,7 +14,7 @@
                         <div class="progress skill-bar ">
                             <div class="progress-bar <?php echo getProgressBarClass($marketer['progress']); ?>" role="progressbar" aria-valuenow="<?php echo $marketer['progress'] ?>" aria-valuemin="0" aria-valuemax="100">
                                 <span class="skill text-uppercase"> 
-                                    <?php// echo $marketer['name'] . ' (' . $marketer['totalC3'] . '/' . $marketer['targets'] . ')'; ?> 
+                                    <?php // echo $marketer['name'] . ' (' . $marketer['totalC3'] . '/' . $marketer['targets'] . ')'; ?> 
                                     <?php echo $marketer['progress'] ?>% 
                                 </span>
                             </div>
@@ -24,6 +24,16 @@
 
             <?php } ?>
         </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row">
+        <h2 class="text-center"> Số L6 của bạn hôm nay: <?php echo $this->L['L6']; ?></h2>
+        <h2 class="text-center"> Số L7 của bạn hôm nay: <?php echo $this->L['L7']; ?> </h2>
+        <h2 class="text-center"> Số L6 của bạn tháng này: <?php echo $this->L['L6All']; ?></h2>
+        <h2 class="text-center"> Số L7 của bạn tháng này: <?php echo $this->L['L7All']; ?> </h2>
     </div>
 </div>
 

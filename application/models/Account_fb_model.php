@@ -27,4 +27,16 @@ class Account_fb_model extends MY_Model {
         return $result;
     }
     
+    public function getAccountTimeZone($fbId){
+        $timeZone = 'VN';
+        $input = array();
+        $input['select'] = 'time_zone';
+        $input['where'] = array('fb_id_account' => $fbId);
+        $account = $this->load_all($input);
+        if(!empty($account)){
+            $timeZone = $account[0]['time_zone'];
+        }
+        return $timeZone;
+    }
+    
 }
