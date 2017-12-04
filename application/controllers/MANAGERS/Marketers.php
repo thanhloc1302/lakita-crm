@@ -86,7 +86,7 @@ class Marketers extends MY_Table {
             $date_end = strtotime(date('d-m-Y', strtotime("-1 days"))) + 24*3600 - 1;
         } else {
             $date_form = strtotime($get['date_from']);
-            $date_end = strtotime($get['date_end']);
+            $date_end = strtotime($get['date_end'])+ 24*3600 - 1;
         }
         foreach ($this->data['rows'] as &$value) {
 //            if ($value['active'] == 0) {

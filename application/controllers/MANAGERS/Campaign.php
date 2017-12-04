@@ -46,6 +46,9 @@ class Campaign extends MY_Table {
                 'name_display' => 'Campaign ID Facebook',
             //'display' => 'none'
             ),
+            'marketer_id' => array(
+                'name_display' => 'Marketer',
+            ),
             'account_fb_id' => array(
                 'name_display' => 'Tài khoản'
             ),
@@ -71,9 +74,9 @@ class Campaign extends MY_Table {
             'C2pC1' => array(
                 'name_display' => 'C2/C1',
             ),
-            'C3pC2' => array(
-                'name_display' => 'C3/C2',
-            ),
+//            'C3pC2' => array(
+//                'name_display' => 'C3/C2',
+//            ),
             'pricepC1' => array(
                 'name_display' => 'giá C1',
             ),
@@ -106,9 +109,10 @@ class Campaign extends MY_Table {
         $get = $this->input->get();
         $date_form = '';
         $date_end = '';
-        if (!isset($get['date_from']) && !isset($get['date_end'])) {
-            $date_form = strtotime(date('01-m-Y'));
-            $date_end = time();
+        if ((!isset($get['date_from']) && !isset($get['date_end'])) 
+                || (isset($get['date_from']) && $get['date_from'] == '' && $get['date_end'] == '')) {
+            $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
+            $date_end = strtotime(date('d-m-Y', strtotime("-1 days")));
         } else {
             $date_form = strtotime($get['date_from']);
             $date_end = strtotime($get['date_end']);
@@ -152,6 +156,7 @@ class Campaign extends MY_Table {
                 $value['pricepC3'] = '#NA';
             }
             $value['account_fb_id'] = $account[$value['account_fb_id']];
+            $value['marketer_id'] = $this->staffs_model->find_staff_name($value['marketer_id']);
         }
         unset($value);
         usort($this->data['rows'], function($a, $b) {
