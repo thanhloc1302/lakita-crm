@@ -31,7 +31,7 @@ foreach ($rows as $row) {
                         echo '<td>
                                 <div class="toggle-input marginbottom20">
                                     <label class="switch">
-                                        <input type="checkbox" 
+                                        <input disabled="disabled" type="checkbox" 
                                         data-url="'.base_url($this->controller_path . '/edit_active').'" name="edit_active" item_id="'. $row['id'] .'" '. $checked .'/>
                                         <span class="slider round"></span>
                                      </label>

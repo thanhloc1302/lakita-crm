@@ -28,7 +28,7 @@ class ViewReport extends MY_Controller {
     }
 
     public function ViewGeneralReport() {
-        $period = hGetTimeRange(strtotime(date('Y-m-01')), time());
+        $period = hGetTimeRange(strtotime(date('Y-m-01')),strtotime(date('Y-m-t')));
         $period2 = [];
         foreach ($period as $dayName => $dayTimeStamp) {
             $input = array();
@@ -46,7 +46,7 @@ class ViewReport extends MY_Controller {
             $input['select'] = 'id';
             $input['where'] = array('date_rgt >=' => $startDate,
                 'date_rgt <=' => $dayTimeStamp + 24 * 3600 - 1, 'is_hide' => '0');
-            $luyKe[$dayName]['C3'] = count($this->contacts_model->load_all($input));
+            $luyKe[$dayName]['C3'] = count($this->contacts_model->load_all($input));            
             $luyKe[$dayName]['KPI'] = 38 * $i++;
         }
 

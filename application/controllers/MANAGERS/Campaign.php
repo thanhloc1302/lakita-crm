@@ -110,8 +110,7 @@ class Campaign extends MY_Table {
         $get = $this->input->get();
         $date_form = '';
         $date_end = '';
-        if ((!isset($get['date_from']) && !isset($get['date_end'])) 
-                || (isset($get['date_from']) && $get['date_from'] == '' && $get['date_end'] == '')) {
+        if ((!isset($get['date_from']) && !isset($get['date_end'])) || (isset($get['date_from']) && $get['date_from'] == '' && $get['date_end'] == '')) {
             $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
             $date_end = strtotime(date('d-m-Y', strtotime("-1 days")));
         } else {
@@ -126,38 +125,64 @@ class Campaign extends MY_Table {
              */
             $total_c3 = array();
             $total_c3['select'] = 'id';
-            $total_c3['where'] = array(
-                'campaign_id' => $value['id'],
-                'date_rgt >=' => $date_form + 14 * 3600,
-                'date_rgt <=' => $date_end + 3600 * 38);
+            if ($this->account_fb_model->getAccountTimeZone($value['account_fb_id']) == 'VN') {
+                $total_c3['where'] = array(
+                    'campaign_id' => $value['id'],
+                    'date_rgt >=' => $date_form,
+                    'date_rgt <=' => $date_end + 24 * 3600 - 1);
+            } else {
+                $total_c3['where'] = array(
+                    'campaign_id' => $value['id'],
+                    'date_rgt >=' => $date_form + 14 * 3600,
+                    'date_rgt <=' => $date_end + 3600 * 38);
+            }
             $value['total_C3'] = count($this->contacts_model->load_all($total_c3));
             $input = array();
             $input['where'] = array('campaign_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
             $channel_cost = $this->campaign_cost_model->load_all($input);
             $channel_cost = h_caculate_channel_cost($channel_cost);
+            $this->load->model('c2_model');
             if (!empty($channel_cost)) {
                 $value['total_C1'] = $channel_cost['total_C1'];
-                $value['total_C2'] = $channel_cost['total_C2'];
+                // $value['total_C2'] = $channel_cost['total_C2'];
                 // $value['total_C3'] = $channel_cost['total_C3'];
                 $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
-                $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
+                //  $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
                 $value['spend'] = $channel_cost['spend'];
                 $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) : '#N/A';
                 $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) : '#N/A';
                 $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) : ( ($value['spend'] > 0) ? 9999999999 : '#N/A');
+                if ($value['active'] == 1) {
+                    $total_c2 = array();
+                    $total_c2['select'] = 'id';
+                    if ($this->account_fb_model->getAccountTimeZone($value['account_fb_id']) == 'VN') {
+                        $total_c2['where'] = array(
+                            'campaign_id' => $value['id'],
+                            'date_rgt >=' => $date_form,
+                            'date_rgt <=' => $date_end + 24 * 3600 - 1);
+                    } else {
+                        $total_c2['where'] = array(
+                            'campaign_id' => $value['id'],
+                            'date_rgt >=' => $date_form + 14 * 3600,
+                            'date_rgt <=' => $date_end + 3600 * 38);
+                    }
+                    $value['total_C2'] = count($this->c2_model->load_all($total_c3));
+                } else {
+                    $value['total_C1'] = '#NA';
+                    $value['total_C2'] = '#NA';
+                    $value['total_C3'] = '#NA';
+                    $value['C2pC1'] = '#NA';
+                    $value['C3pC2'] = '#NA';
+                    $value['spend'] = '#NA';
+                    $value['pricepC1'] = '#NA';
+                    $value['pricepC2'] = '#NA';
+                    $value['pricepC3'] = '#NA';
+                }
             } else {
-                $value['total_C1'] = '#NA';
-                $value['total_C2'] = '#NA';
-                $value['total_C3'] = '#NA';
-                $value['C2pC1'] = '#NA';
-                $value['C3pC2'] = '#NA';
-                $value['spend'] = '#NA';
-                $value['pricepC1'] = '#NA';
-                $value['pricepC2'] = '#NA';
-                $value['pricepC3'] = '#NA';
+                $value['total_C2'] = $channel_cost['total_C2'];
             }
             $value['account_fb_id'] = $account[$value['account_fb_id']];
-             $value['marketer_id'] = $this->staffs_model->find_staff_name($value['marketer_id']);
+            $value['marketer_id'] = $this->staffs_model->find_staff_name($value['marketer_id']);
         }
         unset($value);
         usort($this->data['rows'], function($a, $b) {
@@ -318,11 +343,10 @@ class Campaign extends MY_Table {
          */
         $this->load->model('channel_model');
         $input = array();
-        $input['where'] = array('active' => 1);
         $channels = $this->channel_model->load_all($input);
         $this->list_edit = array(
             'left_table' => array(
-                  'id' => array(
+                'id' => array(
                     'type' => 'disable'
                 ),
                 'name' => array(
@@ -355,6 +379,7 @@ class Campaign extends MY_Table {
                     $param[$value] = $post['edit_' . $value];
                 }
             }
+           //print_arr($param);
             $this->{$this->model}->update($input['where'], $param);
         }
         show_error_and_redirect('Sửa chiến dịch thành công!');

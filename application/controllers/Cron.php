@@ -41,7 +41,7 @@ class Cron extends CI_Controller {
          */
         $this->load->model('campaign_model');
         $input = array();
-        $input['where'] = array('active' => 1);
+        $input['where'] = array('active' => 1, 'channel_id' => 2);
         $campaigns = $this->campaign_model->load_all($input);
         foreach ($campaigns as $value) {
             /*
@@ -119,7 +119,7 @@ class Cron extends CI_Controller {
          */
         $this->load->model('adset_model');
         $input = array();
-        $input['where'] = array('active' => 1);
+         $input['where'] = array('active' => 1, 'channel_id' => 2);
         $adsets = $this->adset_model->load_all($input);
         foreach ($adsets as $value) {
             /*
@@ -155,7 +155,7 @@ class Cron extends CI_Controller {
          */
         $this->load->model('ad_model');
         $input = array();
-        $input['where'] = array('active' => 1);
+         $input['where'] = array('active' => 1, 'channel_id' => 2);
         $adsets = $this->ad_model->load_all($input);
         foreach ($adsets as $value) {
             /*
@@ -181,28 +181,28 @@ class Cron extends CI_Controller {
     }
 
     function test_cost_campaign() {
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 30; $i++) {
             $day = "-" . $i . " days";
             $this->update_campain_cost($day);
         }
     }
 
     function test_cost_channel() {
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 30; $i++) {
             $day = "-" . $i . " days";
             $this->update_channel_cost($day);
         }
     }
 
     function test_cost_adset() {
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 30; $i++) {
             $day = "-" . $i . " days";
             $this->update_adset_cost($day);
         }
     }
 
     function test_cost_ads() {
-        for ($i = 1; $i <= 5; $i++) {
+        for ($i = 1; $i <= 30; $i++) {
             $day = "-" . $i . " days";
             $this->update_ad_cost($day);
         }

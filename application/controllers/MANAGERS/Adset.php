@@ -311,7 +311,7 @@ class Adset extends MY_Table {
          */
         $this->load->model('campaign_model');
         $input = array();
-        $input['where'] = array('active' => 1, 'marketer_id' => $this->user_id);
+        $input['where'] = array('marketer_id' => $this->user_id);
         $campaigns = $this->campaign_model->load_all($input);
         $this->list_edit = array(
             'left_table' => array(

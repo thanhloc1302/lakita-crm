@@ -146,7 +146,7 @@ class Ad extends MY_Table {
             }
             $value['total_C3'] = count($this->contacts_model->load_all($total_c3));
             $input = array();
-            $input['where'] = array('ad_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
+            $input['where'] = array('ad_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end + 3600*24-1);
             $ad_cost = $this->ad_cost_model->load_all($input);
             $ad_cost = h_caculate_channel_cost($ad_cost);
             if (!empty($ad_cost)) {
@@ -318,7 +318,7 @@ class Ad extends MY_Table {
          */
         $this->load->model('adset_model');
         $input = array();
-        $input['where'] = array('active' => 1, 'marketer_id' => $this->user_id);
+        $input['where'] = array('marketer_id' => $this->user_id);
         $adsets = $this->adset_model->load_all($input);
         $this->list_edit = array(
             'left_table' => array(
