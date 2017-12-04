@@ -94,7 +94,11 @@ class Adset extends MY_Table {
                 'type' => 'datetime',
                 'name_display' => 'Ngày tạo',
                 'display' => 'none'
-            )
+            ),    'channel' => array(
+                'name_display' => 'Kênh',
+                'order' => '1',
+                'display' => 'none'
+            ),
         );
         $this->set_list_view($list_item);
         $this->set_model('adset_model');
@@ -197,10 +201,19 @@ class Adset extends MY_Table {
 //    }
 
     function index($offset = 0) {
+         $this->load->model('channel_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $channels = $this->channel_model->load_all($input);
+        $this->data['channel'] = $channels;
+        
         $this->list_filter = array(
             'left_filter' => array(
                 'date' => array(
                     'type' => 'custom',
+                ),
+                 'channel' => array(
+                    'type' => 'arr_multi'
                 ),
             ),
             'right_filter' => array(
@@ -302,6 +315,9 @@ class Adset extends MY_Table {
         $campaigns = $this->campaign_model->load_all($input);
         $this->list_edit = array(
             'left_table' => array(
+                  'id' => array(
+                    'type' => 'disable'
+                ),
                 'name' => array(
                 ),
                 'campaign_id' => array(

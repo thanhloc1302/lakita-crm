@@ -31,7 +31,7 @@ class Ad extends MY_Table {
          */
         $list_item = array(
             'id' => array(
-                'name_display' => 'ID adset',
+                'name_display' => 'ID ad',
                 'display' => 'none'
             ),
             'active' => array(

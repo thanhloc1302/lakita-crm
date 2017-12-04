@@ -30,9 +30,10 @@ class Campaign extends MY_Table {
          * - nếu trường nào cần hiển thị đặc biệt (ngoại lệ) thì để là type = custom
          */
         $list_item = array(
-//            'id' => array(
-//                'name_display' => 'ID Campaign',
-//            ),
+            'id' => array(
+                'name_display' => 'ID Campaign',
+                'display' => 'none'
+            ),
             'active' => array(
                 'type' => 'binary',
                 'name_display' => 'Hoạt động'
@@ -45,6 +46,9 @@ class Campaign extends MY_Table {
             'campaign_id_facebook' => array(
                 'name_display' => 'Campaign ID Facebook',
             //'display' => 'none'
+            ),
+            'marketer_id' => array(
+                'name_display' => 'Marketer',
             ),
             'account_fb_id' => array(
                 'name_display' => 'Tài khoản'
@@ -71,9 +75,9 @@ class Campaign extends MY_Table {
             'C2pC1' => array(
                 'name_display' => 'C2/C1',
             ),
-            'C3pC2' => array(
-                'name_display' => 'C3/C2',
-            ),
+//            'C3pC2' => array(
+//                'name_display' => 'C3/C2',
+//            ),
             'pricepC1' => array(
                 'name_display' => 'giá C1',
             ),
@@ -152,6 +156,7 @@ class Campaign extends MY_Table {
                 $value['pricepC3'] = '#NA';
             }
             $value['account_fb_id'] = $account[$value['account_fb_id']];
+             $value['marketer_id'] = $this->staffs_model->find_staff_name($value['marketer_id']);
         }
         unset($value);
         usort($this->data['rows'], function($a, $b) {
@@ -316,6 +321,9 @@ class Campaign extends MY_Table {
         $channels = $this->channel_model->load_all($input);
         $this->list_edit = array(
             'left_table' => array(
+                  'id' => array(
+                    'type' => 'disable'
+                ),
                 'name' => array(
                 ),
                 'channel_id' => array(
