@@ -110,9 +110,10 @@ class Campaign extends MY_Table {
         $get = $this->input->get();
         $date_form = '';
         $date_end = '';
-        if (!isset($get['date_from']) && !isset($get['date_end'])) {
-            $date_form = strtotime(date('01-m-Y'));
-            $date_end = time();
+        if ((!isset($get['date_from']) && !isset($get['date_end'])) 
+                || (isset($get['date_from']) && $get['date_from'] == '' && $get['date_end'] == '')) {
+            $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
+            $date_end = strtotime(date('d-m-Y', strtotime("-1 days")));
         } else {
             $date_form = strtotime($get['date_from']);
             $date_end = strtotime($get['date_end']);
