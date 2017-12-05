@@ -246,15 +246,16 @@ class Marketer extends MY_Table {
                 'campaign' => array(
                     'type' => 'arr_multi'
                 ),
-                 'cod_status' => array(
+                 'adset' => array(
+                    'type' => 'arr_multi'
+                ),
+                'ad' => array(
                     'type' => 'arr_multi'
                 ),
             ),
             'right_filter' => array(
-                'adset' => array(
-                    'type' => 'arr_multi'
-                ),
-                'ad' => array(
+               
+                 'cod_status' => array(
                     'type' => 'arr_multi'
                 ),
                 'course' => array(

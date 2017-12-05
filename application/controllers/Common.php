@@ -132,7 +132,7 @@ class Common extends MY_Controller {
                 'phone' => 'view',
                 'address' => 'edit',
                 'course_code' => 'view',
-                'price_purchase' => 'view',
+                'price_purchase' => 'edit',
                 'date_rgt' => 'view',
                 'date_handover' => 'view',
                 'date_confirm' => 'view',
@@ -552,7 +552,7 @@ class Common extends MY_Controller {
             $param = array();
             $param['cod_staff_id'] = $this->user_id;
             $post_arr = array('address', 'payment_method_rgt', 'provider_id', 'cod_status_id', 'code_cross_check',
-                'note_cod', 'weight_envelope', 'cod_fee', 'fee_resend', 'date_expect_receive_cod');
+                'note_cod', 'weight_envelope', 'cod_fee', 'fee_resend', 'date_expect_receive_cod', 'price_purchase');
             foreach ($post_arr as $value) {
                 if (isset($post[$value])) {
                     $param[$value] = $post[$value];

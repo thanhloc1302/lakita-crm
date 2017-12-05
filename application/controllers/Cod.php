@@ -12,7 +12,6 @@ class Cod extends MY_Controller {
 
     public function __construct() {
         parent::__construct();
-
         $this->data['top_nav'] = 'cod/common/top-nav';
         $data['time_remaining'] = 0;
         $input = array();
