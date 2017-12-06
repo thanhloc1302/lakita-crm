@@ -288,6 +288,12 @@ class Ad extends MY_Table {
             if ($this->{$this->model}->check_exists(array('name' => $post['add_name'], 'marketer_id' => $this->user_id))) {
                 redirect_and_die('Tên ad đã tồn tại!');
             }
+             if ($post['add_ad_id_facebook'] != '' && $this->{$this->model}->check_exists(array('ad_id_facebook' => $post['add_ad_id_facebook']))) {
+                redirect_and_die('Ad này đã được tạo từ FB!');
+            }
+            if($post['add_adset_id'] == 0){
+                 redirect_and_die('Bạn cần chọn adset!');
+            }
             $paramArr = array('name', 'adset_id', 'ad_id_facebook', 'desc', 'active');
             foreach ($paramArr as $value) {
                 if (isset($post['add_' . $value])) {

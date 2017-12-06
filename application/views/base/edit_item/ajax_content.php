@@ -8,6 +8,11 @@
                 </div>
                 <div class="modal-body replace_content_edit_item_modal">
                     <form method="post" action="<?php echo base_url() . $this->controller_path . '/action_edit_item/' . $row['id']; ?>" class="form_submit">
+                        <?php
+                        if (!$canEdited) {
+                            echo'<fieldset disabled>';
+                        }
+                        ?>
                         <div class="row" style="margin-right: 5px; margin-left: 5px;">
                             <div class="col-md-6">
                                 <table class="table table-striped table-bordered table-hover table-1 table-view-1 heavyTable">                
@@ -81,6 +86,11 @@
                         <div class="text-center">
                             <button type="submit" class="btn btn-success btn-lg btn-edit-contact-1">Lưu Lại</button>
                         </div>
+                        <?php
+                        if (!$canEdited) {
+                            echo'</fieldset>';
+                        }
+                        ?>
                     </form>
                 </div>
                 <div class="modal-footer">

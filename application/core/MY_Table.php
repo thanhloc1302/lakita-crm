@@ -163,7 +163,7 @@ class MY_Table extends MY_Controller {
 
         $this->conditional = $input;
         $total_row = $this->{$this->model}->m_count_all_result_from_get($this->conditional);
-        
+
         $this->data['total_rows'] = $total_row;
 
         /*
@@ -176,8 +176,8 @@ class MY_Table extends MY_Controller {
         if ($this->limit != 0 || $this->offset != 0) {
             $this->conditional['limit'] = array($this->limit, $this->offset);
         }
-        $this->conditional['limit'] =  array(200, 0);
-     //   print_arr($this->conditional);
+        $this->conditional['limit'] = array(200, 0);
+        //   print_arr($this->conditional);
         /*
          * kiểm tra xem $this->conditional đã có order chưa, nếu chưa thì để mặc định là order theo id desc
          */
@@ -185,7 +185,7 @@ class MY_Table extends MY_Controller {
             $this->conditional['order'] = array('id' => 'DESC');
         }
         $this->data['rows'] = $this->{$this->model}->load_all($this->conditional);
-       //echoQuery();die;
+        //echoQuery();die;
 
         /*
          * Thấy thông tin hiển thị phân trang: thông tin hiển thị contact đầu, contact cuối và tổng contact
@@ -204,6 +204,7 @@ class MY_Table extends MY_Controller {
     }
 
     function show_edit_item($inputData = []) {
+        $canEdited = 1;
         $data = $inputData;
         $post = $this->input->post();
         $input = array();
@@ -213,7 +214,11 @@ class MY_Table extends MY_Controller {
             echo 'Không tồn tại danh mục này!';
             die;
         }
+        if (isset($rows[0]['marketer_id']) && $rows[0]['marketer_id'] != $this->user_id) {
+            $canEdited = 0;
+        }
         $data['row'] = $rows[0];
+        $data['canEdited'] = $canEdited;
         $this->load->view('base/edit_item/ajax_content', $data);
     }
 

@@ -234,7 +234,7 @@ class Adset extends MY_Table {
         $data['top_nav'] = 'manager/common/top-nav';
         $data['list_title'] = 'Danh sách các adset (tính theo giờ Mỹ)';
         $data['edit_title'] = 'Sửa thông tin adset';
-        $data['content'] = 'MANAGERS/adset/index';
+        $data['content'] = 'base/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -278,8 +278,11 @@ class Adset extends MY_Table {
             if ($this->{$this->model}->check_exists(array('name' => $post['add_name'], 'marketer_id' => $this->user_id))) {
                 redirect_and_die('Tên adset đã tồn tại!');
             }
-            if ($this->{$this->model}->check_exists(array('adset_id_facebook' => $post['add_adset_id_facebook']))) {
+            if ($post['add_adset_id_facebook'] != '' && $this->{$this->model}->check_exists(array('adset_id_facebook' => $post['add_adset_id_facebook']))) {
                 redirect_and_die('Adset này đã được tạo từ Campaign FB!');
+            }
+            if($post['add_campaign_id'] == 0){
+                 redirect_and_die('Bạn cần chọn chiến dịch!');
             }
             $paramArr = array('name', 'campaign_id', 'adset_id_facebook', 'desc', 'active');
             foreach ($paramArr as $value) {
@@ -287,6 +290,7 @@ class Adset extends MY_Table {
                     $param[$value] = $post['add_' . $value];
                 }
             }
+           
             $param['marketer_id'] = $this->user_id;
             $param['time'] = time();
             $input = [];

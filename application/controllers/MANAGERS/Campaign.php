@@ -150,9 +150,9 @@ class Campaign extends MY_Table {
                 //  $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
                 $value['spend'] = $channel_cost['spend'];
                 $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) : '#N/A';
-                $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) : '#N/A';
+
                 $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) : ( ($value['spend'] > 0) ? 9999999999 : '#N/A');
-                if ($value['active'] == 1) {
+                if ($value['active'] == 1 && $value['spend'] != 0) {
                     $total_c2 = array();
                     $total_c2['select'] = 'id';
                     if ($this->account_fb_model->getAccountTimeZone($value['account_fb_id']) == 'VN') {
@@ -168,19 +168,18 @@ class Campaign extends MY_Table {
                     }
                     $value['total_C2'] = count($this->c2_model->load_all($total_c3));
                 } else {
-                    $value['total_C1'] = '#NA';
                     $value['total_C2'] = '#NA';
-                    $value['total_C3'] = '#NA';
-                    $value['C2pC1'] = '#NA';
-                    $value['C3pC2'] = '#NA';
-                    $value['spend'] = '#NA';
-                    $value['pricepC1'] = '#NA';
-                    $value['pricepC2'] = '#NA';
-                    $value['pricepC3'] = '#NA';
+//                    $value['C2pC1'] = '#NA';
+//                    $value['C3pC2'] = '#NA';
+//                    $value['spend'] = '#NA';
+//                    $value['pricepC1'] = '#NA';
+//                    $value['pricepC2'] = '#NA';
+//                    $value['pricepC3'] = '#NA';
                 }
             } else {
                 $value['total_C2'] = $channel_cost['total_C2'];
             }
+            $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) : '#N/A';
             $value['account_fb_id'] = $account[$value['account_fb_id']];
             $value['marketer_id'] = $this->staffs_model->find_staff_name($value['marketer_id']);
         }
@@ -276,7 +275,7 @@ class Campaign extends MY_Table {
          */
         $this->load->model('channel_model');
         $input = array();
-        $input['where'] = array('active' => 1);
+        $input['where'] = array('active' => 1, 'id !=' => 2);
         $channels = $this->channel_model->load_all($input);
         $this->list_add = array(
             'left_table' => array(
@@ -286,8 +285,8 @@ class Campaign extends MY_Table {
                     'type' => 'array',
                     'value' => $channels,
                 ),
-                'campaign_id_facebook' => array(
-                ),
+//                'campaign_id_facebook' => array(
+//                ),
             ),
             'right_table' => array(
                 'desc' => array(
@@ -379,7 +378,7 @@ class Campaign extends MY_Table {
                     $param[$value] = $post['edit_' . $value];
                 }
             }
-           //print_arr($param);
+            //print_arr($param);
             $this->{$this->model}->update($input['where'], $param);
         }
         show_error_and_redirect('Sửa chiến dịch thành công!');
