@@ -20,10 +20,10 @@ foreach ($marketers as $marketer) {
 ?>
     function drawChart() {
         var data = google.visualization.arrayToDataTable
-                ([['X', 'Thực đạt', 'KPI'],
+                ([['X', 'Thực đạt', 'KPI', 'Tháng trước'],
                     <?php
-                    foreach ($period as $dayName => $C3) {
-                        echo "['$dayName', $C3, 38],";
+                    foreach ($period as $dayName => $type) {
+                        echo "['$dayName', ". $type['C3ThisMonth'] . ", " . MARKETING_KPI_PER_DAY. "," . $type['C3LastMonth'] . "],";
                     }
                     ?>
                 ]);
@@ -33,14 +33,15 @@ foreach ($marketers as $marketer) {
                 sourceColumn: 1,
                 type: "string",
                 role: "annotation"},
-            2]);
+            2, 3]);
         var options = {
             title: 'BÁO CÁO MARKETING HÀNG NGÀY',
             vAxis: {title: 'Số C3'},
             hAxis: {title: 'Ngày trong tháng'},
             series: {
                 0: {type: 'bars'},
-                1: {type: 'lines'}
+                1: {type: 'lines'},
+                2: {type: 'lines'}
             }
         };
 
@@ -50,27 +51,25 @@ foreach ($marketers as $marketer) {
 
     function drawChartLuyKe() {
         var data = google.visualization.arrayToDataTable
-                ([['X', 'Thực đạt', 'KPI'],
+                ([['X', 'Thực đạt', 'KPI', 'Tháng trước'],
                     <?php
                     foreach ($luyKe as $dayName => $number) {
-                        echo "['$dayName', " . $number['C3'] . ", " . $number['KPI'] . "],";
+                        echo "['$dayName', " . $number['C3ThisMonth'] . ", " . $number['KPI'] . ", " . $number['C3LastMonth'] ."],";
                     }
                     ?>
                 ]);
         var view = new google.visualization.DataView(data);
         view.setColumns([0, 1,
-            {calc: "stringify",
-                sourceColumn: 1,
-                type: "string",
-                role: "annotation"},
-            2]);
+            
+            2, 3]);
         var options = {
             title: 'BÁO CÁO MARKETING LŨY KẾ',
             vAxis: {title: 'Số C3'},
             hAxis: {title: 'Ngày trong tháng'},
             series: {
                 0: {type: 'bars'},
-                1: {type: 'lines'}
+                1: {type: 'lines'},
+                2: {type: 'lines'}
             }
         };
 

@@ -89,6 +89,16 @@ class Campaign extends MY_Table {
                 'type' => 'currency',
                 'name_display' => 'giá C3',
             ),
+            'L6' => array(
+                'name_display' => 'L6',
+            ),
+            'L8' => array(
+                'name_display' => 'L8',
+            ),
+            'pricepL8' => array(
+                'type' => 'currency',
+                'name_display' => 'giá L8',
+            ),
             'time' => array(
                 'type' => 'datetime',
                 'name_display' => 'Ngày tạo',
@@ -180,6 +190,62 @@ class Campaign extends MY_Table {
                 $value['total_C2'] = $channel_cost['total_C2'];
             }
             $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) : '#N/A';
+
+            /*
+             * L6
+             */
+            if ($value['active'] == 1) {
+                $total_L6 = array();
+                $total_L6['select'] = 'id';
+                if ($this->account_fb_model->getAccountTimeZone($value['account_fb_id']) == 'VN') {
+                    $total_L6['where'] = array(
+                        'campaign_id' => $value['id'],
+                        'date_rgt >=' => $date_form,
+                        'date_rgt <=' => $date_end + 24 * 3600 - 1,
+                        'call_status_id' => _DA_LIEN_LAC_DUOC_,
+                        'ordering_status_id' => _DONG_Y_MUA_);
+                } else {
+                    $total_L6['where'] = array(
+                        'campaign_id' => $value['id'],
+                        'date_rgt >=' => $date_form + 14 * 3600,
+                        'date_rgt <=' => $date_end + 3600 * 38,
+                        'call_status_id' => _DA_LIEN_LAC_DUOC_,
+                        'ordering_status_id' => _DONG_Y_MUA_
+                    );
+                }
+                $value['L6'] = count($this->contacts_model->load_all($total_L6));
+
+                /*
+                 * L8
+                 */
+                $total_L8 = array();
+                $total_L8['select'] = 'id';
+                if ($this->account_fb_model->getAccountTimeZone($value['account_fb_id']) == 'VN') {
+                    $total_L8['where'] = array(
+                        'campaign_id' => $value['id'],
+                        'date_rgt >=' => $date_form,
+                        'date_rgt <=' => $date_end + 24 * 3600 - 1,
+                        'call_status_id' => _DA_LIEN_LAC_DUOC_,
+                        'ordering_status_id' => _DONG_Y_MUA_,
+                        'cod_status_id' => _DA_THU_LAKITA_);
+                } else {
+                    $total_L8['where'] = array(
+                        'campaign_id' => $value['id'],
+                        'date_rgt >=' => $date_form + 14 * 3600,
+                        'date_rgt <=' => $date_end + 3600 * 38,
+                        'call_status_id' => _DA_LIEN_LAC_DUOC_,
+                        'ordering_status_id' => _DONG_Y_MUA_,
+                        'cod_status_id' => _DA_THU_LAKITA_
+                    );
+                }
+                $value['L8'] = count($this->contacts_model->load_all($total_L8));
+                $value['pricepL8'] = ($value['L8'] > 0) ? round($value['spend'] / $value['L8']) : ( ($value['spend'] > 0) ? 9999999999 : '#N/A');
+            }else{
+                $value['L6'] = '#N/A';
+                $value['L8'] = '#N/A';
+            }
+            
+
             $value['account_fb_id'] = $account[$value['account_fb_id']];
             $value['marketer_id'] = $this->staffs_model->find_staff_name($value['marketer_id']);
         }

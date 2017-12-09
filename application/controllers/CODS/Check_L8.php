@@ -258,7 +258,7 @@ class Check_L8 extends MY_Table {
      * Hiển thị modal sửa item
      */
 
-    function show_edit_item() {
+    function show_edit_item($inputData = []) {
         /*
          * type mặc định là text nên nếu là text sẽ không cần khai báo
          */
@@ -366,11 +366,12 @@ class Check_L8 extends MY_Table {
     }
 
     private function _import_L8($file_path) {
+        $this->load->helper('date_helper');
         $this->load->library('PHPExcel');
         $objPHPExcel = PHPExcel_IOFactory::load($file_path);
         $sheet = $objPHPExcel->getActiveSheet();
-        $data1 = $sheet->rangeToArray('A11:F7700');
-
+        $data1 = $sheet->rangeToArray('A8:G7700');
+        
         /*
          * Mảng lưu các thông tin contact L8 của Viettel.
          * Cần lưu hết thông tin để check trùng (đề phòng
@@ -378,17 +379,17 @@ class Check_L8 extends MY_Table {
          */
         $receiveCOD = array();
         foreach ($data1 as $row) {
-            list($stt, $custom_code, $date_deliver_success, $code_cross_check, $ma_ky, $money) = $row;
+            list($stt, $code_cross_check, $date_sending, $service, $destination, $date_deliver_success,  $money) = $row;
             $stt = intval($stt);
             if ($stt > 0) {
-                $money = str_replace(',', '', $money);
-                $money = intval($money);
+                $money = preg_replace('/\D+/', '', $money); 
+                $money = intval($money) * 1000;
                 $receiveCOD[] = array(
                     'stt' => $stt,
-                    'custom_code' => $custom_code,
-                    'date_deliver_success' => $date_deliver_success,
+                    'custom_code' => 'MKI17',
+                    'date_deliver_success' => date('d/m/Y', timestamp_from_format($date_deliver_success)),
                     'code' => $code_cross_check,
-                    'ma_ky' => $ma_ky,
+                    'ma_ky' => date('d/Y'),
                     'money' => $money);
             } else {
                 break;
@@ -528,6 +529,81 @@ class Check_L8 extends MY_Table {
             $duplicate = $duplicae_id[0]['id'];
         }
         return $duplicate;
+    }
+    
+     private function _import_L8_old($file_path) {
+        $this->load->library('PHPExcel');
+        $objPHPExcel = PHPExcel_IOFactory::load($file_path);
+        $sheet = $objPHPExcel->getActiveSheet();
+        $data1 = $sheet->rangeToArray('A11:F7700');
+
+        /*
+         * Mảng lưu các thông tin contact L8 của Viettel.
+         * Cần lưu hết thông tin để check trùng (đề phòng
+         * trường hợp người dùng tải trùng file)
+         */
+        $receiveCOD = array();
+        foreach ($data1 as $row) {
+            list($stt, $custom_code, $date_deliver_success, $code_cross_check, $ma_ky, $money) = $row;
+            $stt = intval($stt);
+            if ($stt > 0) {
+                $money = str_replace(',', '', $money);
+                $money = intval($money);
+                $receiveCOD[] = array(
+                    'stt' => $stt,
+                    'custom_code' => $custom_code,
+                    'date_deliver_success' => $date_deliver_success,
+                    'code' => $code_cross_check,
+                    'ma_ky' => $ma_ky,
+                    'money' => $money);
+            } else {
+                break;
+            }
+        }
+        foreach ($receiveCOD as $key => $value) {
+            /*
+             * Tìm kiếm trong bảng contact xem có mã vận đơn không
+             * - Nếu có thì hiển thị thêm thông tin khách hàng
+             * - Nếu không thì bỏ trống thông tin khách hàng, đồng thời báo đỏ
+             */
+            $input = array();
+            $input['select'] = 'code_cross_check, price_purchase, name, phone, address, id';
+            $input['where'] = array('code_cross_check' => $value['code'], 'ordering_status_id' => _DONG_Y_MUA_);
+            $contact = $this->contacts_model->load_all($input);
+            /*
+             * Nếu có thì hiển thị thêm thông tin khách hàng
+             */
+            if (!empty($contact)) {
+                $receiveCOD[$key]['contact_id'] = $contact[0]['id'];
+                $receiveCOD[$key]['name'] = $contact[0]['name'];
+                $receiveCOD[$key]['phone'] = $contact[0]['phone'];
+                $receiveCOD[$key]['address'] = $contact[0]['address'];
+                $receiveCOD[$key]['price_purchase'] = h_caculate_money($contact);
+                /*
+                 * Số tiền ĐVGH thu và số tiền giao cho ĐVGH phải khớp
+                 */
+                if (h_caculate_money($contact) == $value['money']) {
+                    $receiveCOD[$key]['is_match'] = 1;
+                } else {
+                    $receiveCOD[$key]['is_match'] = 0;
+                }
+            }
+            /*
+             * Nếu không thì bỏ trống thông tin khách hàng, đồng thời báo đỏ (is_match = 0)
+             */ else {
+                $receiveCOD[$key]['is_match'] = 0;
+            }
+            /*
+             * Tìm kiếm trong bảng l8_check_model xem có dòng đối soát chưa
+             * - Nếu chưa thì duplicate_id = 0 
+             * - Nếu có rồi thì duplicate_id > 0
+             */
+            $receiveCOD[$key]['duplicate_id'] = $this->_find_duplicate_cross_id($value);
+            $receiveCOD[$key]['time'] = time();
+            $this->{$this->model}->insert($receiveCOD[$key]);
+        }
+        // echoQuery();
+        redirect(base_url('cod/doi-soat-l8.html'));
     }
 
 }

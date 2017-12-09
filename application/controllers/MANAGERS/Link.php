@@ -103,15 +103,49 @@ class Link extends MY_Table {
 //    }
 
     function index($offset = 0) {
+          $this->load->model('channel_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $channels = $this->channel_model->load_all($input);
+        $this->data['channel'] = $channels;
+
+        $this->load->model('campaign_model');
+        $input = array();
+        $input['where'] = array('active' => 1, 'marketer_id' => $this->user_id);
+        $this->data['campaign'] = $this->campaign_model->load_all($input);
+
+        $this->load->model('adset_model');
+        $input = array();
+        $input['where'] = array('active' => 1, 'marketer_id' => $this->user_id);
+        $this->data['adset'] = $this->adset_model->load_all($input);
+
+        $this->load->model('ad_model');
+        $input = array();
+        $input['where'] = array('active' => 1, 'marketer_id' => $this->user_id);
+        $this->data['ad'] = $this->ad_model->load_all($input);
+
         $this->list_filter = array(
             'left_filter' => array(
-                'time' => array(
+              'time' => array(
                     'type' => 'datetime',
+                ),
+                'channel' => array(
+                    'type' => 'arr_multi'
+                ),
+                'campaign' => array(
+                    'type' => 'arr_multi'
                 ),
             ),
             'right_filter' => array(
+                'adset' => array(
+                    'type' => 'arr_multi'
+                ),
+                'ad' => array(
+                    'type' => 'arr_multi'
+                ),
             )
         );
+      
         $conditional = array();
         $conditional['where']['marketer_id'] = $this->user_id;
 //        $get = $this->input->get();

@@ -185,7 +185,7 @@ class MY_Table extends MY_Controller {
             $this->conditional['order'] = array('id' => 'DESC');
         }
         $this->data['rows'] = $this->{$this->model}->load_all($this->conditional);
-        //echoQuery();die;
+       // echoQuery();
 
         /*
          * Thấy thông tin hiển thị phân trang: thông tin hiển thị contact đầu, contact cuối và tổng contact
@@ -291,14 +291,16 @@ class MY_Table extends MY_Controller {
                 }
                 if (strpos($key, "filter_date_end_") !== FALSE && $value != '') {
                     $column_name = substr($key, strlen("filter_date_end_"));
-                    $input_get['where'][$column_name . '<='] = strtotime($value) + 3600 * 24;
+                    $input_get['where'][$column_name . '<='] = strtotime($value) + 3600 * 24 - 1;
                 }
                 if (strpos($key, "filter_date_") !== FALSE && $value != '') {
                     $dateArr = explode('-', $value);
                     $date_from = trim($dateArr[0]);
+                    
                     $date_from = strtotime(str_replace("/", "-", $date_from));
+                   
                     $date_end = trim($dateArr[1]);
-                    $date_end = strtotime(str_replace("/", "-", $date_end)) + 3600 * 24;
+                    $date_end = strtotime(str_replace("/", "-", $date_end));
                     $column_name = substr($key, strlen("filter_date_"));
                     $input_get['where'][$column_name . '>='] = $date_from;
                     $input_get['where'][$column_name . '<='] = $date_end;
