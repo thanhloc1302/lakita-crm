@@ -383,7 +383,7 @@ class Check_L8 extends MY_Table {
             $stt = intval($stt);
             if ($stt > 0) {
                 $money = preg_replace('/\D+/', '', $money); 
-                $money = intval($money) * 1000;
+                $money = intval($money);
                 $receiveCOD[] = array(
                     'stt' => $stt,
                     'custom_code' => 'MKI17',

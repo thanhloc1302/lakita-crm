@@ -1893,7 +1893,7 @@ $(document).on('click', '.check_all', function () {
 $(document).on('click', '.find-course-code', function () {
     var _this = $(this);
     $.ajax({
-        url: $("#base_url").val() + "public/json/course.json?ver=1.1",
+        url: $("#base_url").val() + "public/json/course.json?ver=" + $("#version-cache").val(),
         type: 'GET',
         dataType: 'json',
         success: function success(data) {

@@ -89,6 +89,16 @@ class Ad extends MY_Table {
                 'name_display' => 'giá C3',
                 'type' => 'currency',
             ),
+            'L6' => array(
+                'name_display' => 'L6',
+            ),
+            'L8' => array(
+                'name_display' => 'L8',
+            ),
+            'pricepL8' => array(
+                'type' => 'currency',
+                'name_display' => 'giá L8',
+            ),
             'time' => array(
                 'type' => 'datetime',
                 'name_display' => 'Ngày tạo',
@@ -146,7 +156,7 @@ class Ad extends MY_Table {
             }
             $value['total_C3'] = count($this->contacts_model->load_all($total_c3));
             $input = array();
-            $input['where'] = array('ad_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end + 3600*24-1);
+            $input['where'] = array('ad_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end + 3600 * 24 - 1);
             $ad_cost = $this->ad_cost_model->load_all($input);
             $ad_cost = h_caculate_channel_cost($ad_cost);
             if (!empty($ad_cost)) {
@@ -169,12 +179,67 @@ class Ad extends MY_Table {
                 $value['pricepC2'] = '#NA';
                 $value['pricepC3'] = '#NA';
             }
+
+
+
+            /*
+             * L6
+             */
+            if ($value['active'] == 1) {
+                $total_L6 = array();
+                $total_L6['select'] = 'id';
+                if ($this->account_fb_model->getAccountTimeZone($value['account_fb_id']) == 'VN') {
+                    $total_L6['where'] = array(
+                        'ad_id' => $value['id'],
+                        'date_rgt >=' => $date_form,
+                        'date_rgt <=' => $date_end + 24 * 3600 - 1,
+                        'call_status_id' => _DA_LIEN_LAC_DUOC_,
+                        'ordering_status_id' => _DONG_Y_MUA_);
+                } else {
+                    $total_L6['where'] = array(
+                        'ad_id' => $value['id'],
+                        'date_rgt >=' => $date_form + 14 * 3600,
+                        'date_rgt <=' => $date_end + 3600 * 38,
+                        'call_status_id' => _DA_LIEN_LAC_DUOC_,
+                        'ordering_status_id' => _DONG_Y_MUA_
+                    );
+                }
+                $value['L6'] = count($this->contacts_model->load_all($total_L6));
+
+
+                /*
+                 * L8
+                 */
+                $total_L8 = array();
+                $total_L8['select'] = 'id';
+                if ($this->account_fb_model->getAccountTimeZone($value['account_fb_id']) == 'VN') {
+                    $total_L8['where'] = array(
+                        'ad_id' => $value['id'],
+                        'date_rgt >=' => $date_form,
+                        'date_rgt <=' => $date_end + 24 * 3600 - 1,
+                        'call_status_id' => _DA_LIEN_LAC_DUOC_,
+                        'ordering_status_id' => _DONG_Y_MUA_,
+                        'cod_status_id' => _DA_THU_LAKITA_);
+                } else {
+                    $total_L8['where'] = array(
+                        'ad_id' => $value['id'],
+                        'date_rgt >=' => $date_form + 14 * 3600,
+                        'date_rgt <=' => $date_end + 3600 * 38,
+                        'call_status_id' => _DA_LIEN_LAC_DUOC_,
+                        'ordering_status_id' => _DONG_Y_MUA_,
+                        'cod_status_id' => _DA_THU_LAKITA_
+                    );
+                }
+
+                $value['L8'] = count($this->contacts_model->load_all($total_L8));
+                $value['pricepL8'] = ($value['L8'] > 0) ? round($value['spend'] / $value['L8']) : ( ($value['spend'] > 0) ? 9999999999 : '#N/A');
+            }
             $value['account_fb_id'] = $account[$value['account_fb_id']];
             $value['marketer_id'] = $this->staffs_model->find_staff_name($value['marketer_id']);
-            if(intval($value['spend']) > 50000 && $value['total_C3'] == 0){
+            if (intval($value['spend']) > 50000 && $value['total_C3'] == 0) {
                 $value['warning_class'] = 'bgred';
             }
-            if(is_numeric( $value['pricepC3']) &&   $value['pricepC3'] < 50000){
+            if (is_numeric($value['pricepC3']) && $value['pricepC3'] < 50000) {
                 $value['warning_class'] = 'receive-lakita';
             }
         }
@@ -294,11 +359,11 @@ class Ad extends MY_Table {
             if ($this->{$this->model}->check_exists(array('name' => $post['add_name'], 'marketer_id' => $this->user_id))) {
                 redirect_and_die('Tên ad đã tồn tại!');
             }
-             if ($post['add_ad_id_facebook'] != '' && $this->{$this->model}->check_exists(array('ad_id_facebook' => $post['add_ad_id_facebook']))) {
+            if ($post['add_ad_id_facebook'] != '' && $this->{$this->model}->check_exists(array('ad_id_facebook' => $post['add_ad_id_facebook']))) {
                 redirect_and_die('Ad này đã được tạo từ FB!');
             }
-            if($post['add_adset_id'] == 0){
-                 redirect_and_die('Bạn cần chọn adset!');
+            if ($post['add_adset_id'] == 0) {
+                redirect_and_die('Bạn cần chọn adset!');
             }
             $paramArr = array('name', 'adset_id', 'ad_id_facebook', 'desc', 'active');
             foreach ($paramArr as $value) {
