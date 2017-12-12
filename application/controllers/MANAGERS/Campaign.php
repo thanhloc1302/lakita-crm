@@ -248,6 +248,13 @@ class Campaign extends MY_Table {
 
             $value['account_fb_id'] = $account[$value['account_fb_id']];
             $value['marketer_id'] = $this->staffs_model->find_staff_name($value['marketer_id']);
+            
+             if (intval($value['spend']) > 50000 && $value['total_C3'] == 0) {
+                $value['warning_class'] = 'bgred';
+            }
+            if (is_numeric($value['pricepC3']) && $value['pricepC3'] < 50000) {
+                $value['warning_class'] = 'receive-lakita';
+            }
         }
         unset($value);
         usort($this->data['rows'], function($a, $b) {

@@ -27,12 +27,17 @@ class MY_Controller extends CI_Controller {
         //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
         //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
-         //echo date('H:i:s d/m/Y', 1512402840     );die;
-     //    echo  strtotime('-1 month', 1512666000); die;
-
+//        echo date('H:i:s d/m/Y', 1513098000);
+//        die;
+        //    echo  strtotime('-1 month', 1512666000); die;
+//        echo strtotime('+1 day', strtotime(date('d-m-Y')));
+//        die;
+        echo strtotime('+1 day', strtotime(date('d-m-Y'))) . '<br>';
+        echo time() . '<br>';
+        echo strtotime('+1 day', strtotime(date('d-m-Y'))) - time(); die;
         //  echo time(). '<br>';
         //echo strtotime('2015-12-22T18:30:14-0800'); die;
-         //echo strtotime(date("d-m-Y 14:02"));die;
+        //echo strtotime(date("d-m-Y 14:02"));die;
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
 
@@ -50,7 +55,6 @@ class MY_Controller extends CI_Controller {
         // phpinfo();
         require_once APPPATH . 'libraries/Pusher.php';
         //phpinfo();
-       
     }
 
     private function _check_login() {
