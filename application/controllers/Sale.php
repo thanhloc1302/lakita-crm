@@ -401,7 +401,7 @@ class Sale extends MY_Controller {
         $input['where'] = array('id' => $script_id);
         $this->load->model('scripts_model');
         $content = $this->scripts_model->load_all($input);
-        echo $content[0]['content'];
+        echo html_entity_decode($content[0]['content']);
         //$this->load->view('sale/show_script');
     }
 
