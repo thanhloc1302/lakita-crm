@@ -156,12 +156,12 @@ class Campaign extends MY_Table {
                 $value['total_C1'] = $channel_cost['total_C1'];
                 // $value['total_C2'] = $channel_cost['total_C2'];
                 // $value['total_C3'] = $channel_cost['total_C3'];
-                $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
-                //  $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
+                $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '__';
+                //  $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '__';
                 $value['spend'] = $channel_cost['spend'];
-                $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) : '#N/A';
+                $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) : '__';
 
-                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) : ( ($value['spend'] > 0) ? 9999999999 : '#N/A');
+                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) : ( ($value['spend'] > 0) ? 9999999999 : '__');
                 if ($value['active'] == 1 && $value['spend'] != 0) {
                     $total_c2 = array();
                     $total_c2['select'] = 'id';
@@ -189,7 +189,7 @@ class Campaign extends MY_Table {
             } else {
                 $value['total_C2'] = $channel_cost['total_C2'];
             }
-            $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) : '#N/A';
+            $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) : '__';
 
             /*
              * L6
@@ -239,10 +239,10 @@ class Campaign extends MY_Table {
                     );
                 }
                 $value['L8'] = count($this->contacts_model->load_all($total_L8));
-                $value['pricepL8'] = ($value['L8'] > 0) ? round($value['spend'] / $value['L8']) : ( ($value['spend'] > 0) ? 9999999999 : '#N/A');
+                $value['pricepL8'] = ($value['L8'] > 0) ? round($value['spend'] / $value['L8']) : ( ($value['spend'] > 0) ? 9999999999 : '__');
             }else{
-                $value['L6'] = '#N/A';
-                $value['L8'] = '#N/A';
+                $value['L6'] = '__';
+                $value['L8'] = '__';
             }
             
 
@@ -800,12 +800,12 @@ class Campaign extends MY_Table {
             if (!empty($adset_cost)) {
                 $value['total_C1'] = $adset_cost['total_C1'];
                 $value['total_C2'] = $adset_cost['total_C2'];
-                $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '#N/A';
-                $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '#N/A';
+                $value['C2pC1'] = ($value['total_C1'] > 0) ? round($value['total_C2'] / $value['total_C1'] * 100) . '%' : '__';
+                $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100) . '%' : '__';
                 $value['spend'] = $adset_cost['spend'];
-                $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) . ' đ' : '#N/A';
-                $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) . ' đ' : '#N/A';
-                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) . ' đ' : '#N/A';
+                $value['pricepC1'] = ($value['total_C1'] > 0) ? round($value['spend'] / $value['total_C1']) . ' đ' : '__';
+                $value['pricepC2'] = ($value['total_C2'] > 0) ? round($value['spend'] / $value['total_C2']) . ' đ' : '__';
+                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) . ' đ' : '__';
             } else {
                 $value['total_C1'] = '#NA';
                 $value['total_C2'] = '#NA';

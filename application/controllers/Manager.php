@@ -1224,6 +1224,9 @@ class Manager extends MY_Controller {
             'courses' => array(
                 'where' => array(
                     'active' => 1
+                ),
+                'order' => array(
+                    'course_code' => 'ASC'
                 )
             ),
             'call_status' => array(),

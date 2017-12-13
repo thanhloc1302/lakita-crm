@@ -224,6 +224,7 @@ class Marketer extends MY_Table {
         $this->load->model('courses_model');
         $input = array();
         $input['where'] = array('active' => '1');
+        $input['order'] = array('course_code' => 'ASC');
         $this->data['course'] = $this->courses_model->load_all($input);
 
         $this->load->model('landingpage_model');

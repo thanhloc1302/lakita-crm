@@ -504,7 +504,12 @@ class Cod extends MY_Controller {
                     'role_id' => 1
                 )
             ),
-            'courses' => array(),
+           'courses' => array(
+                'where' => array('active' => '1'),
+                'order' => array(
+                    'course_code' => 'ASC'
+                )
+            ),
             'providers' => array(),
             'cod_status' => array(),
             'payment_method_rgt' => array()

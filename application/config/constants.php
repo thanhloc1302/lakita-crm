@@ -114,7 +114,7 @@ define('PAYMENT_METHOD_COD', 1);
 
 define('ACCESS_TOKEN', 'EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD');
 preg_match('/(?<=access_token=)[^&]*(?=&)/', 
-        'https://graph.facebook.com/v2.10/act_512062118812690/campaigns?access_token=EAAI4BG12pyIBAKNigGVjtnkV3YHts5gdgDj8F82tydai0ZBhP5kTYU0hO4fhLqp1DeZC0hlHNFHOvdI407q4UMdue9GB4NKuwrrB8G64Ty9zOMZCYZBqYMrkX82YWtbQ45Ccl6aHR0RVSrlLOx01ohDIh4CVWs38hEIFpZAgN3bFXJvifpnVm6TXgTj8rfkbEVkJ74n2GuwxiMjqLd5OM&__business_id=503487699812479&_reqName=adaccount%2Fcampaigns&_reqSrc=AdsInsightsTableAlphaDataFetchingPolicy.fetchBody.idsList%3EAdsInsightsObjectListStore.fetch&after=NjA4MTcyMjA4ODEzMgZDZD&date_preset=yesterday&fields=%5B%5D&filtering=%5B%5D&include_headers=false&limit=200&locale=vi_VN&method=get&pretty=0&sort=%5B%22delivery_info_ascending%22%2C%22spend_descending%22%2C%22stop_time_descending%22%2C%22start_time_descending%22%5D&summary=%5B%22total_count%22%5D&suppress_http_code=1'
+        'https://graph.facebook.com/v2.10/act_512062118812690/insights?access_token=EAAI4BG12pyIBACmFcX76bMvWhQHQW0PwtaO4MuZBTv87nHXBDmWY2lAkxkvoaotqDIB96Jt3dpmGdxFaMYoxk2o7Ntkw25XvjNS59GejlS0qZBzjD3hkKeUqmcmV1UyvhZC3SAtMt8IHJ7Lddp8athZASabqsMpHqNHJGsHM2gx2LwHtDu6W5iZCK0Ed5IyhooHgqiQZBSVpWfJ1QVsQ8q&'
         , 
         $matches);
 
