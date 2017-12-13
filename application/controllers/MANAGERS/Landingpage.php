@@ -113,6 +113,7 @@ class Landingpage extends MY_Table {
         $this->load->model('courses_model');
         $input = array();
         $input['where'] = array('active' => 1);
+        $input['order'] = array('course_code' => 'ASC');
         $courses = $this->courses_model->load_all($input);
         $this->list_add = array(
             'left_table' => array(
@@ -167,6 +168,7 @@ class Landingpage extends MY_Table {
         $this->load->model('courses_model');
         $input = array();
         $input['where'] = array('active' => 1);
+        $input['order'] = array('course_code' => 'ASC');
         $courses = $this->courses_model->load_all($input);
         $this->list_edit = array(
             'left_table' => array(

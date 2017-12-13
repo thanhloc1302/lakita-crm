@@ -564,7 +564,12 @@ class Sale extends MY_Controller {
                     'role_id' => 1
                 )
             ),
-            'courses' => array(),
+            'courses' => array(
+                'where' => array('active' => '1'),
+                'order' => array(
+                    'course_code' => 'ASC'
+                )
+            ),
             'transfer_logs' => array(),
             'call_status' => array('order' => array('sort' => 'ASC')),
             'ordering_status' => array('order' => array('sort' => 'ASC')),
