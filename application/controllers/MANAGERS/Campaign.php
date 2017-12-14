@@ -626,6 +626,8 @@ class Campaign extends MY_Table {
         $this->load->model('landingpage_model');
         $input = array();
         $input['where'] = array('active' => 1);
+        $input['where_in'] = array('marketer_id' => ['0', $this->user_id]);
+        $input['order'] = array('course_code' => 'ASC');
         $landingpages = $this->landingpage_model->load_all($input);
 
         $accountFB = [];

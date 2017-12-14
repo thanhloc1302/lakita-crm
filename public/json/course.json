@@ -315,6 +315,13 @@
                     "name_course": "Khóa học Yoga dành cho người làm văn phòng (Thầy Đặng Hùng)",
                     "price": "600000",
                     "active": "1"
-                }  
+                }  ,
+                {  
+                    "id": "46",
+                    "course_code": "KT220",
+                    "name_course": "Tự học Kế toán tổng hợp từ A đến Z (Giảng viên Phạm Thị Nhung)",
+                    "price": "600000",
+                    "active": "1"
+                }   
             ]
 }

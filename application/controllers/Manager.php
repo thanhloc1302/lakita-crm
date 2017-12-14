@@ -252,7 +252,7 @@ class Manager extends MY_Controller {
         $require_model = array(
             'courses' => array(
                 'where' => ['active' => '1'],
-                'order' => ['course_code' => 'DESC']
+                'order' => ['course_code' => 'ASC']
             ),
             'sources' => array()
         );

@@ -643,18 +643,24 @@ class Common extends MY_Controller {
             if ($cod_status_id > 1) {
                 switch ($cod_status_id) {
                     case 2:
+                        //đã thu COD
                         //$receiveCOD[] = $rows[0]['contact_id'];
                         $param['date_receive_cod'] = time();
                         $param['date_expect_receive_cod'] = '0';
+                        $param['date_recall'] = 0;
                         break;
                     case 3:
+                        //dã thu lakita
                         // $receiveCOD[] = $rows[0]['contact_id'];
                         $param['date_receive_lakita'] = time();
                         $param['date_expect_receive_cod'] = '0';
+                        $param['date_recall'] = 0;
                         break;
                     case 4:
+                        //hủy đơn
                         $param['date_receive_cancel_cod'] = time();
                         $param['date_expect_receive_cod'] = '0';
+                        $param['date_recall'] = 0;
                         break;
                 }
             } else {
