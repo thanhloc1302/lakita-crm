@@ -5,7 +5,7 @@
 <div id="Popup" class="popup-wrapper" style="display: none;">
     <div class="popup-loading">
         <div class="loading-container">
-                ĐANG XỬ LÝ DỮ LIỆU...
+            ĐANG XỬ LÝ DỮ LIỆU...
         </div>
     </div>
 </div>

@@ -90,7 +90,6 @@ class Marketer extends MY_Table {
                 'name_display' => 'Trạng thái giao hàng',
                 'display' => 'none'
             ),
-            
         );
         $this->set_list_view($list_item);
         $this->set_model('contacts_model');
@@ -231,7 +230,7 @@ class Marketer extends MY_Table {
         $input = array();
         $input['where'] = array('active' => '1');
         $this->data['landingpage'] = $this->landingpage_model->load_all($input);
-        
+
         $this->load->model('cod_status_model');
         $input = array();
         $this->data['cod_status'] = $this->cod_status_model->load_all($input);
@@ -247,7 +246,7 @@ class Marketer extends MY_Table {
                 'campaign' => array(
                     'type' => 'arr_multi'
                 ),
-                 'adset' => array(
+                'adset' => array(
                     'type' => 'arr_multi'
                 ),
                 'ad' => array(
@@ -255,8 +254,7 @@ class Marketer extends MY_Table {
                 ),
             ),
             'right_filter' => array(
-               
-                 'cod_status' => array(
+                'cod_status' => array(
                     'type' => 'arr_multi'
                 ),
                 'course' => array(
@@ -294,6 +292,7 @@ class Marketer extends MY_Table {
         $input = array();
         $input['select'] = 'id';
         $input['where']['marketer_id'] = $this->user_id;
+        $input['where']['is_hide'] = '0';
         $input['where']['date_rgt >'] = strtotime(date('d-m-Y'));
         $this->L['C3'] = count($this->contacts_model->load_all($input));
 
@@ -325,6 +324,7 @@ class Marketer extends MY_Table {
         $input = array();
         $input['select'] = 'id';
         $input['where']['marketer_id'] = $this->user_id;
+        $input['where']['is_hide'] = '0';
         $this->L['all'] = count($this->contacts_model->load_all($input));
     }
 

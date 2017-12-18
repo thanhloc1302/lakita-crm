@@ -114,7 +114,7 @@ define('PAYMENT_METHOD_COD', 1);
 
 define('ACCESS_TOKEN', 'EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD');
 preg_match('/(?<=access_token=)[^&]*(?=&)/', 
-        'https://graph.facebook.com/v2.10/act_512062118812690/insights?access_token=EAAI4BG12pyIBACmFcX76bMvWhQHQW0PwtaO4MuZBTv87nHXBDmWY2lAkxkvoaotqDIB96Jt3dpmGdxFaMYoxk2o7Ntkw25XvjNS59GejlS0qZBzjD3hkKeUqmcmV1UyvhZC3SAtMt8IHJ7Lddp8athZASabqsMpHqNHJGsHM2gx2LwHtDu6W5iZCK0Ed5IyhooHgqiQZBSVpWfJ1QVsQ8q&'
+        'https://graph.facebook.com/v2.10/act_512062118812690/insights?access_token=EAAI4BG12pyIBAGBXbAn5KkDVCZAkx6oDCfGFMclwASaaZA2ZBa1yws36O6FZBM1BC1f7cyHa886YZCI33EH3YVVggWjor9E3NTSZBZCgRQnlkIbbu8Jg5PWD3ZCmSkJzzuUBoGo4QSOabsE2UsyAy1dmxEudL7Kzhpiao1chUJcQKnmWGmldEsr2p3PUfFglUyUbFJIpcxLCyDj8TRl8Jq6z&__business_id=503487699812479&_reqName=adaccount%2Finsights&_reqSrc=AdsAccountDataLoader&date_preset=today&fields=%5B%22spend%22%5D&include_headers=false&locale=vi_VN&method=get&pretty=0&suppress_http_code=1'
         , 
         $matches);
 
@@ -132,4 +132,4 @@ define('MARKETER_ROLE_ID', 6);
 define('MARKETING_KPI_PER_DAY', 42);
 define('TVTS_KPI_PER_DAY', 23);
 
-define('_VER_CACHED_', '11.12.20172');
+define('_VER_CACHED_', '18.12.2017');

@@ -27,7 +27,9 @@
                 <div class="modal-body replace_content_add_item_fetch_modal">
 
                 </div>
-                
+                 <div class="modal-footer">
+                     <div class="alert alert-danger" role="alert" style="text-align: left"> Ấn Ctrl + I để tắt hộp thoại này </div>
+                </div>
             </div>
         </div>
     </div>

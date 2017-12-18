@@ -1790,23 +1790,11 @@ $("html").on("click", function (e) {
     }
 });
 
-shortcut.add("Ctrl+s", function () {
-    $(".btn-edit-contact").click();
-});
-shortcut.add("Ctrl+Shift+a", function () {
-    $("input.tbl-item-checkbox").prop('checked', true);
-    $('.custom_right_menu').addClass('checked');
-    show_number_selected_row();
-});
-shortcut.add("Esc", function () {
-    $("input.tbl-item-checkbox").prop('checked', false);
-    $('.checked').removeClass('checked');
-    $(".menu").hide();
-}); /* 
-    * To change this license header, choose License Headers in Project Properties.
-    * To change this template file, choose Tools | Templates
-    * and open the template in the editor.
-    */
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 
 /* 
  * To change this license header, choose License Headers in Project Properties.
@@ -2654,7 +2642,23 @@ $(document).on('click', '.export-to-excel', function (e) {
     }
 });
 
-$("a.cancel_one_contact").on('click', function (e) {
+shortcut.add("Ctrl+s", function () {
+    $(".btn-edit-contact").click();
+});
+shortcut.add("Ctrl+Shift+a", function () {
+    $("input.tbl-item-checkbox").prop('checked', true);
+    $('.custom_right_menu').addClass('checked');
+    show_number_selected_row();
+});
+shortcut.add("Esc", function () {
+    $("input.tbl-item-checkbox").prop('checked', false);
+    $('.checked').removeClass('checked');
+    $(".menu").hide();
+});
+
+shortcut.add("Ctrl+i", function () {
+    $(".add_item_modal_fetch").modal('hide');
+});$("a.cancel_one_contact").on('click', function (e) {
     var del = $(this);
     var sale_id = $(this).attr("sale_id");
     var total_contact_for_sale = $(".total_contact_sale_" + sale_id).text();

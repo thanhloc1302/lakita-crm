@@ -65,7 +65,7 @@ class Landingpage extends MY_Table {
                 'type' => 'currency',
                 'name_display' => 'Giá khuyến mại (giá bán)',
                 'order' => '1'
-            ),'marketer_id' => array(
+            ), 'marketer_id' => array(
                 'name_display' => 'Marketer',
             )
         );
@@ -84,8 +84,8 @@ class Landingpage extends MY_Table {
         $date_form = '';
         $date_end = '';
         if ((!isset($get['date_from']) && !isset($get['date_end'])) || (isset($get['date_from']) && $get['date_from'] == '' && $get['date_end'] == '')) {
-            $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
-            $date_end = strtotime(date('d-m-Y', strtotime("-1 days")));
+            $date_form = '0';
+            $date_end = time();
         } else {
             $date_form = strtotime($get['date_from']);
             $date_end = strtotime($get['date_end']);
@@ -99,28 +99,35 @@ class Landingpage extends MY_Table {
                 $total_c3 = array();
                 $total_c3['select'] = 'id';
                 $total_c3['where'] = array(
-                    'landingpage_id' => $value['id']);
+                    'landingpage_id' => $value['id'],
+                    'date_rgt >=' => $date_form,
+                    'date_rgt <=' => $date_end + 24 * 3600 - 1);
                 $value['total_C3'] = count($this->contacts_model->load_all($total_c3));
                 $this->load->model('c2_model');
                 $total_c2 = array();
                 $total_c2['select'] = 'id';
                 $total_c2['where'] = array(
-                    'landingpage_id' => $value['id']);
+                    'landingpage_id' => $value['id'],
+                    'date_rgt >=' => $date_form,
+                    'date_rgt <=' => $date_end + 24 * 3600 - 1);
                 $value['total_C2'] = count($this->c2_model->load_all($total_c2));
-                $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100, 2).'%' : '__';
+                $value['C3pC2'] = ($value['total_C2'] > 0) ? round($value['total_C3'] / $value['total_C2'] * 100, 2) . '%' : '__';
+            } else {
+                $value['total_C3'] = '__';
+                $value['total_C2'] = '__';
+                $value['C3pC2'] = '__';
             }
             $value['marketer_id'] = $this->staffs_model->find_staff_name($value['marketer_id']);
         }
         unset($value);
-        usort($this->data['rows'], function($a, $b){
-             if (is_numeric($a['total_C2']) && is_numeric($b['total_C2'])) {
-                    return $b['total_C2'] - $a['total_C2'];
-                } else if (is_numeric($a['total_C2']) && !is_numeric($b['total_C2'])) {
-                    return -1;
-                } else if (!is_numeric($a['total_C2']) && is_numeric($b['total_C2'])) {
-                    return +1;
-                }
-            
+        usort($this->data['rows'], function($a, $b) {
+            if (is_numeric($a['total_C2']) && is_numeric($b['total_C2'])) {
+                return $b['total_C2'] - $a['total_C2'];
+            } else if (is_numeric($a['total_C2']) && !is_numeric($b['total_C2'])) {
+                return -1;
+            } else if (!is_numeric($a['total_C2']) && is_numeric($b['total_C2'])) {
+                return +1;
+            }
         });
         // print_arr($this->data['rows']);
     }
@@ -134,8 +141,12 @@ class Landingpage extends MY_Table {
     }
 
     function index($offset = 0) {
+
         $this->list_filter = array(
             'left_filter' => array(
+                'date' => array(
+                    'type' => 'custom',
+                )
             ),
             'right_filter' => array(
                 'active' => array(
@@ -144,6 +155,9 @@ class Landingpage extends MY_Table {
             )
         );
         $conditional = array();
+        if ($this->role_id != 5) {
+            $conditional['where_in']['marketer_id'] = ['0', $this->user_id];
+        }
 //        $get = $this->input->get();
 //         if(!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0'){
 //            $conditional['where'] = array('active' => 1);
@@ -223,7 +237,7 @@ class Landingpage extends MY_Table {
      * Hiển thị modal sửa item
      */
 
-    function show_edit_item() {
+    function show_edit_item($inputData = []) {
         $this->load->model('courses_model');
         $input = array();
         $input['where'] = array('active' => 1);

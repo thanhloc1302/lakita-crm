@@ -247,7 +247,7 @@ class Marketing extends MY_Table {
         $progress = $this->GetProccessMarketerThisMonth();
         $data['marketers'] = $progress['marketers'];
         $data['C3Team'] = $progress['C3Team'];
-        $data['C3Total'] = 38*30;
+        $data['C3Total'] = MARKETING_KPI_PER_DAY*30;
         $data['progressType'] = 'Tiến độ của team tháng này';
         $data['list_title'] = 'Danh sách toàn bộ contact';
         $data['content'] = 'marketing/index';

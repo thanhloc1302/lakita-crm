@@ -17,12 +17,12 @@
                         <td> <?php echo $value['fb_adset_name']; ?> </td>
                         <td> <?php echo $value['fb_ad_name']; ?> </td>
                         <td>
-                            <select class="form-control selectpicker select-landing-page" name="add_landingpage_id">
+                            <select class="form-control selectpicker select-landing-page pull-right" name="add_landingpage_id">
                                 <option value="0"> Chọn landing page </option>
                                 <?php foreach ($landingpages as $key => $value2) {
                                     ?>
                                     <option value="<?php echo $value2['id'] ?>" data-url="<?php echo $value2['url'] ?>"> 
-                                        <?php echo $value2['course_code'] . ' - ' . $value2['url']; ?>
+                                        <?php echo $value2['landingpage_code'] . ' - ' . $value2['url']; ?>
                                     </option>
                                     <?php
                                 }

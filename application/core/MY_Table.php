@@ -185,7 +185,7 @@ class MY_Table extends MY_Controller {
             $this->conditional['order'] = array('id' => 'DESC');
         }
         $this->data['rows'] = $this->{$this->model}->load_all($this->conditional);
-       // echoQuery();
+        // echoQuery();
 
         /*
          * Thấy thông tin hiển thị phân trang: thông tin hiển thị contact đầu, contact cuối và tổng contact
@@ -296,9 +296,9 @@ class MY_Table extends MY_Controller {
                 if (strpos($key, "filter_date_") !== FALSE && $value != '') {
                     $dateArr = explode('-', $value);
                     $date_from = trim($dateArr[0]);
-                    
+
                     $date_from = strtotime(str_replace("/", "-", $date_from));
-                   
+
                     $date_end = trim($dateArr[1]);
                     $date_end = strtotime(str_replace("/", "-", $date_end));
                     $column_name = substr($key, strlen("filter_date_"));
@@ -375,12 +375,12 @@ class MY_Table extends MY_Controller {
         $input = array();
         $input['select'] = 'id';
         $input['where']['date_rgt >'] = strtotime(date('d-m-Y'));
-        $input['where']['source_id'] = '1';
+        $input['where']['is_hide'] = '0';
         $this->L['C3'] = count($this->contacts_model->load_all($input));
 
         $input = array();
         $input['select'] = 'id';
-        $input['where']['source_id'] = '1';
+        $input['where']['is_hide'] = '0';
         $this->L['all'] = count($this->contacts_model->load_all($input));
     }
 

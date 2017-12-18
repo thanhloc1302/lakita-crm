@@ -194,7 +194,7 @@ class Campaign extends MY_Table {
             /*
              * L6
              */
-            if ($value['active'] == 1) {
+            if ($value['active'] == 1 | $value['spend'] != 0) {
                 $total_L6 = array();
                 $total_L6['select'] = 'id';
                 if ($this->account_fb_model->getAccountTimeZone($value['account_fb_id']) == 'VN') {
@@ -521,7 +521,7 @@ class Campaign extends MY_Table {
         $accountFBADS = $this->account_fb_model->load_all([]);
         foreach ($accountFBADS as $key => $value2) {
             $url = 'https://graph.facebook.com/v2.11/act_' . $value2['fb_id_account'] . '/' .
-                    'campaigns?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
+                    'campaigns?limit=1000&fields=status,name&filtering=[{"field":"effective_status","operator":"IN","value":["ACTIVE"]}]&access_token=' . ACCESS_TOKEN;
             $spend = get_fb_request($url);
             $campaigns[$value2['fb_id_account']] = json_decode(json_encode($spend->data), true);
         }
@@ -533,7 +533,7 @@ class Campaign extends MY_Table {
         $i = 0;
         foreach ($campaigns as $key => $value) {
             foreach ($value as $value2) {
-                if ($value2['status'] == 'ACTIVE') {
+               // if ($value2['status'] == 'ACTIVE') {
                     $input = array();
                     $input['select'] = 'id, marketer_id';
                     $input['where'] = array('campaign_id_facebook' => $value2['id']);
@@ -551,18 +551,18 @@ class Campaign extends MY_Table {
                         $campaignActive[$i]['fb_campaign_name'] = $value2['name'];
                         $i++;
                     }
-                }
+              //  }
             }
         }
 
         foreach ($campaignActive as $key => $value) {
             $url = 'https://graph.facebook.com/v2.11/' . $value['fb_campaign_id'] . '/' .
-                    'adsets?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
+                    'adsets?limit=1000&fields=status,name&filtering=[{"field":"effective_status","operator":"IN","value":["ACTIVE"]}]&access_token=' . ACCESS_TOKEN;
             $spend = get_fb_request($url);
             $adsets = json_decode(json_encode($spend->data), true);
             if (!empty($adsets)) {
                 foreach ($adsets as $adset) {
-                    if ($adset['status'] == 'ACTIVE') {
+                  //  if ($adset['status'] == 'ACTIVE') {
                         $input = array();
                         $input['select'] = 'id, marketer_id';
                         $input['where'] = array('adset_id_facebook' => $adset['id']);
@@ -574,7 +574,7 @@ class Campaign extends MY_Table {
                                 'fb_adset_id' => $adset['id'],
                                 'fb_adset_name' => $adset['name']];
                         }
-                    }
+                //    }
                 }
             }
         }
@@ -582,12 +582,12 @@ class Campaign extends MY_Table {
             if (!empty($campaign['adset'])) {
                 foreach ($campaign['adset'] as $keyAdset => $adset) {
                     $url = 'https://graph.facebook.com/v2.11/' . $adset['fb_adset_id'] . '/' .
-                            'ads?limit=1000&fields=status,name&access_token=' . ACCESS_TOKEN;
+                            'ads?limit=1000&fields=status,name&filtering=[{"field":"effective_status","operator":"IN","value":["ACTIVE"]}]&access_token=' . ACCESS_TOKEN;
                     $spend = get_fb_request($url);
                     $ads = json_decode(json_encode($spend->data), true);
                     if (!empty($ads)) {
                         foreach ($ads as $ad) {
-                            if ($ad['status'] == 'ACTIVE') {
+                          //  if ($ad['status'] == 'ACTIVE') {
                                 $input = array();
                                 $input['select'] = 'id';
                                 $input['where'] = array('ad_id_facebook' => $ad['id']);
@@ -596,7 +596,7 @@ class Campaign extends MY_Table {
                                     $campaignActive[$keyCampaign]['adset'][$keyAdset]['ad'][] = ['fb_ad_id' => $ad['id'],
                                         'fb_ad_name' => $ad['name']];
                                 }
-                            }
+                          //  }
                         }
                     }
                 }
@@ -626,8 +626,8 @@ class Campaign extends MY_Table {
         $this->load->model('landingpage_model');
         $input = array();
         $input['where'] = array('active' => 1);
-        $input['where_in'] = array('marketer_id' => ['0', $this->user_id]);
-        $input['order'] = array('course_code' => 'ASC');
+       // $input['where_in'] = array('marketer_id' => ['0', $this->user_id]);
+        $input['order'] = array('landingpage_code' => 'ASC');
         $landingpages = $this->landingpage_model->load_all($input);
 
         $accountFB = [];

@@ -181,7 +181,7 @@ class Link extends MY_Table {
         $input = array();
         $input['where'] = array('active' => 1);
         $input['where_in'] = array('marketer_id' => ['0', $this->user_id]);
-        $input['order'] = array('course_code' => 'ASC');
+        $input['order'] = array('landingpage_code' => 'ASC');
         $landingpages = $this->landingpage_model->load_all($input);
 
         $this->list_add = array(

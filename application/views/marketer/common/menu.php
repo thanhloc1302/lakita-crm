@@ -37,6 +37,12 @@
     </li>
 </ul>
 <ul class="nav-list list-inline display-flex">
+      <li>
+        <a href="<?php echo base_url('MANAGERS/landingpage'); ?>">
+            <img src="<?php echo base_url(); ?>public/images/landing-page.png">  
+            <span> Quản lý landing page </span>
+        </a>
+    </li>
     <li>
         <a href="<?php echo base_url('home/logout'); ?>">
             <img src="<?php echo base_url(); ?>public/images/logout.png"> 

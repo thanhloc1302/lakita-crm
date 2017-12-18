@@ -1,25 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- * Description of Publics
- *
- * @author phong
- */
-require_once APPPATH . '/vendor/autoload.php';
-
-use Dompdf\Dompdf;
-
-//
-//use FacebookAds\Object\AdAccount;
-//use FacebookAds\Object\AdsInsights;
-//use FacebookAds\Api;
-//use FacebookAds\Logger\CurlLogger;
 
 class Publics extends CI_Controller {
 
@@ -31,30 +11,14 @@ class Publics extends CI_Controller {
         fclose($myfile);
     }
 
-    public function test() {
-          $str = file_get_contents('http://localhost/CRM2/MANAGERS/ad');
-         // echo $str;die;
-// instantiate and use the dompdf class
-        $dompdf = new Dompdf();
-        $dompdf->loadHtml($str);
-
-// (Optional) Setup the paper size and orientation
-        $dompdf->setPaper('A4', 'landscape');
-
-// Render the HTML as PDF
-        $dompdf->render();
-
-// Output the generated PDF to Browser
-        $dompdf->stream();
-        //   $str = $html2pdf->output('001.pdf', FCPATH . 'public/report');
-        //echo $str; die;
-        $emailTo = 'chuyenpn@lakita.vn';
+    public function test() {         
+        $emailTo = 'chuyenbka@gmail.com';
         $this->load->library("email");
         $this->email->from('cskh@lakita.vn', "lakita.vn");
         $this->email->to($emailTo);
-        $this->email->subject('BÁO CÁO COD NGÀY ' . date('d-m-Y') . ' (BY CLI & CRON JOB)');
-        $this->email->message($str);
-        //$this->email->send();
+        $this->email->subject('hihi123');
+        $this->email->message('haha');
+        $this->email->send();
     }
 
     public function index() {

@@ -30,10 +30,10 @@
 
 <div class="container">
     <div class="row">
-        <h2 class="text-center"> Số L6 của bạn hôm nay: <?php echo $this->L['L6']; ?></h2>
-        <h2 class="text-center"> Số L7 của bạn hôm nay: <?php echo $this->L['L7']; ?> </h2>
-        <h2 class="text-center"> Số L6 của bạn tháng này: <?php echo $this->L['L6All']; ?></h2>
-        <h2 class="text-center"> Số L7 của bạn tháng này: <?php echo $this->L['L7All']; ?> </h2>
+        <h2 class="text-center"> Số L6 của bạn hôm nay: <?php echo isset($this->L['L6']) ? $this->L['L6'] : '__'; ?></h2>
+        <h2 class="text-center"> Số L7 của bạn hôm nay: <?php echo isset($this->L['L7']) ? $this->L['L7'] : '__';; ?> </h2>
+        <h2 class="text-center"> Số L6 của bạn tháng này: <?php echo isset($this->L['L6All']) ? $this->L['L6All'] : '__'; ?></h2>
+        <h2 class="text-center"> Số L7 của bạn tháng này: <?php echo isset($this->L['L7All']) ? $this->L['L7All'] : '__'; ?> </h2>
     </div>
 </div>
 

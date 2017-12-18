@@ -305,7 +305,7 @@ class Check_fee_cod extends MY_Table {
 
         foreach ($sheet->getColumnIterator() as $row) {
             foreach ($row->getCellIterator() as $key => $cell) {
-                if($key > 8 && $cell->getCalculatedValue() == 1){
+                if($key > 12 && $cell->getCalculatedValue() == '1'){
                     $rowIdCod = $key; 
                     break;
                 }
@@ -321,6 +321,7 @@ class Check_fee_cod extends MY_Table {
             }
             $stt = intval($stt);
             $money = preg_replace('/\D+/', '', $money);
+            $money = str_pad($money, 5,'0');
 
             $findme = 'CH';
             $pos = strpos($code_cross_check, $findme);

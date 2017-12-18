@@ -370,7 +370,7 @@ class Check_L8 extends MY_Table {
         $this->load->library('PHPExcel');
         $objPHPExcel = PHPExcel_IOFactory::load($file_path);
         $sheet = $objPHPExcel->getActiveSheet();
-        $data1 = $sheet->rangeToArray('A8:G7700');
+        $data1 = $sheet->rangeToArray('A10:G7700');
         
         /*
          * Mảng lưu các thông tin contact L8 của Viettel.
