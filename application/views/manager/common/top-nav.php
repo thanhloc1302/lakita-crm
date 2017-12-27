@@ -27,7 +27,7 @@
                 <li class="dropdown mega-dropdown dropdown-hover pull-right">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> MENU <span class="caret"></span></a>				
                     <div id="filters" class="dropdown-menu mega-dropdown-menu">
-                        <?php $this->load->view($this->router->directory . $this->controller . '/common/menu'); ?>
+                        <?php $this->load->view('common/menu/'. $this->role_id); ?>
                     </div>				
                 </li>
             </ul>

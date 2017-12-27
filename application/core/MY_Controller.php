@@ -17,14 +17,14 @@ class MY_Controller extends CI_Controller {
     public $end_paging = 0;
     public $total_paging = 0;
     protected $table = '';
-    protected $role_id = 0;
+    public $role_id = 0;
     public $can_view_contact = 0;
     public $can_edit_contact = 0;
 
     function __construct() {
         parent::__construct();
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
-        //echo time();die;
+       // echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
         //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
         //echo date('H:i:s d/m/Y', 1513064627);die;
@@ -35,7 +35,7 @@ class MY_Controller extends CI_Controller {
 //        echo time() . '<br>';
 //        echo strtotime('+1 day', strtotime(date('d-m-Y'))) - time(); die;
         //  echo time(). '<br>';
-        //echo strtotime('2015-12-22T18:30:14-0800'); die;
+       // echo strtotime('2018-01-20T18:30:14-0800'); die;
         //echo strtotime(date("d-m-Y 14:02"));die;
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
@@ -54,7 +54,7 @@ class MY_Controller extends CI_Controller {
         // phpinfo();
         require_once APPPATH . 'libraries/Pusher.php';
         //phpinfo();
-        //echo md5(md5('yogavietnam'));die;
+       // echo md5(md5('lakita2017'));die;
     }
 
     private function _check_login() {
@@ -87,7 +87,7 @@ class MY_Controller extends CI_Controller {
         /*
          * lấy thành phần chung là slide_menu và top_nav
          */
-        $this->data['slide_menu'] = $this->controller . '/common/slide-menu';
+        //$this->data['slide_menu'] = $this->controller . '/common/slide-menu';
         $this->data['top_nav'] = 'manager/common/top-nav';
 
         /*

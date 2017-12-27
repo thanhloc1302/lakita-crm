@@ -21,10 +21,9 @@ class Send_email extends CI_Controller {
         $post = $this->input->post();
         $result = array('success' => 0, 'message' => '');
         if (!empty($post)) {
-            //$apiKey = '5b0b7d7cd362775ddb8ff7b88b920e7b'; // chuyenbka90
-            $apiKey = '1893c78450021cc84200d63c2f03d822'; //chuyenbka
-            $emailCheck = json_decode(file_get_contents('http://apilayer.net/api/check?access_key=' . $apiKey . '&email=' . $post['email'] . '&smtp=1&format=1'));
-            if ($emailCheck->smtp_check == false) {
+            $email = $post['email'];
+            $emailCheck = json_decode(file_get_contents('http://api.lakita.vn/email/check?email=' . $email));
+            if (!$emailCheck->result) {
                 $result['message'] = 'Không tồn tại email này!';
                 echo json_encode($result);
                 die;
@@ -69,6 +68,15 @@ class Send_email extends CI_Controller {
                     $result = [];
                     $result['success'] = 0;
                     $result['message'] = 'Chỉ contact mua bằng chuyển khoản mới có thể tạo tài khoản tự động!';
+                    echo json_encode($result);
+                    die;
+                }
+                $email = $contact['email'];
+                $emailCheck = json_decode(file_get_contents('http://api.lakita.vn/email/check?email=' . $email));
+                if (!$emailCheck->result) {
+                    $result = [];
+                    $result['success'] = 0;
+                    $result['message'] = 'Không tồn tại email này!';
                     echo json_encode($result);
                     die;
                 }
@@ -135,6 +143,14 @@ class Send_email extends CI_Controller {
                 if ($contactTmp[0]['cod_status_id'] != _DA_THU_LAKITA_) {
                     $result['success'] = 0;
                     $result['message'] = 'Bạn cần cập nhật trạng thái "Đã thu Lakita" cho các contact đã chọn trước khi tạo tài khoản Lakita!';
+                    echo json_encode($result);
+                    die;
+                }
+                $email = $contactTmp[0]['email'];
+                $emailCheck = json_decode(file_get_contents('http://api.lakita.vn/email/check?email=' . $email));
+                if (!$emailCheck->result) {
+                    $result['success'] = 0;
+                    $result['message'] = 'Không tồn tại email này!';
                     echo json_encode($result);
                     die;
                 }

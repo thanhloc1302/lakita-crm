@@ -114,7 +114,7 @@ define('PAYMENT_METHOD_COD', 1);
 
 define('ACCESS_TOKEN', 'EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD');
 preg_match('/(?<=access_token=)[^&]*(?=&)/', 
-        'https://graph.facebook.com/v2.10/act_512062118812690/insights?access_token=EAAI4BG12pyIBAGBXbAn5KkDVCZAkx6oDCfGFMclwASaaZA2ZBa1yws36O6FZBM1BC1f7cyHa886YZCI33EH3YVVggWjor9E3NTSZBZCgRQnlkIbbu8Jg5PWD3ZCmSkJzzuUBoGo4QSOabsE2UsyAy1dmxEudL7Kzhpiao1chUJcQKnmWGmldEsr2p3PUfFglUyUbFJIpcxLCyDj8TRl8Jq6z&__business_id=503487699812479&_reqName=adaccount%2Finsights&_reqSrc=AdsAccountDataLoader&date_preset=today&fields=%5B%22spend%22%5D&include_headers=false&locale=vi_VN&method=get&pretty=0&suppress_http_code=1'
+        'https://graph.facebook.com/v2.10/act_512062118812690/insights?access_token=EAAI4BG12pyIBADBF7TZBeE3ux69WUALqFw9zyuPs1z1mGYMCMrw0d8AAfrknhZAsE7fER9tPZAnNlhN4MiGoj0kKG151CrOhkRYKaev7ZBJNSJdaIPN3b9BsBckqXxV5ZCeJtHigjYdZAeuZBwzcB0sS9stQQljywbCGVaWbsmFLpF2EriBweO6rW7VlLZCVEYumIvb94xbpMz7dqW2wNCnP&__business_id=503487699812479&_reqName=adaccount%2Finsights&_reqSrc=AdsInsightsTableAlphaDataFetchingPolicy.fetchBody.lazyloadFields%3EfetchSync&action_attribution_windows=%5B%22default%22%5D&date_preset=yesterday&fields=%5B%22actions%22%2C%22campaign_id%22%2C%22cost_per_result%22%2C%22results%22%5D&filtering=%5B%7B%22field%22%3A%22campaign.delivery_info%22%2C%22operator%22%3A%22IN%22%2C%22value%22%3A%5B%22active%22%2C%22archived%22%2C%22completed%22%2C%22inactive%22%2C%22limited%22%2C%22not_delivering%22%2C%22not_published%22%2C%22pending_review%22%2C%22permanently_deleted%22%2C%22recently_completed%22%2C%22recently_rejected%22%2C%22rejected%22%2C%22scheduled%22%5D%7D%2C%7B%22field%22%3A%22campaign.id%22%2C%22operator%22%3A%22IN%22%2C%22value%22%3A%5B%226073319745732%22%2C%226073135217932%22%2C%226073015653532%22%2C%226072968721532%22%2C%226072901472732%22%2C%226072802968332%22%2C%226072667611932%22%2C%226072303910332%22%2C%226072198588932%22%2C%226071956459132%22%2C%226071893605932%22%2C%226071841688532%22%2C%226071799730132%22%2C%226071731909332%22%2C%226071731162332%22%2C%226071543210532%22%2C%226071406168332%22%2C%226071386004932%22%2C%226071314425532%22%2C%226071043504932%22%5D%7D%5D&include_headers=false&level=campaign&limit=5000&locale=vi_VN&method=get&pretty=0&session_scenario_id=5810137a6697afad%3A&suppress_http_code=1'
         , 
         $matches);
 
@@ -132,4 +132,4 @@ define('MARKETER_ROLE_ID', 6);
 define('MARKETING_KPI_PER_DAY', 42);
 define('TVTS_KPI_PER_DAY', 23);
 
-define('_VER_CACHED_', '18.12.2017');
+define('_VER_CACHED_', '21.12.20172');

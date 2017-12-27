@@ -36,6 +36,9 @@ class Landingpage extends MY_Table {
                 'type' => 'binary',
                 'name_display' => 'Hoạt động'
             ),
+            'landingpage_code' => array(
+                'name_display' => 'Mã landing page',
+            ),
             'url' => array(
                 'type' => 'custom',
                 'name_display' => 'URL',
@@ -228,6 +231,7 @@ class Landingpage extends MY_Table {
                 }
             }
             $param['code'] = str_replace('.html', '', str_replace('https://lakita.vn/', '', $param['url']));
+            $param['time'] = time();
             $this->{$this->model}->insert($param);
             show_error_and_redirect('Thêm landing page thành công!');
         }

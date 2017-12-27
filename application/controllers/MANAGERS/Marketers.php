@@ -29,7 +29,7 @@ class Marketers extends MY_Table {
 //                'name_display' => 'ID marketer',
 //                'order' => '1'
 //            ),
-              'active' => array(
+            'active' => array(
                 'type' => 'binary',
                 'name_display' => 'Hoạt động'
             ),
@@ -70,7 +70,12 @@ class Marketers extends MY_Table {
             'pricepC3' => array(
                 'type' => 'currency',
                 'name_display' => 'Giá C3',
-            )
+            ),
+            'channel' => array(
+                'name_display' => 'Kênh',
+                'order' => '1',
+                'display' => 'none'
+            ),
         );
         $this->set_list_view($list_view);
         $this->set_model('staffs_model');
@@ -83,10 +88,10 @@ class Marketers extends MY_Table {
         $date_end = '';
         if (!isset($get['date_from']) && !isset($get['date_end'])) {
             $date_form = strtotime(date('d-m-Y', strtotime("-1 days")));
-            $date_end = strtotime(date('d-m-Y', strtotime("-1 days"))) + 24*3600 - 1;
+            $date_end = strtotime(date('d-m-Y', strtotime("-1 days"))) + 24 * 3600 - 1;
         } else {
             $date_form = strtotime($get['date_from']);
-            $date_end = strtotime($get['date_end'])+ 24*3600 - 1;
+            $date_end = strtotime($get['date_end']) + 24 * 3600 - 1;
         }
         foreach ($this->data['rows'] as &$value) {
 //            if ($value['active'] == 0) {
@@ -98,8 +103,13 @@ class Marketers extends MY_Table {
             $input = array();
             $input['select'] = 'id';
             $input['where'] = array('marketer_id' => $value['id'], 'date_rgt >=' => $date_form, 'date_rgt <=' => $date_end);
+
+            if (!empty($get['filter_custom_arr_multi_channel_id'])) {
+
+                $input['where_in']['channel_id'] = $get['filter_custom_arr_multi_channel_id'];
+            }
             $total_C3 = $this->contacts_model->load_all($input);
-           // echoQuery();
+            // echoQuery();
             $value['total_C3'] = count($total_C3);
             /*
              * Lấy budget (tạm tính theo kênh facebook)
@@ -118,13 +128,16 @@ class Marketers extends MY_Table {
                     $campaigncost = $this->campaign_cost_model->load_all($input);
                     $value['spend'] += h_caculate_campaign_spend($campaigncost);
                 }
-                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']): '#N/A';
+                $value['pricepC3'] = ($value['total_C3'] > 0) ? round($value['spend'] / $value['total_C3']) : '#N/A';
             } else {
                 $value['spend'] = '0';
                 $value['pricepC3'] = '0';
             }
         }
         unset($value);
+        usort($this->data['rows'], function($a, $b) {
+            return $b['total_C3'] - $a['total_C3'];
+        });
     }
 
     /*
@@ -140,10 +153,19 @@ class Marketers extends MY_Table {
     }
 
     public function index($offset = 0) {
+        $this->load->model('channel_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $channels = $this->channel_model->load_all($input);
+        $this->data['channel'] = $channels;
+
         $this->list_filter = array(
             'left_filter' => array(
                 'date' => array(
                     'type' => 'custom',
+                ),
+                'channel' => array(
+                    'type' => 'custom'
                 ),
             ),
             'right_filter' => array(
@@ -153,7 +175,7 @@ class Marketers extends MY_Table {
             )
         );
         $conditional = array();
-        $conditional['where']['role_id'] =  '6';
+        $conditional['where']['role_id'] = '6';
 //        $get = $this->input->get();
 //        if (!isset($get['filter_binary_active']) || $get['filter_binary_active'] == '0') {
 //            $conditional['where']['active'] = 1;
@@ -228,7 +250,7 @@ class Marketers extends MY_Table {
         }
     }
 
-    function show_edit_item() {
+    function show_edit_item($inputData = []) {
         /*
          * type mặc định là text nên nếu là text sẽ không cần khai báo
          */

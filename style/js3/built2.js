@@ -2292,12 +2292,6 @@ channel.bind('notice', function (data) {
 });
 
 channel.bind('callLog', function (data) {
-    n = new Notification(data.title, {
-        body: data.message,
-        icon: $("#base_url").val() + 'public/images/logo2.png',
-        tag: 'https://crm2.lakita.vn/quan-ly/trang-chu.html',
-        image: data.image
-    });
 
     //    var append = ` <div style="position: fixed; right:10px; bottom: 10px; z-index: 999999999; 
     //         background-color: #fff; display: inline-block; width: 30%; border-radius: 5px" class="my-notify">
@@ -2323,6 +2317,12 @@ channel.bind('callLog', function (data) {
 
     if (data.success == '1') {
         $("#call-log-L6-sound")[0].play();
+        n = new Notification(data.title, {
+            body: data.message,
+            icon: $("#base_url").val() + 'public/images/logo2.png',
+            tag: 'https://crm2.lakita.vn/quan-ly/trang-chu.html',
+            image: data.image
+        });
     } else {
         $("#call-log-sound")[0].play();
     }
