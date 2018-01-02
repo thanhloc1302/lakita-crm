@@ -7,7 +7,11 @@
             </div>
             <div class="modal-body replace_content">
                 <div class="container">
-                    <?php echo validation_errors(); ?>
+                    <?php if(validation_errors()){ ?>
+                    <div class="alert alert-danger" role="alert">
+                        <?php echo validation_errors(); ?>
+                    </div>
+                    <?php } ?>
                     <div class="row">
                         <div class="col-md-10">
                             <h3 class="text-center marginbottom20"> Thêm mới contact </h3>
