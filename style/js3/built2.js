@@ -982,29 +982,91 @@ $(".send-email-to-viettel").confirm({
             action: function action() {}
         }
     }
-}); /*
-    $(document).on('click', 'a.edit_contact', function (e) {
-    e.preventDefault();
-    $(".checked").removeClass("checked");
-    $(this).parent().parent().addClass("checked");
-    var contact_id = $(this).attr("contact_id");
-    var url = $("#base_url").val() + "common/show_edit_contact_modal";
-    $.ajax({
-    url: url,
-    type: "POST",
-    data: {
-    contact_id: contact_id
-    },
-    success: data => {
-    $(".modal-view-contact").remove();
-    var modalViewContactDetail = "<div class='modal-view-contact'></div>";
-    $(".modal-append-to").append(modalViewContactDetail);
-    $(".modal-view-contact").html(data);
-    },
-    complete: () => $(".edit_contact_modal").modal("show")
-    });
-    }); 
+}); /* 
+    * To change this license header, choose License Headers in Project Properties.
+    * To change this template file, choose Tools | Templates
+    * and open the template in the editor.
     */
+
+//add-new-contact-modal
+$(document).on("click", ".add-new-contact-modal", function (e) {
+    e.preventDefault();
+    var modalName = 'add-new-contact-modal-show';
+    $.ajax({
+        url: $(this).attr('href'),
+        type: "POST",
+        success: function success(data) {
+            $("." + modalName).remove();
+            var newModal = '<div class="' + modalName + '"></div>';
+            $(".modal-append-to").append(newModal);
+            $('.' + modalName).html(data);
+        },
+        complete: function complete() {
+            return $('.' + modalName + ' .modal').modal("show");
+        }
+    });
+});
+
+$(document).on('click', '.btn-action-add-new-contact', function (e) {
+    e.preventDefault();
+    $.ajax({
+        url: $(".form_add_new_contact_modal").attr('action'),
+        type: "POST",
+        data: $(".form_add_new_contact_modal").serialize(),
+        dataType: 'json',
+        beforeSend: function beforeSend() {
+            return $(".popup-wrapper").show();
+        },
+        success: function success(data) {
+            if (data.success == 1) {
+                $("#send_email_sound")[0].play();
+                $.notify(data.message, {
+                    position: "bottom left",
+                    className: 'success',
+                    showDuration: 200,
+                    autoHideDelay: 5000
+                });
+                $('.add-new-contact-modal-show .modal').modal("hide");
+            } else {
+                $("#send_email_error")[0].play();
+                $.notify('Có lỗi xảy ra! Nội dung: ' + data.message, {
+                    position: "top left",
+                    className: 'error',
+                    showDuration: 200,
+                    autoHideDelay: 7000
+                });
+            }
+            $(".popup-wrapper").hide();
+        },
+        complete: function complete() {
+            return $(".popup-wrapper").hide();
+        }
+    });
+});
+
+/*
+ $(document).on('click', 'a.edit_contact', function (e) {
+ e.preventDefault();
+ $(".checked").removeClass("checked");
+ $(this).parent().parent().addClass("checked");
+ var contact_id = $(this).attr("contact_id");
+ var url = $("#base_url").val() + "common/show_edit_contact_modal";
+ $.ajax({
+ url: url,
+ type: "POST",
+ data: {
+ contact_id: contact_id
+ },
+ success: data => {
+ $(".modal-view-contact").remove();
+ var modalViewContactDetail = "<div class='modal-view-contact'></div>";
+ $(".modal-append-to").append(modalViewContactDetail);
+ $(".modal-view-contact").html(data);
+ },
+ complete: () => $(".edit_contact_modal").modal("show")
+ });
+ }); 
+ */
 $(document).on('click', '.btn-edit-contact', function (e) {
     e.preventDefault();
     if (check_edit_contact() == false) {
@@ -1937,9 +1999,9 @@ $(".daterangepicker").daterangepicker({
         'Tháng này': [moment().startOf('month'), moment().endOf('month')],
         'Tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
     },
-    "alwaysShowCalendars": true,
-    "startDate": pastDate,
-    "endDate": currDate
+    "alwaysShowCalendars": true
+    //    "startDate": pastDate,
+    //    "endDate": currDate
 }).on({
     'apply.daterangepicker': function applyDaterangepicker(ev, picker) {
         $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
@@ -1968,9 +2030,9 @@ $(".daterangepicker2").daterangepicker({
         'Tháng này': [moment().startOf('month'), moment().endOf('month')],
         'Tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
     },
-    "alwaysShowCalendars": true,
-    "startDate": pastDate,
-    "endDate": currDate
+    "alwaysShowCalendars": true
+    //    "startDate": pastDate,
+    //    "endDate": currDate
 }).on({
     'apply.daterangepicker': function applyDaterangepicker(ev, picker) {
         $(this).val(picker.startDate.format('DD/MM/YYYY H:mm') + ' - ' + picker.endDate.format('DD/MM/YYYY H:mm'));

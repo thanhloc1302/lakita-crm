@@ -55,6 +55,14 @@ class MY_Controller extends CI_Controller {
         require_once APPPATH . 'libraries/Pusher.php';
         //phpinfo();
        // echo md5(md5('lakita2017'));die;
+        
+//        $comment = json_decode('{"entry": [{"changes": [{"field": "plugin_comment", "value": {"created_time": "2017-12-29T09:02:23+0000", "message": "c\u1ea3m \u01a1n page nh\u00e9", "from": {"name": "Ph\u1ea1m Ng\u1ecdc Chuy\u1ec3n", "id": "1180191648705232"}, "id": "1242593289171565_1440665862697639"}}], "id": "315347858825221", "time": 1514538143}], "object": "application"}');
+//        print_arr($comment);
+//        $idPage = explode('_', '1242593289171565_1440665862697639');
+//        
+//        $page = json_decode(file_get_contents('https://graph.facebook.com/v2.11/1242593289171565?access_token=EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD'));
+//        
+//        print_arr($page->title);
     }
 
     private function _check_login() {
@@ -99,7 +107,6 @@ class MY_Controller extends CI_Controller {
         } else {
             $this->per_page = _PER_PAGE_;
         }
-
         /*
          * Lấy tên chức vụ và id của người dùng hệ thống
          */

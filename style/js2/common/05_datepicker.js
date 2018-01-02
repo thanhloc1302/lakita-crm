@@ -29,8 +29,8 @@ $(".daterangepicker").daterangepicker({
         'Tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
     },
     "alwaysShowCalendars": true,
-    "startDate": pastDate,
-    "endDate": currDate
+//    "startDate": pastDate,
+//    "endDate": currDate
 }).on({
     'apply.daterangepicker': function (ev, picker) {
         $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
@@ -60,8 +60,8 @@ $(".daterangepicker2").daterangepicker({
         'Tháng trước': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
     },
     "alwaysShowCalendars": true,
-    "startDate": pastDate,
-    "endDate": currDate
+//    "startDate": pastDate,
+//    "endDate": currDate
 }).on({
     'apply.daterangepicker': function (ev, picker) {
         $(this).val(picker.startDate.format('DD/MM/YYYY H:mm') + ' - ' + picker.endDate.format('DD/MM/YYYY H:mm'));

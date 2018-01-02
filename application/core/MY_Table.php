@@ -100,7 +100,6 @@ class MY_Table extends MY_Controller {
         $this->limit = $this->per_page;
         $this->data['load_js'] = array('common_real_filter_contact');
         $this->_loadCountListContact();
-        $this->per_page = 200;
     }
 
     /*
@@ -176,7 +175,7 @@ class MY_Table extends MY_Controller {
         if ($this->limit != 0 || $this->offset != 0) {
             $this->conditional['limit'] = array($this->limit, $this->offset);
         }
-        $this->conditional['limit'] = array(200, 0);
+        //$this->conditional['limit'] = array(200, 0);
         //   print_arr($this->conditional);
         /*
          * kiểm tra xem $this->conditional đã có order chưa, nếu chưa thì để mặc định là order theo id desc
@@ -193,7 +192,7 @@ class MY_Table extends MY_Controller {
         $base_url = ($this->sub_folder == '') ? $this->controller . '/' . $this->method : $this->sub_folder . '/' . $this->controller . '/' . $this->method;
         $this->num_segment = ($this->sub_folder == '') ? 3 : 4;
 
-        $this->pagination_link = $this->_create_pagination_link($total_row, $base_url, $this->num_segment);
+       $this->pagination_link = $this->_create_pagination_link($total_row, $base_url, $this->num_segment);
         $this->begin_paging = ($total_row == 0) ? 0 : $this->offset + 1;
         $this->end_paging = (($this->offset + $this->limit) < $total_row) ? ($this->offset + $this->limit) : $total_row;
         $this->total_paging = $total_row;

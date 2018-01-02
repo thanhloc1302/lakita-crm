@@ -307,7 +307,7 @@ class Check_L8 extends MY_Table {
                 $data['contact_id'] = $billID[0]['contact_id'];
                 $data['staff_id'] = $this->user_id;
                 $data['time'] = time();
-                $data['content_change'] = 'Giá tiền mua: '. $billID[0]['price_purchase'] . ' ====> ' . $post['edit_price_purchase'] . ' (sửa khi đối soát)';
+                $data['content_change'] = 'Giá tiền mua: ' . $billID[0]['price_purchase'] . ' ====> ' . $post['edit_price_purchase'] . ' (sửa khi đối soát)';
                 $this->load->model('call_log_model');
                 $this->call_log_model->insert($data);
             }
@@ -371,7 +371,7 @@ class Check_L8 extends MY_Table {
         $objPHPExcel = PHPExcel_IOFactory::load($file_path);
         $sheet = $objPHPExcel->getActiveSheet();
         $data1 = $sheet->rangeToArray('A10:G7700');
-        
+
         /*
          * Mảng lưu các thông tin contact L8 của Viettel.
          * Cần lưu hết thông tin để check trùng (đề phòng
@@ -379,10 +379,10 @@ class Check_L8 extends MY_Table {
          */
         $receiveCOD = array();
         foreach ($data1 as $row) {
-            list($stt, $code_cross_check, $date_sending, $service, $destination, $date_deliver_success,  $money) = $row;
+            list($stt, $code_cross_check, $date_sending, $service, $destination, $date_deliver_success, $money) = $row;
             $stt = intval($stt);
             if ($stt > 0) {
-                $money = preg_replace('/\D+/', '', $money); 
+                $money = preg_replace('/\D+/', '', $money);
                 $money = intval($money);
                 $receiveCOD[] = array(
                     'stt' => $stt,
@@ -443,6 +443,7 @@ class Check_L8 extends MY_Table {
 
     function confirm_check_l8() {
         $post = $this->input->post();
+
         if (empty($post['item_id'])) {
             $error = ('Vui lòng chọn đơn hàng!');
             show_error_and_redirect($error, '', false);
@@ -490,11 +491,14 @@ class Check_L8 extends MY_Table {
              */
             $date_deliver_success = strtotime(str_replace('/', '-', $code_cross[0]['date_deliver_success']));
             $where = array('code_cross_check' => $code_cross[0]['code']);
-            $data = array('date_receive_lakita' => time(), 
+            $data = array('date_receive_lakita' => time(),
                 'cod_status_id' => _DA_THU_LAKITA_,
-                'last_activity' => time(), 
+                'last_activity' => time(),
                 'date_deliver_success' => $date_deliver_success,
                 'date_expect_receive_cod' => '0');
+            if (!empty($post['date_receive_lakita'])) {
+                $data['date_receive_lakita'] = strtotime($post['date_receive_lakita']) + 3600*14;
+            }
             $this->contacts_model->update($where, $data);
 
             /*
@@ -530,8 +534,8 @@ class Check_L8 extends MY_Table {
         }
         return $duplicate;
     }
-    
-     private function _import_L8_old($file_path) {
+
+    private function _import_L8_old($file_path) {
         $this->load->library('PHPExcel');
         $objPHPExcel = PHPExcel_IOFactory::load($file_path);
         $sheet = $objPHPExcel->getActiveSheet();

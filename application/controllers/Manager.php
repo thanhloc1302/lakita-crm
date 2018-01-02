@@ -199,10 +199,15 @@ class Manager extends MY_Controller {
         $this->form_validation->set_rules('course_code', 'Mã khóa học', 'required|callback_check_course_code');
         $this->form_validation->set_rules('source_id', 'Nguồn contact', 'required|callback_check_source_id');
         if (!empty($input)) {
+            $result = array();
             if ($this->form_validation->run() == FALSE) {
-                $this->session->set_tempdata('message', 'Có lỗi xảy ra trong quá trình nhập liệu', 2);
-                $this->session->set_tempdata('msg_success', 0, 2);
-                $this->_view_add_contact();
+                $result['success'] = 0;
+                $result['message'] = 'Có lỗi xảy ra trong quá trình nhập liệu!';
+                echo json_encode($result);
+                die;
+//                $this->session->set_tempdata('message', 'Có lỗi xảy ra trong quá trình nhập liệu', 2);
+//                $this->session->set_tempdata('msg_success', 0, 2);
+//                $this->_view_add_contact();
             } else {
                 $param['name'] = $input['name'];
                 $param['email'] = $input['email'];
@@ -241,7 +246,10 @@ class Manager extends MY_Controller {
                         'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
                 );
                 $pusher->trigger('my-channel', 'notice', $data2);
-                show_error_and_redirect('Thêm thành công contact', $input['back_location']);
+                $result['success'] = 1;
+                $result['message'] = 'Thêm thành công contact!';
+                echo json_encode($result);
+                die;
             }
         } else {
             $this->_view_add_contact();
@@ -257,7 +265,8 @@ class Manager extends MY_Controller {
             'sources' => array()
         );
         $data = array_merge($this->data, $this->_get_require_data($require_model));
-        $data['content'] = 'manager/add_contact';
+        //  $data['content'] = 'manager/add_contact';
+        $data['content'] = 'common/modal/add_new_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -1014,7 +1023,7 @@ class Manager extends MY_Controller {
 
     /*
      * Hàm tạo view xem báo cáo
-     * Tham số: 
+     * Tham số:
      * $model: model tương ứng với loại báo cáo, ví dụ: báo cáo theo sản phẩm thì model là courses
      * $prop: tên trường tương ứng trong bảng tbl_contact, ví dụ: báo cáo theo sản phẩm thì trường tương ứng là courses_code
      * $key_tb: Khóa chính trong bảng tương ứng

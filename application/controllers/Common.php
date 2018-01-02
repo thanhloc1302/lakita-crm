@@ -64,6 +64,7 @@ class Common extends MY_Controller {
             'date_confirm' => 'view',
             'date_print_cod' => 'view',
             'date_recall' => 'view',
+            'date_receive_lakita' => 'view'
         );
         $right_view = array(
             'transfer_log' => 'view',
@@ -483,6 +484,11 @@ class Common extends MY_Controller {
         }
 
         if ($date_recall != 0 && $date_recall < time()) {
+            $result = [];
+            $result['success'] = 0;
+            $result['message'] = 'Ngày hẹn gọi lại không thể là ngày trong quá khứ!';
+            echo json_encode($result);
+            die;
             return false;
         }
 
@@ -559,6 +565,12 @@ class Common extends MY_Controller {
                 }
             }
             $param['date_recall'] = (isset($post['date_recall']) && $post['date_recall'] != '') ? strtotime($post['date_recall']) : 0;
+            if ($param['date_recall'] > 0 && $param['date_recall'] < time()) {
+                $result['success'] = 0;
+                $result['message'] = 'Ngày hẹn gọi lại không thể là ngày trong quá khứ!';
+                echo json_encode($result);
+                die;
+            }
             if (isset($post['date_expect_receive_cod']) && $post['date_expect_receive_cod'] != '') {
                 if (strtotime($post['date_expect_receive_cod']) < time()) {
                     $result['success'] = 0;
