@@ -203,6 +203,18 @@ class Manager extends MY_Controller {
             if ($this->form_validation->run() == FALSE) {
                 $result['success'] = 0;
                 $result['message'] = 'Có lỗi xảy ra trong quá trình nhập liệu!';
+                $require_model = array(
+                    'courses' => array(
+                        'where' => ['active' => '1'],
+                        'order' => ['course_code' => 'ASC']
+                    ),
+                    'sources' => array()
+                );
+                $data = array_merge($this->data, $this->_get_require_data($require_model));
+                //  $data['content'] = 'manager/add_contact';
+                $data['content'] = 'common/modal/add_new_contact';
+                $this->load->view('common/modal/add_new_contact', $data);
+                $result['content'] = $this->load->view('common/modal/add_new_contact', $data, true);
                 echo json_encode($result);
                 die;
 //                $this->session->set_tempdata('message', 'Có lỗi xảy ra trong quá trình nhập liệu', 2);
@@ -267,7 +279,7 @@ class Manager extends MY_Controller {
         $data = array_merge($this->data, $this->_get_require_data($require_model));
         //  $data['content'] = 'manager/add_contact';
         $data['content'] = 'common/modal/add_new_contact';
-        $this->load->view(_MAIN_LAYOUT_, $data);
+        $this->load->view('common/modal/add_new_contact', $data);
     }
 
     function check_course_code($str) {

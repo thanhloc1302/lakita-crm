@@ -1,5 +1,5 @@
 <div class="modal fade edit_contact_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog btn-very-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -9,7 +9,7 @@
                 <div class="container">
                     <?php echo validation_errors(); ?>
                     <div class="row">
-                        <div class="col-md-7 col-md-offset-1">
+                        <div class="col-md-10">
                             <h3 class="text-center marginbottom20"> Thêm mới contact </h3>
                             <form method="post" class="form_add_new_contact_modal" action="<?php echo base_url('manager/add_contact'); ?>">
                                 <div class="form-group">
@@ -152,7 +152,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-success btn-lg btn-action-add-new-contact">Submit</button>
+                                    <a href="#" class="btn btn-success btn-lg btn-action-add-new-contact"> Submit </a>
                                 </div>
                             </form>
                         </div>
