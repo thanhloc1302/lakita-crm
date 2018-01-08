@@ -35,7 +35,7 @@ class MY_Controller extends CI_Controller {
 //        echo time() . '<br>';
 //        echo strtotime('+1 day', strtotime(date('d-m-Y'))) - time(); die;
         //  echo time(). '<br>';
-     //   echo strtotime('30-11-2017 15:29'); die;
+        echo strtotime('31-12-2017 23:59'); die;
         //echo strtotime(date("d-m-Y 14:02"));die;
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
@@ -63,7 +63,7 @@ class MY_Controller extends CI_Controller {
 //        $page = json_decode(file_get_contents('https://graph.facebook.com/v2.11/1242593289171565?access_token=EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD'));
 //        
 //        print_arr($page->title);
-        redirect(urldecode('https://lakita.vn/ke-toan-cho-nguoi-moi-bat-dau.html?link=297'));
+       // redirect(urldecode('https://lakita.vn/ke-toan-cho-nguoi-moi-bat-dau.html?link=297'));
     }
 
     private function _check_login() {
