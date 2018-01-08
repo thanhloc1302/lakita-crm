@@ -209,15 +209,16 @@ class Cod extends MY_Controller {
         $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(40);
 
         //set tên các cột cần in
+        $columnName = 'A';
         $rowCount = 1;
-        $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, 'STT');
-        $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, 'Mã Bill');
-        $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, 'Nội dung');
-        $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, 'Tên người nhận');
-        $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, 'Số điện thoại người nhận');
-        $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, 'Địa chỉ');
-        $objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, 'Số tiền thu');
-        $objPHPExcel->getActiveSheet()->SetCellValue('H' . $rowCount, 'Ghi chú');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'STT');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Mã Bill');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Nội dung');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Tên người nhận');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Số điện thoại người nhận');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Địa chỉ');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Số tiền thu');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName . $rowCount, 'Ghi chú');
         $rowCount++;
 
         //đổ dữ liệu ra file excel
@@ -228,14 +229,15 @@ class Cod extends MY_Controller {
             } else {
                 $course_name = $value['course_name'];
             }
-            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $key + 1);
-            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $value['code_cross_check']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $course_name);
-            $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $value['name']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $value['phone']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $value['address']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, $value['price_purchase']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('H' . $rowCount, $value['note_cod']);
+            $columnName = 'A';
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $key + 1);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $value['code_cross_check']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $course_name);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $value['name']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $value['phone']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $value['address']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $value['price_purchase']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName . $rowCount, $value['note_cod']);
             $objPHPExcel->getActiveSheet()->getRowDimension($rowCount)->setRowHeight(35);
             $BStyle = array(
                 'borders' => array(
@@ -245,10 +247,10 @@ class Cod extends MY_Controller {
                     )
                 )
             );
-            $objPHPExcel->getActiveSheet()->getStyle('A' . $rowCount . ':H' . $rowCount)->applyFromArray($BStyle);
+            $objPHPExcel->getActiveSheet()->getStyle('A' . $rowCount . ':' . $columnName . $rowCount)->applyFromArray($BStyle);
             $rowCount++;
         }
-        foreach (range('A', 'H') as $columnID) {
+        foreach (range('A', $columnName) as $columnID) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
                     ->setAutoSize(true);
         }
@@ -299,6 +301,7 @@ class Cod extends MY_Controller {
         $objPHPExcel->getActiveSheet()->getSheetView()->setZoomScale(73);
 
         //set độ rộng của các cột
+
         $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(5);
         $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(15);
         $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(50);
@@ -309,15 +312,16 @@ class Cod extends MY_Controller {
         $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(40);
 
         //set tên các cột cần in
+        $columnName = 'A';
         $rowCount = 1;
-        $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, 'STT');
-        $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, 'Mã Bill');
-        $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, 'Nội dung');
-        $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, 'Tên người nhận');
-        $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, 'Số điện thoại người nhận');
-        $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, 'Địa chỉ');
-        $objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, 'Số tiền thu');
-        $objPHPExcel->getActiveSheet()->SetCellValue('H' . $rowCount, 'Ghi chú');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'STT');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Mã Bill');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Nội dung');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Tên người nhận');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Số điện thoại người nhận');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Địa chỉ');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Số tiền thu');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName . $rowCount, 'Ghi chú');
         $rowCount++;
 
         //đổ dữ liệu ra file excel
@@ -331,14 +335,15 @@ class Cod extends MY_Controller {
             } else {
                 $course_name = $value['course_name'];
             }
-            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $key + 1);
-            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $value['code_cross_check']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $course_name);
-            $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $value['name']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $value['phone']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, $value['address']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, $value['price_purchase']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('H' . $rowCount, $value['note_cod']);
+            $columnName = 'A';
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $key + 1);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $value['code_cross_check']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $course_name);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $value['name']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $value['phone']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $value['address']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $value['price_purchase']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName . $rowCount, $value['note_cod']);
             $objPHPExcel->getActiveSheet()->getRowDimension($rowCount)->setRowHeight(35);
             $BStyle = array(
                 'borders' => array(
@@ -348,10 +353,10 @@ class Cod extends MY_Controller {
                     )
                 )
             );
-            $objPHPExcel->getActiveSheet()->getStyle('A' . $rowCount . ':H' . $rowCount)->applyFromArray($BStyle);
+            $objPHPExcel->getActiveSheet()->getStyle('A' . $rowCount . ':' . $columnName . $rowCount)->applyFromArray($BStyle);
             $rowCount++;
         }
-        foreach (range('A', 'H') as $columnID) {
+        foreach (range('A', $columnName) as $columnID) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
         }
         $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
@@ -397,7 +402,7 @@ class Cod extends MY_Controller {
         $objPHPExcel = new PHPExcel();
         $objPHPExcel = PHPExcel_IOFactory::createReader('Excel2007');
         $template_file_print = $this->config->item('template_file_print');
-        $objPHPExcel = $objPHPExcel->load($template_file_print); // Empty Sheet
+        $objPHPExcel = $objPHPExcel->load($template_file_print);
         $objPHPExcel->setActiveSheetIndex(0);
         $rowCount = 3;
         $contact_export = $this->_contact_export($post['contact_id']);
@@ -407,13 +412,14 @@ class Cod extends MY_Controller {
             } else {
                 $course_code = $value['course_code'];
             }
-            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $rowCount, $key + 1);
-            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $rowCount, $course_code);
-            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $rowCount, $value['name']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('D' . $rowCount, $value['phone']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $rowCount, $value['address']);
-            $objPHPExcel->getActiveSheet()->SetCellValue('F' . $rowCount, number_format($value['price_purchase'], 0, ",", ".") . " VNĐ");
-            $objPHPExcel->getActiveSheet()->SetCellValue('G' . $rowCount, $value['note_cod']);
+            $columnName = 'A';
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $key + 1);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $course_code);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $value['name']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $value['phone']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++. $rowCount, $value['address']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, number_format($value['price_purchase'], 0, ",", ".") . " VNĐ");
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName . $rowCount, $value['note_cod']);
             $rowCount++;
         }
         $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
@@ -504,7 +510,7 @@ class Cod extends MY_Controller {
                     'role_id' => 1
                 )
             ),
-           'courses' => array(
+            'courses' => array(
                 'where' => array('active' => '1'),
                 'order' => array(
                     'course_code' => 'ASC'

@@ -37,7 +37,6 @@
     <?php
     if (isset($informModal)) {
         foreach ($informModal as $modal) {
-            //  $this->load->view('manager/modal/divide_contact');
             $this->load->view($modal);
         }
     }
@@ -47,10 +46,6 @@
 <?php
 if (isset($outformModal)) {
     foreach ($outformModal as $modal) {
-        //  $this->load->view('manager/modal/divide_contact');
         $this->load->view($modal);
     }
 }
-?>
-<?php
-//$this->load->view('manager/modal/divide_one_contact');

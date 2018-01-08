@@ -27,8 +27,8 @@ class Contact_api extends REST_Controller {
             $param['phone'] = isset($input['phone']) ? trim($input['phone']) : '';
             $email = isset($input['email']) ? $input['email'] : '';
             $param['email'] = trim(str_replace('NO_PARAM@gmail.com', '', $email));
-            if ($param['email'] == '' && $param['phone'] == '') {
-                $param['is_hide'] = 1;
+            if (trim($param['phone']) == '') {
+                die;
             }
             $address = isset($input['dia_chi']) ? $input['dia_chi'] : '';
             $address .= ' ';

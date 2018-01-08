@@ -7,9 +7,9 @@
                     <td>  
 
                         <input type="text" class="form-control daterangepicker" name="filter_date_deliver_success" style="position: static"
-                        <?php if (filter_has_var(INPUT_GET, 'filter_date_deliver_success')) { ?>
-                                   value="<?php echo filter_input(INPUT_GET, 'filter_date_deliver_success'); ?>"
-                               <?php } ?> 
+                <?php if (filter_has_var(INPUT_GET, 'filter_date_deliver_success')) { ?>
+                                       value="<?php echo filter_input(INPUT_GET, 'filter_date_deliver_success'); ?>"
+                <?php } ?> 
                                />
 
                     </td>
@@ -17,9 +17,9 @@
                 <tr>
                     <td class="text-right"> Ngày nhận tiền: </td>
                     <td>  
-                        <input type="text" class="form-control daterangepicker" name="filter_date_report" style="position: static"
-                        <?php if (filter_has_var(INPUT_GET, 'filter_date_report')) { ?>
-                                   value="<?php echo filter_input(INPUT_GET, 'filter_date_report'); ?>"
+                        <input type="text" class="form-control daterangepicker" name="filter_custom_date_report" style="position: static"
+                        <?php if (filter_has_var(INPUT_GET, 'filter_custom_date_report')) { ?>
+                                   value="<?php echo filter_input(INPUT_GET, 'filter_custom_date_report'); ?>"
                                <?php } ?> 
                                />
 
@@ -34,6 +34,7 @@
                     </td>
                 </tr>
             </table>
+            <?php $this->load->view('common/content/filter'); ?>
         </div>
     </div>
 </form>

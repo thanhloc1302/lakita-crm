@@ -104,18 +104,15 @@
                 <li>  <i class="fa fa-trash-o" aria-hidden="true"></i> &nbsp; &nbsp; Xóa các dòng đã chọn </li>
             </a> 
         <?php } ?>
+        <a href="#"  class="export-to-excel multi-item-selected" 
+           data-form-id="action_contact"
+           data-action="common/ExportToExcel"
+           data-method="POST">
+            <li> 
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp; &nbsp; Xuất dữ liệu
+            </li>
 
-        <?php if ($controller == 'manager') { ?>
-            <a href="#"  class="export-to-excel multi-item-selected" 
-               data-form-id="action_contact"
-               data-action="common/ExportToExcel"
-               data-method="POST">
-                <li> 
-                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp; &nbsp; Xuất thành file excel
-                </li>
-
-            </a>
-        <?php } ?>
+        </a>
         <a href="#" 
            class="ajax-request-modal load-new-contact-id one-item-selected"
            data-contact-id ="0"

@@ -1,7 +1,6 @@
 module.exports = function (grunt) {
 // Project configuration.
     grunt.initConfig({
-        pkg: grunt.file.readJSON('package.json'),
         dirs: {
             src: 'src/files',
             dest: 'style/js'

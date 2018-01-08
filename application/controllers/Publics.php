@@ -1,6 +1,5 @@
 <?php
 
-
 class Publics extends CI_Controller {
 
     public function getEmail() {
@@ -11,7 +10,7 @@ class Publics extends CI_Controller {
         fclose($myfile);
     }
 
-    public function test() {         
+    public function test() {
         $emailTo = 'chuyenbka@gmail.com';
         $this->load->library("email");
         $this->email->from('cskh@lakita.vn', "lakita.vn");
@@ -54,6 +53,49 @@ class Publics extends CI_Controller {
         print_arr((new AdAccount($ad_account_id))->getInsights(
                         $fields, $params
                 )->getResponse()->getContent(), JSON_PRETTY_PRINT);
+    }
+
+    function view_pivot_table() {
+        $this->load->view('pivot_table');
+    }
+
+    function json_pivot_table() {
+        $this->load->model('call_status_model');
+        $this->load->model('ordering_status_model');
+        $this->load->model('cod_status_model');
+        $this->load->model('providers_model');
+        $this->load->model('payment_method_rgt_model');
+        $input = array();
+        $input['select'] = 'call_status_id, ordering_status_id, cod_status_id, sale_staff_id, course_code, '
+                . 'provider_id, date_rgt, price_purchase, payment_method_rgt, date_receive_lakita';
+        $input['where'] = array('date_rgt >=' => 1483203600, 'is_hide' => '0');
+        $test = $this->contacts_model->load_all($input);
+        $rs = [];
+        foreach ($test as $key => $value) {
+            $rs[$key]['C3'] = '1';
+            $rs[$key]['L2'] = ($value['call_status_id'] == 4) ? '1' : '0';
+            $rs[$key]['L6'] = ($value['ordering_status_id'] == 4) ? '1' : '0';
+            $rs[$key]['L7'] = ($value['cod_status_id'] == 2) ? '1' : '0';
+            $rs[$key]['L7L8'] = ($value['cod_status_id'] == 3 || $value['cod_status_id'] == 2) ? '1' : '0';
+            $rs[$key]['L8'] = ($value['cod_status_id'] == 3) ? '1' : '0';
+            $rs[$key]['TVTS'] = $this->staffs_model->find_staff_name($value['sale_staff_id']);
+            $rs[$key]['Mã khóa học'] = $value['course_code'];
+            //  $rs[$key]['Trạng thái gọi'] = $this->call_status_model->find_call_status_desc($value['call_status_id']);
+            //$rs[$key]['Trạng thái đơn hàng'] = $this->ordering_status_model->find_ordering_status_desc($value['ordering_status_id']);
+            //$rs[$key]['Trạng thái giao hàng'] = $this->cod_status_model->find_cod_status_desc($value['cod_status_id']);
+            $rs[$key]['Đơn vị giao hàng'] = $this->providers_model->find_provider_name($value['provider_id']);
+            $rs[$key]['Tháng đăng ký'] = date('Y-m', $value['date_rgt']);
+            $rs[$key]['Tháng nhận tiền'] = date('Y-m', $value['date_receive_lakita']);
+            $rs[$key]['Ngày đăng ký'] = date('Y-m-d', $value['date_rgt']);
+            $rs[$key]['Giá mua khóa học'] = ($value['price_purchase']);
+            $rs[$key]['Hinh thức thanh toán'] = $this->payment_method_rgt_model->find_payment_method_rgt_desc($value['payment_method_rgt']);
+        }
+        echo $response = json_encode($rs);
+        die;
+        $fp = fopen(APPPATH . '../public/results.json', 'w');
+        fwrite($fp, json_encode($response));
+        fclose($fp);
+        die;
     }
 
 }

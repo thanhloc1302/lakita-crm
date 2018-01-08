@@ -118,7 +118,7 @@ class Manager extends MY_Controller {
         /*
          * Filter ở cột trái và cột phải
          */
-        $data['left_col'] = array('tu_van', 'duplicate', 'course_code', 'sale', 'marketer', 'channel', 'payment_method_rgt', 'date_rgt', 'date_handover');
+        $data['left_col'] = array('course_code', 'sale', 'marketer', 'channel', 'payment_method_rgt', 'date_rgt', 'date_handover');
         $data['right_col'] = array('source', 'call_status', 'ordering_status', 'cod_status', 'provider');
 
         /*
@@ -768,7 +768,7 @@ class Manager extends MY_Controller {
     // <editor-fold defaultstate="collapsed" desc="Báo cáo doanh thu theo ngày nhận tiền">
     function view_report_revenue() {
         $this->load->helper('manager_helper');
-        $data = $this->data;
+        $data = $this->get_all_require_data();
         $get = $this->input->get();
         $input = array();
         $this->load->model('courses_model');
@@ -779,8 +779,10 @@ class Manager extends MY_Controller {
         /*
          * Lấy ngày nhận tiền và ngày phát thành công
          */
-        if (isset($get['filter_date_report']) && $get['filter_date_report'] != '') {
-            $dateArr = explode('-', $get['filter_date_report']);
+        $date_report_from = strtotime(date('01-m-Y'));
+        $date_report_end = strtotime(date('t-m-Y'));
+        if (isset($get['filter_custom_date_report']) && $get['filter_custom_date_report'] != '') {
+            $dateArr = explode('-', $get['filter_custom_date_report']);
             $date_report_from = trim($dateArr[0]);
             $date_report_from = strtotime(str_replace("/", "-", $date_report_from));
             $date_report_end = trim($dateArr[1]);
@@ -807,7 +809,9 @@ class Manager extends MY_Controller {
             $conditional['where']['course_code'] = $value['course_code'];
             $conditional['where']['cod_status_id'] = _DA_THU_COD_;
 
-            $_L7 = $this->contacts_model->load_all($conditional);
+            // $_L7 = $this->contacts_model->load_all($conditional);
+            $contact = $this->_query_all_from_get($get, $conditional, 50000, 0);
+            $_L7 = $contact['data'];
             $courses[$key]['L7'] = sum_L8($_L7);
             $L7 += $courses[$key]['L7'];
 
@@ -830,7 +834,9 @@ class Manager extends MY_Controller {
                 $conditional['where']['date_deliver_success <='] = $date_deliver_success_end;
             }
 
-            $_L8 = $this->contacts_model->load_all($conditional);
+            // $_L8 = $this->contacts_model->load_all($conditional);
+            $contact = $this->_query_all_from_get($get, $conditional, 50000, 0);
+            $_L8 = $contact['data'];
             $courses[$key]['L8'] = sum_L8($_L8);
             $L8 += $courses[$key]['L8'];
 
@@ -861,7 +867,10 @@ class Manager extends MY_Controller {
             }
             $conditional['where']['sale_staff_id'] = $value['id'];
             $conditional['where']['cod_status_id'] = _DA_THU_COD_;
-            $_L7 = $this->contacts_model->load_all($conditional);
+            //$_L7 = $this->contacts_model->load_all($conditional);
+            $contact = $this->_query_all_from_get($get, $conditional, 50000, 0);
+            $_L7 = $contact['data'];
+
             $staffs[$key]['L7'] = sum_L8($_L7);
             $L7_TVTS += $staffs[$key]['L7'];
 
@@ -875,12 +884,16 @@ class Manager extends MY_Controller {
             }
             $conditional['where']['sale_staff_id'] = $value['id'];
             $conditional['where']['cod_status_id'] = _DA_THU_LAKITA_;
-            $_L8 = $this->contacts_model->load_all($conditional);
+            //$_L8 = $this->contacts_model->load_all($conditional);
+            $contact = $this->_query_all_from_get($get, $conditional, 50000, 0);
+            $_L8 = $contact['data'];
+
             $staffs[$key]['L8'] = sum_L8($_L8);
             $L8_TVTS += $staffs[$key]['L8'];
             $staffs[$key]['L7L8'] = $staffs[$key]['L7'] + $staffs[$key]['L8'];
             $L7L8_TVTS += $staffs[$key]['L7L8'];
         }
+        $data['left_col'] = array('provider');
         $data['L7_TVTS'] = $L7_TVTS;
         $data['L8_TVTS'] = $L8_TVTS;
         $data['L7L8_TVTS'] = $L7L8_TVTS;

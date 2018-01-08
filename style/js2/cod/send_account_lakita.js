@@ -24,7 +24,10 @@ $(document).on('click', '.btn-send-account-lakita', function (e) {
             contact_id: contact_id
         },
         dataType: 'json',
-        beforeSend: () => $(".popup-wrapper").show(),
+        beforeSend: () => {
+            clearInterval(notiContactRecall);
+            $(".popup-wrapper").show();
+        },
         success: data => {
             console.log(data.success);
             if (data.success == 0) {
@@ -45,7 +48,10 @@ $(document).on('click', '.btn-send-account-lakita', function (e) {
                 });
             }
         },
-        complete: () => $(".popup-wrapper").hide(),
+        complete: () => {
+            notiContactRecall = setInterval(noti, 10000);
+            $(".popup-wrapper").hide();
+        },
         error: () => {
             $("#send_email_error")[0].play();
             $.notify('Có lỗi xảy ra trong quá trình gửi email!', {
@@ -104,7 +110,7 @@ $(document).on('click', '.send-lakita-account-combo-course', function (e) {
                 theme: 'supervan',
                 title: 'Kiểm tra thông tin gửi email và tài khoản ngân hàng',
                 content: 'Họ tên: ' + contactName + ', email: ' + emailUnique[0] + ', '
-                       + 'combo ' + numberOfChecked + ' khóa học',
+                        + 'combo ' + numberOfChecked + ' khóa học',
                 buttons: {
                     confirm: {
                         text: 'Look good!',
@@ -114,7 +120,10 @@ $(document).on('click', '.send-lakita-account-combo-course', function (e) {
                                 type: "POST",
                                 dataType: 'json',
                                 data: $("#action_contact").serialize(),
-                                beforeSend: () => $(".popup-wrapper").show(),
+                                beforeSend: () => {
+                                    clearInterval(notiContactRecall);
+                                    $(".popup-wrapper").show();
+                                },
                                 success: data => {
                                     if (data.success == 1) {
                                         $("#send_email_sound")[0].play();
@@ -134,7 +143,10 @@ $(document).on('click', '.send-lakita-account-combo-course', function (e) {
                                         });
                                     }
                                 },
-                                complete: () => $(".popup-wrapper").hide(),
+                                complete: () => {
+                                    notiContactRecall = setInterval(noti, 10000);
+                                    $(".popup-wrapper").hide();
+                                },
                                 error: () => {
                                     $("#send_email_error")[0].play();
                                     $.notify('Có lỗi xảy ra trong quá trình gửi email!', {

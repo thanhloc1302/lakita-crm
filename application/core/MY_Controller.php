@@ -27,7 +27,7 @@ class MY_Controller extends CI_Controller {
        // echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
         //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
-        //echo date('H:i:s d/m/Y', 1513064627);die;
+      //  echo date('H:i:s d/m/Y', 1511843340);die;
         //    echo  strtotime('-1 month', 1512666000); die;
 //        echo strtotime('+1 day', strtotime(date('d-m-Y')));
 //        die;
@@ -35,7 +35,7 @@ class MY_Controller extends CI_Controller {
 //        echo time() . '<br>';
 //        echo strtotime('+1 day', strtotime(date('d-m-Y'))) - time(); die;
         //  echo time(). '<br>';
-       // echo strtotime('2018-01-20T18:30:14-0800'); die;
+     //   echo strtotime('30-11-2017 15:29'); die;
         //echo strtotime(date("d-m-Y 14:02"));die;
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
@@ -63,6 +63,7 @@ class MY_Controller extends CI_Controller {
 //        $page = json_decode(file_get_contents('https://graph.facebook.com/v2.11/1242593289171565?access_token=EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD'));
 //        
 //        print_arr($page->title);
+        redirect(urldecode('https://lakita.vn/ke-toan-cho-nguoi-moi-bat-dau.html?link=297'));
     }
 
     private function _check_login() {

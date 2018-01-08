@@ -77,6 +77,7 @@
                                                                         <span style="font-weight:bold"> Mật khẩu: </span> <?php echo ($password == 'new') ? 'lakita' : '(mật khẩu giống như mật khẩu khi quý khách đăng ký tài khoản Lakita)'; ?> </li>
                                                                 </ul>
                                                                 <li style="margin-bottom:10px;color:#272727"> Mời anh/chị xem hướng dẫn dưới đây để biết cách thao tác trên hệ thống của Lakita.vn nhé. </li>
+                                                                 <li style="margin-bottom:10px;color:#272727"> https://drive.google.com/open?id=1znbg7yEi6OXR-9-iiTRxxB89bLhu0FzT </li>
                                                                 <li style="margin-bottom:10px;color:#272727"> Chúc anh/chị học tập vui vẻ! </li>
                                                                 <li style="margin-bottom:10px;color:#272727"> Trân trọng, </li>
                                                                 <li style="margin-bottom:20px;color:#272727"> <span style="font-weight:bold"> Lakita team. </span> </li>

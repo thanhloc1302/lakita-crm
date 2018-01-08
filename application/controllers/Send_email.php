@@ -82,6 +82,7 @@ class Send_email extends CI_Controller {
                 }
                 //tạo tài khoản
                 $client = $this->_create_account_lakita($contact);
+              //  print_arr($client);
                 if ($client->success != 0) {
                     $contact['password'] = $client->password;
                     $content = $this->load->view('email_template/send_account_lakita', $contact, TRUE);
@@ -92,11 +93,6 @@ class Send_email extends CI_Controller {
                     $this->email->to($contact['email']);
                     $this->email->subject('V/v: Thông báo tài khoản học tập và cách thức học tập trên hệ thống Lakita.vn');
                     $this->email->message($content);
-                    if (ENVIRONMENT == 'production') {
-                        $this->email->attach('/home/lakita.com.vn/public_html/sub/crm2/public/other/huong-dan-hoc-tap.docx');
-                    } else {
-                        $this->email->attach('C:\xampp\htdocs\CRM2\public\other\huong-dan-hoc-tap.docx');
-                    }
                     $this->email->send();
 
                     //cập nhật đã gửi mail
@@ -172,11 +168,6 @@ class Send_email extends CI_Controller {
                 $this->email->to($contact['email']);
                 $this->email->subject('V/v: Thông báo tài khoản học tập và cách thức học tập trên hệ thống Lakita.vn');
                 $this->email->message($content);
-                if (ENVIRONMENT == 'production') {
-                    $this->email->attach('/home/lakita.com.vn/public_html/sub/crm2/public/other/huong-dan-hoc-tap.docx');
-                } else {
-                    $this->email->attach('C:\xampp\htdocs\CRM2\public\other\huong-dan-hoc-tap.docx');
-                }
                 $this->email->send();
                 //cập nhật đã gửi mail
                 foreach ($post['contact_id'] as $contactId) {

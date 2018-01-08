@@ -663,9 +663,7 @@ class Report extends MY_Controller {
         die;
     }
 
-    function view_pivot_table() {
-        $this->load->view('pivot_table');
-    }
+   
 
     public function GetContactReceiveCodTomorrow() {
         $this->load->model('cod_status_model');

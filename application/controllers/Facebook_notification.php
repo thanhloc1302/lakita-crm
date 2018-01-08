@@ -28,14 +28,14 @@ class Facebook_notification extends CI_Controller {
             if (empty($commentExist)) {
                 $this->facebook_comment_plugin_model->insert(['comment_id' => $commentId, 'time' => date(_DATE_FORMAT_)]);
                 $url = [
-                '1633196606750778' => 'https://lakita.vn/ky-thuat-quyet-toan-thue.html',
-                '1242593289171565' => 'https://lakita.vn/quyet-toan-thue-tu-a-den-z.html',
-                '1298443350192736' => 'https://lakita.vn/ky-thuat-quyet-toan-thue.html',
-                '1062159213912728' => 'https://lakita.vn/lap-bao-cao-tai-chinh-2017.html',
-                '1665697290129137' => 'https://lakita.vn/tron-bo-lap-bao-cao-tai-chinh-2017.html',
-                '1441397425925456' => 'https://lakita.vn/bi-quyet-lam-chu-excel-2017.html',
-                '1436597719799600' => 'https://lakita.vn/ke-toan-cho-nguoi-moi-bat-dau.html',
-                '1331503243639074' => 'https://lakita.vn/combo-ke-toan-excel-van-phong-2017.html'
+                    '1633196606750778' => 'https://lakita.vn/ky-thuat-quyet-toan-thue.html',
+                    '1242593289171565' => 'https://lakita.vn/quyet-toan-thue-tu-a-den-z.html',
+                    '1298443350192736' => 'https://lakita.vn/ky-thuat-quyet-toan-thue.html',
+                    '1062159213912728' => 'https://lakita.vn/lap-bao-cao-tai-chinh-2017.html',
+                    '1665697290129137' => 'https://lakita.vn/tron-bo-lap-bao-cao-tai-chinh-2017.html',
+                    '1441397425925456' => 'https://lakita.vn/bi-quyet-lam-chu-excel-2017.html',
+                    '1436597719799600' => 'https://lakita.vn/ke-toan-cho-nguoi-moi-bat-dau.html',
+                    '1331503243639074' => 'https://lakita.vn/combo-ke-toan-excel-van-phong-2017.html'
                 ];
 
                 $replyComment = '';
@@ -45,20 +45,44 @@ class Facebook_notification extends CI_Controller {
                 }
                 $page = json_decode(file_get_contents('https://graph.facebook.com/v2.11/' . $pageId[0] . '?access_token=' . ACCESS_TOKEN));
                 $urlTitle = isset($url[$pageId[0]]) ? $url[$pageId[0]] : $page->title;
+
+
+
+
+                $uid = $comment->entry[0]->changes[0]->value->from->id;
+                $fullSizePicture = (('https://graph.facebook.com/v2.11/' . $uid . '/picture?width=500'));
+
+
                 $this->load->library("email");
                 $this->email->from('cskh@lakita.vn', "lakita.vn");
                 $this->email->to('chuyenbka@gmail.com, ngoccongtt1@gmail.com, trinhnv@lakita.vn, phuongtravel46@gmail.com, maiduong250695@gmail.com');
-                //$this->email->to('chuyenbka@gmail.com');
+                // $this->email->to('chuyenbka@gmail.com');
                 $this->email->subject('Có cmt fb mới ở landing page ' . $page->title . ' (' . date(_DATE_FORMAT_) . ')');
-                $this->email->message(
-                        '<h2> Nội dung: ' . $comment->entry[0]->changes[0]->value->message . '</h2> '
-                        . '<br> Được gửi từ: ' . $comment->entry[0]->changes[0]->value->from->name .
-                        '<br> Landing page (click để đến landing page): <a href="' . $urlTitle . '"> ' . $page->title . '</a>' .
-                        $replyComment);
 
-                //   $this->email->message(file_get_contents('php://input'));
+                $uMessage = $comment->entry[0]->changes[0]->value->message;
+                $uName = $comment->entry[0]->changes[0]->value->from->name;
+
+
+                $this->email->message('<table cellspacing="0" class="MsoTableGrid" style="border-collapse:collapse; border:undefined"> <tbody> <tr> <td style="vertical-align:top; width:134.75pt"> <p style="margin-left:0in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Roboto"><img src="'. $fullSizePicture .'" style="height:271px; width:271px"/></span></span> </p></td><td style="vertical-align:top; width:600pt"> <p style="margin-left:1in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Roboto">'.$uName.'</span></span> </p><p style="margin-left:1in; margin-right:0in"><span style="font-size:11pt"><span style="background-color:white"><span style="font-family:Roboto"><strong><span style="font-size:24.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="color:#222222">'.$uMessage.'</span></span></span></strong></span></span></span> </p><p style="margin-left:1in; margin-right:0in">&nbsp;</p><a style="margin-left:1in; margin-right:0in" href="' . $urlTitle . '"> Landing Page: ' . $page->title . '</a><p style="margin-left:1in; margin-right:0in">'.$replyComment.'</p></td></tr></tbody></table>');
                 $this->email->send();
                 $this->email->clear(TRUE);
+
+
+                require_once APPPATH . 'libraries/Pusher.php';
+                $options = array(
+                    'cluster' => 'ap1',
+                    'encrypted' => true
+                );
+                $pusher = new Pusher(
+                        'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
+                );
+
+                $data2 = [];
+                $data2['title'] = 'Có comment FB mới ở landing page';
+                $data2['message'] = $page->title;
+                $data2['image'] = $fullSizePicture;
+                $data2['url'] = $urlTitle;
+                $pusher->trigger('my-channel', 'notice', $data2);
             }
         }
     }

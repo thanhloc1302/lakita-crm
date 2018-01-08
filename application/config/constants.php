@@ -114,7 +114,7 @@ define('PAYMENT_METHOD_COD', 1);
 
 define('ACCESS_TOKEN', 'EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD');
 preg_match('/(?<=access_token=)[^&]*(?=&)/', 
-        'https://graph.facebook.com/v2.10/act_512062118812690/insights?access_token=EAAI4BG12pyIBAIOutN3lbwh2lXMBgV6RksxjCQfqu0hDKAOvC20cKAZAnd7FIYaJRBZCPkW7AZBnadhKqVQ0Y2ePdYPV6c76iZBeX41ZCrTZArxJb1OuDS2iiKbBBfl6xEUeEwZCx7T4w0SxD6lf15a2jK303UN25wjDh2EKy52sXwDtn3CM0MxKDQ0WebgBgPBAaBDxHSS9jMUXidZCNdUY&__business_id=503487699812479&_reqName=adaccount%2Finsights&_reqSrc=AdsInsightsTableAlphaDataFetchingPolicy.fetchBody.lazyloadFields%3EfetchSync&action_attribution_windows=%5B%22default%22%5D&date_preset=yesterday&fields=%5B%22actions%22%2C%22campaign_id%22%2C%22cost_per_result%22%2C%22results%22%5D&filtering=%5B%7B%22field%22%3A%22campaign.delivery_info%22%2C%22operator%22%3A%22IN%22%2C%22value%22%3A%5B%22active%22%2C%22archived%22%2C%22completed%22%2C%22inactive%22%2C%22limited%22%2C%22not_delivering%22%2C%22not_published%22%2C%22pending_review%22%2C%22permanently_deleted%22%2C%22recently_completed%22%2C%22recently_rejected%22%2C%22rejected%22%2C%22scheduled%22%5D%7D%2C%7B%22field%22%3A%22campaign.id%22%2C%22operator%22%3A%22IN%22%2C%22value%22%3A%5B%226049984212532%22%2C%226050064497932%22%2C%226049713609732%22%2C%226049081399732%22%2C%226049151238332%22%2C%226048794777932%22%2C%226048724467932%22%2C%226047241329532%22%2C%226043768628732%22%2C%226039844631732%22%2C%226034595000132%22%2C%226034518525932%22%2C%226034368969132%22%2C%226034389876532%22%2C%226034336489132%22%2C%226034271506132%22%2C%226079560041332%22%2C%226076146587932%22%2C%226075374798332%22%2C%226075437893532%22%5D%7D%5D&include_headers=false&level=campaign&limit=5000&locale=vi_VN&method=get&pretty=0&session_scenario_id=5d28c27d343cf6c1%3A&suppress_http_code=1'
+        'https://graph.facebook.com/v2.10/350426792093375/insights?access_token=EAAI4BG12pyIBACU3OGUYQ8BnuUnDSyFd6yX5aiTEkjcI6ZBZABW1gfTX26a4Ma5uYM4k24ULpZBrpcaMwGSxOTBKBb2EB9Mn53BFzaA6ARZBHa3KNe1mnVZA2bx7aSEHFZCO3kUtnXbscdxG4U8GkhKbe86S4ExbBRV4ZBwDGrrIX0UEUWkNUeKmm11rv2ekJfE97jj1W3eZC2R1UwQJhqVT&__business_id=503487699812479&_reqName=object%3AreportRun%2Finsights&_reqSrc=AdsInsightsObjectStatsStore.getGroup%3EfetchAsync%3EgetReportRunInsights&include_headers=false&limit=5000&locale=vi_VN&method=get&pretty=0&suppress_http_code=1'
         , 
         $matches);
 
@@ -129,7 +129,7 @@ define('_LOAD_CACHED_', TRUE);
  * Định nghĩa role id của người dùng
  */
 define('MARKETER_ROLE_ID', 6);
-define('MARKETING_KPI_PER_DAY', 42);
-define('TVTS_KPI_PER_DAY', 23);
+define('MARKETING_KPI_PER_DAY', 46);
+define('TVTS_KPI_PER_DAY', 30);
 
-define('_VER_CACHED_', '02.11.20183');
+define('_VER_CACHED_', '03.01.20185');

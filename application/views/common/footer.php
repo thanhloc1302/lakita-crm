@@ -45,10 +45,6 @@ integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="ano
 <?php } else { ?>
     <script src="<?php echo base_url(); ?>style/js3/built.js?<?php echo time(); ?>" type="text/javascript"></script>
 <?php } ?>
-
-<?php if ($controller == 'sale' || $controller == 'cod') { ?>
-    <script src="<?php echo base_url(); ?>style/js/sale/noti_contact_recall.min.js?ver=<?php echo _VER_CACHED_; ?>" type="text/javascript"></script>
-<?php } ?>    
 <?php
 //if (isset($load_js) && is_array($load_js)) {
 //    foreach ($load_js as $value) {

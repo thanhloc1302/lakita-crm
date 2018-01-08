@@ -36,11 +36,11 @@
                             }
                             ?>
                     </tr>
-                    <tr id="<?php echo $idRandom; ?>" class="fade in temp-hide" style="display:none">
+<!--                    <tr id="<?php echo $idRandom; ?>" class="fade in temp-hide" style="display:none">
                         <td colspan="<?php echo count($table); ?>">
-                            <?php $this->load->view('common/content/table/extra_table'); ?>
+                            <?php //$this->load->view('common/content/table/extra_table'); ?>
                         </td>
-                    </tr>
+                    </tr>-->
                     <?php
                 }
             }
