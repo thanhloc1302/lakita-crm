@@ -24,10 +24,10 @@ class MY_Controller extends CI_Controller {
     function __construct() {
         parent::__construct();
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
-       // echo time();die;
+        //echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
         //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
-      //  echo date('H:i:s d/m/Y', 1511843340);die;
+        //  echo date('H:i:s d/m/Y', 1511843340);die;
         //    echo  strtotime('-1 month', 1512666000); die;
 //        echo strtotime('+1 day', strtotime(date('d-m-Y')));
 //        die;
@@ -35,7 +35,7 @@ class MY_Controller extends CI_Controller {
 //        echo time() . '<br>';
 //        echo strtotime('+1 day', strtotime(date('d-m-Y'))) - time(); die;
         //  echo time(). '<br>';
-     //   echo strtotime('30-11-2017 15:29'); die;
+        //   echo strtotime('30-11-2017 15:29'); die;
         //echo strtotime(date("d-m-Y 14:02"));die;
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
@@ -51,19 +51,21 @@ class MY_Controller extends CI_Controller {
             // $this->output->enable_profiler(TRUE);
         }
         $this->load->vars($this->data);
-        // phpinfo();
-        require_once APPPATH . 'libraries/Pusher.php';
-        //phpinfo();
-       // echo md5(md5('lakita2017'));die;
-        
-//        $comment = json_decode('{"entry": [{"changes": [{"field": "plugin_comment", "value": {"created_time": "2017-12-29T09:02:23+0000", "message": "c\u1ea3m \u01a1n page nh\u00e9", "from": {"name": "Ph\u1ea1m Ng\u1ecdc Chuy\u1ec3n", "id": "1180191648705232"}, "id": "1242593289171565_1440665862697639"}}], "id": "315347858825221", "time": 1514538143}], "object": "application"}');
-//        print_arr($comment);
+        // phpinfo();      
+        // echo md5(md5('lakita2017'));die;
+
+      //  $comment = json_decode('{"entry": [{"changes": [{"field": "feed", "value": {"from": {"id": "259196991142125", "name": "Ph\u1ea1m Quy\u1ec1n"}, "item": "comment", "comment_id": "730386033827641_730387017160876", "post_id": "721388644727380_730386033827641", "verb": "add", "parent_id": "721388644727380_730386033827641", "created_time": 1515571519, "post": {"type": "status", "updated_time": "2018-01-10T08:05:19+0000", "promotion_status": "inactive", "permalink_url": "https://www.facebook.com/permalink.php?story_fbid=730386033827641&id=721388644727380", "id": "721388644727380_730386033827641", "status_type": "mobile_status_update", "is_published": true}, "message": "chuy\u1ec3n test chuyenbka@gmail.com 01689953142"}}], "id": "721388644727380", "time": 1515571520}], "object": "page"}');
+      //  print_arr($comment);
 //        $idPage = explode('_', '1242593289171565_1440665862697639');
 //        
 //        $page = json_decode(file_get_contents('https://graph.facebook.com/v2.11/1242593289171565?access_token=EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD'));
 //        
 //        print_arr($page->title);
-        redirect(urldecode('https://lakita.vn/ke-toan-cho-nguoi-moi-bat-dau.html?link=297'));
+        // redirect(urldecode('https://lakita.vn/ke-toan-cho-nguoi-moi-bat-dau.html?link=297'));
+
+//        $userinfo = "chuy\u1ec3n test chuyenbka@gmail.com 01689953142";
+//        preg_match("/\d{8,12}/", $userinfo, $pat_array);
+//        print_arr($pat_array);
     }
 
     private function _check_login() {
