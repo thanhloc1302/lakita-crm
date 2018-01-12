@@ -322,6 +322,13 @@
                     "name_course": "Tự học Kế toán tổng hợp từ A đến Z (Giảng viên Phạm Thị Nhung)",
                     "price": "600000",
                     "active": "1"
+                }   ,
+                {  
+                    "id": "47",
+                    "course_code": "KT410",
+                    "name_course": "Bảo Hiểm Xã Hội – Tiền Lương – Thuế Thu Nhập Cá Nhân Năm 2018",
+                    "price": "895000",
+                    "active": "1"
                 }   
             ]
 }
