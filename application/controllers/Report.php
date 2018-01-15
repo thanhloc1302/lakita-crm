@@ -487,34 +487,39 @@ class Report extends MY_Controller {
         $this->load->model('courses_model');
         $courses = $this->courses_model->load_all($input);
         $get = [];
+        
+        $today = strtotime(date("d-m-Y"));
+        $thisMonth = strtotime(date("01-m-Y"));
+        $endDate = time();//strtotime(date("14-01-2018"));
         $conditionArr = array(
             'L1_td' => array(
-                'where' => array('date_handover >=' => strtotime(date("d-m-Y"))),
+                'where' => array('date_handover >=' => ($today)),
                 'sum' => 0
             ),
             'L2_td' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'date_handover >=' => strtotime(date("d-m-Y"))),
+                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'date_handover >=' => ($today)),
                 'sum' => 0
             ),
             'L6_td' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_, 'date_handover >=' => strtotime(date("d-m-Y"))),
+                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_, 'date_handover >=' => ($today)),
                 'sum' => 0
             ),
             'L1' => array(
-                'where' => array('date_handover >=' => strtotime(date("01-m-Y"))),
+                'where' => array('date_handover >=' => $thisMonth, 'date_handover <=' => $endDate),
                 'sum' => 0
             ),
             'L2' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'date_handover >=' => strtotime(date("01-m-Y"))),
+                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'date_handover >=' => $thisMonth, 'date_handover <=' => $endDate),
                 'sum' => 0
             ),
             'L6' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_, 'date_handover >=' => strtotime(date("01-m-Y"))),
+                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_
+                    , 'date_handover >=' => $thisMonth,  'date_handover <=' => $endDate),
                 'sum' => 0
             ),
             'L8' => array(
                 'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
-                    'cod_status_id' => _DA_THU_LAKITA_, 'date_handover >=' => strtotime(date("01-m-Y"))),
+                    'cod_status_id' => _DA_THU_LAKITA_, 'date_handover >=' => $thisMonth, 'date_handover <=' => $endDate),
                 'sum' => 0
             )
         );
@@ -557,7 +562,8 @@ class Report extends MY_Controller {
              */
             $conditional = array();
             $conditional['select'] = 'course_code, cod_status_id, price_purchase';
-            $conditional['where']['date_handover >='] = strtotime(date('01-m-Y'));
+            $conditional['where']['date_handover >='] = $thisMonth;
+            $conditional['where']['date_handover <='] = $endDate;
             $conditional['where']['course_code'] = $value['course_code'];
             $conditional['where']['cod_status_id'] = _DA_THU_LAKITA_;
             $_L8 = $this->contacts_model->load_all($conditional);
