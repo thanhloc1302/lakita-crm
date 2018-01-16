@@ -7,6 +7,12 @@
             <a href="#" class="divide_contact divide_multi_contact multi-item-selected">
                 <li> <i class="fa fa-hand-paper-o" aria-hidden="true"></i> &nbsp; &nbsp; Phân các contact đã chọn cho TVTS... </li>
             </a>
+            <a href="#"  class="btn-export-all-contact-to-excel one-item-selected" 
+               data-form-id="action_contact">
+                <li> 
+                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp; &nbsp; Xuất toàn bộ dữ liệu
+                </li>
+            </a>
         <?php } else if ($controller == 'sale') { ?>
             <a href="#" 
                class="ajax-request-modal load-new-contact-id edit-one-contact one-item-selected"
@@ -111,7 +117,6 @@
             <li> 
                 <i class="fa fa-file-excel-o" aria-hidden="true"></i> &nbsp; &nbsp; Xuất dữ liệu
             </li>
-
         </a>
         <a href="#" 
            class="ajax-request-modal load-new-contact-id one-item-selected"

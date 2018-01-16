@@ -2857,6 +2857,14 @@ $(document).on('click', '.export-to-excel', function (e) {
         $("#" + form).attr("action", url).attr("method", method).submit();
     }
 });
+$(".export-all-to-excel").remove();
+ $(".btn-export-all-contact-to-excel").click(function (e) {
+        e.preventDefault();
+        var formID = $(this).attr('data-form-id');
+        $("#"+formID).append('<input type="text" class="export-all-to-excel" name="export_all" value="yes" />');
+        $("#"+formID).attr("action", "#").attr("method", "GET").submit();
+        $(".export-all-to-excel").remove();
+    });
 
 
 
