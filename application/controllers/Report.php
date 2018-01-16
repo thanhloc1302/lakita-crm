@@ -316,7 +316,7 @@ class Report extends MY_Controller {
                 foreach ($contactSuccessArr as $contactSuccess) {
                     $contact_success[] = $contactSuccess;
                 }
-            } else if ($status == 'Thanh cong chuyen tra nguoi gui' || $status == 'CHuyển trả người gửi') {
+            } else if ($status == 'Thanh cong chuyen tra nguoi gui' || $status == 'CHuyển trả người gửi' ||  $status == 'Chuyển hoàn bưu cục gốc') {
                 $where = array('code_cross_check' => $code_cross_check);
                 $data = array('cod_status_id' => _HUY_DON_, 'date_expect_receive_cod' => '0', 'date_receive_cancel_cod' => time(), 'last_activity' => time());
                 $this->contacts_model->update($where, $data);
