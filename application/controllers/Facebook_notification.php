@@ -35,7 +35,8 @@ class Facebook_notification extends CI_Controller {
                     '1665697290129137' => 'https://lakita.vn/tron-bo-lap-bao-cao-tai-chinh-2017.html',
                     '1441397425925456' => 'https://lakita.vn/bi-quyet-lam-chu-excel-2017.html',
                     '1436597719799600' => 'https://lakita.vn/ke-toan-cho-nguoi-moi-bat-dau.html',
-                    '1331503243639074' => 'https://lakita.vn/combo-ke-toan-excel-van-phong-2017.html'
+                    '1331503243639074' => 'https://lakita.vn/combo-ke-toan-excel-van-phong-2017.html',
+                   '1732177853493516' => 'https://lakita.vn/bao-hiem-xa-hoi-tien-luong-thue-thu-nhap-ca-nhan-2018.html'
                 ];
 
                 $replyComment = '';

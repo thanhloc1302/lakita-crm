@@ -397,11 +397,12 @@ class Report extends MY_Controller {
 
         $data_load = [];
         $data_load['total_contacts'] = count($contacts);
-        $data_load['contacts'] = ReArrangeContactsByBillCheck($contact_warning);
-        $data_load['contact_other'] = ReArrangeContactsByBillCheck($contact_other);
-        $data_load['contact_success'] = ReArrangeContactsByBillCheck($contact_success);
-        $data_load['contact_cancel'] = ReArrangeContactsByBillCheck($contact_cancel);
-        $data_load['contact_not_send'] = ReArrangeContactsByBillCheck($contact_not_send);
+        $data_load['contacts'] = ($contact_warning);
+        $data_load['contact_other'] = ($contact_other);
+        $data_load['contact_success'] = ($contact_success);
+        $data_load['contact_cancel'] = ($contact_cancel);
+        $data_load['contact_not_send'] = $contact_not_send;
+                //ReArrangeContactsByBillCheck($contact_not_send);
         $str = $this->load->view('cod/waiting_cancel_list/index', $data_load, true);
         //$emailTo = 'chuyenpn@lakita.vn';
         $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com, lakitavn@gmail.com';

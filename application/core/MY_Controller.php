@@ -65,14 +65,19 @@ class MY_Controller extends CI_Controller {
 //        $page = json_decode(file_get_contents('https://graph.facebook.com/v2.11/1242593289171565?access_token=EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD'));
 //        
 //        print_arr($page->title);
-//        $month = file_get_contents('https://sheets.googleapis.com/v4/spreadsheets/1KTWQSa2IfrcJeOkd8ybEj7KOTlGlyiSZHfzzK_PlxkA/values/sheet1!A2:C169?key=AIzaSyCdjll4ib79ZGtUEEEAxksl6zff2NkLCII');
-//        $month_fetch = json_decode($month);
-//        foreach($month_fetch->values as $value){
-//            echo 'UPDATE `tbl_contact` set `code_cross_check` = \''. $value[0] .'\' WHERE `phone` = \''.$value[2].'\' and `date_print_cod` > 1515603600 and `date_print_cod` < 1515690000 ; <br>' ;
+
+        
+//        $num = range(43, 169);
+//       // print_arr($num);
+//        
+//        foreach ($num as $value){
+//            $number = ($value < 100) ? '0'. $value : $value;
+//            $number2 = ($value-1 < 100) ? '0'. $value-1 : $value-1;
+//            $old = 'THU54110117'.$number;
+//            $new =  'THU54110117'. ($number2);
+//            echo 'UPDATE `tbl_contact` SET `code_cross_check` = \''.$new.'\' WHERE `code_cross_check` = \'' . $old .'\';<br>';
 //        }
-//        die;
-        
-        
+
     }
 
     private function _check_login() {
