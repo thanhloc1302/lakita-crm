@@ -207,16 +207,19 @@ class Marketer extends MY_Table {
         $this->load->model('campaign_model');
         $input = array();
         $input['where'] = array('active' => 1);
+        $input['where']['marketer_id'] = $this->user_id;
         $this->data['campaign'] = $this->campaign_model->load_all($input);
 
         $this->load->model('adset_model');
         $input = array();
         $input['where'] = array('active' => 1);
+        $input['where']['marketer_id'] = $this->user_id;
         $this->data['adset'] = $this->adset_model->load_all($input);
 
         $this->load->model('ad_model');
         $input = array();
         $input['where'] = array('active' => 1);
+         $input['where']['marketer_id'] = $this->user_id;
         $this->data['ad'] = $this->ad_model->load_all($input);
 
 

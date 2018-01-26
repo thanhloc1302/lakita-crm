@@ -23,6 +23,8 @@ class MY_Controller extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+       // echo base64_decode('4oCLaHR0cDovL2xha2l0YS52bjoxOTM1L3ZvZC9fZGVmaW5zdF8vbXA0OjIwMTcvMDgvMi1LVDIxMC8xLUtUMjEwR0RML0tUMjEwLUJhaS1Tby0wMy5tcDQvbWFuaWZlc3QubXBk'); die;
+        echo base64_encode('​http://lakita.vn:1935/vod/_definst_/mp4:2017/08/2-KT210/1-KT210GDL/KT210-Bai-So-03.mp4/manifest.mpd');die;
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
         // echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
@@ -69,6 +71,8 @@ class MY_Controller extends CI_Controller {
 //            echo 'UPDATE `tbl_contact` set `code_cross_check` = \''. $value[0] .'\' WHERE `phone` = \''.$value[2].'\' and `date_print_cod` > 1515603600 and `date_print_cod` < 1515690000 ; <br>' ;
 //        }
 //        die;
+        
+        
     }
 
     private function _check_login() {
