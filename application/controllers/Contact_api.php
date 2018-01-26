@@ -36,6 +36,7 @@ class Contact_api extends REST_Controller {
             $address .= ' ';
             $address .= isset($input['tinh']) ? $input['tinh'] : '';
             $address .= isset($input['street']) ? $input['street'] : '';
+            $address .= isset($input['address']) ? $input['address'] : '';
             $param['address'] = trim(str_replace('NO_PARAM', '', $address));
             $param['is_consultant'] = (strpos($param['address'], 'TV_') !== false) ? 1 : 0;
             $param['course_code'] = isset($input['course_code']) ? $input['course_code'] : '';
