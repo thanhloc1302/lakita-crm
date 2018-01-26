@@ -63,6 +63,18 @@ class MY_Controller extends CI_Controller {
 //        $page = json_decode(file_get_contents('https://graph.facebook.com/v2.11/1242593289171565?access_token=EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD'));
 //        
 //        print_arr($page->title);
+        
+//        $num = range(43, 169);
+//       // print_arr($num);
+//        
+//        foreach ($num as $value){
+//            $number = ($value < 100) ? '0'. $value : $value;
+//            $number2 = ($value-1 < 100) ? '0'. $value-1 : $value-1;
+//            $old = 'THU54110117'.$number;
+//            $new =  'THU54110117'. ($number2);
+//            echo 'UPDATE `tbl_contact` SET `code_cross_check` = \''.$new.'\' WHERE `code_cross_check` = \'' . $old .'\';<br>';
+//        }
+//     die;   
     }
 
     private function _check_login() {
