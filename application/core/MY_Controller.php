@@ -24,10 +24,10 @@ class MY_Controller extends CI_Controller {
     function __construct() {
         parent::__construct();
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
-       // echo time();die;
+        // echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
         //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
-        //echo date('H:i:s d/m/Y', 1513064627);die;
+        //echo date('H:i:s d/m/Y', 1515603600);die;
         //    echo  strtotime('-1 month', 1512666000); die;
 //        echo strtotime('+1 day', strtotime(date('d-m-Y')));
 //        die;
@@ -35,11 +35,11 @@ class MY_Controller extends CI_Controller {
 //        echo time() . '<br>';
 //        echo strtotime('+1 day', strtotime(date('d-m-Y'))) - time(); die;
         //  echo time(). '<br>';
-       // echo strtotime('2018-01-20T18:30:14-0800'); die;
+        // echo strtotime('2018-01-20T18:30:14-0800'); die;
         //echo strtotime(date("d-m-Y 14:02"));die;
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
-
+       // echo strtotime('2018-01-12'); die;
         $this->controller = $this->router->fetch_class();
         $this->method = $this->router->fetch_method();
         $this->_check_login();
@@ -54,8 +54,8 @@ class MY_Controller extends CI_Controller {
         // phpinfo();
         require_once APPPATH . 'libraries/Pusher.php';
         //phpinfo();
-       // echo md5(md5('lakita2017'));die;
-      //  echo file_get_contents('https://graph.facebook.com/v2.11/1594885550807160/picture?type=large&access_token=EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD');die;
+        // echo md5(md5('lakita2017'));die;
+        //  echo file_get_contents('https://graph.facebook.com/v2.11/1594885550807160/picture?type=large&access_token=EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD');die;
 //        $comment = json_decode('{"entry": [{"changes": [{"field": "plugin_comment", "value": {"created_time": "2017-12-29T09:02:23+0000", "message": "c\u1ea3m \u01a1n page nh\u00e9", "from": {"name": "Ph\u1ea1m Ng\u1ecdc Chuy\u1ec3n", "id": "1180191648705232"}, "id": "1242593289171565_1440665862697639"}}], "id": "315347858825221", "time": 1514538143}], "object": "application"}');
 //        print_arr($comment);
 //        $idPage = explode('_', '1242593289171565_1440665862697639');
@@ -63,6 +63,7 @@ class MY_Controller extends CI_Controller {
 //        $page = json_decode(file_get_contents('https://graph.facebook.com/v2.11/1242593289171565?access_token=EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD'));
 //        
 //        print_arr($page->title);
+
         
 //        $num = range(43, 169);
 //       // print_arr($num);
@@ -75,6 +76,7 @@ class MY_Controller extends CI_Controller {
 //            echo 'UPDATE `tbl_contact` SET `code_cross_check` = \''.$new.'\' WHERE `code_cross_check` = \'' . $old .'\';<br>';
 //        }
 //     die;   
+
     }
 
     private function _check_login() {

@@ -494,33 +494,33 @@ class Report extends MY_Controller {
         $endDate = time();//strtotime(date("14-01-2018"));
         $conditionArr = array(
             'L1_td' => array(
-                'where' => array('date_handover >=' => ($today)),
+                'where' => array('date_rgt >=' => ($today)),
                 'sum' => 0
             ),
             'L2_td' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'date_handover >=' => ($today)),
+                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'date_rgt >=' => ($today)),
                 'sum' => 0
             ),
             'L6_td' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_, 'date_handover >=' => ($today)),
+                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_, 'date_rgt >=' => ($today)),
                 'sum' => 0
             ),
             'L1' => array(
-                'where' => array('date_handover >=' => $thisMonth, 'date_handover <=' => $endDate),
+                'where' => array('date_rgt >=' => $thisMonth, 'date_rgt <=' => $endDate),
                 'sum' => 0
             ),
             'L2' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'date_handover >=' => $thisMonth, 'date_handover <=' => $endDate),
+                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'date_rgt >=' => $thisMonth, 'date_rgt <=' => $endDate),
                 'sum' => 0
             ),
             'L6' => array(
                 'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_
-                    , 'date_handover >=' => $thisMonth,  'date_handover <=' => $endDate),
+                    , 'date_rgt >=' => $thisMonth,  'date_rgt <=' => $endDate),
                 'sum' => 0
             ),
             'L8' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
-                    'cod_status_id' => _DA_THU_LAKITA_, 'date_handover >=' => $thisMonth, 'date_handover <=' => $endDate),
+                'where' => array(
+                    'cod_status_id' => _DA_THU_LAKITA_, 'date_rgt >=' => $thisMonth, 'date_rgt <=' => $endDate),
                 'sum' => 0
             )
         );
@@ -596,7 +596,7 @@ class Report extends MY_Controller {
         $str = $this->load->view('report/view_general_report', $data, true);
         $this->load->library("email");
         $this->email->from('cskh@lakita.vn', "lakita.vn");
-        //$emailTo = 'chuyenbka@gmail.com';
+        $emailTo = 'chuyenbka@gmail.com';
         $emailTo = 'chuyenbka@gmail.com, ngoccongtt1@gmail.com, trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com';
         $this->email->to($emailTo);
         $this->email->subject('Báo cáo tổng hợp ngày ' . date('d-m-Y') . ' (by cron job)');

@@ -980,6 +980,7 @@ class Common extends MY_Controller {
         $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Trạng thái gọi');
         $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Trạng thái đơn hàng');
         $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Trạng thái giao hàng');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Đơn vị giao hàng');
         $objPHPExcel->getActiveSheet()->SetCellValue($columnName . $rowCount, 'Ghi chú cuộc gọi');
         $rowCount++;
 
@@ -989,6 +990,7 @@ class Common extends MY_Controller {
         $this->load->model('call_status_model');
         $this->load->model('ordering_status_model');
         $this->load->model('cod_status_model');
+         $this->load->model('providers_model');
         foreach ($post['contact_id'] as $value) {
             $input = array();
             $input['where'] = array('id' => $value);
@@ -1022,6 +1024,7 @@ class Common extends MY_Controller {
             $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $this->call_status_model->find_call_status_desc($contact[0]['call_status_id']));
             $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $this->ordering_status_model->find_ordering_status_desc($contact[0]['ordering_status_id']));
             $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $this->cod_status_model->find_cod_status_desc($contact[0]['cod_status_id']));
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $this->providers_model->find_provider_name($contact[0]['provider_id']));
             $objPHPExcel->getActiveSheet()->SetCellValue($columnName . $rowCount, $notes);
             $objPHPExcel->getActiveSheet()->getRowDimension($rowCount)->setRowHeight(35);
             $BStyle = array(
@@ -1047,7 +1050,7 @@ class Common extends MY_Controller {
         die;
         /* ====================xuất file excel (end)============================== */
     }
-    
+
     public function ExportL7ToExcel() {
         /* ====================xuất file excel============================== */
         $post = $this->input->post();
