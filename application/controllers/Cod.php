@@ -487,7 +487,7 @@ class Cod extends MY_Controller {
             show_error_and_redirect($error, '', false);
         }
         $this->load->model('cod_cross_check_model');
-        $today = date('dm');
+        $today = date('dmy');
         $where = array('date_print_cod' => $today, 'provider_id' => $post['provider_id_reset']);
         $this->cod_cross_check_model->delete($where);
 

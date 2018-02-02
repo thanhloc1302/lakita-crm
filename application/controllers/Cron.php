@@ -181,28 +181,28 @@ class Cron extends CI_Controller {
     }
 
     function test_cost_campaign() {
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 2; $i++) {
             $day = "-" . $i . " days";
             $this->update_campain_cost($day);
         }
     }
 
     function test_cost_channel() {
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 2; $i++) {
             $day = "-" . $i . " days";
             $this->update_channel_cost($day);
         }
     }
 
     function test_cost_adset() {
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 2; $i++) {
             $day = "-" . $i . " days";
             $this->update_adset_cost($day);
         }
     }
 
     function test_cost_ads() {
-        for ($i = 1; $i <= 30; $i++) {
+        for ($i = 1; $i <= 2; $i++) {
             $day = "-" . $i . " days";
             $this->update_ad_cost($day);
         }
