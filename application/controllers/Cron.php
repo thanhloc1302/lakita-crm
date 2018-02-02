@@ -84,16 +84,18 @@ class Cron extends CI_Controller {
          */
         $where = array('channel_id' => 2, 'time' => $today);
         $this->channel_cost_model->delete($where);
-        $accountFBADS = [
-            'Lakita_cu' => '512062118812690',
-            'Lakita_3.0' => '600208190140429',
-            'Lakita_K3' => '817360198425226'];
+//        $accountFBADS = [
+//            'Lakita_cu' => '512062118812690',
+//            'Lakita_3.0' => '600208190140429',
+//            'Lakita_K3' => '817360198425226'];
+        $this->load->model('account_fb_model');
+        $accountFBADS = $this->account_fb_model->load_all([]);
         $param['spend'] = 0;
         $param['total_C1'] = 0;
         $param['total_C2'] = 0;
 
         foreach ($accountFBADS as $value2) {
-            $url = 'https://graph.facebook.com/v2.11/act_' . $value2 . '/' .
+            $url = 'https://graph.facebook.com/v2.11/act_' . $value2['fb_id_account'] . '/' .
                     'insights?fields=spend,reach,clicks&level=account'
                     . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
             $spend = get_fb_request($url);
@@ -119,7 +121,7 @@ class Cron extends CI_Controller {
          */
         $this->load->model('adset_model');
         $input = array();
-         $input['where'] = array('active' => 1, 'channel_id' => 2);
+        $input['where'] = array('active' => 1, 'channel_id' => 2);
         $adsets = $this->adset_model->load_all($input);
         foreach ($adsets as $value) {
             /*
@@ -155,7 +157,7 @@ class Cron extends CI_Controller {
          */
         $this->load->model('ad_model');
         $input = array();
-         $input['where'] = array('active' => 1, 'channel_id' => 2);
+        $input['where'] = array('active' => 1, 'channel_id' => 2);
         $adsets = $this->ad_model->load_all($input);
         foreach ($adsets as $value) {
             /*
@@ -259,13 +261,13 @@ class Cron extends CI_Controller {
                 if ($value->delivery_info->status == 'active') {
                     $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
                     $where = array('campaign_id_facebook' => $value->id);
-                    $data = array('active' => '1', 'date_fb_create' => $dateFbCreate, 
+                    $data = array('active' => '1', 'date_fb_create' => $dateFbCreate,
                         'name' => $value->name, 'account_fb_id' => $value->account_id);
                     $this->campaign_model->update($where, $data);
                 } else {
                     $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
                     $where = array('campaign_id_facebook' => $value->id);
-                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate, 
+                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate,
                         'name' => $value->name, 'account_fb_id' => $value->account_id);
                     $this->campaign_model->update($where, $data);
                 }
@@ -287,13 +289,13 @@ class Cron extends CI_Controller {
                 if ($value->delivery_info->status == 'active') {
                     $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
                     $where = array('adset_id_facebook' => $value->id);
-                    $data = array('active' => '1', 'date_fb_create' => $dateFbCreate, 
+                    $data = array('active' => '1', 'date_fb_create' => $dateFbCreate,
                         'name' => $value->name, 'account_fb_id' => $value->account_id);
                     $this->adset_model->update($where, $data);
                 } else {
                     $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
                     $where = array('adset_id_facebook' => $value->id);
-                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate, 
+                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate,
                         'name' => $value->name, 'account_fb_id' => $value->account_id);
                     $this->adset_model->update($where, $data);
                 }
@@ -315,13 +317,13 @@ class Cron extends CI_Controller {
                 if ($value->delivery_info->status == 'active') {
                     $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
                     $where = array('ad_id_facebook' => $value->id);
-                    $data = array('active' => '1', 'date_fb_create' => $dateFbCreate, 
+                    $data = array('active' => '1', 'date_fb_create' => $dateFbCreate,
                         'name' => $value->name, 'account_fb_id' => $value->account_id);
                     $this->ad_model->update($where, $data);
                 } else {
                     $dateFbCreate = isset($value->created_time) ? strtotime($value->created_time) : 0;
                     $where = array('ad_id_facebook' => $value->id);
-                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate, 
+                    $data = array('active' => '0', 'date_fb_create' => $dateFbCreate,
                         'name' => $value->name, 'account_fb_id' => $value->account_id);
                     $this->ad_model->update($where, $data);
                 }
