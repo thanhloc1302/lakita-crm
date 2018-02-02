@@ -23,8 +23,10 @@ class MY_Controller extends CI_Controller {
 
     function __construct() {
         parent::__construct();
+        // echo base64_decode('4oCLaHR0cDovL2xha2l0YS52bjoxOTM1L3ZvZC9fZGVmaW5zdF8vbXA0OjIwMTcvMDgvMi1LVDIxMC8xLUtUMjEwR0RML0tUMjEwLUJhaS1Tby0wMy5tcDQvbWFuaWZlc3QubXBk'); die;
+        // echo base64_encode('​http://lakita.vn:1935/vod/_definst_/mp4:2017/08/2-KT210/1-KT210GDL/KT210-Bai-So-03.mp4/manifest.mpd');die;
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
-        // echo time();die;
+       //  echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
         //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
         //echo date('H:i:s d/m/Y', 1515603600);die;
@@ -39,7 +41,7 @@ class MY_Controller extends CI_Controller {
         //echo strtotime(date("d-m-Y 14:02"));die;
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
-       // echo strtotime('2018-01-12'); die;
+        // echo strtotime('2018-01-12'); die;
         $this->controller = $this->router->fetch_class();
         $this->method = $this->router->fetch_method();
         $this->_check_login();
@@ -63,8 +65,6 @@ class MY_Controller extends CI_Controller {
 //        $page = json_decode(file_get_contents('https://graph.facebook.com/v2.11/1242593289171565?access_token=EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD'));
 //        
 //        print_arr($page->title);
-
-        
 //        $num = range(43, 169);
 //       // print_arr($num);
 //        
@@ -75,8 +75,13 @@ class MY_Controller extends CI_Controller {
 //            $new =  'THU54110117'. ($number2);
 //            echo 'UPDATE `tbl_contact` SET `code_cross_check` = \''.$new.'\' WHERE `code_cross_check` = \'' . $old .'\';<br>';
 //        }
-//     die;   
-
+     preg_match('/"(.+)"/', 'program "Hello World"', $matches);
+ 
+echo '<pre>';
+ 
+print_r($matches);
+ 
+echo '</pre>';die;
     }
 
     private function _check_login() {

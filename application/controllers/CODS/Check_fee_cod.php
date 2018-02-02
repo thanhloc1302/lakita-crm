@@ -369,7 +369,7 @@ class Check_fee_cod extends MY_Table {
             } else {
                 $fee[$key]['is_match'] = 0;
             }
-            if ($fee[$key]['weight_envelope'] > 50) {
+            if ($fee[$key]['weight_envelope'] > 90) {
                 $fee[$key]['is_match'] = 0;
             }
             $fee[$key]['time'] = time();
