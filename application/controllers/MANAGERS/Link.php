@@ -290,7 +290,14 @@ class Link extends MY_Table {
             $input['where'] = array('id' => $id);
             $paramArr = array('channel_id', 'campaign_id', 'adset_id', 'ad_id', 'landingpage_id');
             foreach ($paramArr as $value) {
-                if (isset($post['edit_' . $value])) {
+                if (isset($post['edit_' . $value]) && $value == 'landingpage_id') {
+                    $this->load->model('landingpage_model');
+                    $input_page['select'] = 'url';
+                    $input_page['where'] = array('id' => $post['edit_landingpage_id']);
+                    $page_url = $this->landingpage_model->load_all($input_page);
+                    $param['url'] = $page_url[0]['url'].'?link='.$id;
+                    $param[$value] = $post['edit_' . $value];
+                }elseif(isset($post['edit_' . $value])){
                     $param[$value] = $post['edit_' . $value];
                 }
             }

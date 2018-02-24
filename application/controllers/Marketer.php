@@ -280,5 +280,9 @@ class Marketer extends MY_Table {
         $input['where']['marketer_id'] = $this->user_id;
         $this->L['all'] = count($this->contacts_model->load_all($input));
     }
+    
+    function getItem(){
+        
+    }
 
 }
