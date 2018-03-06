@@ -75,13 +75,6 @@ class MY_Controller extends CI_Controller {
 //            $new =  'THU54110117'. ($number2);
 //            echo 'UPDATE `tbl_contact` SET `code_cross_check` = \''.$new.'\' WHERE `code_cross_check` = \'' . $old .'\';<br>';
 //        }
-     preg_match('/"(.+)"/', 'program "Hello World"', $matches);
- 
-echo '<pre>';
- 
-print_r($matches);
- 
-echo '</pre>';die;
     }
 
     private function _check_login() {

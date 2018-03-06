@@ -55,6 +55,9 @@ class Home extends CI_Controller {
                 case 7:
                     redirect(base_url('vip/index' . $this->initGetVariable));
                     break;
+                case 8:
+                    redirect(base_url('teacher' . $this->initGetVariable));
+                    break;
                 default :
                     echo 'Có lỗi xảy ra!';
                     die;

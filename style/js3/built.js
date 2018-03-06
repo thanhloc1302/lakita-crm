@@ -3263,3 +3263,70 @@ $(document).on('change', '[name="add_landingpage_id"]', function () {
     $(".modal-replace-preview-landingpage").html(preview_iframe);
     $(".modal-preview-landingpage").modal('show');
 });
+
+
+
+/* locnt */
+
+    /* xóa giảng viên */
+$(document).ready(function () {
+    $(document).on('click', '.btn_delete_teacher', function (e) {
+        var r = confirm("Bạn có chắc chắn muốn xóa Giảng viên này không?");
+        if (r == true) {
+            var del = $(this);
+            var teacher_id = $(this).attr("teacher_id");
+            e.preventDefault();
+            $.ajax({
+                type: "POST",
+                url: $("#base_url").val() + "MANAGERS/teacher/delete_teacher",
+                data: {
+                    teacher_id: teacher_id
+                },
+                success: function (data) {
+                  //console.log(data);
+                    if (data === '1')
+                    {
+                        del.parent().parent().parent().hide();
+                        //location.reload();
+                    } else {
+                        alert(data);
+                    }
+                },
+                error: function (errorThrown) {
+                    alert(errorThrown);
+                }
+            });
+        }
+    });
+});
+ /* thêm giảng viên mới */
+$(function () {
+    $(document).on('click', '.btn_manage_teacher', function (e) {
+        e.preventDefault();
+        var teacher_id = $(this).attr("teacher_id");
+        var url = $("#base_url").val() + "MANAGERS/teacher/show_edit_teacher";
+        $.ajax({
+            url: url,
+            type: "POST",
+            data: {
+                teacher_id: teacher_id
+            },
+            success: function (data) {
+                console.log(data);
+                $("div.replace_content_edit_teacher_modal").html(data);
+            },
+            complete: function () {
+                $(".edit_teacher_modal").modal("show");
+            }
+        });
+    });
+    $('.edit_teacher_modal').on('shown.bs.modal', function () {
+        if ($(".table-1").height() > $(".table-2").height())
+        {
+            $(".table-2").height($(".table-1").height());
+        } else
+        {
+            $(".table-1").height($(".table-2").height());
+        }
+    });
+});
