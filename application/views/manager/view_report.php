@@ -1,27 +1,8 @@
 <form action="#" method="GET" id="action_contact" class="form-inline">
     <?php $this->load->view('common/content/filter'); ?>
 </form>
-<table class="table table-bordered table-striped view_report gr4-table">
-    <thead class="fixed-table" style="display: none;">
-        <tr>
-            <th style="background: none; border: none;" class="f_staff_0"></th>
-            <?php
-            foreach ($staffs as $value) {
-                if ($value['L1'] > 0) {
-                    ?>
-                    <th class="f_staff_<?php echo $value['id']; ?>">
-                        <?php echo $value['name']; ?>
-                    </th>
-                    <?php
-                }
-            }
-            ?>
-            <th class="f_staff_sum">
-                Tổng
-            </th>
-        </tr>
-    </thead>
-    <thead class="table-head-pos">
+<table class="table table-bordered table-striped view_report gr4-table table-fixed-head">
+    <thead>
         <tr>
             <th style="background: none" class="staff_0"></th>
             <?php

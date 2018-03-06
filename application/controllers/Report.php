@@ -12,15 +12,20 @@
  */
 class Report extends MY_Controller {
 
-    function send_report_sale_daily() {
-        $require_model = array(
-            'courses' => array()
-        );
-        $data = $this->_get_require_data($require_model);
-        $get = $this->input->get();
-        if (empty($get) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die;
+    public function __construct() {
+        parent::__construct();
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        ini_set('max_execution_time', 300);
+        if (!$this->input->is_cli_request()) {
+            show_error('Access denied', 403);
+        } else {
+            echo '1';
         }
+    }
+
+    function send_report_sale_daily() {
+        $get = [];
+        $data = [];
         $input = array();
         $input['where'] = array('role_id' => 1);
         $staffs = $this->staffs_model->load_all($input);
@@ -157,10 +162,7 @@ class Report extends MY_Controller {
 
     function send_report_revenue_daily() {
         $this->load->helper('manager_helper');
-        $get = $this->input->get();
-        if (empty($get) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die;
-        }
+
         $input = array();
         $this->load->model('courses_model');
         $courses = $this->courses_model->load_all($input);
@@ -220,10 +222,7 @@ class Report extends MY_Controller {
     }
 
     public function pending2() {
-        $get = $this->input->get();
-        if (empty($get) || !isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die;
-        }
+
         require_once APPPATH . 'libraries/simple_html_dom.php';
         $this->load->model('viettel_log_model');
         $input = array();
@@ -236,11 +235,14 @@ class Report extends MY_Controller {
             /*
              * Cập nhật trạng thái giao hàng viettel
              */
+            if (!is_object($html->find('div[id=dnn_ctr507_Main_ViewKQ_PanelItem]', 0))) {
+                continue;
+            }
             $stt = $html->find('div[id=dnn_ctr507_Main_ViewKQ_PanelItem]', 0)->find("#dnn_ctr507_Main_ViewKQ_RepeaterView_Label5_0", 0)->plaintext;
             $where = ['code_cross_check' => $contact['code_cross_check']];
             $data = ['viettel_tracking_status' => $stt];
             $this->contacts_model->update($where, $data);
-            
+
             /*
              * Chèn data vào bảng log
              */
@@ -271,10 +273,7 @@ class Report extends MY_Controller {
         $this->load->helper('bill_helper');
         $this->load->model('call_log_model');
         $this->load->model('L7_check_model');
-        $get = $this->input->get();
-        if (empty($get) || !isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die;
-        }
+
 
         $input = array();
         $input['select'] = 'code_cross_check';
@@ -308,7 +307,7 @@ class Report extends MY_Controller {
             $viettel_code_cross_check[] = $code_cross_check;
             if ($status == 'Thanh cong - phat thanh cong' || $status == 'Phát thành công') {
                 $where = array('code_cross_check' => $code_cross_check);
-                $data = array('cod_status_id' => _DA_THU_COD_, 'date_receive_cod' => time(), 'last_activity' => time());
+                $data = array('cod_status_id' => _DA_THU_COD_, 'date_receive_cod' => time(), 'date_expect_receive_cod' => '0', 'last_activity' => time());
                 $this->contacts_model->update($where, $data);
                 $input_success = array();
                 $input_success['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
@@ -317,9 +316,9 @@ class Report extends MY_Controller {
                 foreach ($contactSuccessArr as $contactSuccess) {
                     $contact_success[] = $contactSuccess;
                 }
-            } else if ($status == 'Thanh cong chuyen tra nguoi gui' || $status == 'CHuyển trả người gửi') {
+            } else if ($status == 'Thanh cong chuyen tra nguoi gui' || $status == 'CHuyển trả người gửi' ||  $status == 'Chuyển hoàn bưu cục gốc') {
                 $where = array('code_cross_check' => $code_cross_check);
-                $data = array('cod_status_id' => _HUY_DON_, 'date_receive_cancel_cod' => time(), 'last_activity' => time());
+                $data = array('cod_status_id' => _HUY_DON_, 'date_expect_receive_cod' => '0', 'date_receive_cancel_cod' => time(), 'last_activity' => time());
                 $this->contacts_model->update($where, $data);
                 $input_cancel = array();
                 $input_cancel['select'] = 'id, name, email, phone, address, price_purchase, date_rgt, code_cross_check';
@@ -398,27 +397,25 @@ class Report extends MY_Controller {
 
         $data_load = [];
         $data_load['total_contacts'] = count($contacts);
-        $data_load['contacts'] = ReArrangeContactsByBillCheck($contact_warning);
-        $data_load['contact_other'] = ReArrangeContactsByBillCheck($contact_other);
-        $data_load['contact_success'] = ReArrangeContactsByBillCheck($contact_success);
-        $data_load['contact_cancel'] = ReArrangeContactsByBillCheck($contact_cancel);
-        $data_load['contact_not_send'] = ReArrangeContactsByBillCheck($contact_not_send);
+        $data_load['contacts'] = ($contact_warning);
+        $data_load['contact_other'] = ($contact_other);
+        $data_load['contact_success'] = ($contact_success);
+        $data_load['contact_cancel'] = ($contact_cancel);
+        $data_load['contact_not_send'] = $contact_not_send;
+                //ReArrangeContactsByBillCheck($contact_not_send);
         $str = $this->load->view('cod/waiting_cancel_list/index', $data_load, true);
         //$emailTo = 'chuyenpn@lakita.vn';
         $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com, lakitavn@gmail.com';
         $this->load->library("email");
         $this->email->from('cskh@lakita.vn', "lakita.vn");
         $this->email->to($emailTo);
-        $this->email->subject('Các contact chờ duyệt chuyển hoàn (nguy cơ hủy đơn) ngày ' . date('d-m-Y') . ' (by cron job)');
+        $this->email->subject('BÁO CÁO COD NGÀY ' . date('d-m-Y') . ' (BY CLI & CRON JOB)');
         $this->email->message($str);
         $this->email->send();
     }
 
     function send_report_product_daily() {
-        $get = $this->input->get();
-        if (empty($get) || !isset($get['key']) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die;
-        }
+        $get = [];
         $input = array();
         $this->load->model('courses_model');
         $courses = $this->courses_model->load_all($input);
@@ -487,40 +484,43 @@ class Report extends MY_Controller {
     function view_general_report() {
         $this->load->helper('manager_helper');
         $input = array();
+        $input['where'] = array('active' => '1');
         $this->load->model('courses_model');
         $courses = $this->courses_model->load_all($input);
-        $get = $this->input->get();
-        if (empty($get) || $get['key'] != 'ACOPDreqidsadfs2') {
-            die;
-        }
+        $get = [];
+        
+        $today = strtotime(date("d-m-Y"));
+        $thisMonth = strtotime(date("01-m-Y"));
+        $endDate = time();//strtotime(date("14-01-2018"));
         $conditionArr = array(
             'L1_td' => array(
-                'where' => array('date_handover >=' => strtotime(date("d-m-Y"))),
+                'where' => array('date_rgt >=' => ($today)),
                 'sum' => 0
             ),
             'L2_td' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'date_handover >=' => strtotime(date("d-m-Y"))),
+                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'date_rgt >=' => ($today)),
                 'sum' => 0
             ),
             'L6_td' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_, 'date_handover >=' => strtotime(date("d-m-Y"))),
+                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_, 'date_rgt >=' => ($today)),
                 'sum' => 0
             ),
             'L1' => array(
-                'where' => array('date_handover >=' => strtotime(date("01-m-Y"))),
+                'where' => array('date_rgt >=' => $thisMonth, 'date_rgt <=' => $endDate),
                 'sum' => 0
             ),
             'L2' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'date_handover >=' => strtotime(date("01-m-Y"))),
+                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'date_rgt >=' => $thisMonth, 'date_rgt <=' => $endDate),
                 'sum' => 0
             ),
             'L6' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_, 'date_handover >=' => strtotime(date("01-m-Y"))),
+                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_
+                    , 'date_rgt >=' => $thisMonth,  'date_rgt <=' => $endDate),
                 'sum' => 0
             ),
             'L8' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
-                    'cod_status_id' => _DA_THU_LAKITA_, 'date_handover >=' => strtotime(date("01-m-Y"))),
+                'where' => array(
+                    'cod_status_id' => _DA_THU_LAKITA_, 'date_rgt >=' => $thisMonth, 'date_rgt <=' => $endDate),
                 'sum' => 0
             )
         );
@@ -563,7 +563,8 @@ class Report extends MY_Controller {
              */
             $conditional = array();
             $conditional['select'] = 'course_code, cod_status_id, price_purchase';
-            $conditional['where']['date_handover >='] = strtotime(date('01-m-Y'));
+            $conditional['where']['date_handover >='] = $thisMonth;
+            $conditional['where']['date_handover <='] = $endDate;
             $conditional['where']['course_code'] = $value['course_code'];
             $conditional['where']['cod_status_id'] = _DA_THU_LAKITA_;
             $_L8 = $this->contacts_model->load_all($conditional);
@@ -577,17 +578,26 @@ class Report extends MY_Controller {
             $data[$key] = $value['sum'];
         }
         $data['sumL8'] = $sumL8;
-        $data['courses'] = $courses;
+
         $data['content'] = 'report/view_general_report';
 
         // $this->load->view('report/view_general_report', $data);
 
+        usort($courses, function($a, $b) {
+            return $a['L1'] - $b['L1'];
+        });
+
+        foreach ($courses as $key => $course) {
+            if ($course['L1'] == 0) {
+                unset($courses[$key]);
+            }
+        }
+        $data['courses'] = $courses;
         $str = $this->load->view('report/view_general_report', $data, true);
         $this->load->library("email");
         $this->email->from('cskh@lakita.vn', "lakita.vn");
-        //$emailTo = 'chuyenbka@gmail.com';
-        $emailTo = 'chuyenbka@gmail.com, ngoccongtt1@gmail.com, '
-                . 'trinhnv@bkindex.com, tund@bkindex.com';
+        $emailTo = 'chuyenbka@gmail.com';
+        $emailTo = 'chuyenbka@gmail.com, ngoccongtt1@gmail.com, trinhnv@lakita.vn, tund@bkindex.com, hoangthuy100995@gmail.com';
         $this->email->to($emailTo);
         $this->email->subject('Báo cáo tổng hợp ngày ' . date('d-m-Y') . ' (by cron job)');
         $this->email->message($str);
@@ -660,8 +670,137 @@ class Report extends MY_Controller {
         die;
     }
 
-    function view_pivot_table() {
-        $this->load->view('pivot_table');
+   
+
+    public function GetContactReceiveCodTomorrow() {
+        $this->load->model('cod_status_model');
+        $input = [];
+        $data_load['cod_status'] = $this->cod_status_model->load_all($input);
+        $today = strtotime(date('d-m-Y'));
+        $tomorrow = $today + 24 * 3600 - 1;
+        $input = array();
+        $input['select'] = 'id, name, phone, address, course_code, cod_status_id, date_expect_receive_cod, code_cross_check';
+        $input['where'] = array("((`date_expect_receive_cod` >= $today AND `date_expect_receive_cod` <= $tomorrow AND `cod_status_id` = '0') "
+            . "OR (`date_expect_receive_cod` > 0 AND `date_expect_receive_cod` <= $tomorrow AND `cod_status_id` = '1'))" => 'NO-VALUE');
+        $contacts = $this->contacts_model->load_all($input);
+        $this->load->model('notes_model');
+        foreach ($contacts as &$value) {
+            $input = array();
+            $input['where'] = array('contact_code' => $value['phone'] . '_' . $value['course_code']);
+            $input['order'] = array('id' => 'DESC');
+            $last_note = $this->notes_model->load_all($input);
+            $notes = '';
+            if (!empty($last_note)) {
+                foreach ($last_note as $value2) {
+                    $notes .= '<p>' . date('d/m/Y', $value2['time']) . ' ==> ' . $value2['content'] . '</p>';
+                }
+                $value['last_note'] = $notes;
+            } else {
+                $value['last_note'] = $notes;
+            }
+        }
+        unset($value);
+        $data_load['total_contacts'] = count($contacts);
+        $data_load['contacts'] = $contacts;
+        $str = $this->load->view('CODS/contact-expect-receive-cod/index', $data_load, true);
+        if (!empty($contacts)) {
+            $emailTo = 'chuyenpn@lakita.vn, ngoccongtt1@gmail.com, trinhnv@lakita.vn, lakitavn@gmail.com';
+            $this->load->library("email");
+            $this->email->from('cskh@lakita.vn', "lakita.vn");
+            $this->email->to($emailTo);
+            $this->email->subject('CONTACT DỰ KIẾN GIAO HÀNG VÀ YÊU CẦU PHÁT LẠI VÀO HÔM NAY (BY CLI & CRON JOB)');
+            $this->email->message($str);
+            $this->email->send();
+        }
+    }
+
+    public function UpdateCampaignAccountFb() {
+        $this->load->model('campaign_model');
+        $input = [];
+        // $input['where'] = ['active' => '1'];
+        $campaigns = $this->campaign_model->load_all($input);
+        foreach ($campaigns as $campaign) {
+            if ($campaign['campaign_id_facebook'] != '') {
+                $url = 'https://graph.facebook.com/v2.11/' . $campaign['campaign_id_facebook'] . '?fields=account_id&access_token=' . ACCESS_TOKEN;
+                $spend = get_fb_request($url);
+                if (!empty($spend)) {
+                    $where = array('campaign_id_facebook' => $spend->id);
+                    $data = array('account_fb_id' => $spend->account_id);
+                    $this->campaign_model->update($where, $data);
+                }
+            }
+        }
+    }
+
+    public function UpdateAdsetAccountFb() {
+        $this->load->model('adset_model');
+        $input = [];
+        // $input['where'] = ['active' => '1'];
+        $campaigns = $this->adset_model->load_all($input);
+        foreach ($campaigns as $campaign) {
+            if ($campaign['adset_id_facebook'] != '') {
+                $url = 'https://graph.facebook.com/v2.11/' . $campaign['adset_id_facebook'] . '?fields=account_id&access_token=' . ACCESS_TOKEN;
+                $spend = get_fb_request($url);
+                if (!empty($spend)) {
+                    $where = array('adset_id_facebook' => $spend->id);
+                    $data = array('account_fb_id' => $spend->account_id);
+                    $this->adset_model->update($where, $data);
+                }
+            }
+        }
+    }
+
+    public function UpdateAdAccountFb() {
+        $this->load->model('ad_model');
+        $input = [];
+        // $input['where'] = ['active' => '1'];
+        $campaigns = $this->ad_model->load_all($input);
+        foreach ($campaigns as $campaign) {
+            if ($campaign['ad_id_facebook'] != '') {
+                $url = 'https://graph.facebook.com/v2.11/' . $campaign['ad_id_facebook'] . '?fields=account_id&access_token=' . ACCESS_TOKEN;
+                $spend = get_fb_request($url);
+                if (!empty($spend)) {
+                    $where = array('ad_id_facebook' => $spend->id);
+                    $data = array('account_fb_id' => $spend->account_id);
+                    $this->ad_model->update($where, $data);
+                }
+            }
+        }
+    }
+
+    public function UpdateCampaignChannel() {
+        $this->load->model('campaign_model');
+        $this->load->model('adset_model');
+        $input = [];
+        $campaigns = $this->campaign_model->load_all($input);
+        foreach ($campaigns as $campaign) {
+            $input = [];
+            $input['select'] = 'id';
+            $input['where'] = array('campaign_id' => $campaign['id']);
+            $adsets = $this->adset_model->load_all($input);
+            foreach($adsets as $adset){
+                $where = array('id' => $adset['id']);
+                $data = array('channel_id' => $campaign['channel_id']);
+                $this->adset_model->update($where, $data);
+            }
+        }
+    }
+     public function UpdateAdsetChannel() {
+        $this->load->model('adset_model');
+        $this->load->model('ad_model');
+        $input = [];
+        $adsets = $this->adset_model->load_all($input);
+        foreach ($adsets as $adset) {
+            $input = [];
+             $input['select'] = 'id';
+            $input['where'] = array('adset_id' => $adset['id']);
+            $ads = $this->ad_model->load_all($input);
+            foreach($ads as $ad){
+                $where = array('id' => $ad['id']);
+                $data = array('channel_id' => $adset['channel_id']);
+                $this->ad_model->update($where, $data);
+            }
+        }
     }
 
 }

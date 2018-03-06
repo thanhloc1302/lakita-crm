@@ -162,6 +162,7 @@ class MY_Table extends MY_Controller {
 
         $this->conditional = $input;
         $total_row = $this->{$this->model}->m_count_all_result_from_get($this->conditional);
+
         $this->data['total_rows'] = $total_row;
 
         /*
@@ -174,20 +175,24 @@ class MY_Table extends MY_Controller {
         if ($this->limit != 0 || $this->offset != 0) {
             $this->conditional['limit'] = array($this->limit, $this->offset);
         }
+        //$this->conditional['limit'] = array(200, 0);
+        //   print_arr($this->conditional);
         /*
-         * kiểm tra xem $this->conditional đã có order chưa, nếu chưa thì để mặc định là order theo id và desc
+         * kiểm tra xem $this->conditional đã có order chưa, nếu chưa thì để mặc định là order theo id desc
          */
         if (!$has_user_order) {
             $this->conditional['order'] = array('id' => 'DESC');
         }
         $this->data['rows'] = $this->{$this->model}->load_all($this->conditional);
+        // echoQuery();
 
         /*
          * Thấy thông tin hiển thị phân trang: thông tin hiển thị contact đầu, contact cuối và tổng contact
          */
         $base_url = ($this->sub_folder == '') ? $this->controller . '/' . $this->method : $this->sub_folder . '/' . $this->controller . '/' . $this->method;
         $this->num_segment = ($this->sub_folder == '') ? 3 : 4;
-        $this->pagination_link = $this->_create_pagination_link($base_url, $total_row, $this->num_segment);
+
+       $this->pagination_link = $this->_create_pagination_link($total_row, $base_url, $this->num_segment);
         $this->begin_paging = ($total_row == 0) ? 0 : $this->offset + 1;
         $this->end_paging = (($this->offset + $this->limit) < $total_row) ? ($this->offset + $this->limit) : $total_row;
         $this->total_paging = $total_row;
@@ -197,7 +202,9 @@ class MY_Table extends MY_Controller {
         $this->load->view('base/add_item/ajax_content');
     }
 
-    function show_edit_item() {
+    function show_edit_item($inputData = []) {
+        $canEdited = 1;
+        $data = $inputData;
         $post = $this->input->post();
         $input = array();
         $input['where'] = array('id' => $post['item_id']);
@@ -206,7 +213,11 @@ class MY_Table extends MY_Controller {
             echo 'Không tồn tại danh mục này!';
             die;
         }
+        if (isset($rows[0]['marketer_id']) && $rows[0]['marketer_id'] != $this->user_id) {
+            $canEdited = 0;
+        }
         $data['row'] = $rows[0];
+        $data['canEdited'] = $canEdited;
         $this->load->view('base/edit_item/ajax_content', $data);
     }
 
@@ -279,14 +290,16 @@ class MY_Table extends MY_Controller {
                 }
                 if (strpos($key, "filter_date_end_") !== FALSE && $value != '') {
                     $column_name = substr($key, strlen("filter_date_end_"));
-                    $input_get['where'][$column_name . '<='] = strtotime($value) + 3600 * 24;
+                    $input_get['where'][$column_name . '<='] = strtotime($value) + 3600 * 24 - 1;
                 }
                 if (strpos($key, "filter_date_") !== FALSE && $value != '') {
                     $dateArr = explode('-', $value);
                     $date_from = trim($dateArr[0]);
+
                     $date_from = strtotime(str_replace("/", "-", $date_from));
+
                     $date_end = trim($dateArr[1]);
-                    $date_end = strtotime(str_replace("/", "-", $date_end)) + 3600 * 24;
+                    $date_end = strtotime(str_replace("/", "-", $date_end));
                     $column_name = substr($key, strlen("filter_date_"));
                     $input_get['where'][$column_name . '>='] = $date_from;
                     $input_get['where'][$column_name . '<='] = $date_end;
@@ -361,13 +374,70 @@ class MY_Table extends MY_Controller {
         $input = array();
         $input['select'] = 'id';
         $input['where']['date_rgt >'] = strtotime(date('d-m-Y'));
-        $input['where']['source_id'] = '1';
+        $input['where']['is_hide'] = '0';
         $this->L['C3'] = count($this->contacts_model->load_all($input));
 
         $input = array();
         $input['select'] = 'id';
-        $input['where']['source_id'] = '1';
+        $input['where']['is_hide'] = '0';
         $this->L['all'] = count($this->contacts_model->load_all($input));
+    }
+
+    protected function GetProccessMarketerToday() {
+        $marketers = $this->staffs_model->GetActiveMarketers();
+
+        foreach ($marketers as $key => &$marketer) {
+            if ($marketer['username'] == 'trinhnv2' || $marketer['username'] == 'congnn2') {
+                unset($marketers[$key]);
+                continue;
+            }
+            $inputContact = array();
+            $inputContact['select'] = 'id';
+            $inputContact['where'] = array('marketer_id' => $marketer['id'], 'date_rgt >' => strtotime(date('d-m-Y')), 'is_hide' => '0');
+            $today = $this->contacts_model->load_all($inputContact);
+            $marketer['totalC3'] = count($today);
+            $marketer['progress'] = ($marketer['targets'] > 0) ? round(($marketer['totalC3'] / $marketer['targets']) * 100, 2) : 'N/A';
+        }
+        unset($marketer);
+
+        usort($marketers, function($a, $b) {
+            return -$a['totalC3'] + $b['totalC3'];
+        });
+        $inputContact = array();
+        $inputContact['select'] = 'id';
+        $inputContact['where'] = array('date_rgt >' => strtotime(date('d-m-Y')), 'is_hide' => '0');
+        $today = $this->contacts_model->load_all($inputContact);
+        $C3Team = count($today);
+        // print_arr($marketers);
+        return array('marketers' => $marketers, 'C3Team' => $C3Team);
+    }
+
+    protected function GetProccessMarketerThisMonth() {
+        $marketers = $this->staffs_model->GetActiveMarketers();
+        foreach ($marketers as $key => &$marketer) {
+            if ($marketer['username'] == 'trinhnv2' || $marketer['username'] == 'congnn2') {
+                unset($marketers[$key]);
+                continue;
+            }
+            $inputContact = array();
+            $inputContact['select'] = 'id';
+            $inputContact['where'] = array('marketer_id' => $marketer['id'], 'date_rgt >' => strtotime(date('01-m-Y')), 'is_hide' => '0');
+            $today = $this->contacts_model->load_all($inputContact);
+            $marketer['totalC3'] = count($today);
+            $marketer['targets'] = $marketer['targets'] * 30;
+            $marketer['progress'] = ($marketer['targets'] > 0) ? round(($marketer['totalC3'] / $marketer['targets']) * 100, 2) : 'N/A';
+        }
+        unset($marketer);
+        usort($marketers, function($a, $b) {
+            return -$a['totalC3'] + $b['totalC3'];
+        });
+        $inputContact = array();
+        $inputContact['select'] = 'id';
+        $inputContact['where'] = array('date_rgt >' => strtotime(date('01-m-Y')), 'is_hide' => '0');
+        $today = $this->contacts_model->load_all($inputContact);
+        $C3Team = count($today);
+        // print_arr($marketers);
+        return array('marketers' => $marketers, 'C3Team' => $C3Team);
     }
 
 }

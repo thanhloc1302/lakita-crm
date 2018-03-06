@@ -3,6 +3,9 @@
         <h3 class="text-center marginbottom20"> <?php echo $list_title; ?> (<?php echo $total_rows; ?>)</h3>
     </div>
 </div>
+
+
+
 <form action="#" method="GET" class="form-inline" id="form_item">
     <!-- Các trường filter trong bảng-->
     <?php $this->load->view('base/filter_item/index'); ?>

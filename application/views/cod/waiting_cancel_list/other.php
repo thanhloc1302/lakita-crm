@@ -35,7 +35,7 @@
                         <?php echo $value['id']; ?>
                     </td>
                     <td>
-                        <?php echo $value['name']; ?>
+                        <a href="<?php echo 'https://crm2.lakita.vn/home/index?view_detail_contact='.$value['id']?>"><?php echo $value['name']; ?> </a>
                     </td>
                     <td>
                         <?php echo $value['phone']; ?>

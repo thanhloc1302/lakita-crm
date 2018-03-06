@@ -23,7 +23,9 @@
                             break;
 
                         case 'custom':
-                            $this->load->view($this->view_path . '/filter_item/' . $key);
+                            $data['key'] = $key;
+                            $data['value'] = $value;
+                            $this->load->view($this->view_path . '/filter_item/' . $key, $data);
                             break;
                     }
                 }
@@ -50,7 +52,7 @@
 
                         case 'arr_multi' :
                             $data['key'] = $key;
-                             $data['value'] = $value;
+                            $data['value'] = $value;
                             $this->load->view('base/filter_item/arr_multi', $data);
                             break;
 

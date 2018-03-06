@@ -53,6 +53,15 @@ table{
     &.table-view-1{
         @extend .table-view-2;
     }
+    &.table-edit-2{
+        table-layout: fixed;
+        tr> td:first-child{
+            width: 150px;
+        }
+    }
+    &.table-edit-1{
+        @extend .table-view-2;
+    }
     td.click_see{
         cursor: pointer;
     }
@@ -72,6 +81,10 @@ table{
             }
         }
     }
+}
+
+div.add-campaign-fb-fetch td{
+    word-wrap: break-word;
 }
 
 
@@ -125,4 +138,14 @@ sup {
     right: -5px !important;
     color: #fff !important;
     padding: 9px 12px;
+}
+.jconfirm-title{
+    line-height: 30px;
+}
+/*.jconfirm.jconfirm-supervan .jconfirm-bg {
+    background-color: rgba(13, 39, 17, 0.95);
+}*/
+.zindex1{
+    z-index: 9999999999 !important;
+    position: relative;
 }

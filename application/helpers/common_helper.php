@@ -213,3 +213,26 @@ function h_generateRandomString($length = 10) {
     }
     return $randomString;
 }
+
+function getProgressBarClass($percent){
+    $class = "";
+    if($percent >= 90){
+        $class = "progress-bar-success";
+    }else if($percent >= 70 && $percent < 90){
+        $class = "progress-bar-info";
+    }else if($percent >= 50 && $percent< 70){
+        $class = "progress-bar-warning";
+    }else{
+        $class = "progress-bar-danger";
+    }
+    return $class;
+}
+
+function hGetTimeRange($startDate, $endDate) {
+    $dateArray = array();
+    for ($i = $startDate; $i <= $endDate; $i += 3600 * 24) {
+        $date = date('d', $i);
+        $dateArray[$date] = $i;
+    }
+    return $dateArray;
+}

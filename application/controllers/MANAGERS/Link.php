@@ -55,9 +55,9 @@ class Link extends MY_Table {
                 'order' => '1'
             ),
             'time' => array(
+                'order' => '1',
                 'type' => 'datetime',
-                'name_display' => 'Ngày tạo',
-                'display' => 'none'
+                'name_display' => 'Ngày tạo'
             )
         );
         $this->set_list_view($list_item);
@@ -103,15 +103,49 @@ class Link extends MY_Table {
 //    }
 
     function index($offset = 0) {
+        $this->load->model('channel_model');
+        $input = array();
+        $input['where'] = array('active' => '1');
+        $channels = $this->channel_model->load_all($input);
+        $this->data['channel'] = $channels;
+
+        $this->load->model('campaign_model');
+        $input = array();
+        $input['where'] = array('active' => 1, 'marketer_id' => $this->user_id);
+        $this->data['campaign'] = $this->campaign_model->load_all($input);
+
+        $this->load->model('adset_model');
+        $input = array();
+        $input['where'] = array('active' => 1, 'marketer_id' => $this->user_id);
+        $this->data['adset'] = $this->adset_model->load_all($input);
+
+        $this->load->model('ad_model');
+        $input = array();
+        $input['where'] = array('active' => 1, 'marketer_id' => $this->user_id);
+        $this->data['ad'] = $this->ad_model->load_all($input);
+
         $this->list_filter = array(
             'left_filter' => array(
                 'time' => array(
                     'type' => 'datetime',
                 ),
+                'channel' => array(
+                    'type' => 'arr_multi'
+                ),
+                'campaign' => array(
+                    'type' => 'arr_multi'
+                ),
             ),
             'right_filter' => array(
+                'adset' => array(
+                    'type' => 'arr_multi'
+                ),
+                'ad' => array(
+                    'type' => 'arr_multi'
+                ),
             )
         );
+
         $conditional = array();
         $conditional['where']['marketer_id'] = $this->user_id;
 //        $get = $this->input->get();
@@ -146,6 +180,8 @@ class Link extends MY_Table {
         $this->load->model('landingpage_model');
         $input = array();
         $input['where'] = array('active' => 1);
+        //$input['where_in'] = array('marketer_id' => ['0', $this->user_id]);
+        $input['order'] = array('landingpage_code' => 'ASC');
         $landingpages = $this->landingpage_model->load_all($input);
 
         $this->list_add = array(
@@ -222,7 +258,7 @@ class Link extends MY_Table {
      * Hiển thị modal sửa item
      */
 
-    function show_edit_item() {
+    function show_edit_item($inputData = []) {
         /*
          * type mặc định là text nên nếu là text sẽ không cần khai báo
          */
@@ -363,7 +399,7 @@ class Link extends MY_Table {
         $xhml = '';
         if (!empty($ads)) {
             $xhml .= '  <td class="text-right">
-                            Chọn adset
+                            Chọn ad
                         </td>
                         <td>
                             <select class="form-control selectpicker" name="add_ad_id">
@@ -377,14 +413,14 @@ class Link extends MY_Table {
         }
         echo $xhml;
     }
-    
-    public function PreviewUrl(){
+
+    public function PreviewUrl() {
         $post = $this->input->post();
         $url = $post['landingpage_url'];
-        
+
         $content = file_get_contents($url);
-        
-        echo '<iframe width="100%" height="500px"> ' . $content.'</iframe>';
+
+        echo '<iframe width="100%" height="500px"> ' . $content . '</iframe>';
     }
 
 }

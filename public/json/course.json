@@ -273,5 +273,62 @@
                     "name_course": "THU\u1ebe THU NH\u1eacP C\u00c1 NH\u00c2N (PIT) C\u01a0 B\u1ea2N \u0110\u1ebeN N\u00c2NG CAO (GV. \u0110\u00c0O TH\u1eca TH\u01a0)",
                     "price": "895000",
                     "active": "0"
-                }]
+                },
+                {  
+                    "id": "40",
+                    "course_code": "CBKT210",
+                    "name_course": "COMBO KẾ TOÁN EXCEL TIN HỌC VĂN PHÒNG SIÊU KHUYẾN MÃI",
+                    "price": "1290000",
+                    "active": "0"
+                }, 
+                  {  
+                    "id": "41",
+                    "course_code": "CBKT400",
+                    "name_course": "COMBO KẾ TOÁN EXCEL TIN HỌC VĂN PHÒNG SIÊU KHUYẾN MÃI",
+                    "price": "1290000",
+                    "active": "0"
+                },  
+                  {  
+                    "id": "42",
+                    "course_code": "CBKT800",
+                    "name_course": "COMBO KẾ TOÁN EXCEL TIN HỌC VĂN PHÒNG SIÊU KHUYẾN MÃI",
+                    "price": "1290000",
+                    "active": "0"
+                },  
+                  {  
+                    "id": "43",
+                    "course_code": "CBKT110",
+                    "name_course": "COMBO KẾ TOÁN EXCEL TIN HỌC VĂN PHÒNG SIÊU KHUYẾN MÃI",
+                    "price": "1290000",
+                    "active": "0"
+                },  
+                  {  
+                    "id": "44",
+                    "course_code": "CBKT130",
+                    "name_course": "COMBO KẾ TOÁN EXCEL TIN HỌC VĂN PHÒNG SIÊU KHUYẾN MÃI",
+                    "price": "1290000",
+                    "active": "0"
+                }  ,
+                {  
+                    "id": "45",
+                    "course_code": "Y100",
+                    "name_course": "Khóa học Yoga dành cho người làm văn phòng (Thầy Đặng Hùng)",
+                    "price": "600000",
+                    "active": "1"
+                }  ,
+                {  
+                    "id": "46",
+                    "course_code": "KT220",
+                    "name_course": "Tự học Kế toán tổng hợp từ A đến Z (Giảng viên Phạm Thị Nhung)",
+                    "price": "600000",
+                    "active": "1"
+                }   ,
+                {  
+                    "id": "47",
+                    "course_code": "Y100",
+                    "name_course": "Bảo Hiểm Xã Hội – Tiền Lương – Thuế Thu Nhập Cá Nhân Năm 2018",
+                    "price": "895000",
+                    "active": "1"
+                }   
+            ]
 }

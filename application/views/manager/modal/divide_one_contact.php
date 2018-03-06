@@ -6,7 +6,7 @@
                 <h4 class="modal-title" id="myModalLabel">Bàn giao contact "<span class="contact_name"> </span>"</h4>
             </div>
             <div class="modal-body">
-                <form action="<?php echo base_url(); ?>manager/divide_contact" method="POST" id="transfer_one_contact">
+                <form action="<?php echo base_url(); ?>manager/divide_contact" method="POST" id="divide_one_contact">
                     <input type="hidden" name="contact_id" id="contact_id_input" />
                     <div class="form-group">
                         <select name="sale_id" class="form-control selectpicker">

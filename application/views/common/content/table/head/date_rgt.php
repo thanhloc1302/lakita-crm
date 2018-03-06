@@ -1,4 +1,4 @@
-<th class="order_date_rgt tbl_date_rgt">
+<th class="order_date_rgt tbl_date_rgt" id="th_tbl_date_rgt">
     <input type="text" class="order_date_rgt hidden" name="order_date_rgt"
            value="<?php echo (isset($_GET['order_date_rgt'])) ? (($_GET['order_date_rgt'] != '') ? $_GET['order_date_rgt'] : '0') : '0'; ?>" />
     Ngày đăng ký

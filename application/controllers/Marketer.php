@@ -85,7 +85,11 @@ class Marketer extends MY_Table {
             'landingpage' => array(
                 'name_display' => 'Landing Page',
                 'display' => 'none'
-            )
+            ),
+            'cod_status' => array(
+                'name_display' => 'Trạng thái giao hàng',
+                'display' => 'none'
+            ),
         );
         $this->set_list_view($list_item);
         $this->set_model('contacts_model');
@@ -182,13 +186,18 @@ class Marketer extends MY_Table {
         $this->show_table();
         //echoQuery();
         $data = $this->data;
+        $progress = $this->GetProccessMarketerToday();
+        $data['marketers'] = $progress['marketers'];
+        $data['C3Team'] = $progress['C3Team'];
+        $data['C3Total'] = MARKETING_KPI_PER_DAY;
+        $data['progressType'] = 'Tiến độ của team hôm nay';
+
         $data['list_title'] = 'Danh sách contact ngày hôm nay';
         $data['content'] = 'marketing/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
     function view_all($offset = 0) {
-
         $this->load->model('channel_model');
         $input = array();
         $input['where'] = array('active' => '1');
@@ -198,28 +207,36 @@ class Marketer extends MY_Table {
         $this->load->model('campaign_model');
         $input = array();
         $input['where'] = array('active' => 1);
+        $input['where']['marketer_id'] = $this->user_id;
         $this->data['campaign'] = $this->campaign_model->load_all($input);
 
         $this->load->model('adset_model');
         $input = array();
         $input['where'] = array('active' => 1);
+        $input['where']['marketer_id'] = $this->user_id;
         $this->data['adset'] = $this->adset_model->load_all($input);
 
         $this->load->model('ad_model');
         $input = array();
         $input['where'] = array('active' => 1);
+         $input['where']['marketer_id'] = $this->user_id;
         $this->data['ad'] = $this->ad_model->load_all($input);
 
 
         $this->load->model('courses_model');
         $input = array();
         $input['where'] = array('active' => '1');
+        $input['order'] = array('course_code' => 'ASC');
         $this->data['course'] = $this->courses_model->load_all($input);
 
         $this->load->model('landingpage_model');
         $input = array();
         $input['where'] = array('active' => '1');
         $this->data['landingpage'] = $this->landingpage_model->load_all($input);
+
+        $this->load->model('cod_status_model');
+        $input = array();
+        $this->data['cod_status'] = $this->cod_status_model->load_all($input);
 
         $this->list_filter = array(
             'left_filter' => array(
@@ -232,12 +249,15 @@ class Marketer extends MY_Table {
                 'campaign' => array(
                     'type' => 'arr_multi'
                 ),
-            ),
-            'right_filter' => array(
                 'adset' => array(
                     'type' => 'arr_multi'
                 ),
                 'ad' => array(
+                    'type' => 'arr_multi'
+                ),
+            ),
+            'right_filter' => array(
+                'cod_status' => array(
                     'type' => 'arr_multi'
                 ),
                 'course' => array(
@@ -260,8 +280,12 @@ class Marketer extends MY_Table {
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
-        //echoQuery();
         $data = $this->data;
+        $progress = $this->GetProccessMarketerThisMonth();
+        $data['marketers'] = $progress['marketers'];
+        $data['C3Team'] = $progress['C3Team'];
+        $data['C3Total'] = 38 * 30;
+        $data['progressType'] = 'Tiến độ của team tháng này';
         $data['list_title'] = 'Danh sách toàn bộ contact';
         $data['content'] = 'marketing/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
@@ -271,13 +295,39 @@ class Marketer extends MY_Table {
         $input = array();
         $input['select'] = 'id';
         $input['where']['marketer_id'] = $this->user_id;
+        $input['where']['is_hide'] = '0';
         $input['where']['date_rgt >'] = strtotime(date('d-m-Y'));
         $this->L['C3'] = count($this->contacts_model->load_all($input));
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where']['marketer_id'] = $this->user_id;
+        $input['where']['date_confirm >'] = strtotime(date('d-m-Y'));
+        $this->L['L6'] = count($this->contacts_model->load_all($input));
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where']['marketer_id'] = $this->user_id;
+        $input['where']['date_receive_cod >'] = strtotime(date('d-m-Y'));
+        $this->L['L7'] = count($this->contacts_model->load_all($input));
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where']['marketer_id'] = $this->user_id;
+        $input['where']['date_confirm >'] = strtotime(date('1-m-Y'));
+        $this->L['L6All'] = count($this->contacts_model->load_all($input));
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where']['marketer_id'] = $this->user_id;
+        $input['where']['date_receive_cod >'] = strtotime(date('1-m-Y'));
+        $this->L['L7All'] = count($this->contacts_model->load_all($input));
 
 
         $input = array();
         $input['select'] = 'id';
         $input['where']['marketer_id'] = $this->user_id;
+        $input['where']['is_hide'] = '0';
         $this->L['all'] = count($this->contacts_model->load_all($input));
     }
     

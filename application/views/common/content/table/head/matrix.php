@@ -1,3 +1,3 @@
-<th class="tbl_matrix">
-    Ma trận
+<th>
+    Marketer
 </th>

@@ -20,7 +20,7 @@
                             ?>
                             <div class="row real-search-result-replace">
                                 <div class="col-md-6">
-                                    <table class="table table-striped table-bordered table-hover table-1 table-view-1 edit_table">
+                                    <table class="table table-striped table-bordered table-hover table-1 table-edit-1 edit_table">
                                         <?php
                                         if (isset($view_edit_left)) {
                                             foreach ($view_edit_left as $key => $value) {
@@ -36,7 +36,7 @@
                                     </table>
                                 </div>
                                 <div class="col-md-6">
-                                    <table class="table table-striped table-bordered table-hover table-2 table-view-2 edit_table">
+                                    <table class="table table-striped table-bordered table-hover table-2 table-edit-2 edit_table">
                                         <?php
                                         if (isset($view_edit_right)) {
                                             foreach ($view_edit_right as $key => $value) {
@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="clearfix"></div>
                                 <div class="text-center">
-                                    <button type="submit" class="btn btn-success btn-lg btn-edit-contact">Lưu Lại</button>
+                                    <button type="submit" class="btn btn-success btn-lg btn-edit-contact"> <i class="fa fa-floppy-o" aria-hidden="true"></i> &nbsp; Lưu Lại</button>
                                 </div>
                             </div>
                             <?php

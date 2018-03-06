@@ -15,8 +15,8 @@
                                 class="badge badge-star ajax-request-modal" 
                                 data-controller="<?php echo $controller; ?>"
                                 data-contact-id ="<?php echo $value['id']; ?>"
-                                data-modal-name="view-all-contact-courses-modal"
-                                data-url="common/view_contact_star">
+                                data-modal-name="view-all-contact-courses-div"
+                                data-url="common/ViewAllContactCourse">
                                     <?php echo $value['star']; ?>
                             </span></sup>
                     <?php } ?>

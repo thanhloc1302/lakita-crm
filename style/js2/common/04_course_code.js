@@ -40,7 +40,7 @@
 $(document).on('click', '.find-course-code', function () {
     var _this = $(this);
     $.ajax({
-        url: $("#base_url").val() + "public/json/course.json",
+        url: $("#base_url").val() + "public/json/course.json?ver=" + $("#version-cache").val(),
         type: 'GET',
         dataType: 'json',
         success: data => {

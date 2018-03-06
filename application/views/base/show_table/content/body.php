@@ -1,11 +1,12 @@
 <?php
 foreach ($rows as $row) {
     ?>
-    <tr class="<?php echo (isset($row['warning_class'])) ? $row['warning_class'] : ''; ?> custom_right_menu_item"
+    <tr class="<?php echo (isset($row['warning_class'])) ? $row['warning_class'] : ''; ?> custom_right_menu"
         item_id="<?php echo $row['id']; ?>"
+        edit-url="<?php echo base_url().$this->controller_path.'/show_edit_item'?>"
         >
         <td class="center tbl_selection">
-            <input type="checkbox" name="item_id[]" value="<?php echo $row['id']; ?>" />
+            <input type="checkbox" name="item_id[]" value="<?php echo $row['id']; ?>" class="tbl-item-checkbox"/>
         </td>
         <?php
         foreach ($head_tbl as $columm_name => $column_type) {
@@ -30,7 +31,8 @@ foreach ($rows as $row) {
                         echo '<td>
                                 <div class="toggle-input marginbottom20">
                                     <label class="switch">
-                                        <input type="checkbox" name="edit_active" item_id="'. $row['id'] .'" '. $checked .'/>
+                                        <input disabled="disabled" type="checkbox" 
+                                        data-url="'.base_url($this->controller_path . '/edit_active').'" name="edit_active" item_id="'. $row['id'] .'" '. $checked .'/>
                                         <span class="slider round"></span>
                                      </label>
                                 </div>

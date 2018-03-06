@@ -1,4 +1,4 @@
-<th class="order_phone tbl_phone">
+<th class="order_phone tbl_phone" id="th_tbl_phone">
     <input type="text" class="order_phone hidden" name="order_phone"
            value="<?php echo (isset($_GET['order_phone'])) ? $_GET['order_phone'] : '0'; ?>" />
      Số điện thoại

@@ -1,4 +1,4 @@
-<th class="order_date_print_cod tbl_date_print_cod">
+<th class="order_date_print_cod tbl_date_print_cod" id="th_tbl_date_print_cod">
     <input type="text" class="order_date_print_cod hidden" name="order_date_print_cod"
            value="<?php echo (isset($_GET['order_date_print_cod']) && $_GET['order_date_print_cod'] != '') ? $_GET['order_date_print_cod'] : '0'; ?>" />
     Ngày in COD

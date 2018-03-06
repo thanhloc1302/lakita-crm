@@ -1,4 +1,4 @@
-<th class="order_date_confirm tbl_date_confirm">
+<th class="order_date_confirm tbl_date_confirm" id="th_tbl_date_confirm">
     <input type="text" class="order_date_confirm hidden" name="order_date_confirm"
            value="<?php echo (isset($_GET['order_date_confirm']) && $_GET['order_date_confirm'] != '') ? $_GET['order_date_confirm'] : '0'; ?>" />
     Ngày chốt đơn

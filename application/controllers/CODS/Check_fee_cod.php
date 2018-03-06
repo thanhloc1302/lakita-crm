@@ -107,7 +107,7 @@ class Check_fee_cod extends MY_Table {
      * override lại hàm ở lớp cha, không cho edit dòng đối soát cước
      */
 
-    function show_edit_item() {
+    function show_edit_item($inputData = []) {
         die('Không thể chỉnh sửa!');
     }
 
@@ -131,22 +131,22 @@ class Check_fee_cod extends MY_Table {
      * override lại hàm ở lớp cha, không cho xoá dòng đối soát đúng thông tin
      */
 
-    function delete_multi_item() {
-        $post = $this->input->post();
-        if (!empty($post['item_id'])) {
-            foreach ($post['item_id'] as $value) {
-                $where = array('id' => $value);
-                $item = $this->{$this->model}->load_all(array('where' => $where));
-                if (!empty($item) && ($item[0]['is_match'] == 0 || $item[0]['duplicate_id'] > 0)) {
-                    $this->{$this->model}->delete($where);
-                } else {
-                    show_error_and_redirect('Không thể xóa contact đúng thông tin vận đơn!', '', FALSE);
-                    break;
-                }
-            }
-        }
-        show_error_and_redirect('Xóa thành công các dòng đã chọn!');
-    }
+//    function delete_multi_item() {
+//        $post = $this->input->post();
+//        if (!empty($post['item_id'])) {
+//            foreach ($post['item_id'] as $value) {
+//                $where = array('id' => $value);
+//                $item = $this->{$this->model}->load_all(array('where' => $where));
+//                if (!empty($item) && ($item[0]['is_match'] == 0 || $item[0]['duplicate_id'] > 0)) {
+//                    $this->{$this->model}->delete($where);
+//                } else {
+//                    show_error_and_redirect('Không thể xóa contact đúng thông tin vận đơn!', '', FALSE);
+//                    break;
+//                }
+//            }
+//        }
+//        show_error_and_redirect('Xóa thành công các dòng đã chọn!');
+//    }
 
     /*
      * Các dòng đối soát chưa lưu (nháp)
@@ -270,45 +270,58 @@ class Check_fee_cod extends MY_Table {
             $data['content'] = 'cod/check_fee_cod/upload';
             $this->load->view(_MAIN_LAYOUT_, $data);
         }
-//        $post = $this->input->post();
-//        if (isset($post['submit'])) {
-//            $file_path = '';
-//            $config['upload_path'] = './public/upload/CUOC';
-//            $config['allowed_types'] = 'xls|xlsx';
-//            $config['max_size'] = '100000';
-//            $config['file_name'] = date('Y-m-d-H-i');
-//            $this->load->library('upload', $config);
-//            if ($this->upload->do_upload('file')) {
-//                $data = $this->upload->data();
-//                $file_path = $data['full_path'];
-//                $this->_import_fee_cod($file_path);
-//            } else {
-//                $error = $this->upload->display_errors();
-//                echo $error;
-//            }
-//        } else {
-//            $data['slide_menu'] = 'cod/check_fee_cod/slide-menu';
-//            $data['top_nav'] = 'cod/common/top-nav';
-//            $data['content'] = 'cod/check_fee_cod/upload';
-//            $this->load->view(_MAIN_LAYOUT_, $data);
-//        }
+        $post = $this->input->post();
+        if (isset($post['submit'])) {
+            $file_path = '';
+            $config['upload_path'] = './public/upload/CUOC';
+            $config['allowed_types'] = 'xls|xlsx';
+            $config['max_size'] = '100000';
+            $config['file_name'] = date('Y-m-d-H-i');
+            $this->load->library('upload', $config);
+            if ($this->upload->do_upload('file')) {
+                $data = $this->upload->data();
+                $file_path = $data['full_path'];
+                $this->_import_fee_cod($file_path);
+            } else {
+                $error = $this->upload->display_errors();
+                echo $error;
+            }
+        } else {
+            $data['slide_menu'] = 'cod/check_fee_cod/slide-menu';
+            $data['top_nav'] = 'cod/common/top-nav';
+            $data['content'] = 'cod/check_fee_cod/upload';
+            $this->load->view(_MAIN_LAYOUT_, $data);
+        }
     }
 
     private function _import_fee_cod($file_path) {
         $this->load->model('cod_status_model');
         $this->load->library('PHPExcel');
         $objPHPExcel = PHPExcel_IOFactory::load($file_path);
+
+        $rowIdCod = 0; //số thứ tự của dòng đối soát COD
+        
         $sheet = $objPHPExcel->getActiveSheet();
-        $data1 = $sheet->rangeToArray('A8:I770');
-        //print_arr($data1);
+
+        foreach ($sheet->getColumnIterator() as $row) {
+            foreach ($row->getCellIterator() as $key => $cell) {
+                if($key > 12 && $cell->getCalculatedValue() == '1'){
+                    $rowIdCod = $key; 
+                    break;
+                }
+            }
+        }
+        $sheet = $objPHPExcel->getActiveSheet();
+        $data1 = $sheet->rangeToArray("A$rowIdCod:I770");
         $fee = array();
         foreach ($data1 as $row) {
-            list($stt, $ngay_gui, $code_cross_check, $noi_den, $dich_vu, $weight_envelope, $G, $H, $money) = $row;
+            list($stt, $code_cross_check, $ngay_gui, $noi_den, $dich_vu, $weight_envelope, $G, $H, $money) = $row;
+            if($stt == 'Cộng:'){
+                break;
+            }
             $stt = intval($stt);
-            $money = str_replace(',', '', $money);
-            $money = str_replace('(', '', $money);
-            $money = str_replace(')', '', $money);
-            $money = intval($money);
+            $money = preg_replace('/\D+/', '', $money);
+            $money = str_pad($money, 5,'0');
 
             $findme = 'CH';
             $pos = strpos($code_cross_check, $findme);
@@ -356,7 +369,7 @@ class Check_fee_cod extends MY_Table {
             } else {
                 $fee[$key]['is_match'] = 0;
             }
-            if ($fee[$key]['weight_envelope'] > 50) {
+            if ($fee[$key]['weight_envelope'] > 90) {
                 $fee[$key]['is_match'] = 0;
             }
             $fee[$key]['time'] = time();
@@ -442,6 +455,78 @@ class Check_fee_cod extends MY_Table {
             $duplicate = $duplicae_id[0]['id'];
         }
         return $duplicate;
+    }
+
+    private function _import_fee_cod_old($file_path) {
+        $this->load->model('cod_status_model');
+        $this->load->library('PHPExcel');
+        $objPHPExcel = PHPExcel_IOFactory::load($file_path);
+        $sheet = $objPHPExcel->getActiveSheet();
+        $data1 = $sheet->rangeToArray('A8:I770');
+        //print_arr($data1);
+        $fee = array();
+        foreach ($data1 as $row) {
+            list($stt, $ngay_gui, $code_cross_check, $noi_den, $dich_vu, $weight_envelope, $G, $H, $money) = $row;
+            $stt = intval($stt);
+            $money = str_replace(',', '', $money);
+            $money = str_replace('(', '', $money);
+            $money = str_replace(')', '', $money);
+            $money = intval($money);
+
+            $findme = 'CH';
+            $pos = strpos($code_cross_check, $findme);
+            //   echo $mystring. '----' . var_dump($pos). '<br>';
+            if ($pos === 0) { //cước chuyển hoàn
+                if ($stt > 0) {
+                    $fee[] = array(
+                        'stt' => $stt,
+                        'ngay_gui' => $ngay_gui,
+                        'ma_phieu_gui' => $code_cross_check,
+                        'code' => substr($code_cross_check, 2),
+                        'noi_den' => $noi_den,
+                        'dich_vu' => $dich_vu,
+                        'weight_envelope' => $weight_envelope,
+                        'fee_resend' => $money,
+                        'fee' => 0);
+                }
+            } else {
+                if ($stt > 0) {
+                    $fee[] = array(
+                        'stt' => $stt,
+                        'ngay_gui' => $ngay_gui,
+                        'ma_phieu_gui' => $code_cross_check,
+                        'code' => $code_cross_check,
+                        'noi_den' => $noi_den,
+                        'dich_vu' => $dich_vu,
+                        'weight_envelope' => $weight_envelope,
+                        'fee' => $money,
+                        'fee_resend' => 0);
+                }
+            }
+        }
+        // print_arr($fee);
+        foreach ($fee as $key => $value) {
+            $input = array();
+            $input['select'] = 'code_cross_check, price_purchase, name, phone, address, id, cod_status_id';
+            $input['where'] = array('code_cross_check' => $value['code'], 'ordering_status_id' => _DONG_Y_MUA_);
+            $contact = $this->contacts_model->load_all($input);
+            if (!empty($contact)) {
+                $fee[$key]['contact_id'] = $contact[0]['id'];
+                $fee[$key]['name'] = $contact[0]['name'];
+                $fee[$key]['phone'] = $contact[0]['phone'];
+                $fee[$key]['address'] = $contact[0]['address'];
+                $fee[$key]['cod_status'] = $this->cod_status_model->find_cod_status_desc($contact[0]['cod_status_id']);
+            } else {
+                $fee[$key]['is_match'] = 0;
+            }
+            if ($fee[$key]['weight_envelope'] > 50) {
+                $fee[$key]['is_match'] = 0;
+            }
+            $fee[$key]['time'] = time();
+            $fee[$key]['duplicate_id'] = $this->_find_duplicate_fee_id($value);
+            $this->fee_cod_check_model->insert($fee[$key]);
+        }
+        redirect(base_url('cod/doi-soat-cuoc.html'));
     }
 
 }

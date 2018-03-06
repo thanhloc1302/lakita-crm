@@ -13,12 +13,9 @@
  */
 class Marketing extends MY_Table {
 
-   
-    
     public function __construct() {
         parent::__construct();
         $this->init();
-        
     }
 
     public function init() {
@@ -145,6 +142,7 @@ class Marketing extends MY_Table {
         $this->load->model('courses_model');
         $input = array();
         $input['where'] = array('active' => '1');
+        $input['order'] = array('course_code' => 'ASC');
         $this->data['course'] = $this->courses_model->load_all($input);
 
         $this->list_filter = array(
@@ -170,12 +168,17 @@ class Marketing extends MY_Table {
         );
         $conditional = array();
         $conditional['where']['date_rgt >'] = strtotime(date('d-m-Y'));
-        $conditional['where']['source_id'] = '1';
+        //$conditional['where']['source_id'] = '1';
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
         //echoQuery();
         $data = $this->data;
+        $progress = $this->GetProccessMarketerToday();
+        $data['marketers'] = $progress['marketers'];
+        $data['C3Team'] = $progress['C3Team'];
+        $data['C3Total'] = MARKETING_KPI_PER_DAY;
+        $data['progressType'] = 'Tiến độ của team hôm nay';
         $data['list_title'] = 'Danh sách contact ngày hôm nay';
         $data['content'] = 'marketing/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
@@ -235,17 +238,20 @@ class Marketing extends MY_Table {
             )
         );
         $conditional = array();
-        $conditional['where']['source_id'] = '1';
+      //  $conditional['where']['source_id'] = '1';
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
         //echoQuery();
         $data = $this->data;
+        $progress = $this->GetProccessMarketerThisMonth();
+        $data['marketers'] = $progress['marketers'];
+        $data['C3Team'] = $progress['C3Team'];
+        $data['C3Total'] = MARKETING_KPI_PER_DAY*30;
+        $data['progressType'] = 'Tiến độ của team tháng này';
         $data['list_title'] = 'Danh sách toàn bộ contact';
         $data['content'] = 'marketing/index';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
-    
-    
 
 }

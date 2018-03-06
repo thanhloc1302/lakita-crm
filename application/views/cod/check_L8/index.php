@@ -13,6 +13,8 @@
     </div>
     <?php $this->load->view('base/show_table/base_header'); ?>
     <?php $this->load->view('base/show_table/index'); ?>
+    Chọn ngày thu Lakita (bỏ trống nếu là ngày hôm nay): 
+    <input type="text" class="form-control datepicker" name="date_receive_lakita" />
     <input type="submit" class="btn btn-success input_save" value="Lưu lại"/> </br>
     <div class="number_paging" > 
         Tổng tiền Viettel thu của khách: <?php echo isset($rows) ? number_format(h_sum_money_1($rows), 0, ",", ".") . " VNĐ" : 0; ?>

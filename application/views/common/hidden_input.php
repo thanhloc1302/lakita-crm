@@ -9,3 +9,6 @@
 
 <!-- Method -->
 <input type="hidden" value="<?php   if(property_exists($this, 'method')) echo $this->method;?>" id="input_method" />
+
+<!-- version cache -->
+<input type="hidden" value="<?php   echo _VER_CACHED_;?>" id="version-cache" />

@@ -5,7 +5,7 @@
     <div class="number_paging">
         <?php echo 'Hiển thị ' . $this->begin_paging . ' - ' . $this->end_paging . ' của ' . $this->total_paging . ' contacts'; ?>
     </div>
-    <table class="table table-bordered table-expandable table-striped list_contact list_contact_2">
+    <table class="table table-bordered table-expandable table-striped list_contact list_contact_2 table-fixed-head">
         <thead>
             <tr>
                 <?php
@@ -36,11 +36,11 @@
                             }
                             ?>
                     </tr>
-                    <tr id="<?php echo $idRandom; ?>" class="fade in temp-hide" style="display:none">
+<!--                    <tr id="<?php echo $idRandom; ?>" class="fade in temp-hide" style="display:none">
                         <td colspan="<?php echo count($table); ?>">
-                           <?php $this->load->view('common/content/table/extra_table'); ?>
+                            <?php //$this->load->view('common/content/table/extra_table'); ?>
                         </td>
-                    </tr>
+                    </tr>-->
                     <?php
                 }
             }

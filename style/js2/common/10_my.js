@@ -75,4 +75,19 @@ $(function () {
     $('#collapse-filter').on('hidden.bs.collapse', function () {
         $(this).prev().find(".fa").removeClass("fa-arrow-circle-up").addClass("fa-arrow-circle-down");
     });
+    /*
+     * Kiểm tra xem có biến search là view_detail_contact không, nếu có sẽ hiển thị chi tiết contact
+     */
+    let searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.has('view_detail_contact')) {
+        var contatctID = $.trim(searchParams.get('view_detail_contact'));
+        $(".view-detail-contact-by-get-url").remove();
+        $('body').append(`<a href="#" 
+                               class="ajax-request-modal view-detail-contact-by-get-url"
+                               data-contact-id ="${contatctID}"
+                               data-modal-name="view-detail-contact-div"
+                               data-url="common/view_detail_contact">`);
+        $(".view-detail-contact-by-get-url").click();
+        $(".view-detail-contact-by-get-url").remove();
+    }
 });

@@ -42,7 +42,7 @@ form{
         background-position: 50%;
     }
 }
-input#input-copy{
+[id^="input-copy"]{
     z-index: -1;
-    position: relative;
+    position: absolute;
 }

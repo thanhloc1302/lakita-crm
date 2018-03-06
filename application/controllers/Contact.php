@@ -18,8 +18,9 @@ class Contact extends CI_Controller {
             /* Lọc thông tin contact */
             $param['name'] = isset($input['name']) ? $input['name'] : '';
             $param['phone'] = isset($input['phone']) ? $input['phone'] : '';
-            if ($param['name'] == '' || $param['phone'] == '')
+            if ($param['name'] == '' || trim($param['phone']) == '') {
                 die;
+            }
             $email = isset($input['email']) ? $input['email'] : '';
             $param['email'] = str_replace('NO_PARAM@gmail.com', '', $email);
             $address = isset($input['dia_chi']) ? $input['dia_chi'] : '';

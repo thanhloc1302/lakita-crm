@@ -18,38 +18,45 @@ class Home extends CI_Controller {
     }
 
     function index() {
+        $this->initGetVariable = http_build_query($this->input->get());
+        $this->initGetVariable = ($this->initGetVariable != '') ? '?' . $this->initGetVariable : '';
         $user_id = $this->session->userdata('user_id');
         if (isset($user_id)) {
             $role_id = $this->session->userdata('role_id');
             $input = array();
             $input['where'] = array('id' => $user_id);
             $user = $this->staffs_model->load_all($input);
-            if($user[0]['active'] == 0){
-                echo 'Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản lý để đc giúp đỡ';
-                echo '<a href="'.base_url('home/logout').'"> Đăng xuất </a>';
+            if ($user[0]['active'] == 0) {
+                redirect(base_url('no_access'));
                 die;
             }
             switch ($role_id) {
                 case 1:
-                    redirect(base_url('tu-van-tuyen-sinh/trang-chu.html'));
+                    redirect(base_url('tu-van-tuyen-sinh/trang-chu.html' . $this->initGetVariable));
                     break;
 
                 case 2:
-                    redirect(base_url('cod/trang-chu.html'));
+                    redirect(base_url('cod/trang-chu.html' . $this->initGetVariable));
                     break;
 
                 case 3:
-                    redirect(base_url('quan-ly/trang-chu.html'));
+                    redirect(base_url('quan-ly/trang-chu.html' . $this->initGetVariable));
                     break;
 
                 case 4:
-                    redirect(base_url('admin'));
+                    redirect(base_url('admin' . $this->initGetVariable));
                     break;
                 case 5:
-                    redirect(base_url('marketing'));
+                    redirect(base_url('marketing' . $this->initGetVariable));
                     break;
                 case 6:
-                    redirect(base_url('marketer'));
+                    redirect(base_url('marketer' . $this->initGetVariable));
+                    break;
+                case 7:
+                    redirect(base_url('vip/index' . $this->initGetVariable));
+                    break;
+                case 8:
+                    redirect(base_url('teacher' . $this->initGetVariable));
                     break;
                 default :
                     echo 'Có lỗi xảy ra!';
@@ -61,6 +68,8 @@ class Home extends CI_Controller {
     }
 
     function action_login() {
+        $this->initGetVariable = http_build_query($this->input->get());
+        $this->initGetVariable = ($this->initGetVariable != '') ? '?' . $this->initGetVariable : '';
         $alert = array();
         $username = $this->input->post('username');
         $password = $this->input->post('password');
@@ -80,13 +89,13 @@ class Home extends CI_Controller {
                 if (isset($last_page)) {
                     $this->session->unset_userdata('last_page');
                     $alert['success'] = 1;
-                    $alert['redirect_page'] = base64_encode($last_page);
+                    $alert['redirect_page'] = base64_encode($last_page. $this->initGetVariable);
                     echo json_encode($alert);
                     die;
                 }
                 $redirect_page = '';
                 $alert['success'] = 1;
-                $alert['redirect_page'] = base64_encode(base_url().$redirect_page);
+                $alert['redirect_page'] = base64_encode(base_url() . $redirect_page. $this->initGetVariable);
                 echo json_encode($alert);
                 die;
             } else {

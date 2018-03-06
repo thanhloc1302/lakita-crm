@@ -12,26 +12,36 @@ class MY_Controller extends CI_Controller {
     var $per_page = 0;
     var $controller = '';
     var $method = '';
+    public $initGetVariable;
     public $begin_paging = 0;
     public $end_paging = 0;
     public $total_paging = 0;
     protected $table = '';
-    protected $role_id = 0;
+    public $role_id = 0;
     public $can_view_contact = 0;
     public $can_edit_contact = 0;
 
     function __construct() {
         parent::__construct();
+        // echo base64_decode('4oCLaHR0cDovL2xha2l0YS52bjoxOTM1L3ZvZC9fZGVmaW5zdF8vbXA0OjIwMTcvMDgvMi1LVDIxMC8xLUtUMjEwR0RML0tUMjEwLUJhaS1Tby0wMy5tcDQvbWFuaWZlc3QubXBk'); die;
+        // echo base64_encode('​http://lakita.vn:1935/vod/_definst_/mp4:2017/08/2-KT210/1-KT210GDL/KT210-Bai-So-03.mp4/manifest.mpd');die;
         //echo file_get_contents('https://www.viettelpost.com.vn/Tracking?KEY=MKI17LA310504');
-        //echo time();die;
+       //  echo time();die;
         date_default_timezone_set('Asia/Ho_Chi_Minh'); //setup lai timezone
         //   echo strtotime(date("Y-m-d", strtotime("+1 day"))); die;
-        //echo date('H:i:s d/m/Y', 1507947420);die;
+        //echo date('H:i:s d/m/Y', 1515603600);die;
+        //    echo  strtotime('-1 month', 1512666000); die;
+//        echo strtotime('+1 day', strtotime(date('d-m-Y')));
+//        die;
+//        echo strtotime('+1 day', strtotime(date('d-m-Y'))) . '<br>';
+//        echo time() . '<br>';
+//        echo strtotime('+1 day', strtotime(date('d-m-Y'))) - time(); die;
         //  echo time(). '<br>';
-        // echo strtotime('01-10-2017 00:00:00'); die;
-        // echo strtotime(date("d-m-Y"));die;
+        // echo strtotime('2018-01-20T18:30:14-0800'); die;
+        //echo strtotime(date("d-m-Y 14:02"));die;
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
+        // echo strtotime('2018-01-12'); die;
         $this->controller = $this->router->fetch_class();
         $this->method = $this->router->fetch_method();
         $this->_check_login();
@@ -43,7 +53,28 @@ class MY_Controller extends CI_Controller {
             // $this->output->enable_profiler(TRUE);
         }
         $this->load->vars($this->data);
-       // phpinfo();
+        // phpinfo();
+        require_once APPPATH . 'libraries/Pusher.php';
+        //phpinfo();
+        // echo md5(md5('lakita2017'));die;
+        //  echo file_get_contents('https://graph.facebook.com/v2.11/1594885550807160/picture?type=large&access_token=EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD');die;
+//        $comment = json_decode('{"entry": [{"changes": [{"field": "plugin_comment", "value": {"created_time": "2017-12-29T09:02:23+0000", "message": "c\u1ea3m \u01a1n page nh\u00e9", "from": {"name": "Ph\u1ea1m Ng\u1ecdc Chuy\u1ec3n", "id": "1180191648705232"}, "id": "1242593289171565_1440665862697639"}}], "id": "315347858825221", "time": 1514538143}], "object": "application"}');
+//        print_arr($comment);
+//        $idPage = explode('_', '1242593289171565_1440665862697639');
+//        
+//        $page = json_decode(file_get_contents('https://graph.facebook.com/v2.11/1242593289171565?access_token=EAAXk6rdtETQBAGHhYtkugXclkvMiSbugSlcHuHfVhcsfgnoBV64jpawVd35ebr6A2eqHZBUqDUe1FK5TLsvYiZAd8L4k6tHsYqGtZCKkRPFb0SJ0dSNwe3pfFQ7GrUNIAd0F1Dz5juGK3Wh6cjKZBSYJkG32ZBDDAKbtQwpgbRczCVRtCukt3l3Y5OiwfJGsZD'));
+//        
+//        print_arr($page->title);
+//        $num = range(43, 169);
+//       // print_arr($num);
+//        
+//        foreach ($num as $value){
+//            $number = ($value < 100) ? '0'. $value : $value;
+//            $number2 = ($value-1 < 100) ? '0'. $value-1 : $value-1;
+//            $old = 'THU54110117'.$number;
+//            $new =  'THU54110117'. ($number2);
+//            echo 'UPDATE `tbl_contact` SET `code_cross_check` = \''.$new.'\' WHERE `code_cross_check` = \'' . $old .'\';<br>';
+//        }
     }
 
     private function _check_login() {
@@ -76,7 +107,7 @@ class MY_Controller extends CI_Controller {
         /*
          * lấy thành phần chung là slide_menu và top_nav
          */
-        $this->data['slide_menu'] = $this->controller . '/common/slide-menu';
+        //$this->data['slide_menu'] = $this->controller . '/common/slide-menu';
         $this->data['top_nav'] = 'manager/common/top-nav';
 
         /*
@@ -88,7 +119,6 @@ class MY_Controller extends CI_Controller {
         } else {
             $this->per_page = _PER_PAGE_;
         }
-
         /*
          * Lấy tên chức vụ và id của người dùng hệ thống
          */
@@ -105,7 +135,6 @@ class MY_Controller extends CI_Controller {
         /*
          * Gán trường cần hiện của bảng contact
          */
-
         $this->table = 'selection name phone address course_code price_purchase ';
     }
 
@@ -122,8 +151,7 @@ class MY_Controller extends CI_Controller {
         $input['where'] = array('id' => $this->user_id);
         $user = $this->staffs_model->load_all($input);
         if ($user[0]['active'] == 0) {
-            echo 'Tài khoản của bạn đã bị khóa, vui lòng liên hệ với quản lý để đc giúp đỡ';
-            echo '<a href="' . base_url('home/logout') . '"> Đăng xuất </a>';
+            redirect(base_url('no_access'));
             die;
         }
 
@@ -279,7 +307,7 @@ class MY_Controller extends CI_Controller {
      * @return: số dòng query được
      */
 
-    protected function _query_for_report($get, $condition = []) {
+    protected function _query_for_report($get = [], $condition = []) {
         $input = array();
         $input['select'] = 'id';
         if (!empty($condition)) {
@@ -493,14 +521,15 @@ class MY_Controller extends CI_Controller {
 
         /* search every where */
 
-        if (isset($get['search_all']) && $get['search_all'] != '') {
-            $input_get['group_start_like']['phone'] = $get['search_all'];
-            $input_get['or_like']['name'] = $get['search_all'];
-            $input_get['or_like']['code_cross_check'] = $get['search_all'];
-            $input_get['or_like']['email'] = $get['search_all'];
-            $input_get['or_like']['address'] = $get['search_all'];
-            $input_get['or_like']['matrix'] = $get['search_all'];
-            $input_get['group_end_or_like']['id'] = $get['search_all'];
+        if (isset($get['search_all']) && trim($get['search_all']) != '') {
+            $searchStr = trim($get['search_all']);
+            $input_get['group_start_like']['phone'] = $searchStr;
+            $input_get['or_like']['name'] = $searchStr;
+            $input_get['or_like']['code_cross_check'] = $searchStr;
+            $input_get['or_like']['email'] = $searchStr;
+            $input_get['or_like']['address'] = $searchStr;
+            $input_get['or_like']['matrix'] = $searchStr;
+            $input_get['group_end_or_like']['id'] = $searchStr;
         }
 
         return array(
@@ -601,31 +630,29 @@ class MY_Controller extends CI_Controller {
             'common_view_detail_contact', 'common_real_filter_contact',
             'm_delete_one_contact', 'm_divide_contact', 'm_view_duplicate', 'm_delete_multi_contact'
         );
-        $data['content'] = 'common/search_all';
-        $this->load->view(_MAIN_LAYOUT_, $data);
+        $data['search_all'] = $get['search_all'];
+        $this->load->view('common/modal/search_all', $data);
     }
 
-    
-    private function _slogan(){
+    private function _slogan() {
         $slogan = array(
             'Không có gì là không thể với một người luôn biết cố gắng',
-            'Hãy luyện tập như thể bạn chưa bao giờ chiến thắng. Hãy hành động như thể chưa bao giờ bạn thất bại',
-            'Chỉ cần bạn không dừng lại thì việc bạn tiến chậm cũng không là vấn đề',
-            'Giữ đôi mắt của bạn hướng lên bầu trời và đôi chân trên mặt đất',
-            'Hãy không ngừng học hỏi. Nếu bạn là người thông minh nhất trong phòng thì thực sự là bạn đã ở nhầm chỗ',
-            'Không chuẩn bị nghĩa là bạn đã sẵn sàng cho việc thất bại',
+//            'Hãy luyện tập như thể bạn chưa bao giờ chiến thắng. Hãy hành động như thể chưa bao giờ bạn thất bại',
+//            'Chỉ cần bạn không dừng lại thì việc bạn tiến chậm cũng không là vấn đề',
+//            'Giữ đôi mắt của bạn hướng lên bầu trời và đôi chân trên mặt đất',
+//            'Hãy không ngừng học hỏi. Nếu bạn là người thông minh nhất trong phòng thì thực sự là bạn đã ở nhầm chỗ',
+//            'Không chuẩn bị nghĩa là bạn đã sẵn sàng cho việc thất bại',
             'Không bao giờ, không bao giờ, không bao giờ từ bỏ',
-            '<img src="https://wikiphunu.vn/wp-content/uploads/2016/10/nhung-cau-noi-hay-ve-cuoc-song-hang-ngay-cho-ban-co-them-dong-luc-2.jpg" />',
-            'Chỉ cần biết rằng, khi bạn thực sự muốn thành công, bạn sẽ không bao giờ từ bỏ, dù cho mọi thứ có tồi tệ đến đâu đi chăng nữa',
-            'Hãy chịu trách nhiệm về cuộc đời mình. Nên biết rằng chính bạn chứ không ai khác sẽ là người đưa bạn tới nơi bạn muốn',
-            'Thách thức là điều làm cho cuộc sống trở nên thú vị và vượt qua thử thách chính là những gì tạo nên ý nghĩa cuộc sống',
-            'I am thankful for all of those who said NO to me. Its because of them I\'m doing it myself',
-            'Khi bạn nói "Khó quá" đồng nghĩa với việc "Tôi không đủ mạnh mẽ để đấu tranh vì nó". Hãy ngừng ngay việc kêu ca. Hãy suy nghĩ tích cực!',
-            '<img src="http://loinoihay.net/wp-content/uploads/2016/03/Nh%E1%BB%AFng-c%C3%A2u-n%C3%B3i-t%E1%BA%A1o-%C4%91%E1%BB%99ng-l%E1%BB%B1c-s%E1%BB%91ng-cho-gi%E1%BB%9Bi-tr%E1%BA%BB-t%E1%BB%AB-c%C3%A1c-t%E1%BB%89-ph%C3%BA-tr%C3%AAn-th%E1%BA%BF-gi%E1%BB%9Bi6.jpg" />'
+//            '<img src="https://wikiphunu.vn/wp-content/uploads/2016/10/nhung-cau-noi-hay-ve-cuoc-song-hang-ngay-cho-ban-co-them-dong-luc-2.jpg" />',
+//            'Chỉ cần biết rằng, khi bạn thực sự muốn thành công, bạn sẽ không bao giờ từ bỏ, dù cho mọi thứ có tồi tệ đến đâu đi chăng nữa',
+//            'Hãy chịu trách nhiệm về cuộc đời mình. Nên biết rằng chính bạn chứ không ai khác sẽ là người đưa bạn tới nơi bạn muốn',
+//            'Thách thức là điều làm cho cuộc sống trở nên thú vị và vượt qua thử thách chính là những gì tạo nên ý nghĩa cuộc sống',
+//            'I am thankful for all of those who said NO to me. Its because of them I\'m doing it myself',
+//            'Khi bạn nói "Khó quá" đồng nghĩa với việc "Tôi không đủ mạnh mẽ để đấu tranh vì nó". Hãy ngừng ngay việc kêu ca. Hãy suy nghĩ tích cực!',
+//            '<img src="http://loinoihay.net/wp-content/uploads/2016/03/Nh%E1%BB%AFng-c%C3%A2u-n%C3%B3i-t%E1%BA%A1o-%C4%91%E1%BB%99ng-l%E1%BB%B1c-s%E1%BB%91ng-cho-gi%E1%BB%9Bi-tr%E1%BA%BB-t%E1%BB%AB-c%C3%A1c-t%E1%BB%89-ph%C3%BA-tr%C3%AAn-th%E1%BA%BF-gi%E1%BB%9Bi6.jpg" />'
         );
-        $sloganNumber = rand(0, count($slogan)-1);
+        $sloganNumber = rand(0, count($slogan) - 1);
         $this->data['mySlogan'] = $slogan[$sloganNumber];
-       
     }
-    
+
 }

@@ -7,10 +7,10 @@
                     <img src="<?php echo base_url(); ?>style/img/logo5.png" class="logo-fix">
                 </a>
                 <form action="<?php echo base_url() . $controller; ?>/search" class="form-search" method="GET">
-                    <input type="text" class="form-control" name="search_all" placeholder="Tìm mọi thứ...." 
+                    <input type="text" class="form-control input-navbar-search" name="search_all" placeholder="Tìm mọi thứ...." 
                            value="<?php echo isset($_GET['search_all']) ? $_GET['search_all'] : ''; ?>">
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit">
+                        <button class="btn btn-default btn-navbar-search" type="submit">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </span>
@@ -27,7 +27,7 @@
                 <li class="dropdown mega-dropdown dropdown-hover pull-right">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"> MENU <span class="caret"></span></a>				
                     <div id="filters" class="dropdown-menu mega-dropdown-menu">
-                        <?php $this->load->view($this->router->directory . $this->controller . '/common/menu'); ?>
+                        <?php $this->load->view('common/menu/'. $this->role_id); ?>
                     </div>				
                 </li>
             </ul>

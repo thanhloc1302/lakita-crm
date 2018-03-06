@@ -1,7 +1,8 @@
 $(document).on('click', 'a.edit_item', function (e) {
     e.preventDefault();
     var item_id = $(this).attr("item_id");
-    var url = $("#url_edit_item").val();
+    var url = $(this).attr("edit-url");
+    var modalName = $(this).attr("data-modal-name");
     $.ajax({
         url: url,
         type: "POST",
@@ -9,10 +10,13 @@ $(document).on('click', 'a.edit_item', function (e) {
             item_id: item_id
         },
         success: function (data) {
-            $("div.replace_content_edit_item_modal").html(data);
+            $("." + modalName).remove();
+            var newModal = `<div class="${modalName}"></div>`;
+            $(".modal-append-to").append(newModal);
+            $(`.${modalName}`).html(data);
         },
         complete: function () {
-            $(".edit_item_modal").modal("show");
+            $(`.${modalName} .modal`).modal("show");
         }
     });
 });

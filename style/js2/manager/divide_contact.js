@@ -30,13 +30,13 @@ $(".divide_contact_even").on('click', function (e) {
 
 $(document).on('click', '.btn-divide-one-contact', function (e) {
     e.preventDefault();
-    var url = $(this).parents('#transfer_one_contact').attr("action");
+    var url = $(this).parents('#divide_one_contact').attr("action");
     var contact_id = $("#contact_id_input").val();
     $.ajax({
         url: url,
         type: "POST",
         dataType: 'json',
-        data: $('#transfer_one_contact').serialize(),
+        data: $('#divide_one_contact').serialize(),
         success: data => {
             if (data.success == 1) {
                 $("#send_email_sound")[0].play();

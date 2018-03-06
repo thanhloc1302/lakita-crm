@@ -46,5 +46,4 @@ class Contacts_model extends MY_Model {
         $code = $rows[0]['phone'];
         return $code;
     }
-
 }

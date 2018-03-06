@@ -1,4 +1,4 @@
-<th class="order_date_recall tbl_date_recall">
+<th class="order_date_recall tbl_date_recall" id="th_tbl_date_recall">
     <input type="text" class="order_date_recall hidden" name="order_date_recall"
            value="<?php echo (isset($_GET['order_date_recall'])) ? (($_GET['order_date_recall'] == '') ? 0 : $_GET['order_date_recall']) : '0'; ?>" />
     Ngày khách hẹn gọi lại

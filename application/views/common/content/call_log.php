@@ -55,7 +55,7 @@
                         <?php echo $value_call_log['provider_name']; ?>
                     </td>
                     <td>
-                        <?php echo $value_call_log['content_change']; ?>
+                        <?php echo html_entity_decode($value_call_log['content_change']); ?>
                     </td>
                 </tr>
                 <?php

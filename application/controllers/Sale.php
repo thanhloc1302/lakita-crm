@@ -75,7 +75,14 @@ class Sale extends MY_Controller {
             's_check_edit_contact', 's_transfer_contact', 's_show_script', 'm_view_duplicate'
         );
 
-        $data['content'] = 'sale/index';
+        $data['titleListContact'] = 'Danh sách contact mới';
+        $data['actionForm'] = 'sale/transfer_contact';
+        $informModal = 'sale/modal/transfer_multi_contact';
+        $data['informModal'] = explode(' ', $informModal);
+        $outformModal = 'sale/modal/transfer_one_contact sale/modal/show_script';
+        $data['outformModal'] = explode(' ', $outformModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -128,7 +135,15 @@ class Sale extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact', 'common_edit_contact',
             's_check_edit_contact', 's_transfer_contact', 's_show_script'
         );
-        $data['content'] = 'sale/has_callback';
+
+        $data['titleListContact'] = 'Danh sách contact có lịch hẹn gọi lại';
+        $data['actionForm'] = 'sale/transfer_contact';
+        $informModal = 'sale/modal/transfer_multi_contact';
+        $data['informModal'] = explode(' ', $informModal);
+        $outformModal = 'sale/modal/transfer_one_contact sale/modal/show_script';
+        $data['outformModal'] = explode(' ', $outformModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -168,7 +183,6 @@ class Sale extends MY_Controller {
 
         $this->table = 'selection name phone last_note course_code price_purchase date_last_calling';
         $data['table'] = explode(' ', $this->table);
-        $data['content'] = 'sale/can_save';
 
         /*
          * Các file js cần load
@@ -178,6 +192,14 @@ class Sale extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact', 'common_edit_contact',
             's_check_edit_contact', 's_transfer_contact', 's_show_script'
         );
+
+        $data['titleListContact'] = 'Danh sách contact còn cứu được';
+        $data['actionForm'] = 'sale/transfer_contact';
+        $informModal = 'sale/modal/transfer_multi_contact';
+        $data['informModal'] = explode(' ', $informModal);
+        $outformModal = 'sale/modal/transfer_one_contact sale/modal/show_script';
+        $data['outformModal'] = explode(' ', $outformModal);
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -229,7 +251,14 @@ class Sale extends MY_Controller {
             's_check_edit_contact', 's_transfer_contact', 's_show_script', 'm_view_duplicate'
         );
 
-        $data['content'] = 'sale/view_all_contact';
+        $data['titleListContact'] = 'Danh sách toàn bộ contact';
+        $data['actionForm'] = 'sale/transfer_contact';
+        $informModal = 'sale/modal/transfer_multi_contact';
+        $data['informModal'] = explode(' ', $informModal);
+        $outformModal = 'sale/modal/transfer_one_contact sale/modal/show_script';
+        $data['outformModal'] = explode(' ', $outformModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -281,9 +310,20 @@ class Sale extends MY_Controller {
                     $this->load->model('notes_model');
                     $this->notes_model->insert($param2);
                 }
-                $myfile = fopen(APPPATH . "../public/last_reg.txt", "w") or die("Unable to open file!");
-                fwrite($myfile, time());
-                fclose($myfile);
+                $data2 = [];
+
+                $data2['title'] = 'Có 1 contact mới đăng ký';
+                $data2['message'] = 'Click để xem ngay';
+
+                require_once APPPATH . 'libraries/Pusher.php';
+                $options = array(
+                    'cluster' => 'ap1',
+                    'encrypted' => true
+                );
+                $pusher = new Pusher(
+                        'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
+                );
+                $pusher->trigger('my-channel', 'notice', $data2);
                 show_error_and_redirect('Thêm thành công contact', $input['back_location']);
             }
         } else {
@@ -361,13 +401,18 @@ class Sale extends MY_Controller {
         $input['where'] = array('id' => $script_id);
         $this->load->model('scripts_model');
         $content = $this->scripts_model->load_all($input);
-        echo $content[0]['content'];
+        echo html_entity_decode($content[0]['content']);
         //$this->load->view('sale/show_script');
     }
 
     function noti_contact_recall() {
-        $input['select'] = 'id, name, phone, date_recall, sale_staff_id';
-        $input['where']['sale_staff_id'] = $this->user_id;
+        $input['select'] = 'id, name, phone, date_recall, sale_staff_id, cod_status_id';
+        if ($this->role_id == 1) {
+            $input['where']['sale_staff_id'] = $this->user_id;
+        }
+          if ($this->role_id == 2) {
+            $input['where']['cod_status_id >'] = '0';
+        }
         $input['where']['date_recall >'] = '0';
         $input['where']['date_recall <='] = time();
         $input['order']['date_recall'] = 'DESC';
@@ -376,12 +421,20 @@ class Sale extends MY_Controller {
             $result = array();
             if (time() - $noti_contact[0]['date_recall'] < 30) {
                 $result['sound'] = 1;
+                if ($noti_contact[0]['cod_status_id'] == 0) {
+                    $result['image'] = base_url('public/images/recall.jpg');
+                    $result['message'] = 'Có contact (sale) cần gọi lại ngay bây giờ!';
+                } else {
+                    $result['image'] = base_url('public/images/ship.png');
+                    $result['message'] = 'Có contact (cod) cần gọi lại ngay bây giờ!';
+                }
             }
             foreach ($noti_contact as &$value) {
                 $value['date_recall'] = date('H:i j/n/Y', $value['date_recall']);
             }
             unset($value);
             $num_noti_contact = count($noti_contact);
+
             $result['num_noti'] = $num_noti_contact;
             $result['contacts_noti'] = $noti_contact;
             $this->renderJSON($result);
@@ -511,7 +564,12 @@ class Sale extends MY_Controller {
                     'role_id' => 1
                 )
             ),
-            'courses' => array(),
+            'courses' => array(
+                'where' => array('active' => '1'),
+                'order' => array(
+                    'course_code' => 'ASC'
+                )
+            ),
             'transfer_logs' => array(),
             'call_status' => array('order' => array('sort' => 'ASC')),
             'ordering_status' => array('order' => array('sort' => 'ASC')),

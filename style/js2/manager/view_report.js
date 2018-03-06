@@ -1,3 +1,4 @@
+/*
 $(document).on('scroll', function () {
     if ($(".table-head-pos").length) {
         if ($("body").scrollTop() > ($(".table-head-pos").offset().top)
@@ -21,6 +22,7 @@ $(document).on('scroll', function () {
         $("table thead.fixed-table").css("left", offsetLeft + "px");
     }
 });
+*/
 
 $("input.reset_form").on('click', function (e) {
     e.preventDefault();

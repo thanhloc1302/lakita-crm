@@ -42,6 +42,8 @@ class Manager extends MY_Controller {
         unset($value);
 
         $data['contacts'] = $contacts;
+        $data['progress'] = $this->GetProccessToday();
+        $data['progressType'] = 'Tiến độ các team ngày hôm nay';
 
         $data['total_contact'] = $data_pagination['total_row'];
         /*
@@ -60,6 +62,13 @@ class Manager extends MY_Controller {
         $this->table .= 'date_rgt matrix';
         $data['table'] = explode(' ', $this->table);
 
+        $data['titleListContact'] = 'Danh sách contact mới';
+        $data['actionForm'] = 'manager/divide_contact';
+        $informModal = 'manager/modal/divide_contact';
+        $data['informModal'] = explode(' ', $informModal);
+        $outformModal = 'manager/modal/divide_one_contact';
+        $data['outformModal'] = explode(' ', $outformModal);
+
         /*
          * Các file js cần load
          */
@@ -68,15 +77,22 @@ class Manager extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact',
             'm_delete_one_contact', 'm_divide_contact', 'm_view_duplicate', 'm_delete_multi_contact'
         );
-        $data['content'] = 'manager/index';
-
-
-
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
     function view_all_contact($offset = 0) {
         $data = $this->get_all_require_data();
+        
+        /*
+         * Lấy danh sách các marketer
+         */
+        $input = array();
+        $input['where'] = array(
+            'role_id' => 6,
+            'active' => 1);
+        $data['marketers'] = $this->staffs_model->load_all($input);
+
         $get = $this->input->get();
         /*
          * Điều kiện lấy contact :
@@ -84,23 +100,40 @@ class Manager extends MY_Controller {
          *
          */
         $conditional['where'] = array('is_hide' => '0');
+        
+        if (isset($get['export_all'])) {
+            $post = [];
+            $allContact = $this->_query_all_from_get($get, $conditional, 100000, $offset);
+            //   echoQuery();die;
+            foreach ($allContact['data'] as $value) {
+                $post['contact_id'][] = $value['id'];
+            }
+            $this->ExportToExcel($post);
+        }
+
+        
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         /*
          * Lấy link phân trang và danh sách contacts
          */
         $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $contacts = $data_pagination['data'];
+
+        
         foreach ($contacts as &$value) {
             $value['marketer_name'] = $this->staffs_model->find_staff_name($value['marketer_id']);
         }
         unset($value);
         $data['contacts'] = $contacts;
+        $data['progress'] = $this->GetProccessThisMonth();
+        $data['progressType'] = 'Tiến độ các team tháng này';
+
         $data['total_contact'] = $data_pagination['total_row'];
 
         /*
          * Filter ở cột trái và cột phải
          */
-        $data['left_col'] = array('tu_van', 'duplicate', 'course_code', 'sale', 'date_rgt', 'date_handover', 'payment_method_rgt');
+        $data['left_col'] = array('course_code', 'sale', 'marketer', 'channel', 'payment_method_rgt', 'date_rgt', 'date_handover');
         $data['right_col'] = array('source', 'call_status', 'ordering_status', 'cod_status', 'provider');
 
         /*
@@ -116,7 +149,15 @@ class Manager extends MY_Controller {
             'common_view_detail_contact', 'common_real_filter_contact',
             'm_delete_one_contact', 'm_divide_contact', 'm_view_duplicate', 'm_delete_multi_contact'
         );
-        $data['content'] = 'manager/view_all_contact';
+
+        $data['titleListContact'] = 'Danh sách toàn bộ contact';
+        $data['actionForm'] = 'manager/divide_contact';
+        $informModal = 'manager/modal/divide_contact';
+        $data['informModal'] = explode(' ', $informModal);
+        $outformModal = 'manager/modal/divide_one_contact';
+        $data['outformModal'] = explode(' ', $outformModal);
+
+        $data['content'] = 'common/list_contact';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
@@ -173,10 +214,27 @@ class Manager extends MY_Controller {
         $this->form_validation->set_rules('course_code', 'Mã khóa học', 'required|callback_check_course_code');
         $this->form_validation->set_rules('source_id', 'Nguồn contact', 'required|callback_check_source_id');
         if (!empty($input)) {
+            $result = array();
             if ($this->form_validation->run() == FALSE) {
-                $this->session->set_tempdata('message', 'Có lỗi xảy ra trong quá trình nhập liệu', 2);
-                $this->session->set_tempdata('msg_success', 0, 2);
-                $this->_view_add_contact();
+                $result['success'] = 0;
+                $result['message'] = 'Có lỗi xảy ra trong quá trình nhập liệu!';
+                $require_model = array(
+                    'courses' => array(
+                        'where' => ['active' => '1'],
+                        'order' => ['course_code' => 'ASC']
+                    ),
+                    'sources' => array()
+                );
+                $data = array_merge($this->data, $this->_get_require_data($require_model));
+                //  $data['content'] = 'manager/add_contact';
+                $data['content'] = 'common/modal/add_new_contact';
+                $this->load->view('common/modal/add_new_contact', $data);
+                $result['content'] = $this->load->view('common/modal/add_new_contact', $data, true);
+                echo json_encode($result);
+                die;
+//                $this->session->set_tempdata('message', 'Có lỗi xảy ra trong quá trình nhập liệu', 2);
+//                $this->session->set_tempdata('msg_success', 0, 2);
+//                $this->_view_add_contact();
             } else {
                 $param['name'] = $input['name'];
                 $param['email'] = $input['email'];
@@ -201,11 +259,24 @@ class Manager extends MY_Controller {
                     $this->load->model('notes_model');
                     $this->notes_model->insert($param2);
                 }
-                /* cập nhật để báo notificaton */
-                $myfile = fopen(APPPATH . "../public/last_reg.txt", "w") or die("Unable to open file!");
-                fwrite($myfile, time());
-                fclose($myfile);
-                show_error_and_redirect('Thêm thành công contact', $input['back_location']);
+                $data2 = [];
+
+                $data2['title'] = 'Có 1 contact mới đăng ký';
+                $data2['message'] = 'Click để xem ngay';
+
+                require_once APPPATH . 'libraries/Pusher.php';
+                $options = array(
+                    'cluster' => 'ap1',
+                    'encrypted' => true
+                );
+                $pusher = new Pusher(
+                        'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
+                );
+                $pusher->trigger('my-channel', 'notice', $data2);
+                $result['success'] = 1;
+                $result['message'] = 'Thêm thành công contact!';
+                echo json_encode($result);
+                die;
             }
         } else {
             $this->_view_add_contact();
@@ -216,13 +287,14 @@ class Manager extends MY_Controller {
         $require_model = array(
             'courses' => array(
                 'where' => ['active' => '1'],
-                'order' => ['course_code' => 'DESC']
+                'order' => ['course_code' => 'ASC']
             ),
             'sources' => array()
         );
         $data = array_merge($this->data, $this->_get_require_data($require_model));
-        $data['content'] = 'manager/add_contact';
-        $this->load->view(_MAIN_LAYOUT_, $data);
+        //  $data['content'] = 'manager/add_contact';
+        $data['content'] = 'common/modal/add_new_contact';
+        $this->load->view('common/modal/add_new_contact', $data);
     }
 
     function check_course_code($str) {
@@ -330,13 +402,17 @@ class Manager extends MY_Controller {
         $this->load->model('Staffs_model');
         foreach ($contact_ids as $value) {
             $input = array();
-            $input['select'] = 'sale_staff_id, id, duplicate_id';
+            $input['select'] = 'sale_staff_id, id, duplicate_id, is_hide';
             $input['where'] = array('id' => $value);
             $rows = $this->contacts_model->load_all($input);
 
             if (empty($rows)) {
                 $result['success'] = 0;
                 $result['message'] = "Không tồn tại khách hàng này! Mã lỗi : 30203";
+            }
+            if ($rows[0]['is_hide'] == '1') {
+                $result['success'] = 0;
+                $result['message'] = "Contact này đã bị xóa, vì vậy không thể phân contact này được!";
             }
 
             if ($rows[0]['sale_staff_id'] > 0) {
@@ -707,7 +783,7 @@ class Manager extends MY_Controller {
     // <editor-fold defaultstate="collapsed" desc="Báo cáo doanh thu theo ngày nhận tiền">
     function view_report_revenue() {
         $this->load->helper('manager_helper');
-        $data = $this->data;
+        $data = $this->get_all_require_data();
         $get = $this->input->get();
         $input = array();
         $this->load->model('courses_model');
@@ -718,8 +794,10 @@ class Manager extends MY_Controller {
         /*
          * Lấy ngày nhận tiền và ngày phát thành công
          */
-        if (isset($get['filter_date_report']) && $get['filter_date_report'] != '') {
-            $dateArr = explode('-', $get['filter_date_report']);
+        $date_report_from = strtotime(date('01-m-Y'));
+        $date_report_end = strtotime(date('t-m-Y'));
+        if (isset($get['filter_custom_date_report']) && $get['filter_custom_date_report'] != '') {
+            $dateArr = explode('-', $get['filter_custom_date_report']);
             $date_report_from = trim($dateArr[0]);
             $date_report_from = strtotime(str_replace("/", "-", $date_report_from));
             $date_report_end = trim($dateArr[1]);
@@ -746,7 +824,9 @@ class Manager extends MY_Controller {
             $conditional['where']['course_code'] = $value['course_code'];
             $conditional['where']['cod_status_id'] = _DA_THU_COD_;
 
-            $_L7 = $this->contacts_model->load_all($conditional);
+            // $_L7 = $this->contacts_model->load_all($conditional);
+            $contact = $this->_query_all_from_get($get, $conditional, 50000, 0);
+            $_L7 = $contact['data'];
             $courses[$key]['L7'] = sum_L8($_L7);
             $L7 += $courses[$key]['L7'];
 
@@ -769,13 +849,19 @@ class Manager extends MY_Controller {
                 $conditional['where']['date_deliver_success <='] = $date_deliver_success_end;
             }
 
-            $_L8 = $this->contacts_model->load_all($conditional);
+            // $_L8 = $this->contacts_model->load_all($conditional);
+            $contact = $this->_query_all_from_get($get, $conditional, 50000, 0);
+            $_L8 = $contact['data'];
             $courses[$key]['L8'] = sum_L8($_L8);
             $L8 += $courses[$key]['L8'];
 
             $courses[$key]['L7L8'] = $courses[$key]['L7'] + $courses[$key]['L8'];
             $L7L8 += $courses[$key]['L7L8'];
         }
+        //  print_arr($courses);
+        usort($courses, function($a, $b) {
+            return $a['L7L8'] - $b['L7L8'];
+        });
         $data['L7'] = $L7;
         $data['L8'] = $L8;
         $data['L7L8'] = $L7L8;
@@ -796,7 +882,10 @@ class Manager extends MY_Controller {
             }
             $conditional['where']['sale_staff_id'] = $value['id'];
             $conditional['where']['cod_status_id'] = _DA_THU_COD_;
-            $_L7 = $this->contacts_model->load_all($conditional);
+            //$_L7 = $this->contacts_model->load_all($conditional);
+            $contact = $this->_query_all_from_get($get, $conditional, 50000, 0);
+            $_L7 = $contact['data'];
+
             $staffs[$key]['L7'] = sum_L8($_L7);
             $L7_TVTS += $staffs[$key]['L7'];
 
@@ -810,12 +899,16 @@ class Manager extends MY_Controller {
             }
             $conditional['where']['sale_staff_id'] = $value['id'];
             $conditional['where']['cod_status_id'] = _DA_THU_LAKITA_;
-            $_L8 = $this->contacts_model->load_all($conditional);
+            //$_L8 = $this->contacts_model->load_all($conditional);
+            $contact = $this->_query_all_from_get($get, $conditional, 50000, 0);
+            $_L8 = $contact['data'];
+
             $staffs[$key]['L8'] = sum_L8($_L8);
             $L8_TVTS += $staffs[$key]['L8'];
             $staffs[$key]['L7L8'] = $staffs[$key]['L7'] + $staffs[$key]['L8'];
             $L7L8_TVTS += $staffs[$key]['L7L8'];
         }
+        $data['left_col'] = array('provider');
         $data['L7_TVTS'] = $L7_TVTS;
         $data['L8_TVTS'] = $L8_TVTS;
         $data['L7L8_TVTS'] = $L7L8_TVTS;
@@ -970,7 +1063,7 @@ class Manager extends MY_Controller {
 
     /*
      * Hàm tạo view xem báo cáo
-     * Tham số: 
+     * Tham số:
      * $model: model tương ứng với loại báo cáo, ví dụ: báo cáo theo sản phẩm thì model là courses
      * $prop: tên trường tương ứng trong bảng tbl_contact, ví dụ: báo cáo theo sản phẩm thì trường tương ứng là courses_code
      * $key_tb: Khóa chính trong bảng tương ứng
@@ -1180,6 +1273,9 @@ class Manager extends MY_Controller {
             'courses' => array(
                 'where' => array(
                     'active' => 1
+                ),
+                'order' => array(
+                    'course_code' => 'ASC'
                 )
             ),
             'call_status' => array(),
@@ -1187,7 +1283,8 @@ class Manager extends MY_Controller {
             'cod_status' => array(),
             'providers' => array(),
             'payment_method_rgt' => array(),
-            'sources' => array()
+            'sources' => array(),
+            'channel' => array()
         );
         return array_merge($this->data, $this->_get_require_data($require_model));
     }
@@ -1312,4 +1409,188 @@ class Manager extends MY_Controller {
     }
 
     // </editor-fold>
+
+    protected function GetProccessToday() {
+        $progress = [];
+        $inputContact = array();
+        $inputContact['select'] = 'id';
+        $inputContact['where'] = array('date_rgt >' => strtotime(date('d-m-Y')), 'is_hide' => '0');
+        $today = $this->contacts_model->load_all($inputContact);
+        $progress['marketing'] = array(
+            'count' => count($today),
+            'kpi' => MARKETING_KPI_PER_DAY,
+            'name' => 'Marketing',
+            'type' => 'C3');
+        $progress['marketing']['progress'] = round($progress['marketing']['count'] / $progress['marketing']['kpi'] * 100, 2);
+
+        $inputContact = array();
+        $inputContact['select'] = 'id';
+        $inputContact['where'] = array('date_confirm >' => strtotime(date('d-m-Y')), 'is_hide' => '0');
+        $today = $this->contacts_model->load_all($inputContact);
+        $progress['sale'] = array(
+            'count' => count($today),
+            'kpi' => TVTS_KPI_PER_DAY,
+            'name' => 'TVTS',
+            'type' => 'L6');
+        $progress['sale']['progress'] = round($progress['sale']['count'] / $progress['sale']['kpi'] * 100, 2);
+
+        return $progress;
+    }
+
+    protected function GetProccessThisMonth() {
+        $progress = [];
+        $inputContact = array();
+        $inputContact['select'] = 'id';
+        $inputContact['where'] = array('date_rgt >' => strtotime(date('01-m-Y')), 'is_hide' => '0');
+        $today = $this->contacts_model->load_all($inputContact);
+        $progress['marketing'] = array(
+            'count' => count($today),
+            'kpi' => 38 * 30,
+            'name' => 'Marketing',
+            'type' => 'C3');
+        $progress['marketing']['progress'] = round($progress['marketing']['count'] / $progress['marketing']['kpi'] * 100, 2);
+
+        $inputContact = array();
+        $inputContact['select'] = 'id';
+        $inputContact['where'] = array('date_confirm >' => strtotime(date('01-m-Y')), 'is_hide' => '0');
+        $today = $this->contacts_model->load_all($inputContact);
+        $progress['sale'] = array(
+            'count' => count($today),
+            'kpi' => 23 * 30,
+            'name' => 'TVTS',
+            'type' => 'L6');
+        $progress['sale']['progress'] = round($progress['sale']['count'] / $progress['sale']['kpi'] * 100, 2);
+
+        $inputContact = array();
+        $inputContact['select'] = 'id';
+        $inputContact['where'] = array('date_receive_lakita >' => strtotime(date('01-m-Y')), 'is_hide' => '0');
+        $today = $this->contacts_model->load_all($inputContact);
+        $progress['cod'] = array(
+            'count' => count($today),
+            'kpi' => 38 * 30 * 0.5,
+            'name' => 'COD',
+            'type' => 'L8');
+        $progress['cod']['progress'] = round($progress['cod']['count'] / $progress['cod']['kpi'] * 100, 2);
+
+        return $progress;
+    }
+    
+    protected function ExportToExcel($post) {
+        /* ====================xuất file excel============================== */
+        //$post = $this->input->post();
+        
+        $this->load->library('PHPExcel');
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        // $objPHPExcel->getActiveSheet()->getStyle("A1:H1")->getFont()->setSize(11)->setBold(true)->setName('Times New Roman');
+        //     ->getColor()->setRGB('FFFFFF')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+        $styleArray = array(
+            'font' => array(
+                'bold' => true,
+                'color' => array('rgb' => 'FFFFFF'),
+                'size' => 15,
+                'name' => 'Times New Roman'
+            ),
+            'alignment' => array(
+                'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+                'vertical' => PHPExcel_Style_Alignment::VERTICAL_CENTER
+            )
+        );
+        $objPHPExcel->getActiveSheet()->getStyle("A1:R1")->applyFromArray($styleArray);
+        $objPHPExcel->getActiveSheet()->getStyle("A1:R1")->getFill()->setFillType(PHPExcel_Style_Fill::FILL_SOLID)->getStartColor()->setARGB('548235');
+        $objPHPExcel->getActiveSheet()->getStyle("A1:R1")->getBorders()->getAllBorders()->setBorderStyle(PHPExcel_Style_Border::BORDER_THICK);
+        $objPHPExcel->getActiveSheet()->getStyle("A2:R200")->getFont()->setSize(15)->setName('Times New Roman');
+        $objPHPExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
+        $objPHPExcel->getActiveSheet()->getSheetView()->setZoomScale(73);
+
+
+        //set tên các cột cần in
+        $columnName = 'A';
+        $rowCount = 1;
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'STT');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Họ tên');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Email');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Số điện thoại');
+//        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Địa chỉ');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Mã khóa học');
+        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Ngày đăng ký');
+//        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'TVTS');
+//        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Giá tiền mua');
+//        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Nguồn contact');
+//        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Trạng thái gọi');
+//        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Trạng thái đơn hàng');
+//        $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, 'Trạng thái giao hàng');
+//        $objPHPExcel->getActiveSheet()->SetCellValue($columnName . $rowCount, 'Ghi chú cuộc gọi');
+        $rowCount++;
+
+        //đổ dữ liệu ra file excel
+        $i = 1;
+        $this->load->model('sources_model');
+        $this->load->model('call_status_model');
+        $this->load->model('ordering_status_model');
+        $this->load->model('cod_status_model');
+        foreach ($post['contact_id'] as $value) {
+            $input = array();
+//            $input['select'] = 'id, name, email, phone, address, course_code, date_rgt, sale_staff_id, '
+//                    . 'price_purchase, source_id, call_status_id, ordering_status_id, cod_status_id';
+            $input['select'] = 'id, name, email, phone, course_code, date_rgt';
+            $input['where'] = array('id' => $value);
+            $contact = $this->contacts_model->load_all($input);
+
+//            $this->load->model('notes_model');
+//            $input2 = array();
+//            $input2['where'] = array('contact_id' => $value);
+//            $input2['order'] = array('id' => 'DESC');
+//            $last_note = $this->notes_model->load_all($input2);
+//            $notes = '';
+//            if (!empty($last_note)) {
+//                foreach ($last_note as $value2) {
+//                    $notes .= date('d/m/Y', $value2['time']) . ' ==> ' . $value2['content'] . ' ------ ';
+//                }
+//            }
+//            $notes = html_entity_decode($notes);
+
+            $columnName = 'A';
+
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $i++);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $contact[0]['name']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $contact[0]['email']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $contact[0]['phone']);
+//            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $contact[0]['address']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $contact[0]['course_code']);
+            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, date('d/m/Y', $contact[0]['date_rgt']));
+//            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $this->staffs_model->find_staff_name($contact[0]['sale_staff_id']));
+//            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $contact[0]['price_purchase']);
+//            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $this->sources_model->find_source_name($contact[0]['source_id']));
+//            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $this->call_status_model->find_call_status_desc($contact[0]['call_status_id']));
+//            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $this->ordering_status_model->find_ordering_status_desc($contact[0]['ordering_status_id']));
+//            $objPHPExcel->getActiveSheet()->SetCellValue($columnName++ . $rowCount, $this->cod_status_model->find_cod_status_desc($contact[0]['cod_status_id']));
+//            $objPHPExcel->getActiveSheet()->SetCellValue($columnName . $rowCount, $notes);
+            $objPHPExcel->getActiveSheet()->getRowDimension($rowCount)->setRowHeight(35);
+            $BStyle = array(
+                'borders' => array(
+                    'allborders' => array(
+                        'style' => PHPExcel_Style_Border::BORDER_THICK,
+                        'color' => array('rgb' => '151313')
+                    )
+                )
+            );
+            $objPHPExcel->getActiveSheet()->getStyle('A' . $rowCount . ':' . $columnName . $rowCount)->applyFromArray($BStyle);
+            $rowCount++;
+        }
+        foreach (range('A', $columnName) as $columnID) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)
+                    ->setAutoSize(true);
+        }
+        $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="Danh_sach_khach_hang v' . date('Y.m.d') . '.xlsx"');
+        header('Cache-Control: max-age=0');
+        $objWriter->save('php://output');
+        die;
+        /* ====================xuất file excel (end)============================== */
+    }
+    
+    
+
 }
