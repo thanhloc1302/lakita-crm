@@ -20,12 +20,11 @@
 	                $this->facebook_comment_plugin_model->insert(['comment_id' => $commentId, 'time' => date(_DATE_FORMAT_)]);
 	                $url = [
 	                    '1732177853493516' => 'https://lakita.vn/bao-hiem-xa-hoi-tien-luong-thue-thu-nhap-ca-nhan-2018.html',
-	                    '1633196606750778' => 'https://lakita.vn/ky-thuat-quyet-toan-thue.html',
+	                    '1298443350192736' => 'https://lakita.vn/ky-thuat-quyet-toan-thue.html',
 	                    '1682158621817044' => 'https://lakita.vn/quyet-toan-thue-tu-a-den-z.html',
 	                    '1778639972164393' => 'https://lakita.vn/lap-bao-cao-tai-chinh-2016.html',
-	                    '1583911625030399' => 'https://lakita.vn/lap-bao-cao-tai-chinh-2017.html',
+	                    '1062159213912728' => 'https://lakita.vn/lap-bao-cao-tai-chinh-2017.html',
 	                    '1665697290129137' => 'https://lakita.vn/tron-bo-lap-bao-cao-tai-chinh-2017.html',
-	                    '1583911625030399' => 'https://lakita.vn/tron-bo-lap-bao-cao-tai-chinh-2017-trinhbtk.html',
 	                    '1526592320757326' => 'https://lakita.vn/tron-bo-lap-bao-cao-tai-chinh-2017-trinhbtk2.html',
 	                    '1820232718010252' => 'https://lakita.vn/tron-bo-lap-bao-cao-tai-chinh-2017-345k.html',
 	                    '1270921559703857' => 'https://lakita.vn/cach-xac-dinh-chi-phi-hop-ly.html',
@@ -53,8 +52,8 @@
 	                    '1628748463856832' => 'https://lakita.vn/yoga-danh-cho-nguoi-lam-van-phong-4.html',
 	                    '1625298554180109' => 'https://lakita.vn/yoga-danh-cho-nguoi-lam-van-phong-5.html',
 	                    '1739851282726831' => 'https://lakita.vn/combo-qua-khung-tet-nguyen-dan.html',
-	                    '1739851282726831' => 'https://lakita.vn/tron-bo-thuc-hanh-ke-toan-tong-hop-tren-phan-mem-excel.html',
-	                    '1739851282726831' => 'https://lakita.vn/chia-se-tat-tan-tat-kinh-nghiem-bao-ve-giai-trinh-so-lieu-khi-thanh-tra-thue.html'
+	                    '1584950161542159' => 'https://lakita.vn/tron-bo-thuc-hanh-ke-toan-tong-hop-tren-phan-mem-excel.html',
+	                    '1594205084033500' => 'https://lakita.vn/chia-se-tat-tan-tat-kinh-nghiem-bao-ve-giai-trinh-so-lieu-khi-thanh-tra-thue.html'
 	                ];
 
 	                $replyComment = '';
@@ -75,6 +74,7 @@
 	                $this->load->library("email");
 	                $this->email->from('cskh@lakita.vn', "lakita.vn");
 	                $this->email->to('phuongtravel46@gmail.com, kenshiner96@gmail.com, ngoccongtt1@gmail.com, trinhnv@lakita.vn');
+	                // $this->email->to('kenshiner96@gmail.com');
 	                $this->email->subject('Có cmt fb mới ở landing page ' . $page->title . ' (' . date(_DATE_FORMAT_) . ')');
 
 	                $uMessage = $comment->entry[0]->changes[0]->value->message;
