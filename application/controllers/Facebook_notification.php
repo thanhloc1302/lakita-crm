@@ -57,8 +57,8 @@ class Facebook_notification extends CI_Controller {
 
                 $this->load->library("email");
                 $this->email->from('cskh@lakita.vn', "lakita.vn");
-                $this->email->to('chuyenbka@gmail.com, ngoccongtt1@gmail.com, trinhnv@lakita.vn, phuongtravel46@gmail.com, maiduong250695@gmail.com');
-                // $this->email->to('chuyenbka@gmail.com');
+                // $this->email->to('chuyenbka@gmail.com, ngoccongtt1@gmail.com, trinhnv@lakita.vn, phuongtravel46@gmail.com, maiduong250695@gmail.com');
+                $this->email->to('kenshiner96@gmail.com');
                 $this->email->subject('Có cmt fb mới ở landing page ' . $page->title . ' (' . date(_DATE_FORMAT_) . ')');
 
                 $uMessage = $comment->entry[0]->changes[0]->value->message;
@@ -66,7 +66,11 @@ class Facebook_notification extends CI_Controller {
 
 
                 $this->email->message('<table cellspacing="0" class="MsoTableGrid" style="border-collapse:collapse; border:undefined"> <tbody> <tr> <td style="vertical-align:top; width:134.75pt"> <p style="margin-left:0in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Roboto"><img src="' . $fullSizePicture . '" style="height:271px; width:271px"/></span></span> </p></td><td style="vertical-align:top; width:600pt"> <p style="margin-left:1in; margin-right:0in"><span style="font-size:11pt"><span style="font-family:Roboto">' . $uName . '</span></span> </p><p style="margin-left:1in; margin-right:0in"><span style="font-size:11pt"><span style="background-color:white"><span style="font-family:Roboto"><strong><span style="font-size:24.0pt"><span style="font-family:&quot;Arial&quot;,sans-serif"><span style="color:#222222">' . $uMessage . '</span></span></span></strong></span></span></span> </p><p style="margin-left:1in; margin-right:0in">&nbsp;</p><a style="margin-left:1in; margin-right:0in" href="' . $urlTitle . '"> Landing Page: ' . $page->title . '</a><p style="margin-left:1in; margin-right:0in">' . $replyComment . '</p></td></tr></tbody></table>');
-                $this->email->send();
+                
+                if ($this->email->send())
+                {
+                    echo 'ok';
+                }
                 $this->email->clear(TRUE);
 
 
