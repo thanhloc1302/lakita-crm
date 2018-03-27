@@ -42,6 +42,7 @@ class MY_Controller extends CI_Controller {
         //echo $this->input->ip_address();die;
         //echo md5(md5('lakita_quantri_2017')); die;
         // echo strtotime('2018-01-12'); die;
+        
         $this->controller = $this->router->fetch_class();
         $this->method = $this->router->fetch_method();
         $this->_check_login();
@@ -75,6 +76,33 @@ class MY_Controller extends CI_Controller {
 //            $new =  'THU54110117'. ($number2);
 //            echo 'UPDATE `tbl_contact` SET `code_cross_check` = \''.$new.'\' WHERE `code_cross_check` = \'' . $old .'\';<br>';
 //        }
+        
+        //locnt
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('call_status_id' => '0', 'sale_staff_id' => '0', 'is_hide' => '0');
+        $this->L['L1'] = count($this->contacts_model->load_all($input));
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('is_hide' => '0');
+        $this->L['all'] = count($this->contacts_model->load_all($input));
+        $this->_loadCountListContact();
+        
+        $data['time_remaining'] = 0;
+        $input = array();
+        $input['select'] = 'date_recall';
+        $input['where']['date_recall >'] = time();
+        $input['where']['cod_status_id >'] = '0';
+        $input['order']['date_recall'] = 'ASC';
+        $input['limit'] = array('1', '0');
+        $noti_contact = $this->contacts_model->load_all($input);
+        if (!empty($noti_contact)) {
+            $time_remaining = $noti_contact[0]['date_recall'] - time();
+            $data['time_remaining'] = ($time_remaining < 3600 * 3) ? $time_remaining : 0;
+        }
+        $this->load->vars($data);
+        //locnt
+        
     }
 
     private function _check_login() {
@@ -135,7 +163,7 @@ class MY_Controller extends CI_Controller {
         /*
          * Gán trường cần hiện của bảng contact
          */
-        $this->table = 'selection name phone address course_code price_purchase ';
+        $this->table = 'selection name phone address course_code price_purchase campaign ';
     }
 
     private function _check_permission() {
@@ -620,7 +648,12 @@ class MY_Controller extends CI_Controller {
         /*
          * Các trường cần hiện của bảng contact (đã có default)
          */
+        
         $this->table .= 'date_last_calling call_stt ordering_stt last_activity matrix';
+        if($this->role_id == 1){
+            /*  nếu là nhân viên sale thì thêm nút thêm contact khi tìm kiếm */
+            $this->table .= ' add_contact';
+        }
         $data['table'] = explode(' ', $this->table);
 
         /*
@@ -653,6 +686,31 @@ class MY_Controller extends CI_Controller {
         );
         $sloganNumber = rand(0, count($slogan) - 1);
         $this->data['mySlogan'] = $slogan[$sloganNumber];
+    }
+    
+    private function _loadCountListContact() {
+
+        $this->L['has_callback'] = 'Tùy từng TVTS';
+
+
+        $this->L['can_save'] = 'Tùy từng TVTS';
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('ordering_status_id' => _DONG_Y_MUA_, 'cod_status_id' => '0',
+            'date_expect_receive_cod <' => strtotime('tomorrow'), 'payment_method_rgt' => '1', 'is_hide' => '0');
+        $this->L['L6'] = count($this->contacts_model->load_all($input));
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('cod_status_id' => _DANG_GIAO_HANG_, 'payment_method_rgt' => '1', 'is_hide' => '0');
+        $this->L['pending'] = count($this->contacts_model->load_all($input));
+
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
+            'cod_status_id' => '0', 'payment_method_rgt >' => '1', 'is_hide' => '0');
+        $this->L['transfer'] = count($this->contacts_model->load_all($input));
     }
 
 }

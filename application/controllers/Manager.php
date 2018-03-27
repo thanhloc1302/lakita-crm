@@ -83,7 +83,7 @@ class Manager extends MY_Controller {
 
     function view_all_contact($offset = 0) {
         $data = $this->get_all_require_data();
-        
+
         /*
          * Lấy danh sách các marketer
          */
@@ -100,7 +100,7 @@ class Manager extends MY_Controller {
          *
          */
         $conditional['where'] = array('is_hide' => '0');
-        
+
         if (isset($get['export_all'])) {
             $post = [];
             $allContact = $this->_query_all_from_get($get, $conditional, 100000, $offset);
@@ -111,7 +111,7 @@ class Manager extends MY_Controller {
             $this->ExportToExcel($post);
         }
 
-        
+
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
         /*
          * Lấy link phân trang và danh sách contacts
@@ -119,7 +119,7 @@ class Manager extends MY_Controller {
         $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $contacts = $data_pagination['data'];
 
-        
+
         foreach ($contacts as &$value) {
             $value['marketer_name'] = $this->staffs_model->find_staff_name($value['marketer_id']);
         }
@@ -270,7 +270,7 @@ class Manager extends MY_Controller {
                     'encrypted' => true
                 );
                 $pusher = new Pusher(
-                        'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
+                        '32b339fca68db27aa480', '32f6731ad5d48264c579', '490390', $options
                 );
                 $pusher->trigger('my-channel', 'notice', $data2);
                 $result['success'] = 1;
@@ -687,13 +687,25 @@ class Manager extends MY_Controller {
         $input['where'] = array('role_id' => 1);
         $staffs = $this->staffs_model->load_all($input);
 
+
+        if (isset($get['filter_date_happen_from']) && $get['filter_date_happen_from'] != '' && isset($get['filter_date_happen_end']) && $get['filter_date_happen_end'] != '') {
+            $startDate = strtotime($get['filter_date_happen_from']);
+            $endDate = strtotime($get['filter_date_happen_end']);
+        } else {
+            $startDate = strtotime(date('01-m-Y'));
+            $endDate = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+        }
+
+        var_dump($startDate . $endDate);
+        die;
+
         $conditionArr = array(
             'CHUA_GOI' => array(
-                'where' => array('call_status_id' => '0'),
+                'where' => array('call_status_id' => '0', 'date_handover >=' => $startDate, 'date_handover <=' => $endDate),
                 'sum' => 0
             ),
             'L1' => array(
-                'where' => array(),
+                'where' => array('date_'),
                 'sum' => 0
             ),
             'L2' => array(
@@ -701,11 +713,11 @@ class Manager extends MY_Controller {
                 'sum' => 0
             ),
             'L6' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_),
+                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_, 'date_confirm >=' => $startDate, 'date_confirm <=' => $endDate),
                 'sum' => 0
             ),
             'TU_CHOI_MUA' => array(
-                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _TU_CHOI_MUA_),
+                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _TU_CHOI_MUA_, 'date_confirm >=' => $startDate, 'date_confirm <=' => $endDate),
                 'sum' => 0
             ),
             'CHUA_GIAO_HANG_COD' => array(
@@ -754,6 +766,76 @@ class Manager extends MY_Controller {
                 'sum' => 0
             ),
         );
+
+
+//        echo date('t-m-Y');die;
+//        $conditionArr = array(
+//            'CHUA_GOI' => array(
+//                'where' => array('call_status_id' => '0'),
+//                'sum' => 0
+//            ),
+//            'L1' => array(
+//                'where' => array(),
+//                'sum' => 0
+//            ),
+//            'L2' => array(
+//                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_),
+//                'sum' => 0
+//            ),
+//            'L6' => array(
+//                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_),
+//                'sum' => 0
+//            ),
+//            'TU_CHOI_MUA' => array(
+//                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _TU_CHOI_MUA_),
+//                'sum' => 0
+//            ),
+//            'CHUA_GIAO_HANG_COD' => array(
+//                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
+//                    'payment_method_rgt' => '1', 'cod_status_id' => '0'),
+//                'sum' => 0
+//            ),
+//            'CHUA_GIAO_HANG_TRANSFER' => array(
+//                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
+//                    'payment_method_rgt >' => '1', 'cod_status_id' => '0'),
+//                'sum' => 0
+//            ),
+//            'DANG_GIAO_HANG' => array(
+//                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
+//                    'cod_status_id' => _DANG_GIAO_HANG_),
+//                'sum' => 0
+//            ),
+//            'DA_THU_COD' => array(
+//                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
+//                    'cod_status_id' => _DA_THU_COD_),
+//                'sum' => 0
+//            ),
+//            'L8' => array(
+//                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
+//                'sum' => 0
+//            ),
+//            'L7L8' => array(
+//                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
+//                    '(`cod_status_id` = ' . _DA_THU_COD_ . ' OR `cod_status_id` = ' . _DA_THU_LAKITA_ . ')' => 'NO-VALUE'),
+//                'sum' => 0
+//            ),
+//            'HUY_DON' => array(
+//                'where' => array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
+//                    'cod_status_id' => _HUY_DON_),
+//                'sum' => 0
+//            ),
+//            'LC' => array(
+//                'where' => array(
+//                    '(`call_status_id` = ' . _SO_MAY_SAI_ . ' OR `call_status_id` = ' . _NHAM_MAY_ . ' OR `ordering_status_id` = ' . _CONTACT_CHET_ . ')' => 'NO-VALUE'),
+//                'sum' => 0
+//            ),
+//            'CON_CUU_DUOC' => array(
+//                'where' => array(
+//                    '(`call_status_id` = ' . _KHONG_NGHE_MAY_ . ' OR `ordering_status_id` in (' . _BAN_GOI_LAI_SAU_ . ' , ' . _CHAM_SOC_SAU_MOT_THOI_GIAN_ . ',' . _LAT_NUA_GOI_LAI_ . '))' => 'NO-VALUE'),
+//                'sum' => 0
+//            ),
+//        );                    'cod_status_id' => _DA_THU_LAKITA_),
+//
         foreach ($staffs as $key => $value) {
             foreach ($conditionArr as $key2 => $value2) {
                 $conditional = array();
@@ -764,15 +846,16 @@ class Manager extends MY_Controller {
                 foreach ($value2['where'] as $key3 => $value3) {
                     $conditional['where'][$key3] = $value3;
                 }
-                $staffs[$key][$key2] = $this->_query_for_report($get, $conditional);
+                $staffs[$key][$key2] = count($this->contacts_model->load_all($conditional));
                 $conditionArr[$key2]['sum'] += $staffs[$key][$key2];
             }
         }
         foreach ($conditionArr as $key => $value) {
             $data[$key] = $value['sum'];
         }
+
         $data['staffs'] = $staffs;
-        $data['left_col'] = array('date_handover');
+        $data['left_col'] = array('date_happen');
         $data['right_col'] = array('course_code');
         $data['load_js'] = array('m_view_report');
         $data['content'] = 'manager/view_report';
@@ -1474,11 +1557,11 @@ class Manager extends MY_Controller {
 
         return $progress;
     }
-    
+
     protected function ExportToExcel($post) {
         /* ====================xuất file excel============================== */
         //$post = $this->input->post();
-        
+
         $this->load->library('PHPExcel');
         $objPHPExcel = new PHPExcel();
         $objPHPExcel->setActiveSheetIndex(0);
@@ -1590,7 +1673,183 @@ class Manager extends MY_Controller {
         die;
         /* ====================xuất file excel (end)============================== */
     }
-    
-    
+
+    function view_report_operation() {
+        $this->load->helper('manager_helper');
+        $this->load->helper('common_helper');
+        $get = $this->input->get();
+
+        $data = '';
+
+
+        if (isset($get['filter_date_happen_from']) && $get['filter_date_happen_from'] != '' && isset($get['filter_date_happen_end']) && $get['filter_date_happen_end'] != '') {
+            $startDate = strtotime($get['filter_date_happen_from']);
+            $endDate = strtotime($get['filter_date_happen_end']);
+            $dateArray = h_get_time_range($startDate, $endDate);
+        }
+
+        /* các loại báo cáo */
+        $typeReport = array(
+            'user' => 'date_rgt',
+            'marketing' => 'time',
+            'C3' => 'date_rgt',
+            'L1' => 'date_rgt',
+            'L2' => 'date_handover',
+            'L6' => 'date_confirm',
+            'L7_revenue' => 'date_receive_cod',
+            'L8_revenue' => 'date_receive_lakita',
+//            'L8/C3' => 'date_confirm',
+//            'L8/L6' => 'date_receive_cancel_cod',
+//            'AKPU' => 'date_receive_cod',
+        );
+
+        /* Mảng chứa các ngày lẻ */
+        if (isset($get['filter_date_happen_from']) && $get['filter_date_happen_from'] != '' && isset($get['filter_date_happen_end']) && $get['filter_date_happen_end'] != '') {
+            $startDate = strtotime($get['filter_date_happen_from']);
+            $endDate = strtotime($get['filter_date_happen_end']);
+        } else {
+            $startDate = strtotime(date('01-m-Y'));
+            $endDate = mktime(0, 0, 0, date('m'), date('d'), date('Y'));
+        }
+        $dateArray = h_get_time_range($startDate, $endDate);
+
+        /* lấy mảng các loại contact */
+        $Report = array();
+        foreach ($typeReport as $report_type => $typeDate) {
+            $total = 0;
+            $total2 = 0;
+            foreach ($dateArray as $dayName => $date) {
+
+
+                $input = array();
+
+                $input['where'][$typeDate . '>='] = $date;
+                $input['where'][$typeDate . '<='] = $date + 24 * 3600;
+                if ($report_type == 'user') {
+                    $input['select'] = 'phone';
+                    $input['where']['ordering_status_id'] = _DONG_Y_MUA_;
+                    $input['where']['duplicate_id'] = '';
+                    $contact = '';
+                    $contact_new = array();
+                    $contact = $this->contacts_model->load_all($input);
+                    foreach ($contact as $key => $value) {
+                        $contact_new[] = $value['phone'];
+                    }
+                    $contact_new = array_unique($contact_new);
+
+                    $Report[$report_type][$dayName] = count($contact_new);
+                    $total += $Report[$report_type][$dayName];
+                }
+                if ($report_type == 'C3') {
+                    $input['select'] = 'id';
+                    $Report[$report_type][$dayName] = count($this->contacts_model->load_all($input));
+                    $total += $Report[$report_type][$dayName];
+                }
+                if ($report_type == 'L2') {
+                    $input['select'] = 'id';
+                    $input['where']['duplicate_id'] = '';
+                    $input['where']['call_status_id'] = _DA_LIEN_LAC_DUOC_;
+                    $contact = $this->contacts_model->load_all($input);
+                    $Report[$report_type][$dayName] = count($contact);
+                    $total += $Report[$report_type][$dayName];
+                }
+
+                if ($report_type == 'L6') {
+                    $input['select'] = 'id';
+                    $input['where']['ordering_status_id'] = _DONG_Y_MUA_;
+                    $Report[$report_type][$dayName] = count($this->contacts_model->load_all($input));
+                    $total += $Report[$report_type][$dayName];
+                }
+
+                if ($report_type == 'L7_revenue' || $report_type == 'L8_revenue') {
+                    $input['select'] = 'id,price_purchase';
+                    if ($report_type == 'L7_revenue') {
+                        $input['where']['cod_status_id'] = _DA_THU_COD_;
+                    }
+
+                    if ($report_type == 'L8_revenue') {
+                        $input['where']['cod_status_id'] = _DA_THU_LAKITA_;
+                    }
+                    $contact = '';
+                    $contact = $this->contacts_model->load_all($input);
+                    $Report[$report_type]['revenue'][$dayName] = sum_L8($contact);
+                    $Report[$report_type]['count'][$dayName] = count($contact);
+
+                    $total += $Report[$report_type]['revenue'][$dayName];
+                    $total2 += $Report[$report_type]['count'][$dayName];
+                }
+                if ($report_type == 'marketing') {
+                    $this->load->model('campaign_cost_model');
+                    $input['select'] = 'id,spend';
+                    $marketing_fee = $this->campaign_cost_model->load_all($input);
+                    $sum = 0;
+                    foreach ($marketing_fee as $value) {
+                        $sum += $value['spend'];
+                    }
+                    $Report[$report_type][$dayName] = $sum;
+                    $total += $Report[$report_type][$dayName];
+                }
+            }
+            $Report[$report_type]['Lũy kế'] = $total;
+            if ($report_type == 'L8_revenue') {
+                $Report[$report_type]['count']['Lũy kế'] = $total2;
+            }
+        }
+
+
+        /* mảng doanh thu L7 + L8 */
+        $L7L8 = array();
+        foreach ($Report['L7_revenue']['revenue'] as $key => $value) {
+            $L7L8[$key] = $Report['L8_revenue']['revenue'][$key] + $value;
+        }
+        $L7L8['Lũy kế'] = $Report['L8_revenue']['Lũy kế'] + $Report['L7_revenue']['Lũy kế'];
+
+        /* mảng tỷ lệ l8/c3 l8/l6 */
+        $L8_C3 = array();
+        foreach ($Report['L8_revenue']['count'] as $key => $value) {
+            $L8_C3[$key] = h_get_progress($value, $Report['C3'][$key]);
+        }
+        $L8_C3['Lũy kế'] = h_get_progress($Report['L8_revenue']['count']['Lũy kế'], $Report['C3']['Lũy kế']);
+
+        $L8_L6 = array();
+        foreach ($Report['L8_revenue']['count'] as $key => $value) {
+            $L8_L6[$key] = h_get_progress($value, $Report['L6'][$key]);
+        }
+        $L8_L6['Lũy kế'] = h_get_progress($Report['L8_revenue']['count']['Lũy kế'], $Report['L6']['Lũy kế']);
+
+        /* chỉ số arpu = doanh thu( L7 +l8) / số (L1) */
+        /* nếu 1 khách hàng mua 3 lần bình thường tính là 3 L1 nhưng ở đây chỉ tính là 1 L1 */
+        $arpu = array();
+        foreach ($L7L8 as $key => $value) {
+            if ($Report['user'][$key] != 0) {
+                $arpu[$key] = round($value / $Report['user'][$key], 0);
+            } else {
+                $arpu[$key] = 'N/A';
+            }
+        }
+
+
+
+
+
+        $Report3['L7+L8'] = $L7L8;
+        $Report3['C3'] = $Report['C3'];
+        $Report3['L8/C3'] = $L8_C3;
+        $Report3['L8/L6'] = $L8_L6;
+        $Report3['ARPU'] = $arpu;
+
+        echo '<pre>';
+        print_r($Report);
+        print_r($Report3);
+        print_r($dateArray);
+        die;
+        $data['left_col'] = array('date_happen');
+        $data['date'] = $dateArray;
+        $data['Report'] = $Report3;
+        $data['startDate'] = isset($startDate) ? $startDate : '0';
+        $data['endDate'] = isset($endDate) ? $endDate : '0';
+        $data['content'] = 'manager/view_report_operation';
+        $this->load->view(_MAIN_LAYOUT_, $data);
+    }
 
 }

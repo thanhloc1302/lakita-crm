@@ -20,6 +20,8 @@ class Vip extends MY_Controller {
         $input['where'] = array('is_hide' => '0');
         $this->L['all'] = count($this->contacts_model->load_all($input));
         $this->_loadCountListContact();
+        
+        $this->load->helper('common_helper');
     }
 
     function index($offset = 0) {
@@ -80,6 +82,23 @@ class Vip extends MY_Controller {
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 
+    function delete_item() {
+        $post = $this->input->post();
+
+//        var_dump($post);die;
+
+        if (empty($post['item_id'])) {
+            redirect_and_die('Vui lòng chọn contact!');
+        }
+    
+            $where = array('id' => $post['item_id']);
+            $data = array('is_hide' => 1, 'last_activity' => time());
+            $this->contacts_model->update($where, $data);
+        
+        echo 1;die;
+        $msg = 'Xóa thành công các contact vừa chọn!';
+        show_error_and_redirect($msg);
+    }
     
 
     // <editor-fold defaultstate="collapsed" desc="get_all_require_data">
@@ -107,13 +126,13 @@ class Vip extends MY_Controller {
         return array_merge($this->data, $this->_get_require_data($require_model));
     }
 
-     private function _loadCountListContact() {
-       
+    private function _loadCountListContact() {
+
         $this->L['has_callback'] = 'Tùy từng TVTS';
 
-        
-        $this->L['can_save']  = 'Tùy từng TVTS';
-        
+
+        $this->L['can_save'] = 'Tùy từng TVTS';
+
         $input = array();
         $input['select'] = 'id';
         $input['where'] = array('ordering_status_id' => _DONG_Y_MUA_, 'cod_status_id' => '0',
@@ -130,7 +149,6 @@ class Vip extends MY_Controller {
         $input['where'] = array('call_status_id' => _DA_LIEN_LAC_DUOC_, 'ordering_status_id' => _DONG_Y_MUA_,
             'cod_status_id' => '0', 'payment_method_rgt >' => '1', 'is_hide' => '0');
         $this->L['transfer'] = count($this->contacts_model->load_all($input));
-
     }
 
     // </editor-fold>

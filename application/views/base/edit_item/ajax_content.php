@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel"><?php echo $edit_title; ?></h4>
+                    <h4 class="modal-title" id="myModalLabel"><?php echo $edit_title. $this->role_id ?></h4>
                 </div>
                 <div class="modal-body replace_content_edit_item_modal">
                     <form method="post" action="<?php echo base_url() . $this->controller_path . '/action_edit_item/' . $row['id']; ?>" class="form_submit">

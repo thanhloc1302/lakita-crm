@@ -2462,7 +2462,7 @@ $(".send_to_mobile").on('click', function (e) {
  }, 3000);
  */
 Pusher.logToConsole = true;
-var pusher = new Pusher('e37045ff133e03de137a', {
+var pusher = new Pusher('32b339fca68db27aa480', {
     cluster: 'ap1',
     encrypted: true
 });
@@ -3263,8 +3263,6 @@ $(document).on('change', '[name="add_landingpage_id"]', function () {
     $(".modal-replace-preview-landingpage").html(preview_iframe);
     $(".modal-preview-landingpage").modal('show');
 });
-
-
 
 /* locnt */
 

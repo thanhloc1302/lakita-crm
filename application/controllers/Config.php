@@ -9,6 +9,14 @@ class Config extends MY_Controller {
 
     function __construct() {
         parent::__construct();
+           $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('call_status_id' => '0', 'sale_staff_id' => '0', 'is_hide' => '0');
+        $this->L['L1'] = count($this->contacts_model->load_all($input));
+        $input = array();
+        $input['select'] = 'id';
+        $input['where'] = array('is_hide' => '0');
+        $this->L['all'] = count($this->contacts_model->load_all($input));
     }
 
     public function sale() {

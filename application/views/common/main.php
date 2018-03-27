@@ -3,7 +3,6 @@
     <?php $this->load->view('common/hidden_input'); ?>
     <?php
     if ($this->agent->is_mobile()) {
-        $this->load->view('common/hidden_input');
         $this->load->view('common/mobile');
     } else {
         ?>

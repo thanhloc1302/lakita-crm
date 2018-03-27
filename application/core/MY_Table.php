@@ -192,7 +192,7 @@ class MY_Table extends MY_Controller {
         $base_url = ($this->sub_folder == '') ? $this->controller . '/' . $this->method : $this->sub_folder . '/' . $this->controller . '/' . $this->method;
         $this->num_segment = ($this->sub_folder == '') ? 3 : 4;
 
-       $this->pagination_link = $this->_create_pagination_link($total_row, $base_url, $this->num_segment);
+        $this->pagination_link = $this->_create_pagination_link($total_row, $base_url, $this->num_segment);
         $this->begin_paging = ($total_row == 0) ? 0 : $this->offset + 1;
         $this->end_paging = (($this->offset + $this->limit) < $total_row) ? ($this->offset + $this->limit) : $total_row;
         $this->total_paging = $total_row;
@@ -213,9 +213,12 @@ class MY_Table extends MY_Controller {
             echo 'Không tồn tại danh mục này!';
             die;
         }
-        if (isset($rows[0]['marketer_id']) && $rows[0]['marketer_id'] != $this->user_id) {
-            $canEdited = 0;
+        if ($this->role_id != 7) {
+            if (isset($rows[0]['marketer_id']) && $rows[0]['marketer_id'] != $this->user_id) {
+                $canEdited = 0;
+            }
         }
+        $data['edit_title'] = 'Chỉnh sửa';
         $data['row'] = $rows[0];
         $data['canEdited'] = $canEdited;
         $this->load->view('base/edit_item/ajax_content', $data);

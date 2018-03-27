@@ -27,21 +27,30 @@ class Teacher extends MY_Controller {
 
         $teacher_course = $this->_get_all_require_data($teacher_id, '');
         $teacher_course = explode(';', $teacher_course['staffs'][0]['course']);
-        
+
         $data = $this->_get_all_require_data('', $teacher_course);
 
-
-        if (!count($get)) {
+        if (isset($get['l8_c3'])) {
+            echo 'đã thu lakita';
+        } else {
+            echo 'đã đăng ký';
+        }
+       // die;
+        if (isset($get['l8_c3'])) {
             $conditional['where'] = array(
-                'ordering_status_id' => _DONG_Y_MUA_, 'is_hide' => '0', 'date_rgt >=' => strtotime(date('01-m-Y')));
-            $conditional['where_in'] = array('course_code' => $teacher_course);
+                'ordering_status_id' => _DONG_Y_MUA_, 'is_hide' => '0');
         } else {
             $conditional['where'] = array(
-                'sale_level_id' => _DONG_Y_MUA_, 'is_deleted' => '0');
+                 'is_hide' => '0');
         }
+        
+        if(!isset($get['filter_course_code'])){
+            $conditional['where_in'] = array('course_code' => $teacher_course);
+        }
+        
         $conditional['order'] = array('date_rgt' => 'DESC');
         $data_pagination = $this->_query_all_from_get($get, $conditional, $this->per_page, $offset);
-        
+
         $data['pagination'] = $this->_create_pagination_link($data_pagination['total_row']);
         $data['contacts'] = $data_pagination['data'];
         $data['total_contact'] = $data_pagination['total_row'];
@@ -97,6 +106,9 @@ class Teacher extends MY_Controller {
         $get = $this->input->get();
 
         $query = $this->_get_query_condition_arr($get);
+//                echo '<pre>';
+//        print_r($get);die;
+        
         $teacher_id = $this->session->userdata['user_id'];
 
         $teacher_course = $this->_get_all_require_data($teacher_id, '');
@@ -121,6 +133,8 @@ class Teacher extends MY_Controller {
             $dateArray = h_get_time_range($startDate, $endDate);
         }
 
+//        echo '<pre>';
+//        print_r($dateArray);die;
 
         // <editor-fold defaultstate="collapsed" desc="LỌC THEO TỪNG NGÀY LẺ">
         if (isset($get['filter_date_happen_from']) && $get['filter_date_happen_from'] != '' && isset($get['filter_date_happen_end']) && $get['filter_date_happen_end'] != '') {
@@ -132,16 +146,16 @@ class Teacher extends MY_Controller {
                     $input['select'] = 'price_purchase';
                     if ($level == 'L1') {
                         $input['where'] = array(
-                            '(`sale_level_id` = 1 OR `sale_level_id` = ' . _CONTACT_CHAM_SOC_LAI_ .
-                            ' OR `sale_level_id` = ' . _TU_CHOI_MUA_ . ''
-                            . ' OR `sale_level_id` = ' . _DONG_Y_MUA_ . ')' => 'NO-VALUE');
+                            '(`ordering_status_id` = 1 OR `ordering_status_id` = ' . _CHAM_SOC_SAU_MOT_THOI_GIAN_.
+                            ' OR `ordering_status_id` = ' . _TU_CHOI_MUA_ . ''
+                            . ' OR `ordering_status_id` = ' . _DONG_Y_MUA_ . ')' => 'NO-VALUE');
                     }
                     if ($level == 'L1.1') {
-                        $input['where']['sale_level_id'] = _SAI_SO_;
+                        $input['where']['ordering_status_id'] = _SAI_SO_;
                     }
                     $input['where'][$typeDate . '>='] = $date;
                     $input['where'][$typeDate . '<='] = $date + 24 * 3600 - 1;
-                    $input['where']['is_deleted'] = '0';
+                    $input['where']['is_hide'] = '0';
                     if (isset($get['filter_course_code']) && $get['filter_course_code'] != '') {
                         $input['where_in'] = array('course_code' => $get['filter_course_code']);
                     } else {
@@ -223,16 +237,16 @@ class Teacher extends MY_Controller {
                     $input['select'] = 'price_purchase';
                     if ($level == 'L1') {
                         $input['where'] = array(
-                            '(`sale_level_id` = 1 OR `sale_level_id` = ' . _CONTACT_CHAM_SOC_LAI_ .
-                            ' OR `sale_level_id` = ' . _TU_CHOI_MUA_ . ''
-                            . ' OR `sale_level_id` = ' . _DONG_Y_MUA_ . ')' => 'NO-VALUE');
+                            '(`ordering_status_id` = 1 OR `ordering_status_id` = ' . _CHAM_SOC_SAU_MOT_THOI_GIAN_.
+                            ' OR `ordering_status_id` = ' . _TU_CHOI_MUA_ . ''
+                            . ' OR `ordering_status_id` = ' . _DONG_Y_MUA_ . ')' => 'NO-VALUE');
                     }
                     if ($level == 'L1.1') {
-                        $input['where']['sale_level_id'] = _SAI_SO_;
+                        $input['where']['ordering_status_id'] = _SAI_SO_;
                     }
                     $input['where'][$typeDate . '>='] = strtotime($week['start_date']);
                     $input['where'][$typeDate . '<='] = strtotime($week['end_date']) + 24 * 3600 - 1;
-                    $input['where']['is_deleted'] = '0';
+                    $input['where']['is_hide'] = '0';
                     if (isset($get['filter_course_code']) && $get['filter_course_code'] != '') {
                         $input['where_in'] = array('course_code' => $get['filter_course_code']);
                     } else {
@@ -251,16 +265,16 @@ class Teacher extends MY_Controller {
                         $input['select'] = 'id';
                         if ($level == 'L1') {
                             $input['where'] = array(
-                                '(`sale_level_id` = 1 OR `sale_level_id` = ' . _CONTACT_CHAM_SOC_LAI_ .
-                                ' OR `sale_level_id` = ' . _TU_CHOI_MUA_ . ''
-                                . ' OR `sale_level_id` = ' . _DONG_Y_MUA_ . ')' => 'NO-VALUE');
+                                '(`ordering_status_id` = 1 OR `ordering_status_id` = ' . _CHAM_SOC_SAU_MOT_THOI_GIAN_.
+                                ' OR `ordering_status_id` = ' . _TU_CHOI_MUA_ . ''
+                                . ' OR `ordering_status_id` = ' . _DONG_Y_MUA_ . ')' => 'NO-VALUE');
                         }
                         if ($level == 'L1.1') {
-                            $input['where']['sale_level_id'] = _SAI_SO_;
+                            $input['where']['ordering_status_id'] = _SAI_SO_;
                         }
                         $input['where'][$typeDate . '>='] = $date;
                         $input['where'][$typeDate . '<='] = $date + 24 * 3600 - 1;
-                        $input['where']['is_deleted'] = '0';
+                        $input['where']['is_hide'] = '0';
                         if (isset($get['filter_course_code']) && $get['filter_course_code'] != '') {
                             $input['where_in'] = array('course_code' => $get['filter_course_code']);
                         } else {
@@ -290,7 +304,8 @@ class Teacher extends MY_Controller {
         $data['Report'] = $Report;
         $data['startDate'] = isset($startDate) ? $startDate : '0';
         $data['endDate'] = isset($endDate) ? $endDate : '0';
-        $data['left_col'] = array('month_id_teacher', 'date_happen');
+      //  $data['left_col'] = array('month_id_teacher', 'date_happen');
+        $data['left_col'] = array('month_id_teacher');
         $data['right_col'] = array('course_code');
         $data['content'] = 'teacher/view_report';
         $this->load->view(_MAIN_LAYOUT_, $data);
@@ -300,13 +315,13 @@ class Teacher extends MY_Controller {
         $this->load->helper('manager_helper');
         $get = $this->input->get();
         $data = $this->get_data_top_revenue();
-        
+
         $teacher_id = $this->session->userdata['user_id'];
 
         $teacher_course = $this->_get_all_require_data($teacher_id, '');
         $teacher_course = explode(';', $teacher_course['staffs'][0]['course']);
-        
-        
+
+
         if (!count($get)) {
             $startDate = strtotime(date('01-m-Y'));
             $endDate = mktime(0, 0, 0, date('m') + 1, 0, date('Y'));
@@ -323,15 +338,15 @@ class Teacher extends MY_Controller {
         foreach ($teacher_course as $key => $value) {
             $revenue = 0;
 
-                $input = array();
-                $input['select'] = 'price_purchase';
-                $input['where'] = array('course_code' => $value,
-                    'cod_status_id' => _DA_THU_LAKITA_,
-                    'date_receive_lakita >=' => $startDate,
-                    'date_receive_lakita <' => $endDate);
+            $input = array();
+            $input['select'] = 'price_purchase';
+            $input['where'] = array('course_code' => $value,
+                'cod_status_id' => _DA_THU_LAKITA_,
+                'date_receive_lakita >=' => $startDate,
+                'date_receive_lakita <' => $endDate);
 
-                $revenue += sum_L8($this->contacts_model->load_all($input));
-          
+            $revenue += sum_L8($this->contacts_model->load_all($input));
+
             $data['course_revenue'][$value] = $revenue;
         }
 
@@ -341,8 +356,8 @@ class Teacher extends MY_Controller {
 
         $data['startDate'] = $startDate;
         $data['endDate'] = $endDate;
-        
-        
+
+
         $data['title_content'] = 'Danh sách đăng ký';
         $data['content'] = 'teacher/top_revenue';
         $this->load->view(_MAIN_LAYOUT_, $data);
@@ -394,7 +409,6 @@ class Teacher extends MY_Controller {
         return array_merge($this->data, $this->_get_require_data($require_model));
     }
 
-
     public function ViewReport($offset = 0) {
         $get = $this->input->get();
 //        $this->load->model('call_status_model');
@@ -412,7 +426,7 @@ class Teacher extends MY_Controller {
         $contacts = $data_pagination['data'];
         $rs = [];
         foreach ($contacts as $key => $value) {
-             $rs[$key]['STT'] = $key +1;
+            $rs[$key]['STT'] = $key + 1;
             $rs[$key]['Mã khóa học'] = $value['course_code'];
             //$rs[$key]['Ngày nhận tiền'] = date('Y-m-d', $value['date_receive_lakita']);
             $rs[$key]['Giá mua khóa học'] = ($value['price_purchase']);

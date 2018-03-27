@@ -41,7 +41,7 @@ integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="ano
 <!--<script src="<?php echo base_url(); ?>vendors/build/js/custom.min.js" type="text/javascript"></script>-->
 <!--<script src="<?php echo base_url(); ?>style/js/common_view/view_contact_star.min.js" type="text/javascript"></script>-->
 <?php if (ENVIRONMENT == 'production') { ?>
-    <script src="<?php echo base_url(); ?>style/js3/built_obfuscated.min.js?ver=<?php echo _VER_CACHED_; ?>" type="text/javascript"></script>
+    <script src="<?php echo base_url(); ?>style/js3/built.js?ver=<?php echo _VER_CACHED_; ?>" type="text/javascript"></script>
 <?php } else { ?>
     <script src="<?php echo base_url(); ?>style/js3/built.js?<?php echo time(); ?>" type="text/javascript"></script>
 <?php } ?>

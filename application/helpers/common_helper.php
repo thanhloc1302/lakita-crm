@@ -17,6 +17,20 @@ function redirect_and_die($message = 'có lỗi xảy ra') {
     die;
 }
 
+function h_get_time_range($startDate, $endDate) {
+    $dateArray = array();
+    for ($i = $startDate; $i <= $endDate; $i += 3600 * 24) {
+        $date = date('d/m', $i);
+        $dateArray[$date] = $i;
+    }
+    return $dateArray;
+}
+
+function h_get_progress($tu_so, $mau_so) {
+    return ($mau_so > 0) ?
+            round(($tu_so / $mau_so) * 100, 2) . '%' : 'N/A';
+}
+
 function show_error_and_redirect($msg = '', $redirect = '', $msg_success = true) {
     $ci = & get_instance();
     $ci->session->set_tempdata('message', $msg, 2);

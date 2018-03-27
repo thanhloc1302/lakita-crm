@@ -210,6 +210,34 @@ class Cron extends CI_Controller {
         }
     }
 
+    function get_id_lakita() {
+
+        // for ($i = 0; $i <= 10; $i++) {
+        $input = [];
+        $input['select'] = 'id,email,phone,course_code,id_lakita,create_date_id_lakita';
+        $input['where'] = array('id_lakita' => '', 'cod_status_id >' => 1, 'cod_status_id <' => 4);
+        $input['order'] = array('date_receive_lakita' => 'desc');
+        $input['limit'] = array(500, 0);
+        $contact = $this->contacts_model->load_all($input);
+        foreach ($contact as $value) {
+            $id_lakita = '';
+            $id_lakita = file_get_contents('http://thanhloc.com/lakita_github/api/check_exit_email?email=' . $value['email'] . '&phone=' . $value['phone'] . '&course_code=' . $value['course_code']);
+            $id_lakita = json_decode($id_lakita, true);
+
+
+            if ($id_lakita != 0) {
+                $where = array('id' => $value['id']);
+                $data = array('id_lakita' => $id_lakita['id'], 'create_date_id_lakita' => $id_lakita['create_date']);
+                $this->contacts_model->update($where, $data);
+            }
+            //  }
+        }
+//        echo '<pre>';
+//        print_r($contact);
+
+        echo '<script>alert("xong");</script>';
+    }
+
 //    function listen() {
 //        if (!$this->input->is_ajax_request()) {
 //            redirect();

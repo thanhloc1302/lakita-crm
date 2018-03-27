@@ -4,12 +4,11 @@
             <?php
             if (count($_GET) == 0) {
                 echo 'Tháng ' . date('m-Y');
-            } else if ($_GET['filter_date_happen_from'] == '') {
-                echo 'Tháng ' . date('m-Y',strtotime($_GET['filter_month_id']));
+           /* } else if ($_GET['filter_date_happen_from'] == '') {
+                echo 'Tháng ' . date('m-Y',strtotime($_GET['filter_month_id']));*/
             } else {
-                ?>
-                từ ngày <?php echo date('d-m-Y', $startDate);
-                ?> đến ngày <?php echo date('d-m-Y', $endDate); ?></h3>
+                echo 'Tháng '. date('m-Y', strtotime($_GET['filter_month_id']));
+                ?></h3>
         <?php } ?>
     </div>
 </div>

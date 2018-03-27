@@ -43,12 +43,26 @@
     </li>
 </ul>
 <ul class="nav-list list-inline display-flex">
+    <li>
+        <a href="<?php echo base_url('MANAGERS/teacher'); ?>">
+            <img src="<?php echo base_url(); ?>public/images/courses.png"> 
+            <span> Cài đặt giảng viên</span>
+        </a>
+    </li>
      <li>
         <a href="<?php echo base_url('MANAGERS/ViewReport/ViewGeneralReport'); ?>">
             <img src="<?php echo base_url(); ?>public/images/view-general-report.png"> 
             <span> Xem báo cáo tổng hợp  </span>
         </a>
     </li>
+    <li>
+        <a href="<?php echo base_url('manager/view_report_operation'); ?>">
+            <img src="<?php echo base_url(); ?>public/images/report.png"> 
+            <span> Xem báo cáo vận hành  </span>
+        </a>
+    </li>
+</ul>
+<ul class="nav-list list-inline display-flex">
     <li>
         <a href="<?php echo base_url('home/logout'); ?>">
             <img src="<?php echo base_url(); ?>public/images/logout.png"> 

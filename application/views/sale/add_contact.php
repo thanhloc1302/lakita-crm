@@ -10,7 +10,7 @@
                             Họ và tên
                         </div>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" placeholder="Họ và tên" name="name" value="<?php echo set_value('name') ?>"/>
+                            <input type="text" class="form-control" placeholder="Họ và tên" name="name" value="<?php if(isset($_GET['name'])){ echo $_GET['name']; }else{ echo set_value('name');} ?>"/>
                         </div>
                     </div>
                 </div>
@@ -21,7 +21,7 @@
                             Email
                         </div>
                         <div class="col-md-8">
-                            <input type="email" class="form-control" placeholder="Email" name="email" value="<?php echo set_value('email') ?>"/>
+                            <input type="email" class="form-control" placeholder="Email" name="email" value="<?php if(isset($_GET['email'])){ echo $_GET['email']; }else{ echo set_value('email');} ?>"/>
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                             Số điện thoại
                         </div>
                         <div class="col-md-8">
-                            <input type="tel" class="form-control" placeholder="Số điện thoại" name="phone" value="<?php echo set_value('phone') ?>"/>
+                            <input type="tel" class="form-control" placeholder="Số điện thoại" name="phone" value="<?php if(isset($_GET['phone'])){ echo $_GET['phone']; }else{ echo set_value('phone');} ?>"/>
                         </div>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                             Địa chỉ
                         </div>
                         <div class="col-md-8">
-                            <input type="text" class="form-control" placeholder="Địa chỉ" name="address" value="<?php echo set_value('address') ?>"/>
+                            <input type="text" class="form-control" placeholder="Địa chỉ" name="address" value="<?php if(isset($_GET['address'])){ echo $_GET['address']; }else{ echo set_value('address');} ?>"/>
                         </div>
                     </div>
                 </div>

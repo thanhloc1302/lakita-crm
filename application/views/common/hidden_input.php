@@ -12,3 +12,28 @@
 
 <!-- version cache -->
 <input type="hidden" value="<?php   echo _VER_CACHED_;?>" id="version-cache" />
+<?php if(isset($this->controller) && $this->controller == 'vip'){ ?>
+<!-- URL thêm dòng -->
+<input type="hidden" value="<?php echo base_url().$this->controller.'/show_add_item'?>" id="url_add_item" />
+
+<!-- URL sửa dòng -->
+<input type="hidden" value="<?php echo base_url().$this->controller.'/show_edit_item'?>" id="url_edit_item" />
+
+<!-- URL xóa 1 dòng -->
+<input type="hidden" value="<?php echo base_url() . $this->controller . '/delete_item' ?>" id="url_delete_item" />
+
+<!-- URL xóa nhiều dòng -->
+<input type="hidden" value="<?php echo base_url() . $this->controller . '/delete_multi_item' ?>" id="url_delete_multi_item" />
+
+<!-- URL bật tắt 1 dòng -->
+<input type="hidden" value="<?php echo base_url() . $this->controller . '/edit_active' ?>" id="url_edit_active" />
+
+<!-- Add item fetch -->
+<input type="hidden" value="<?php echo base_url() . $this->controller . '/AddItemFetch' ?>" id="url-add-item-fetch" />
+
+<!-- Add item from fb -->
+<input type="hidden" value="<?php echo base_url() . $this->controller . '/AddItemFromFb' ?>" id="url-add-item-from-fb" />
+
+<!-- Add item from fb 2 -->
+<input type="hidden" value="<?php echo base_url() . $this->controller . '/AddItemFromFb2' ?>" id="url-add-item-from-fb-2" />
+<?php } ?>

@@ -37,7 +37,7 @@ class Contact_api extends REST_Controller {
             $address .= isset($input['tinh']) ? $input['tinh'] : '';
             $address .= isset($input['street']) ? $input['street'] : '';
             $address .= isset($input['address']) ? $input['address'] : '';
-            $address .= isset($input['select_combo']) ? ' - '.  $input['select_combo'] : '';
+            $address .= isset($input['select_combo']) ? ' - ' . $input['select_combo'] : '';
             $param['address'] = trim(str_replace('NO_PARAM', '', $address));
             $param['is_consultant'] = (strpos($param['address'], 'TV_') !== false) ? 1 : 0;
             $param['course_code'] = isset($input['course_code']) ? $input['course_code'] : '';
@@ -98,7 +98,7 @@ class Contact_api extends REST_Controller {
                 'encrypted' => true
             );
             $pusher = new Pusher(
-                    'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
+                    '32b339fca68db27aa480', '32f6731ad5d48264c579', '490390', $options
             );
 
             $inputMkt = [];

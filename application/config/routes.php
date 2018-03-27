@@ -68,6 +68,10 @@ $route['tu-van-tuyen-sinh/tim-kiem-contact.html'] = 'sale/find_contact';
 $route['tu-van-tuyen-sinh/them-contact.html'] = 'sale/add_contact';
 $route['tu-van-tuyen-sinh/xem-bao-cao.html'] = 'sale/view_report';
 
+$route['giang-vien/danh-sach-da-dang-ky.html'] = 'teacher';
+$route['giang-vien/doanh-thu-theo-khoa.html'] = 'teacher/top_revenue';
+$route['giang-vien/tong-doanh-thu-theo-thang.html'] = 'teacher/view_report';
+
 $route['cod/trang-chu.html'] = 'cod/index';
 $route['cod/contact-dang-giao-hang.html'] = 'cod/pending';
 $route['cod/contact-chuyen-khoan.html'] = 'cod/transfer';

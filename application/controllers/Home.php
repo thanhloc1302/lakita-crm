@@ -26,10 +26,13 @@ class Home extends CI_Controller {
             $input = array();
             $input['where'] = array('id' => $user_id);
             $user = $this->staffs_model->load_all($input);
+           
             if ($user[0]['active'] == 0) {
                 redirect(base_url('no_access'));
                 die;
             }
+           
+            
             switch ($role_id) {
                 case 1:
                     redirect(base_url('tu-van-tuyen-sinh/trang-chu.html' . $this->initGetVariable));
@@ -56,7 +59,7 @@ class Home extends CI_Controller {
                     redirect(base_url('vip/index' . $this->initGetVariable));
                     break;
                 case 8:
-                    redirect(base_url('teacher' . $this->initGetVariable));
+                    redirect(base_url('giang-vien/danh-sach-da-dang-ky.html' . $this->initGetVariable));
                     break;
                 default :
                     echo 'Có lỗi xảy ra!';

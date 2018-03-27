@@ -24,6 +24,7 @@
                     ?>
                     <tr class="custom_right_menu <?php echo h_get_row_class($value); ?>" 
                         contact_id="<?php echo $value['id']; ?>" 
+                        item_id="<?php echo $value['id']; ?>"
                         duplicate_id="<?php echo $value['duplicate_id']; ?>" 
                         contact_name="<?php echo $value['name']; ?>"
                         contact_phone="<?php echo $value['phone']; ?>">

@@ -28,6 +28,8 @@
         <!--        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css" />-->
         <!--        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>        -->
         <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <link href="<?php echo base_url(); ?>vendors/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" rel="stylesheet" type="text/css"/>
+        <script src="<?php echo base_url(); ?>vendors/bootstrap-switch/dist/js/bootstrap-switch.js" type="text/javascript"></script>
         <style>
             .modal.fade{
                 opacity:1;
@@ -51,4 +53,4 @@
             })(window, document);
         </script>
     </head>
-    
+

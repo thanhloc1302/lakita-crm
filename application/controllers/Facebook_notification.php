@@ -76,7 +76,7 @@ class Facebook_notification extends CI_Controller {
                     'encrypted' => true
                 );
                 $pusher = new Pusher(
-                        'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
+                        '32b339fca68db27aa480', '32f6731ad5d48264c579', '490390', $options
                 );
 
                 $data2 = [];
@@ -88,5 +88,4 @@ class Facebook_notification extends CI_Controller {
             }
         }
     }
-
 }

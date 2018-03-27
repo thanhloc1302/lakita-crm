@@ -321,7 +321,7 @@ class Sale extends MY_Controller {
                     'encrypted' => true
                 );
                 $pusher = new Pusher(
-                        'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
+                        '32b339fca68db27aa480', '32f6731ad5d48264c579', '490390', $options
                 );
                 $pusher->trigger('my-channel', 'notice', $data2);
                 show_error_and_redirect('Thêm thành công contact', $input['back_location']);
@@ -561,7 +561,8 @@ class Sale extends MY_Controller {
         $require_model = array(
             'staffs' => array(
                 'where' => array(
-                    'role_id' => 1
+                    'role_id' => 1,
+                    'active' => 1
                 )
             ),
             'courses' => array(

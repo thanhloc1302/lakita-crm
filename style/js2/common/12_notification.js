@@ -39,7 +39,7 @@
  }, 3000);
  */
 Pusher.logToConsole = true;
-var pusher = new Pusher('e37045ff133e03de137a', {
+var pusher = new Pusher('32b339fca68db27aa480', {
     cluster: 'ap1',
     encrypted: true
 });

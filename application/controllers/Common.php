@@ -102,7 +102,7 @@ class Common extends MY_Controller {
                 'contact_id' => 'view',
                 'name' => 'edit',
                 'email' => 'edit',
-                'phone' => 'view',
+                'phone' => 'edit',
                 'address' => 'edit',
                 'course_code' => 'edit',
                 'price_purchase' => 'edit',
@@ -339,7 +339,7 @@ class Common extends MY_Controller {
 
             $post = $this->input->post();
             $param = array();
-            $post_arr = array('name', 'email', 'address', 'course_code',
+            $post_arr = array('name', 'email', 'address', 'course_code','phone',
                 'price_purchase', 'payment_method_rgt', 'call_status_id',
                 'ordering_status_id', 'note_cod', 'script');
 
@@ -465,7 +465,7 @@ class Common extends MY_Controller {
                 'encrypted' => true
             );
             $pusher = new Pusher(
-                    'e37045ff133e03de137a', 'f3707885b7e9d7c2718a', '428500', $options
+                    '32b339fca68db27aa480', '32f6731ad5d48264c579', '490390', $options
             );
 
             $dataPush['image'] = $this->staffs_model->GetStaffImage($this->user_id);
@@ -559,7 +559,7 @@ class Common extends MY_Controller {
             $post = $this->input->post();
             $param = array();
             $param['cod_staff_id'] = $this->user_id;
-            $post_arr = array('address', 'payment_method_rgt', 'provider_id', 'cod_status_id', 'code_cross_check',
+            $post_arr = array('address', 'payment_method_rgt', 'provider_id', 'cod_status_id', 'code_cross_check','phone',
                 'note_cod', 'weight_envelope', 'cod_fee', 'fee_resend', 'date_expect_receive_cod', 'price_purchase');
             foreach ($post_arr as $value) {
                 if (isset($post[$value])) {
