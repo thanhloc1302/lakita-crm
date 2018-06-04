@@ -127,8 +127,20 @@ class Campaign extends MY_Table {
             $date_form = strtotime($get['date_from']);
             $date_end = strtotime($get['date_end']);
         }
+        
+//        echo $date_form;
+//        echo '<br>';
+//        echo $get['date_from'];
+//        echo '<br>';
+//        echo $date_end;
+//        echo  $get['date_end'];die;
+        
         $this->load->model('account_fb_model');
         $account = $this->account_fb_model->getAccountArr();
+        
+        echo '<pre>';
+        print_r($this->data['rows']);
+        
         foreach ($this->data['rows'] as &$value) {
             /*
              * Lấy số C3 & số tiền tiêu
@@ -150,6 +162,7 @@ class Campaign extends MY_Table {
             $input = array();
             $input['where'] = array('campaign_id' => $value['id'], 'time >=' => $date_form, 'time <=' => $date_end);
             $channel_cost = $this->campaign_cost_model->load_all($input);
+           // echoQuery();
             $channel_cost = h_caculate_channel_cost($channel_cost);
             $this->load->model('c2_model');
             if (!empty($channel_cost)) {

@@ -259,6 +259,13 @@ class MY_Model extends CI_Model {
                 $this->db->group_by($value);
             }
         }
+        
+        //having
+        if (isset($input['having']) && !empty($input['having'])) {
+            foreach ($input['having'] as $key => $value) {
+                $this->db->having($key, $value); 
+            }
+        }
     }
 
     function m_count_all_result_from_get($input) {

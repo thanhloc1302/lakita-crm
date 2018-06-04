@@ -219,7 +219,7 @@ class Marketer extends MY_Table {
         $this->load->model('ad_model');
         $input = array();
         $input['where'] = array('active' => 1);
-         $input['where']['marketer_id'] = $this->user_id;
+        $input['where']['marketer_id'] = $this->user_id;
         $this->data['ad'] = $this->ad_model->load_all($input);
 
 

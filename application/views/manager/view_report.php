@@ -1,6 +1,11 @@
+<div class="row">
+   <div class="col-md-10 col-md-offset-1">
+        <h3 class="text-center marginbottom20"> Báo cáo tư vấn tuyển sinh từ ngày <?php echo date('d-m-Y', $startDate); ?> đến ngày <?php echo date('d-m-Y', $endDate); ?></h3>
+    </div>
+</div>
 <form action="#" method="GET" id="action_contact" class="form-inline">
     <?php $this->load->view('common/content/filter'); ?>
-</form>
+</form> 
 <table class="table table-bordered table-striped view_report gr4-table table-fixed-head">
     <thead>
         <tr>
@@ -67,7 +72,7 @@
             array('L6/L2', 'L6', 'L2', ($L2 != 0) ? round(($L6 / $L2) * 100, 2) : 'không thể chia cho 0', 80),
             array('L8/L6', 'L8', 'L6', ($L6 != 0) ? round(($L8 / $L6) * 100, 2) : 'không thể chia cho 0', 80),
             array('L8/L1', 'L8', 'L1', ($L1 != 0) ? round(($L8 / $L1) * 100, 2) : 'không thể chia cho 0', 60),
-            array('L7L8/L1', 'L7L8', 'L1', ($L1 != 0) ? round(($L7L8 / $L1) * 100, 2) : 'không thể chia cho 0', 60),
+            array('L7L8/L1', 'L7L8', 'L1', ($L1 != 0) ? round(( ($DA_THU_COD + $L8) / $L1) * 100, 2) : 'không thể chia cho 0', 60),
             array('L8/L2', 'L8', 'L2', ($L2 != 0) ? round(($L8 / $L2) * 100, 2) : 'không thể chia cho 0', 60),
             array('Hủy đơn/L6', 'HUY_DON', 'L6', ($L6 != 0) ? round(($HUY_DON / $L6) * 100, 2) : 'không thể chia cho 0', 0),
             array('LC/L1', 'LC', 'L1', ($L1 != 0) ? round(($LC / $L1) * 100, 2) : 'không thể chia cho 0', 0),
@@ -83,18 +88,30 @@
                     if ($value['L1'] > 0) {
                         ?>
                         <td <?php
-                        if ($value[$mau_so] != 0 && round(($value[$tu_so] / $value[$mau_so]) * 100) < $limit && $limit > 0) {
+                        if ($value[$mau_so] != 0 && round(($value[$tu_so] / $value[$mau_so]) * 100) < $limit && $limit > 0 && $name != 'L7L8/L1') {
                             echo 'style="background-color: #a71717;color: #fff;"';
-                        } else if ($value[$mau_so] != 0 && round(($value[$tu_so] / $value[$mau_so]) * 100) >= $limit && $limit > 0) {
+                        } else if ($value[$mau_so] != 0 && round(($value[$tu_so] / $value[$mau_so]) * 100) >= $limit && $limit > 0  && $name != 'L7L8/L1') {
+                            echo 'style="background-color: #0C812D;color: #fff;"';
+                        }
+
+                        if ($name == 'L7L8/L1' && $value['L1'] != 0 && round((($value['DA_THU_COD'] + $value['L8']) / $value['L1']) * 100) < 60) {
+                            echo 'style="background-color: #a71717;color: #fff;"';
+                        } elseif ($name == 'L7L8/L1' && $value['L1'] != 0 && round((($value['DA_THU_COD'] + $value['L8']) / $value['L1']) * 100) > 60) {
                             echo 'style="background-color: #0C812D;color: #fff;"';
                         }
                         ?>>
-                                <?php echo ($value[$mau_so] != 0) ? round(($value[$tu_so] / $value[$mau_so]) * 100, 2) . '%' : 'không thể chia cho 0'; ?>
-                        </td>
                         <?php
-                    }
-                }
-                ?>
+                            if ($name == 'L7L8/L1') {
+                                echo ($value['L1'] != 0) ? round((($value['DA_THU_COD'] + $value['L8']) / $value['L1']) * 100, 2) . '%' : 'không thể chia cho 0';
+                            } else {
+                                echo ($value[$mau_so] != 0) ? round(($value[$tu_so] / $value[$mau_so]) * 100, 2) . '%' : 'không thể chia cho 0';
+                            }
+                            ?>
+                        </td>
+                                <?php
+                            }
+                        }
+                        ?>
                 <td <?php
                 if ($total < $limit && $limit > 0) {
                     echo 'style="background-color: #a71717;color: #fff;"';
@@ -102,16 +119,16 @@
                     echo 'style="background-color: #0C812D;color: #fff;"';
                 }
                 ?>>
-                        <?php echo $total . '%'; ?>
+                <?php echo $total . '%'; ?>
                 </td>
             </tr>
-            <?php
-        }
-        ?>
+    <?php
+}
+?>
 
     </tbody>
 </table>
-<?php //$this->load->view('common/script/view_detail_contact'); ?>
-<?php //$this->load->view('common/content/pagination'); ?>
+<?php //$this->load->view('common/script/view_detail_contact');  ?>
+<?php //$this->load->view('common/content/pagination');  ?>
 
 

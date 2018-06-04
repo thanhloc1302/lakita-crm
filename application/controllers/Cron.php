@@ -51,14 +51,14 @@ class Cron extends CI_Controller {
                 $where = array('campaign_id' => $value['id'], 'time' => $today);
                 $this->campaign_cost_model->delete($where);
                 $url = 'https://graph.facebook.com/v2.11/' . $value['campaign_id_facebook'] .
-                        '/insights?fields=spend,reach,clicks&level=account'
+                        '/insights?fields=spend,reach,outbound_clicks&level=account'
                         . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
                 $spend = get_fb_request($url);
                 $param['time'] = $today;
                 $param['campaign_id'] = $value['id'];
                 $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
                 $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
-                $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
+                $param['total_C2'] = isset($spend->data[0]->outbound_clicks[0]->value) ? $spend->data[0]->outbound_clicks[0]->value : 0;
                 $this->campaign_cost_model->insert($param);
             }
         }
@@ -96,7 +96,7 @@ class Cron extends CI_Controller {
 
         foreach ($accountFBADS as $value2) {
             $url = 'https://graph.facebook.com/v2.11/act_' . $value2['fb_id_account'] . '/' .
-                    'insights?fields=spend,reach,clicks&level=account'
+                    'insights?fields=spend,reach,outbound_clicks&level=account'
                     . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
             $spend = get_fb_request($url);
             $param['spend'] += isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
@@ -131,14 +131,14 @@ class Cron extends CI_Controller {
                 $where = array('adset_id' => $value['id'], 'time' => $today);
                 $this->adset_cost_model->delete($where);
                 $url = 'https://graph.facebook.com/v2.11/' . $value['adset_id_facebook'] .
-                        '/insights?fields=spend,reach,clicks&level=account'
+                        '/insights?fields=spend,reach,outbound_clicks&level=account'
                         . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
                 $spend = get_fb_request($url);
                 $param['time'] = $today;
                 $param['adset_id'] = $value['id'];
                 $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
                 $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
-                $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
+                $param['total_C2'] = isset($spend->data[0]->outbound_clicks[0]->value) ? $spend->data[0]->outbound_clicks[0]->value : 0;
                 $this->adset_cost_model->insert($param);
             }
         }
@@ -167,7 +167,7 @@ class Cron extends CI_Controller {
                 $where = array('ad_id' => $value['id'], 'time' => $today);
                 $this->ad_cost_model->delete($where);
                 $url = 'https://graph.facebook.com/v2.11/' . $value['ad_id_facebook'] .
-                        '/insights?fields=spend,reach,clicks&level=account'
+                        '/insights?fields=spend,reach,outbound_clicks&level=account'
                         . '&time_range={"since":"' . $today_fb_format . '","until":"' . $today_fb_format . '"}&access_token=' . ACCESS_TOKEN;
                 $spend = get_fb_request($url);
                 if (!empty($spend)) {
@@ -175,7 +175,7 @@ class Cron extends CI_Controller {
                     $param['ad_id'] = $value['id'];
                     $param['spend'] = isset($spend->data[0]->spend) ? $spend->data[0]->spend : 0;
                     $param['total_C1'] = isset($spend->data[0]->reach) ? $spend->data[0]->reach : 0;
-                    $param['total_C2'] = isset($spend->data[0]->clicks) ? $spend->data[0]->clicks : 0;
+                    $param['total_C2'] = isset($spend->data[0]->outbound_clicks[0]->value) ? $spend->data[0]->outbound_clicks[0]->value : 0;
                     $this->ad_cost_model->insert($param);
                 }
             }
@@ -210,33 +210,7 @@ class Cron extends CI_Controller {
         }
     }
 
-    function get_id_lakita() {
-
-        // for ($i = 0; $i <= 10; $i++) {
-        $input = [];
-        $input['select'] = 'id,email,phone,course_code,id_lakita,create_date_id_lakita';
-        $input['where'] = array('id_lakita' => '', 'cod_status_id >' => 1, 'cod_status_id <' => 4);
-        $input['order'] = array('date_receive_lakita' => 'desc');
-        $input['limit'] = array(500, 0);
-        $contact = $this->contacts_model->load_all($input);
-        foreach ($contact as $value) {
-            $id_lakita = '';
-            $id_lakita = file_get_contents('http://thanhloc.com/lakita_github/api/check_exit_email?email=' . $value['email'] . '&phone=' . $value['phone'] . '&course_code=' . $value['course_code']);
-            $id_lakita = json_decode($id_lakita, true);
-
-
-            if ($id_lakita != 0) {
-                $where = array('id' => $value['id']);
-                $data = array('id_lakita' => $id_lakita['id'], 'create_date_id_lakita' => $id_lakita['create_date']);
-                $this->contacts_model->update($where, $data);
-            }
-            //  }
-        }
-//        echo '<pre>';
-//        print_r($contact);
-
-        echo '<script>alert("xong");</script>';
-    }
+ 
 
 //    function listen() {
 //        if (!$this->input->is_ajax_request()) {

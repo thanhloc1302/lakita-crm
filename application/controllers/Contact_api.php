@@ -178,6 +178,60 @@ class Contact_api extends REST_Controller {
         }
     }
 
+    function update_id_lakita_post() {        
+        $post = $this->input->post();
+
+
+        $where = array('email' => $post['email'], 'phone' => $post['phone'],'course_code' => $post['course_code']);
+        $data = array('id_lakita' => $post['id_lakita'], 'date_active' => $post['date_active']);
+        $this->contacts_model->update($where, $data);
+
+
+        $input['select'] = 'id';
+        $input['where'] = array('email' => $post['email'],
+            'phone' => $post['phone'],
+            'course_code' => $post['course_code'],
+            'cod_status_id >' => 1,
+            'cod_status_id <' => 4,
+            'duplicate_id' => '',
+            'is_hide' => '0');
+
+        $contact = $this->contacts_model->load_all($input);
+        if (empty($contact)) {
+            $input['where'] = array('phone' => $post['phone'],
+                'course_code' => $post['course_code'],
+                'cod_status_id >' => 1,
+                'cod_status_id <' => 4,
+                'duplicate_id' => '',
+                'is_hide' => '0');
+            $contact = '';
+            $contact = $this->contacts_model->load_all($input);
+            if (empty($contact)) {
+                $input['where'] = array('email' => $post['email'],
+                    'course_code' => $post['course_code'],
+                    'cod_status_id >' => 1,
+                    'cod_status_id <' => 4,
+                    'duplicate_id' => '',
+                    'is_hide' => '0');
+                $contact = '';
+                $contact = $this->contacts_model->load_all($input);
+                if (!empty($contact)) {
+                    $where = array('id' => $contact[0]['id']);
+                    $data = array('id_lakita' => $post['id_lakita'], 'date_active' => $post['date_active']);
+                    $this->contacts_model->update($where, $data);
+                }
+            } else {
+                $where = array('id' => $contact[0]['id']);
+                $data = array('id_lakita' => $post['id_lakita'], 'date_active' => $post['date_active']);
+                $this->contacts_model->update($where, $data);
+            }
+        } else {
+            $where = array('id' => $contact[0]['id']);
+            $data = array('id_lakita' => $post['id_lakita'], 'date_active' => $post['date_active']);
+            $this->contacts_model->update($where, $data);
+        }
+    }
+
     function add_c2_post() {
         $input = $this->input->post();
         if (isset($input['link_id'])) {

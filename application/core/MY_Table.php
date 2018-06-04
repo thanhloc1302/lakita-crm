@@ -184,7 +184,7 @@ class MY_Table extends MY_Controller {
             $this->conditional['order'] = array('id' => 'DESC');
         }
         $this->data['rows'] = $this->{$this->model}->load_all($this->conditional);
-        // echoQuery();
+         echoQuery();
 
         /*
          * Thấy thông tin hiển thị phân trang: thông tin hiển thị contact đầu, contact cuối và tổng contact

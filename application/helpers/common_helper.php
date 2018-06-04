@@ -20,7 +20,7 @@ function redirect_and_die($message = 'có lỗi xảy ra') {
 function h_get_time_range($startDate, $endDate) {
     $dateArray = array();
     for ($i = $startDate; $i <= $endDate; $i += 3600 * 24) {
-        $date = date('d/m', $i);
+        $date = date('d/m/Y', $i);
         $dateArray[$date] = $i;
     }
     return $dateArray;

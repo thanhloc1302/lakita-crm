@@ -238,19 +238,134 @@ class Marketing extends MY_Table {
             )
         );
         $conditional = array();
-      //  $conditional['where']['source_id'] = '1';
+        //  $conditional['where']['source_id'] = '1';
         $this->set_conditional($conditional);
         $this->set_offset($offset);
         $this->show_table();
-        //echoQuery();
+        echoQuery();
         $data = $this->data;
         $progress = $this->GetProccessMarketerThisMonth();
         $data['marketers'] = $progress['marketers'];
         $data['C3Team'] = $progress['C3Team'];
-        $data['C3Total'] = MARKETING_KPI_PER_DAY*30;
+        $data['C3Total'] = MARKETING_KPI_PER_DAY * 30;
         $data['progressType'] = 'Tiến độ của team tháng này';
         $data['list_title'] = 'Danh sách toàn bộ contact';
         $data['content'] = 'marketing/index';
+        $this->load->view(_MAIN_LAYOUT_, $data);
+    }
+
+    function view_report_operation() {
+        $this->load->helper('manager_helper');
+        $this->load->helper('common_helper');
+        $this->load->model('campaign_cost_model');
+        $this->load->model('account_fb_model');
+        $this->load->model('campaign_model');
+
+        $get = $this->input->get();
+
+        $data = '';
+
+
+        if ((!isset($get['filter_date_happen_from']) && !isset($get['filter_date_happen_end'])) || (isset($get['filter_date_happen_from']) && $get['filter_date_happen_from'] == '' && $get['filter_date_happen_end'] == '')) {
+            $startDate = strtotime(date('1-m-Y'));
+            $endDate = strtotime(date('d-m-Y'));
+        } else {
+            $startDate = strtotime($get['filter_date_happen_from']);
+            $endDate = strtotime($get['filter_date_happen_end']);
+        }
+
+        $dateArray = h_get_time_range($startDate, $endDate);
+
+        $Report = array();
+
+        $account = $this->account_fb_model->getAccountArr();
+
+        $input_campaign = [];
+        if (isset($get['filter_marketer_id'])) {
+            $input_campaign['where_in']['marketer_id'] = $get['filter_marketer_id'];
+        }
+        $campaign = $this->campaign_model->load_all($input_campaign);
+
+
+
+        foreach ($dateArray as $d_key => $d_value) {
+            $perday = array();
+            $spend = '';
+            $c1 = '';
+            $c2 = '';
+            $c3 = '';
+            foreach ($campaign as &$value) {
+                $input = array();
+                $input['where'] = array('campaign_id' => $value['id'], 'time >=' => $d_value, 'time <=' => $d_value + 24 * 3600 - 1, 'spend >' => '0');
+                $campaign_cost = $this->campaign_cost_model->load_all($input);
+                // $channel_cost = h_caculate_channel_cost($channel_cost);
+                if (!empty($campaign_cost)) {
+                    $campaign_cost = h_caculate_channel_cost($channel_cost);
+                    $c1 += $campaign_cost['total_C1'];
+                    $c2 += $campaign_cost['total_C2'];
+                    $spend += $campaign_cost['spend'];
+                } else {
+                    $c1 += 0;
+                    $c2 += 0;
+                    $spend += 0;
+                }
+            }
+            
+            
+            $input = [];
+            $input['select'] = 'id';
+            $input['where'] = array('channel_id' => 2,'date_rgt >' => $d_value, 'date_rgt <' => $d_value + 24 * 3600);
+            if (isset($get['filter_marketer_id'])) {
+                $input['where_in']['marketer_id'] = $get['filter_marketer_id'];
+            }
+            $c3 = count($this->contacts_model->load_all($input));
+
+            $input = [];
+            $input['select'] = 'id';
+            $input['where'] = array('channel_id' => 2,'date_rgt >' => $d_value, 'date_rgt <' => $d_value + 24 * 3600, 'duplicate_id' => '');
+            if (isset($get['filter_marketer_id'])) {
+                $input['where_in']['marketer_id'] = $get['filter_marketer_id'];
+            }
+            $l1 = count($this->contacts_model->load_all($input));
+
+            $perday['c1'] = $c1;
+            $perday['c2'] = $c2;
+            $perday['c3'] = $c3;
+            $perday['spend'] = $spend;
+            $perday['c2/c1'] = ($c1 == '0' || $c1 == '') ? '0' : round($c2 / $c1, 3) * 100;
+            $perday['c3/c2'] = ($c2 == '0' || $c2 == '' ) ? '0' : round($c3 / $c2, 3) * 100;
+            $perday['priceC3'] = ($c3 != '0') ? round($spend / $c3) : '0';
+            $perday['l1'] = $l1;
+            $arr_per_day[(string) $d_key] = $perday;
+        }
+
+
+        $total['total_C1'] = '';
+        $total['total_C2'] = '';
+        $total['total_C3'] = '';
+        $total['total_Spend'] = '';
+
+        foreach ($arr_per_day as $key => $value) {
+            $total['total_C1'] += $value['c1'];
+            $total['total_C2'] += $value['c2'];
+            $total['total_C3'] += $value['c3'];
+            $total['total_Spend'] += $value['spend'];
+        }
+        $total['total_C3/C2'] = ($total['total_C2'] != '0') ? round($total['total_C3'] / $total['total_C2'], 4) * 100 . '%' : 'N/A';
+        $total['total_C2/C1'] = ($total['total_C1'] != '0') ? round($total['total_C2'] / $total['total_C1'], 2) * 100 . '%' : 'N/A';
+        $total['total_price_C3'] = ($total['total_C3'] != '0') ? round($total['total_Spend'] / $total['total_C3']):0;
+
+        $this->load->model('staffs_model');
+        $data['marketers'] = $this->staffs_model->load_all(array('where' => array('role_id' => 6, 'active' => 1)));
+
+        $data['left_col'] = array('date_happen', 'marketer');
+        $data['total'] = $total;
+        $data['startDate'] = isset($startDate) ? $startDate : '0';
+        $data['endDate'] = isset($endDate) ? $endDate : '0';
+        $data['per_day'] = $arr_per_day;
+        $data['slide_menu'] = 'manager/common/menu';
+        $data['top_nav'] = 'manager/common/top-nav';
+        $data['content'] = 'marketing/view_report_operation';
         $this->load->view(_MAIN_LAYOUT_, $data);
     }
 

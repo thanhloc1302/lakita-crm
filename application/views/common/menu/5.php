@@ -50,6 +50,14 @@
         </a>
     </li>
     <li>
+        <a href="<?php echo base_url('marketing/view_report_operation'); ?>">
+            <img src="<?php echo base_url(); ?>public/images/report.png"> 
+            <span> Xem báo cáo marketing  </span>
+        </a>
+    </li>
+</ul>
+<ul class="nav-list list-inline display-flex">
+    <li>
         <a href="<?php echo base_url('home/logout'); ?>">
             <img src="<?php echo base_url(); ?>public/images/logout.png"> 
             <span> Đăng xuất  </span>

@@ -64,6 +64,12 @@
 </ul>
 <ul class="nav-list list-inline display-flex">
     <li>
+        <a href="<?php echo base_url('manager/view_report_sale_operation'); ?>">
+            <img src="<?php echo base_url(); ?>public/images/L8.jpg"> 
+            <span> Xem báo cáo vận hành TVTS  </span>
+        </a>
+    </li>
+    <li>
         <a href="<?php echo base_url('home/logout'); ?>">
             <img src="<?php echo base_url(); ?>public/images/logout.png"> 
             <span> Đăng xuất  </span>
